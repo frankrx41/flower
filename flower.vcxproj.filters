@@ -18,6 +18,9 @@
     <ClCompile Include="String.c">
       <Filter>String</Filter>
     </ClCompile>
+    <ClCompile Include="Memory_Win32.c">
+      <Filter>Platform\Win32</Filter>
+    </ClCompile>
     <ClCompile Include="Timming.c">
       <Filter>Engine</Filter>
     </ClCompile>
@@ -50,8 +53,5 @@
     <Filter Include="String">
       <UniqueIdentifier>{27c9b47a-8092-43b9-a493-e19a8f8c6861}</UniqueIdentifier>
     </Filter>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include=".gitignore" />
   </ItemGroup>
 </Project>

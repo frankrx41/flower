@@ -2,6 +2,7 @@
 
 #include "Engine.h"
 
+#define PUBLIC_MEMORY 1
 #include "Memory.h"
 
 #define PUBLIC_TIMMING 1
@@ -21,11 +22,7 @@ struct Engine
     error   m_last_error;
 
     Timming m_timming;
-
-    struct MemoryManager
-    {
-        int32 m_dump;
-    }m_memory;
+    Memory  m_memory;
 
 };
 
@@ -54,13 +51,13 @@ error Engine_Initialize()
 
 Engine* Engine_GetInstance()
 {
-    CHECK_ENGINE_IS_INITIALIZED;
     static Engine engine;
     return &engine;
 }
 
 error Engine_MainLoop()
 {
+    CHECK_ENGINE_IS_INITIALIZED;
     for(;;)
     {
         Engine_Timming_TrimSpeed_Plat();
@@ -71,4 +68,10 @@ error Engine_MainLoop()
 Timming* Engine_Timming_GetInstance()
 {
     return &Engine_GetInstance()->m_timming;
+}
+
+// Memory
+Memory* Engine_Memory_GetInstance()
+{
+    return &Engine_GetInstance()->m_memory;
 }
