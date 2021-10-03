@@ -1,22 +1,51 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="Source Files">
-      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
-      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    <ClCompile Include="Main.c" />
+    <ClCompile Include="Queue.c" />
+    <ClCompile Include="Timming_Win32.c">
+      <Filter>Platform\Win32</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine.c">
+      <Filter>Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="Memory.c">
+      <Filter>Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="Debug_Win32.c">
+      <Filter>Platform\Win32</Filter>
+    </ClCompile>
+    <ClCompile Include="Timming.c">
+      <Filter>Engine</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="CoreMini.h" />
+    <ClInclude Include="Timming.h">
+      <Filter>Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine.h">
+      <Filter>Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="Memory.h">
+      <Filter>Engine</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Platform">
+      <UniqueIdentifier>{1efb071c-5690-4e12-b888-503cf5965edc}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files">
-      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
-      <Extensions>h;hh;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    <Filter Include="Platform\Win32">
+      <UniqueIdentifier>{749684f2-bfa0-403e-a309-0a9c21877a7d}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Resource Files">
-      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
-      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    <Filter Include="Engine">
+      <UniqueIdentifier>{36c2ae34-e135-4569-88bd-1bd3eec312a9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="String">
+      <UniqueIdentifier>{27c9b47a-8092-43b9-a493-e19a8f8c6861}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="main.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
+    <None Include=".gitignore" />
   </ItemGroup>
 </Project>

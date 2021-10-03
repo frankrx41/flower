@@ -1,2 +1,5 @@
-\Debug\
+/Debug/*
 *.suo
+*.user
+*.tss
+**/_ReSharper.Caches/**

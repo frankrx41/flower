@@ -1,7 +1,8 @@
-#include <stdio.h>
-#include <windows.h>
+#include "CoreMini.h"
 
-int main(){
+
+int32 main(){
+
 
     return 0;
 }
