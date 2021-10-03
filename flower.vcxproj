@@ -85,6 +85,7 @@
     <ClCompile Include="Main.c" />
     <ClCompile Include="Memory.c" />
     <ClCompile Include="Queue.c" />
+    <ClCompile Include="String.c" />
     <ClCompile Include="Timming.c" />
     <ClCompile Include="Timming_Win32.c" />
   </ItemGroup>
@@ -92,6 +93,7 @@
     <ClInclude Include="CoreMini.h" />
     <ClInclude Include="Engine.h" />
     <ClInclude Include="Memory.h" />
+    <ClInclude Include="String.h" />
     <ClInclude Include="Timming.h" />
   </ItemGroup>
   <ItemGroup>

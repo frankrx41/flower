@@ -1,5 +1,6 @@
 #pragma once
 
+
 #if PLATFORM_WIN32
 #define KEEP_LEGACY_TYPE 1
 #endif
@@ -13,6 +14,7 @@ typedef signed char     tchar;
 typedef void *          tptr;
 typedef uint32          tsize;
 typedef int32           error;
+typedef uint32          crc32;
 
 #define NULL            ( 0 )
 
@@ -36,9 +38,10 @@ void    Engine_Debug_Break();
 
 #if CONFIG_DEBUG
 #define Assert(must_true_condition, msg, ...) do{ \
-    if (!(must_true_condition)) { \
+    if(!(must_true_condition)) { \
         if (msg) { Log(2, msg, ##__VA_ARGS__); } \
         else { Log(2, "Error at file %s, function %s, line %u: %s", __FILE__, __FUNCTION__, __LINE__, #must_true_condition); } \
+        Engine_Debug_Break(); \
     } \
 }while(0)
 
@@ -47,3 +50,8 @@ void    Engine_Debug_Break();
 #define Assert(must_be_true_condition, msg).
 #define StaticAssert(must_be_true_condition, msg)
 #endif
+
+
+#define INT32_MAX       2147483647i32
+#define UINT32_MAX      0xffffffffui32
+#define offsetof(s,m)   (tsize)&(((s *)0)->m)

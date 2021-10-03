@@ -15,6 +15,9 @@
     <ClCompile Include="Debug_Win32.c">
       <Filter>Platform\Win32</Filter>
     </ClCompile>
+    <ClCompile Include="String.c">
+      <Filter>String</Filter>
+    </ClCompile>
     <ClCompile Include="Timming.c">
       <Filter>Engine</Filter>
     </ClCompile>
@@ -29,6 +32,9 @@
     </ClInclude>
     <ClInclude Include="Memory.h">
       <Filter>Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="String.h">
+      <Filter>String</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
