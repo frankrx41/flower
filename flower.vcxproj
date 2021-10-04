@@ -94,6 +94,7 @@
     <ClInclude Include="CoreMini.h" />
     <ClInclude Include="Engine.h" />
     <ClInclude Include="Memory.h" />
+    <ClInclude Include="Queue.h" />
     <ClInclude Include="String.h" />
     <ClInclude Include="Timming.h" />
   </ItemGroup>
