@@ -54,4 +54,7 @@ void    Engine_Debug_Break();
 
 #define INT32_MAX       2147483647i32
 #define UINT32_MAX      0xffffffffui32
-#define offsetof(s,m)   (tsize)&(((s *)0)->m)
+#define offsetof(s, m)  (tsize)&(((s *)0)->m)
+
+#define MAX(a, b)       ((a) > (b) ? (a) : (b))
+#define MIN(a, b)       ((a) < (b) ? (a) : (b))

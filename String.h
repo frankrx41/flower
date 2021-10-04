@@ -5,16 +5,18 @@
 
 typedef struct String String;
 
-int32   String_GetLength    (const String* string);
-tchar*  String_CStr         (String* string);
-error   String_Format       (String* buff, const tchar* format, ...);
-error   String_FormatArgs   (String* buff, const tchar* format, va_list);
-error   String_Copy         (String* dest, const tchar* sour, int32 length);
 
-crc32   String_Crc          (const tchar* string);
-int32   String_CalcLength   (const tchar* string);
+uint32  Str_CalcLength      (const tchar* str);
+crc32   Str_CalcCrc         (const tchar *str, uint32 length);
 
-String* String_Clone        (const String* string);
-String* String_New          (const tchar* string, int32 length);
-error   String_Del          (String* string);
+uint32  String_GetLength    (const String* string);
+crc32   String_GetCrc       (const String* string);
+tchar*  String_CStr         (const String* string);
+void    String_Format       (String* string, const tchar* format, ...);
+void    String_FormatArgs   (String* string, const tchar* format, va_list);
+void    String_Copy         (String* string, const tchar* str, uint32 length);
+
+
+String* String_New          (const tchar* str);
+void    String_Del          (String* string);
 

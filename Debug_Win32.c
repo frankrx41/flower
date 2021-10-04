@@ -11,7 +11,7 @@ void Engine_Debug_Break()
 
 error Log(int32 type, const tchar* format, ...)
 {
-    String* string = String_New("", 512);
+    String* string = String_New("");
     va_list ap;
     va_start(ap, format);
     String_FormatArgs(string, format, ap);

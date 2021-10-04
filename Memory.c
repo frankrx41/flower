@@ -48,32 +48,32 @@ error Engine_Memory_Initialize()
     return 0;
 }
 
-tptr Engine_Memory_Alloc(const tchar* debug_name, tsize size)
+tptr Engine_Memory_Alloc(const tchar* local_namespace, tsize size)
 {
     MemoryBlock * memory_block  = Engine_Memory_Alloc_Plat(sizeof(MemoryBlock) + size);
     Assert(memory_block, 0);
     memory_block->m_flag        = 'GPYM';
     memory_block->m_id          = Memory_IncreaseAllocID();
-    memory_block->m_crc         = String_Crc(debug_name);
+    memory_block->m_crc         = Str_CalcCrc(local_namespace, 0);
     memory_block->m_alloc_size  = size;
 
     return memory_block->m_byte;
 }
 
-error Engine_Memory_Free(const tchar* debug_name, tptr ptr)
+error Engine_Memory_Free(const tchar* local_namespace, tptr ptr)
 {
     Assert(ptr != NULL, "");
 
     MemoryBlock * dst_block;
     dst_block = CastToMemoryBlock(ptr);
-    Assert(debug_name != NULL, "");
-    Assert(dst_block->m_crc == String_Crc(debug_name), "");
+    Assert(local_namespace != NULL, "");
+    Assert(dst_block->m_crc == Str_CalcCrc(local_namespace, 0), "");
 
     Engine_Memory_Free_Plat(dst_block);
     return 0;
 }
 
-tptr Engine_Memory_CloneInfo(const tchar* debug_name, const tptr ptr)
+tptr Engine_Memory_CloneInfo(const tchar* local_namespace, const tptr ptr)
 {
     Assert(ptr != NULL, "");
 
@@ -81,23 +81,23 @@ tptr Engine_Memory_CloneInfo(const tchar* debug_name, const tptr ptr)
     src_block = CastToMemoryBlock(ptr);
 
     tptr new_ptr;
-    new_ptr = Engine_Memory_Alloc(debug_name, src_block->m_alloc_size);
+    new_ptr = Engine_Memory_Alloc(local_namespace, src_block->m_alloc_size);
     return new_ptr;
 }
 
-tptr Engine_Memory_Clone(const tchar* debug_name, const tptr ptr)
+tptr Engine_Memory_Clone(const tchar* local_namespace, const tptr ptr)
 {
     Assert(ptr != NULL, "");
     MemoryBlock * src_block;
     src_block = CastToMemoryBlock(ptr);
 
     tptr new_ptr;
-    new_ptr = Engine_Memory_CloneInfo(debug_name, ptr);
+    new_ptr = Engine_Memory_CloneInfo(local_namespace, ptr);
     Engine_Memory_Copy(new_ptr, ptr, src_block->m_alloc_size);
 
     return new_ptr;
 }
-tptr Engine_Memory_SafeClone(const tchar* debug_name, const tptr ptr)
+tptr Engine_Memory_SafeClone(const tchar* local_namespace, const tptr ptr)
 {
     if( !ptr )
     {
@@ -105,7 +105,7 @@ tptr Engine_Memory_SafeClone(const tchar* debug_name, const tptr ptr)
     }
 
     return
-    Engine_Memory_Clone(debug_name, ptr);
+    Engine_Memory_Clone(local_namespace, ptr);
 }
 
 tptr Engine_Memory_Copy(tptr dst_ptr, const tptr src_ptr, tsize size)
