@@ -2,6 +2,8 @@
 
 typedef struct Actor Actor;
 typedef struct Sence Sence;
+typedef enum Event Event;
+
 
 typedef void (*ActorActionFunc)(Actor*);
 

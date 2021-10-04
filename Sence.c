@@ -6,6 +6,7 @@
 #include "Sence.h"
 #include "Actor.h"
 
+
 struct Sence
 {
     uint32          m_alloc_actor_id;
@@ -50,4 +51,9 @@ static void Sence_Actor_ProcessEachActorEvent(Actor* actor, Event event)
 void Sence_Actor_SendEvent(Sence* sence, Event event)
 {
     Queue_ForEach(sence->m_actor_queue, (ProcessDataFunc)Sence_Actor_ProcessEachActorEvent, (tptr)event);
+}
+
+tptr Sence_GetActorQueue(Sence* sence)
+{
+    return sence->m_actor_queue;
 }

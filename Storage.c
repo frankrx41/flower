@@ -95,9 +95,9 @@ static bool Storage_FindVariable(StoreContent* store_content, crc32 variable)
     return false;
 }
 
-bool Storage_IsExistVariable(Storage* storage, crc32 variable)
+bool Storage_IsExistVariable(const Storage* storage, crc32 variable)
 {
-    StoreContent* store_content = Queue_Find(storage->m_store_queue, (FindDataFunc)Storage_FindVariable, (tptr)variable);
+    StoreContent* store_content = Queue_Find(StoreContent*)(storage->m_store_queue, (FindDataFunc)Storage_FindVariable, (tptr)variable);
     if( store_content )
     {
         return true;
@@ -105,7 +105,7 @@ bool Storage_IsExistVariable(Storage* storage, crc32 variable)
     return false;
 }
 
-static StoreContent* Storage_LoadStoreContent(Storage* storage, crc32 variable)
+static StoreContent* Storage_LoadStoreContent(const Storage* storage, crc32 variable)
 {
     StoreContent* store_content = Queue_Find(StoreContent*)(storage->m_store_queue, (FindDataFunc)Storage_FindVariable, (tptr)variable);
     Assert(store_content != NULL, "You try to read a not exist var");
@@ -113,19 +113,19 @@ static StoreContent* Storage_LoadStoreContent(Storage* storage, crc32 variable)
     return store_content;
 }
 
-int32 Storage_LoadInt32(Storage* storage, crc32 variable)
+int32 Storage_LoadInt32(const Storage* storage, crc32 variable)
 {
     StoreContent* store_content = Storage_LoadStoreContent(storage, variable);
     return store_content->m_int32;
 }
 
-float Storage_LoadFloat(Storage* storage, crc32 variable)
+float Storage_LoadFloat(const Storage* storage, crc32 variable)
 {
     StoreContent* store_content = Storage_LoadStoreContent(storage, variable);
     return store_content->m_float;
 }
 
-tptr Storage_LoadStruct(Storage* storage, crc32 variable)
+tptr Storage_LoadStruct(const Storage* storage, crc32 variable)
 {
     StoreContent* store_content = Storage_LoadStoreContent(storage, variable);
     return store_content->m_pointer;

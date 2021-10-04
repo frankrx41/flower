@@ -1,4 +1,9 @@
-remove error, change it to void
+Remove error, change it to void
+
+Rename local_namespace -> local_name
+Rename Engine_Memory_Copy -> Memory_Copy ?
 
 
-rename Storage_FindVariable
+Rename Storage_FindVariable
+
+Add Storage_StoreTempVariable

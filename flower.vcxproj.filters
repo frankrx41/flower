@@ -39,6 +39,12 @@
     <ClCompile Include="Event.c">
       <Filter>Event</Filter>
     </ClCompile>
+    <ClCompile Include="Render.c">
+      <Filter>Render</Filter>
+    </ClCompile>
+    <ClCompile Include="Render_Win32.c">
+      <Filter>Platform\Win32</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CoreMini.h" />
@@ -69,6 +75,9 @@
     <ClInclude Include="Sence.h">
       <Filter>Sence</Filter>
     </ClInclude>
+    <ClInclude Include="Render.h">
+      <Filter>Render</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Platform">
@@ -95,5 +104,11 @@
     <Filter Include="Event">
       <UniqueIdentifier>{19bc11b5-9e9c-4a38-a8a3-c8e342edac70}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Render">
+      <UniqueIdentifier>{d5adcd47-4bd5-46ef-9e1d-cfbd285f50cb}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="Todo.txt" />
   </ItemGroup>
 </Project>

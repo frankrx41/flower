@@ -88,6 +88,8 @@
     <ClCompile Include="Memory.c" />
     <ClCompile Include="Memory_Win32.c" />
     <ClCompile Include="Queue.c" />
+    <ClCompile Include="Render.c" />
+    <ClCompile Include="Render_Win32.c" />
     <ClCompile Include="Sence.c" />
     <ClCompile Include="Storage.c" />
     <ClCompile Include="String.c" />
@@ -102,10 +104,14 @@
     <ClInclude Include="Event.h" />
     <ClInclude Include="Memory.h" />
     <ClInclude Include="Queue.h" />
+    <ClInclude Include="Render.h" />
     <ClInclude Include="Sence.h" />
     <ClInclude Include="Storage.h" />
     <ClInclude Include="String.h" />
     <ClInclude Include="Timming.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="Todo.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

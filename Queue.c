@@ -25,6 +25,7 @@ struct Queue
 
 #undef Queue
 #undef Queue_Create
+#undef Queue_Find
 #undef Queue_Push
 #undef Queue_Pop
 #undef Queue_Dequeue
