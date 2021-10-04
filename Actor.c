@@ -36,6 +36,7 @@ Actor* Actor_Create(const tchar* local_name, Sence* sence, uint32 id)
     actor->m_storage    = Storage_Create(local_name);
     actor->m_event_action_queue = Queue_Create(local_name, EventAction*);
     actor->m_sence      = sence;
+    actor->m_component  = Storage_Create(local_name);
     return actor;
 }
 
@@ -43,6 +44,7 @@ void Actor_Destroy(Actor* actor)
 {
     Queue_Destroy(actor->m_event_action_queue);
     Storage_Destroy(actor->m_storage);
+    Storage_Destroy(actor->m_component);
     String_Del(actor->m_local_name);
     MemDel(actor);
 }

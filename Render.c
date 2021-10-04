@@ -7,18 +7,10 @@
 #include "Render.h"
 
 
-typedef struct RenderContent RenderContent;
-typedef struct RenderData RenderData;
-
 void RenderManager_Initialize_Plat();
 void RenderManager_RenderEachRenderData_Plat(RenderData* render_data, tptr);
 void RenderManager_RenderToScreen_Plat();
-
-struct RenderContent
-{
-    Queue(RenderData*)* m_render_data_queue;
-};
-
+void RenderManager_RenderEachActor_Plat(Actor* actor, tptr ptr);
 
 struct RenderManager
 {
@@ -49,18 +41,9 @@ tptr RenderManager_GetPlatformData()
     return RenderManager_GetInstance()->m_platform_data;
 }
 
-static void RenderManager_RenderEachActor(Actor* actor, tptr ptr)
-{
-    RenderContent* render_content = Actor_Cast(actor, RenderContent);
-    if( render_content )
-    {
-        Queue_ForEach(render_content->m_render_data_queue, RenderManager_RenderEachRenderData_Plat, NULL);
-    }
-}
-
 void RenderManager_RenderSenceActor(Sence* sence)
 {
-    Queue_ForEach(Sence_GetActorQueue(sence), RenderManager_RenderEachActor, NULL);
+    Queue_ForEach(Sence_GetActorQueue(sence), RenderManager_RenderEachActor_Plat, NULL);
 }
 
 void RenderManager_RenderToScreen()

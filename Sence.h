@@ -4,6 +4,7 @@ typedef struct Sence Sence;
 typedef struct Actor Actor;
 typedef enum Event Event;
 
+typedef bool (*FindDataFunc)(tptr data, tptr ptr);
 
 Sence*  Sence_Create    (const tchar* local_name);
 void    Sence_Destroy   (Sence* sence);

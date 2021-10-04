@@ -7,3 +7,6 @@ Rename Engine_Memory_Copy -> Memory_Copy ?
 Rename Storage_FindVariable
 
 Add Storage_StoreTempVariable
+
+Fix memory leak
+
