@@ -17,7 +17,8 @@ struct Node
 
 struct Queue
 {
-    crc32   m_crc32;
+    String* m_local_name;
+    crc32   m_type_crc32;
     uint32  m_length;
     Node*   m_head;     // head node reference data pointer to queue
 };
@@ -37,15 +38,16 @@ static bool Queue_IsHead(const Queue* queue, Node* node)
     return node->m_reference_data == queue;
 }
 
-Queue*  Queue_Create(const tchar* local_namespace, const tchar* type_str)
+Queue*  Queue_Create(const tchar* local_name, const tchar* type_str)
 {
-    Queue* queue    = MemNew(local_namespace, Queue);
-    queue->m_crc32  = Str_CalcCrc(type_str, 0);
+    Queue* queue    = MemNew(local_name, Queue);
+    queue->m_type_crc32  = Str_CalcCrc(type_str, 0);
     queue->m_length = 0;
-    queue->m_head   = MemNew(local_namespace, Node);
+    queue->m_head   = MemNew(local_name, Node);
     queue->m_head->m_node_next   = queue->m_head;
     queue->m_head->m_node_prev   = queue->m_head;
     queue->m_head->m_reference_data = queue;
+    queue->m_local_name = String_New(local_name);
     return queue;
 }
 
@@ -61,21 +63,21 @@ bool Queue_IsEmpty(const Queue* queue)
     return Queue_GetLength(queue) == 0;
 }
 
-void Queue_ForEach(const Queue* queue, ProcessDataFunc process_data_func)
+void Queue_ForEach(const Queue* queue, ProcessDataFunc process_data_func, tptr ptr)
 {
     Node* node = queue->m_head->m_node_next;
     for(; !Queue_IsHead(queue, node); node = node->m_node_next)
     {
-        process_data_func(node->m_reference_data);
+        process_data_func(node->m_reference_data, ptr);
     }
 }
 
-bool Queue_IsExist(const Queue* queue, FindDataFunc find_data_func)
+bool Queue_IsExist(const Queue* queue, FindDataFunc find_data_func, tptr ptr)
 {
     Node* node = queue->m_head->m_node_next;
     for(; !Queue_IsHead(queue, node); node = node->m_node_next)
     {
-        if( find_data_func(node->m_reference_data) )
+        if( find_data_func(node->m_reference_data, ptr) )
         {
             return true;
         }
@@ -89,9 +91,9 @@ uint32 Queue_GetLength(const Queue* queue)
 
 void Queue_Push(const tchar* local_namespace, Queue* queue, tptr reference_data, const tchar* type_str)
 {
-    Assert(Str_CalcCrc(type_str, 0) == queue->m_crc32, "");
+    Assert(Str_CalcCrc(type_str, 0) == queue->m_type_crc32, "");
 
-    Node* new_node = MemNew(local_namespace, Node);
+    Node* new_node = MemNew(String_CStr(queue->m_local_name), Node);
     new_node->m_reference_data = reference_data;
 
     Node* last_node = queue->m_head->m_node_prev;
@@ -188,12 +190,12 @@ static tptr Queue_RemoveNode(Queue* queue, Node* node)
 }
 
 
-tptr Queue_RemoveFrist(Queue* queue, FindDataFunc find_data_func)
+tptr Queue_RemoveFrist(Queue* queue, FindDataFunc find_data_func, tptr ptr)
 {
     Node* node = queue->m_head->m_node_next;
     for(; !Queue_IsHead(queue, node); node = node->m_node_next)
     {
-        if( find_data_func(node->m_reference_data) )
+        if( find_data_func(node->m_reference_data, ptr) )
         {
             return
             Queue_RemoveNode(queue, node);
@@ -202,7 +204,7 @@ tptr Queue_RemoveFrist(Queue* queue, FindDataFunc find_data_func)
     return NULL;
 }
 
-int32 _Queue_RemoveAll(Queue* queue, FindDataFunc find_data_func)
+int32 _Queue_RemoveAll(Queue* queue, FindDataFunc find_data_func, tptr ptr)
 {
     int32 remove_cnt = 0;
     Node* node = queue->m_head->m_node_next;
@@ -210,7 +212,7 @@ int32 _Queue_RemoveAll(Queue* queue, FindDataFunc find_data_func)
     for(; !Queue_IsHead(queue, node); node = node_next)
     {
         node_next = node->m_node_next;
-        if( find_data_func(node->m_reference_data) )
+        if( find_data_func(node->m_reference_data, ptr) )
         {
             Queue_RemoveNode(queue, node);
             remove_cnt++;

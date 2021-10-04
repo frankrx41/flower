@@ -80,22 +80,30 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Actor.c" />
     <ClCompile Include="Debug_Win32.c" />
     <ClCompile Include="Engine.c" />
+    <ClCompile Include="Event.c" />
     <ClCompile Include="Main.c" />
     <ClCompile Include="Memory.c" />
     <ClCompile Include="Memory_Win32.c" />
     <ClCompile Include="Queue.c" />
+    <ClCompile Include="Sence.c" />
+    <ClCompile Include="Storage.c" />
     <ClCompile Include="String.c" />
     <ClCompile Include="Test.c" />
     <ClCompile Include="Timming.c" />
     <ClCompile Include="Timming_Win32.c" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Actor.h" />
     <ClInclude Include="CoreMini.h" />
     <ClInclude Include="Engine.h" />
+    <ClInclude Include="Event.h" />
     <ClInclude Include="Memory.h" />
     <ClInclude Include="Queue.h" />
+    <ClInclude Include="Sence.h" />
+    <ClInclude Include="Storage.h" />
     <ClInclude Include="String.h" />
     <ClInclude Include="Timming.h" />
   </ItemGroup>

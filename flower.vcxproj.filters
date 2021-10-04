@@ -27,6 +27,18 @@
     </ClCompile>
     <ClCompile Include="Test.c" />
     <ClCompile Include="Main.c" />
+    <ClCompile Include="Sence.c">
+      <Filter>Sence</Filter>
+    </ClCompile>
+    <ClCompile Include="Actor.c">
+      <Filter>Sence</Filter>
+    </ClCompile>
+    <ClCompile Include="Storage.c">
+      <Filter>Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="Event.c">
+      <Filter>Event</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CoreMini.h" />
@@ -44,6 +56,18 @@
     </ClInclude>
     <ClInclude Include="Queue.h">
       <Filter>Library\Queue</Filter>
+    </ClInclude>
+    <ClInclude Include="Storage.h">
+      <Filter>Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="Event.h">
+      <Filter>Event</Filter>
+    </ClInclude>
+    <ClInclude Include="Actor.h">
+      <Filter>Sence</Filter>
+    </ClInclude>
+    <ClInclude Include="Sence.h">
+      <Filter>Sence</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -64,6 +88,12 @@
     </Filter>
     <Filter Include="Library\Queue">
       <UniqueIdentifier>{0370b4e2-929a-4794-b502-4071ba99a44b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Sence">
+      <UniqueIdentifier>{cb494a3a-ffc1-47e9-b92b-ac4850117bf0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Event">
+      <UniqueIdentifier>{19bc11b5-9e9c-4a38-a8a3-c8e342edac70}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>
