@@ -7,6 +7,9 @@
 #include "Actor.h"
 #include "Queue.h"
 
+#undef Actor_Cast
+#undef Actor_AddComponent
+
 typedef struct EventAction EventAction;
 
 struct EventAction
@@ -20,6 +23,7 @@ struct Actor
     uint32                  m_id;
     String*                 m_local_name;
     Storage*                m_storage;
+    Storage*                m_component;
     Queue(EventAction*)*    m_event_action_queue;
     Sence*                  m_sence;
 };
@@ -86,4 +90,22 @@ void Actor_ProcessEvent(Actor* actor, Event event)
     actor_event->m_event    = event;
     actor_event->m_actor    = actor;
     Queue_ForEach(actor->m_event_action_queue, Actor_ProcessEachEventAction, actor_event);
+}
+
+void Actor_AddComponent(Actor* actor, const tchar* component_name, tsize size)
+{
+    tptr new_component = MemNewSize(String_CStr(actor->m_local_name), size);
+    Storage_StoreStruct(actor->m_component, Str_CalcCrc(component_name, 0), new_component);
+}
+
+void Actor_DelComponent(Actor* actor, const tchar* component_name)
+{
+    tptr ptr = Storage_DeleteVariable(actor->m_component,Str_CalcCrc(component_name, 0));
+    MemDel(ptr);
+}
+
+tptr Actor_Cast(Actor* actor, const tchar* component_name)
+{
+    tptr ptr = Storage_LoadStruct(actor->m_component, Str_CalcCrc(component_name, 0));
+    return ptr;
 }

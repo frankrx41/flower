@@ -72,7 +72,7 @@ void Queue_ForEach(const Queue* queue, ProcessDataFunc process_data_func, tptr p
     }
 }
 
-tptr Queue_IsExist(const Queue* queue, FindDataFunc find_data_func, tptr ptr)
+tptr Queue_Find(const Queue* queue, FindDataFunc find_data_func, tptr ptr)
 {
     Node* node = queue->m_head->m_node_next;
     for(; !Queue_IsHead(queue, node); node = node->m_node_next)
