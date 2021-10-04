@@ -87,6 +87,7 @@
     <ClCompile Include="Memory_Win32.c" />
     <ClCompile Include="Queue.c" />
     <ClCompile Include="String.c" />
+    <ClCompile Include="Test.c" />
     <ClCompile Include="Timming.c" />
     <ClCompile Include="Timming_Win32.c" />
   </ItemGroup>

@@ -1,7 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <ClCompile Include="Main.c" />
     <ClCompile Include="Timming_Win32.c">
       <Filter>Platform\Win32</Filter>
     </ClCompile>
@@ -26,6 +25,8 @@
     <ClCompile Include="Queue.c">
       <Filter>Library\Queue</Filter>
     </ClCompile>
+    <ClCompile Include="Test.c" />
+    <ClCompile Include="Main.c" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CoreMini.h" />

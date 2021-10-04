@@ -1,5 +1,10 @@
 #pragma once
 
+/*
+Code Style
+
+Start with _ means not want be call
+*/
 
 #if PLATFORM_WIN32
 #define KEEP_LEGACY_TYPE 1
@@ -58,3 +63,9 @@ void    Engine_Debug_Break();
 
 #define MAX(a, b)       ((a) > (b) ? (a) : (b))
 #define MIN(a, b)       ((a) < (b) ? (a) : (b))
+
+#define _MACRO_REMOVE_BRACKETS(...)  __VA_ARGS__
+#define MACRO_REMOVE_BRACKETS(...)  _MACRO_REMOVE_BRACKETS##__VA_ARGS__
+#define _MACRO_TOSTR(...) #__VA_ARGS__
+#define MACRO_TOSTR(...) _MACRO_TOSTR(__VA_ARGS__)
+

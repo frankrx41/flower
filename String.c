@@ -34,7 +34,7 @@ static void String_ReAllocSize(String* string, uint32 length)
         return;
     }
 
-    MemSafeDel(LOCAL_NAMESPACE_CHAR, string->m_char);
+    MemSafeDel(string->m_char);
     string->m_char = MemNewSize(LOCAL_NAMESPACE_CHAR, length);
 }
 
@@ -139,7 +139,7 @@ void String_Copy(String* string, const tchar* str, uint32 length)
 
     if( length < 0 )
     {
-        Assert( false, "We hope negative number means cut from right side, but we have no impl it");
+        Assert( false, "We hope negative number means copy from right side, but we have no impl it");
     }
 
     {
@@ -180,7 +180,7 @@ String* String_New(const tchar* str)
 
 void String_Del(String* string)
 {
-    MemSafeDel(LOCAL_NAMESPACE_CHAR, string->m_char);
-    MemDel(LOCAL_NAMESPACE, string);
+    MemSafeDel(string->m_char);
+    MemDel(string);
 }
 

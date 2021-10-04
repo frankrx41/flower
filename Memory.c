@@ -60,20 +60,18 @@ tptr Engine_Memory_Alloc(const tchar* local_namespace, tsize size)
     return memory_block->m_byte;
 }
 
-error Engine_Memory_Free(const tchar* local_namespace, tptr ptr)
+error Engine_Memory_Free(tptr ptr)
 {
     Assert(ptr != NULL, "");
 
     MemoryBlock * dst_block;
     dst_block = CastToMemoryBlock(ptr);
-    Assert(local_namespace != NULL, "");
-    Assert(dst_block->m_crc == Str_CalcCrc(local_namespace, 0), "");
 
     Engine_Memory_Free_Plat(dst_block);
     return 0;
 }
 
-tptr Engine_Memory_CloneInfo(const tchar* local_namespace, const tptr ptr)
+tptr Engine_Memory_AllocPtrSize(const tchar* local_namespace, const tptr ptr)
 {
     Assert(ptr != NULL, "");
 
@@ -92,7 +90,7 @@ tptr Engine_Memory_Clone(const tchar* local_namespace, const tptr ptr)
     src_block = CastToMemoryBlock(ptr);
 
     tptr new_ptr;
-    new_ptr = Engine_Memory_CloneInfo(local_namespace, ptr);
+    new_ptr = Engine_Memory_AllocPtrSize(local_namespace, ptr);
     Engine_Memory_Copy(new_ptr, ptr, src_block->m_alloc_size);
 
     return new_ptr;
