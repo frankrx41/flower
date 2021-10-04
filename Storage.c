@@ -103,7 +103,7 @@ bool Storage_IsExistVariable(Storage* storage, crc32 variable)
 int32 Storage_LoadInt32(Storage* storage, crc32 variable)
 {
     StoreContent* store_content = Queue_RemoveFrist(StoreContent*)(storage->m_store_queue, (FindDataFunc)Storage_FindVariable, (tptr)variable);
-    Assert(store_content != NULL, "");
+    Assert(store_content != NULL, "You try to read a not exist var");
 
     int32 data = store_content->m_int32;
     MemDel(store_content);

@@ -91,7 +91,7 @@ uint32 Queue_GetLength(const Queue* queue)
 
 void Queue_Push(Queue* queue, tptr reference_data, const tchar* type_str)
 {
-    Assert(Str_CalcCrc(type_str, 0) == queue->m_type_crc32, "");
+    Assert(Str_CalcCrc(type_str, 0) == queue->m_type_crc32, "Push type is different from create type, do you forget the star(*) ?");
 
     Node* new_node = MemNew(String_CStr(queue->m_local_name), Node);
     new_node->m_reference_data = reference_data;
