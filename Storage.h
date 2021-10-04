@@ -15,6 +15,7 @@ void        Storage_StorePointer(Storage* storage, crc32 variable, tptr value, t
 
 uint32      Storage_GetSotreCnt (const Storage* storage);
 
+bool        Storage_IsExistVariable(Storage* storage, crc32 variable);
 int32       Storage_LoadInt32   (Storage* storage, crc32 variable);
 float       Storage_LoadFloat   (Storage* storage, crc32 variable);
 tptr        Storage_LoadPointer (Storage* storage, crc32 variable);

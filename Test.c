@@ -3,8 +3,25 @@
 #include "String.h"
 #include "Memory.h"
 #include "Queue.h"
+#include "Storage.h"
 
 #include <stdio.h>
+
+
+
+void Storage_Test0()
+{
+    Storage* storage = Storage_Create("test");
+    Storage_StoreInt32(storage, Str_CalcCrc("a",0), 123);
+
+    printf("%d\n", Storage_IsExistVariable(storage, Str_CalcCrc("a", 0)));
+
+    int32 data = Storage_LoadInt32(storage, Str_CalcCrc("a",0));
+    printf("%d\n", data);
+
+}
+
+
 
 typedef struct Data Data;
 struct Data
