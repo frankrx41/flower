@@ -12,15 +12,15 @@ struct Data
     int32 m_a;
 };
 
-void Print_Data(Data* a)
+void Print_Data(Data* a, tptr ptr)
 {
     printf("%d\n", a->m_a);
 }
 
 
-bool QueueFind(Data* a)
+bool QueueFind(Data* a, int32 v)
 {
-    if(a->m_a == 2)
+    if(a->m_a == v)
     {
         return true;
     }
@@ -30,22 +30,22 @@ bool QueueFind(Data* a)
 void Queue_Test0()
 {
 
-    Queue(Data)* queue = Queue_Create("test", Data*);
+    Queue(Data*)* queue = Queue_Create("test", Data*);
 
     Data x = {1};
     Data y = {2};
     Data z = {3};
 
-    Queue_Push((Data*), "test", queue, &x);
-    Queue_Push((Data*), "test", queue, &y);
-    Queue_Push((Data*), "test", queue, &z);
+    Queue_Push(Data*, queue, &x);
+    Queue_Push(Data*, queue, &y);
+    Queue_Push(Data*, queue, &z);
 
-    Queue_ForEach(queue, Print_Data);
+    Queue_ForEach(queue, Print_Data, NULL);
 
-    Queue_RemoveFrist(Data*)(queue, QueueFind);
+    Queue_RemoveFrist(Data*)(queue, (FindDataFunc)QueueFind, (tptr)2);
 
     printf("\n");
-    Queue_ForEach(queue, Print_Data);
+    Queue_ForEach(queue, Print_Data, NULL);
 
 
     Queue_Destroy(queue);

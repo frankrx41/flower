@@ -10,7 +10,7 @@ Queue*  Queue_Create        (const tchar* local_name, const tchar* type_str);
 void    Queue_Destroy       (Queue* queue);
 
 bool    Queue_IsEmpty       (const Queue* queue);
-bool    Queue_IsExist       (const Queue* queue, FindDataFunc find_data_func, tptr ptr);
+tptr    Queue_IsExist       (const Queue* queue, FindDataFunc find_data_func, tptr ptr);
 uint32  Queue_GetLength     (const Queue* queue);
 void    Queue_ForEach       (const Queue* queue, ProcessDataFunc process_data_func, tptr ptr);
 

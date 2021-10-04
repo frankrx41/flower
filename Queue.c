@@ -72,24 +72,24 @@ void Queue_ForEach(const Queue* queue, ProcessDataFunc process_data_func, tptr p
     }
 }
 
-bool Queue_IsExist(const Queue* queue, FindDataFunc find_data_func, tptr ptr)
+tptr Queue_IsExist(const Queue* queue, FindDataFunc find_data_func, tptr ptr)
 {
     Node* node = queue->m_head->m_node_next;
     for(; !Queue_IsHead(queue, node); node = node->m_node_next)
     {
         if( find_data_func(node->m_reference_data, ptr) )
         {
-            return true;
+            return node->m_reference_data;
         }
     }
-    return false;
+    return NULL;
 }
 uint32 Queue_GetLength(const Queue* queue)
 {
     return queue->m_length;
 }
 
-void Queue_Push(const tchar* local_namespace, Queue* queue, tptr reference_data, const tchar* type_str)
+void Queue_Push(Queue* queue, tptr reference_data, const tchar* type_str)
 {
     Assert(Str_CalcCrc(type_str, 0) == queue->m_type_crc32, "");
 

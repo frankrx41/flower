@@ -49,5 +49,5 @@ static void Sence_Actor_ProcessEachActorEvent(Actor* actor, Event event)
 
 void Sence_Actor_SendEvent(Sence* sence, Event event)
 {
-    Queue_ForEach(sence->m_actor_queue, Sence_Actor_ProcessEachActorEvent, (tptr)event);
+    Queue_ForEach(sence->m_actor_queue, (ProcessDataFunc)Sence_Actor_ProcessEachActorEvent, (tptr)event);
 }

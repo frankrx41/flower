@@ -18,5 +18,6 @@ void    String_Copy         (String* string, const tchar* str, uint32 length);
 
 
 String* String_New          (const tchar* str);
+String* String_Clone        (String* string);
 void    String_Del          (String* string);
 
