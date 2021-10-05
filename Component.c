@@ -6,6 +6,7 @@
 #include "Memory.h"
 #include "Queue.h"
 #include "Render.h"
+#include "String.h"
 
 struct RenderComponent
 {
@@ -56,7 +57,7 @@ void Actor_RenderComponent_AddRenderData2D(Actor* actor, uint32 x, uint32 y, con
     RenderComponent* render_component = Actor_Component_Cast(actor, Render);
     if( render_component )
     {
-        RenderData2D* render_data = RenderData2D_Create(x, y, str);
+        RenderData2D* render_data = RenderData2D_Create(Actor_GetLocalName(actor), x, y, str);
         Component_Render_AddRenderData2D(render_component, render_data);
     }
 }

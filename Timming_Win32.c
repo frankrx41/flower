@@ -9,6 +9,8 @@
 
 typedef struct TimmingPlatformData TimmingPlatformData;
 
+#define MAGIC_NUMBER_STR    "GPYM"
+
 struct TimmingPlatformData
 {
     LARGE_INTEGER   m_CounterOld;
@@ -26,7 +28,7 @@ TimmingPlatformData* Engine_Timming_GetInstance_Plat()
 
 void Engine_Timming_Initialize_Plat()
 {
-    Engine_Timming_GetInstance()->m_platform_data = MemNew("Timming", TimmingPlatformData);
+    Engine_Timming_GetInstance()->m_platform_data = MemNew(MAGIC_NUMBER_STR, TimmingPlatformData);
 }
 
 void Engine_Timming_SetFrameRate_Plat(float rate)

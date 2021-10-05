@@ -19,7 +19,7 @@ Sence* Sence_Create(const tchar* local_name)
     Sence* sence = MemNew(local_name, Sence);
     sence->m_actor_queue    = Queue_Create(local_name, Actor*);
     sence->m_alloc_actor_id = 0;
-    sence->m_local_name     = String_New(local_name);
+    sence->m_local_name     = String_New(local_name, local_name);
     return sence;
 }
 

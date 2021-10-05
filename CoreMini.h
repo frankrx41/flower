@@ -40,9 +40,10 @@ typedef tchar bool;
 #if CONFIG_DEBUG
 
 // 0 info, 1 warn, 2 error
-void    Log                 (int32 type, const tchar* format, ...);
-bool    Str_IsEmpty         (const tchar* str);
-void    Engine_Debug_Break  ();
+void    Log                     (int32 type, const tchar* format, ...);
+bool    Str_IsEmpty             (const tchar* str);
+void    Engine_Debug_Break      ();
+void    Engine_Profile_Memory   ();
 
 #define Assert(must_true_condition, msg, ...) do{ \
     if(!(must_true_condition)) { \
@@ -58,6 +59,7 @@ void    Engine_Debug_Break  ();
 #define Log(...)
 #define Assert(must_be_true_condition, msg).
 #define StaticAssert(must_be_true_condition, msg)
+#define Engine_Profile_Memory()
 
 #endif
 

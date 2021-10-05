@@ -20,8 +20,8 @@ struct Engine
 
 void Engine_Initialize()
 {
-    Engine_Timming_Initialize();
     Engine_Memory_Initialize();
+    Engine_Timming_Initialize();
 
     Engine* engine = Engine_GetInstance();
     engine->m_is_initialized = true;

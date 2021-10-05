@@ -11,11 +11,14 @@ tchar   - str
 
 */
 
+#define MAX_STRING_LOCAL_NAME (32)-1
+
 struct String
 {
     uint32  m_length;
     crc32   m_crc;
     tchar*  m_char;
+    tchar   m_str_local_name[MAX_STRING_LOCAL_NAME+1];
 };
 
 #define LOCAL_NAME          "String"
@@ -35,7 +38,7 @@ static void String_ReAllocSize(String* string, uint32 length)
     }
 
     MemSafeDel(string->m_char);
-    string->m_char = MemNewSize(LOCAL_NAME_CHAR, length);
+    string->m_char = MemNewSize(Str_IsEmpty(string->m_str_local_name) ? LOCAL_NAME_CHAR : string->m_str_local_name, length);
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -101,6 +104,41 @@ bool Str_IsEmpty(const tchar* str)
     return str ? str[0] == NULL : true;
 }
 
+bool Str_IsSame(const tchar* str1, const tchar* str2)
+{
+    uint32 i = 0;
+    for( ; ; i++ )
+    {
+        if( str1[i] != str2[i] )
+        {
+            return false;
+        }
+        if( str1[i] != NULL )
+        {
+            break;
+        }
+    }
+    return true;
+}
+
+void Str_Copy(tchar* dest, const tchar* from, uint32 length)
+{
+    uint32 i=0;
+    if( length == 0 )
+    {
+        length = Str_CalcLength(from);
+    }
+    else
+    {
+        length = MIN( length, Str_CalcLength(from) );
+    }
+    for(i=0; i<length; i++)
+    {
+        dest[i] = from[i];
+    }
+    dest[i] = '\0';
+}
+
 uint32 String_GetLength(const String* string)
 {
     return string->m_length;
@@ -164,12 +202,20 @@ void String_Copy(String* string, const tchar* str, uint32 length)
 
 }
 
-String* String_New(const tchar* str)
+String* String_New(const tchar* local_name, const tchar* str)
 {
-    String* string = MemNew(LOCAL_NAME, String);
-    string->m_char = NULL;
-	string->m_length = 0;
-	
+    String* string = MemNew(local_name ? local_name : LOCAL_NAME, String);
+
+    string->m_str_local_name[0] = '\0';
+    string->m_char          = NULL;
+    string->m_length        = 0;
+    string->m_crc           = 0;
+
+    if( local_name )
+    {
+        Str_Copy(string->m_str_local_name, local_name, MAX_STRING_LOCAL_NAME);
+    }
+
     if( !Str_IsEmpty(str) )
     {
         int32 str_length = Str_CalcLength(str);

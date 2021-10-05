@@ -33,7 +33,7 @@ Actor* Actor_Create(const tchar* local_name, Sence* sence, uint32 id)
 {
     Actor* actor = MemNew(local_name, Actor);
     actor->m_id         = id;
-    actor->m_local_name = String_New(local_name);
+    actor->m_local_name = String_New(local_name, local_name);
     actor->m_storage    = Storage_Create(local_name);
     actor->m_event_action_queue = Queue_Create(local_name, EventAction*);
     actor->m_sence      = sence;
@@ -107,4 +107,9 @@ tptr Actor_Component_Cast(Actor* actor, const tchar* component_name)
 {
     tptr ptr = Storage_ReadPointer(actor->m_storage, Str_CalcCrc(component_name, 0));
     return ptr;
+}
+
+const tchar* Actor_GetLocalName(Actor* actor)
+{
+    return String_CStr(actor->m_local_name);
 }

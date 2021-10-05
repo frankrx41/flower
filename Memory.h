@@ -6,6 +6,7 @@ typedef struct Memory Memory;
 struct Memory
 {
     uint32  m_alloc_id;
+    tptr    m_local_name_queue;
 };
 #endif
 
@@ -26,8 +27,6 @@ tptr    Engine_Memory_Zero          (tptr ptr);
 tsize   Engine_Memory_GetSize       (const tptr ptr);
 
 Memory* Engine_Memory_GetInstance   ();
-
-void    Engine_Profile_Memory       ();
 
 
 #define MemNew(local_name, type)            (type*)Engine_Memory_Alloc(local_name, sizeof(type))

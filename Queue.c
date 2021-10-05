@@ -1,9 +1,9 @@
 #include "CoreMini.h"
 
 #include "Queue.h"
-
 #include "Memory.h"
 #include "String.h"
+
 
 typedef struct Queue Queue;
 typedef struct Node Node;
@@ -48,13 +48,14 @@ Queue*  Queue_Create(const tchar* local_name, const tchar* type_str)
     queue->m_head->m_node_next   = queue->m_head;
     queue->m_head->m_node_prev   = queue->m_head;
     queue->m_head->m_reference_data = queue;
-    queue->m_local_name = String_New(local_name);
+    queue->m_local_name = String_New(local_name, local_name);
     return queue;
 }
 
 void Queue_Destroy(Queue* queue)
 {
     Queue_Clear(queue);
+    String_Del(queue->m_local_name);
     MemDel(queue->m_head);
     MemDel(queue);
 }
@@ -75,6 +76,7 @@ void Queue_ForEach(const Queue* queue, ProcessDataFunc process_data_func, tptr p
 
 tptr Queue_Find(const Queue* queue, FindDataFunc find_data_func, tptr ptr)
 {
+    Assert(queue != NULL, "");
     Node* node = queue->m_head->m_node_next;
     for(; !Queue_IsHead(queue, node); node = node->m_node_next)
     {
@@ -191,7 +193,20 @@ static tptr Queue_RemoveNode(Queue* queue, Node* node)
 }
 
 
-tptr Queue_RemoveFrist(Queue* queue, FindDataFunc find_data_func, tptr ptr)
+void Queue_RemoveByPointer(struct Queue* queue, tptr ptr)
+{
+    Node* node = queue->m_head->m_node_next;
+    for(; !Queue_IsHead(queue, node); node = node->m_node_next)
+    {
+        if( node->m_reference_data == ptr)
+        {
+            Queue_RemoveNode(queue, node);
+            return;
+        }
+    }
+}
+
+tptr Queue_RemoveFindFrist(Queue* queue, FindDataFunc find_data_func, tptr ptr)
 {
     Node* node = queue->m_head->m_node_next;
     for(; !Queue_IsHead(queue, node); node = node->m_node_next)

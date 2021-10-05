@@ -21,7 +21,7 @@ void    Actor_Component_Add     (Actor* actor, const tchar* component_name, Comp
 void    Actor_Component_Del     (Actor* actor, const tchar* component_name);
 tptr    Actor_Component_Cast    (Actor* actor, const tchar* component_name);
 
-
+const tchar* Actor_GetLocalName (Actor* actor);
 
 
 #define Actor_Component_Del(actor, component)   do{ MACRO_CONNNECT(MACRO_CONNNECT(Component_,component),_Destroy)(Actor_Component_Cast(actor, component));\

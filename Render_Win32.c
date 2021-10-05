@@ -111,12 +111,12 @@ void RenderManager_RenderEachRenderData2D_Plat(RenderData2D* render_data_2d, tpt
     }
 }
 
-RenderData2D* RenderData2D_Create(int32 x, int32 y, const tchar* str)
+RenderData2D* RenderData2D_Create(const tchar* local_name, int32 x, int32 y, const tchar* str)
 {
-    RenderData2D* render_data_2d = MemNew(LOCAL_NAME, RenderData2D);
+    RenderData2D* render_data_2d = MemNew(local_name, RenderData2D);
     render_data_2d->m_x = x;
     render_data_2d->m_y = y;
-    render_data_2d->m_string = String_New(str);
+    render_data_2d->m_string = String_New(local_name, str);
 
     return render_data_2d;
 }

@@ -2,9 +2,9 @@
 
 #include "Queue.h"
 #include "Storage.h"
-
 #include "Memory.h"
 #include "String.h"
+
 
 typedef enum StoreType StoreType;
 
@@ -40,15 +40,23 @@ Storage* Storage_Create(const tchar* local_name)
 {
     Storage* storage = MemNew(local_name, Storage);
     storage->m_store_queue  = Queue_Create(local_name, StoreContent*);
-    storage->m_local_name   = String_New(local_name);
+    storage->m_local_name   = String_New(local_name, local_name);
     storage->m_cache_store_content = NULL;
     return storage;
 }
 
+static void Storage_StoreContent_ForEachDelete(StoreContent* store_content, tptr ptr)
+{
+    MemDel(store_content);
+}
+
 void Storage_Destroy(Storage* storage)
 {
-    Queue_Destroy(storage->m_store_queue);
     String_Del(storage->m_local_name);
+
+    Queue_ForEach(storage->m_store_queue, Storage_StoreContent_ForEachDelete, NULL);
+    Queue_Destroy(storage->m_store_queue);
+
     MemDel(storage);
 }
 
@@ -140,8 +148,15 @@ tptr Storage_ReadPointer(const Storage* storage, crc32 variable)
     return store_content ? store_content->m_pointer : NULL;
 }
 
+bool Storage_FindStoreContentData(StoreContent* store_content, crc32 variable)
+{
+    return store_content->m_crc == variable;
+}
+
+
 void Storage_DeleteVariable(Storage* storage, crc32 variable)
 {
     StoreContent* store_content = Storage_FindStoreContent(storage, variable);
+    Queue_RemoveByPointer(storage->m_store_queue, store_content);
     MemDel(store_content);
 }

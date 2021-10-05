@@ -21,8 +21,9 @@ tptr    Queue_Dequeue       (Queue* queue);
 tptr    Queue_PeekFirst     (const Queue* queue);
 tptr    Queue_PeekTail      (const Queue* queue);
 
-tptr    Queue_RemoveFrist   (Queue* queue, FindDataFunc find_data_func, tptr ptr);
-int32   Queue_RemoveAll     (Queue* queue, FindDataFunc find_data_func, tptr ptr);
+void    Queue_RemoveByPointer   (Queue* queue, tptr ptr);
+tptr    Queue_RemoveFindFrist   (Queue* queue, FindDataFunc find_data_func, tptr ptr);
+int32   Queue_RemoveFindAll     (Queue* queue, FindDataFunc find_data_func, tptr ptr);
 
 void    Queue_Clear         (Queue* queue);
 void    Queue_Sort          (Queue* queue, CompareDataFunc compare_data_func);
@@ -36,5 +37,5 @@ void    Queue_Sort          (Queue* queue, CompareDataFunc compare_data_func);
 #define Queue_Dequeue(type)                 (type)Queue_Dequeue
 #define Queue_PeekHead(type)                (type)Queue_PeekFirst
 #define Queue_PeekTail(type)                (type)Queue_PeekTail
-#define Queue_RemoveFrist(type)             (type)Queue_RemoveFrist
+#define Queue_RemoveFrist(type)             (type)Queue_RemoveFindFrist
 

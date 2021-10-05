@@ -11,11 +11,16 @@
 
 #include <stdio.h>
 
+#include "Engine.h"
+
 
 static void Storage_Test0()
 {
     Storage* storage = Storage_Create(__FUNCTION__);
+    Engine_Profile_Memory();
+    
     Storage_StoreInt32(storage, Str_CalcCrc("a",0), 123);
+
 
     printf("%d\n", Storage_IsExistVariable(storage, Str_CalcCrc("a", 0)));
     printf("%d\n", Storage_IsExistVariable(storage, Str_CalcCrc("b", 0)));
@@ -24,6 +29,13 @@ static void Storage_Test0()
     int32 data2 = Storage_ReadInt32(storage, Str_CalcCrc("b",0));
     printf("%d\n", data1);
     printf("%d\n", data2);
+
+
+    Storage_DeleteVariable(storage, Str_CalcCrc("a",0));
+
+    Storage_Destroy(storage);
+    Engine_Profile_Memory();
+
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -45,6 +57,7 @@ static bool Queue_Test_Find(Data* a, int32 v)
 
 static void Queue_Test0()
 {
+    Engine_Profile_Memory();
 
     Queue(Data*)* queue = Queue_Create(__FUNCTION__, Data*);
 
@@ -63,8 +76,12 @@ static void Queue_Test0()
     printf("\n");
     Queue_ForEach(queue, Queue_Test_Print_Data, (tptr)7);
 
+    Queue_RemoveFrist(Data*)(queue, (FindDataFunc)Queue_Test_Find, (tptr)1);
 
     Queue_Destroy(queue);
+
+    Engine_Profile_Memory();
+
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -103,7 +120,7 @@ static void String_Test2()
 
 static void String_Test1()
 {
-    String* a = String_New(NULL);
+    String* a = String_New(__FUNCTION__, NULL);
 
     String_Copy(a, "say hi\n", 0);
 
@@ -119,8 +136,8 @@ static void String_Test1()
 static void String_Test0()
 {
 
-    String* string1 = String_New("hello world");
-    String* string2 = String_New("goodbye world");
+    String* string1 = String_New(__FUNCTION__, "hello world");
+    String* string2 = String_New(__FUNCTION__, "goodbye world");
     printf(String_CStr(string1));
     printf("\n");
 
