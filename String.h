@@ -5,6 +5,7 @@
 
 typedef struct String String;
 
+
 uint32  Str_CalcLength      (const tchar* str);
 crc32   Str_CalcCrc         (const tchar* str, uint32 length);
 bool    Str_IsEmpty         (const tchar* str);

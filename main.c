@@ -10,6 +10,8 @@
 
 int32 main()
 {
+    String_Test0();
+    String_Test1();
     String_Test2();
     // Storage_Test0();
     // Queue_Test0();

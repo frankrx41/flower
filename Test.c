@@ -71,6 +71,20 @@ void Queue_Test0()
 
 }
 
+void Log_Test0()
+{
+    Log(0, "info %s", "hello");
+    Log(1, "warn %s", "hello");
+    Log(2, "error %s", "hello");
+};
+
+void Memory_Test0()
+{
+    tptr ptr = MemNewSize("a", 256);
+    MemDel(ptr);
+};
+
+
 void String_Test2()
 {
     {
@@ -92,7 +106,6 @@ void String_Test2()
 
 void String_Test1()
 {
-
     String* a = String_New(NULL);
 
     String_Copy(a, "say hi\n", 0);
@@ -106,30 +119,30 @@ void String_Test1()
     String_Del(a);
 };
 
-void Log_Test0()
-{
-    Log(2, "error %s", "hello");
-};
-
-void Memory_Test0()
-{
-    Assert(true, "");
-    tptr ptr = MemNewSize("a", 256);
-    MemDel(ptr);
-};
-
 void String_Test0()
 {
 
-    String* string = String_New("hello world");
-    printf(String_CStr(string));
+    String* string1 = String_New("hello world");
+    String* string2 = String_New("goodbye world");
+    printf(String_CStr(string1));
     printf("\n");
-    String_Del(string);
+
+    crc32 str1_crc = Str_CalcCrc("hello world", 0);
+    crc32 str2_crc = Str_CalcCrc("goodbye world", 0);
+
+    Assert(str1_crc == String_GetCrc(string1), "");
+    Assert(str2_crc == String_GetCrc(string2), "");
+    Assert(str1_crc != String_GetCrc(string2), "");
+    Assert(str2_crc != String_GetCrc(string1), "");
+
+    String_Del(string1);
+    String_Del(string2);
+
 
     for( int32 i=0; i<10; i++)
     {
-        printf("%x\t", Str_CalcCrc("hello world", 0));
-        printf("%x\n", Str_CalcCrc("hello world2", 0));
+        Assert(str1_crc == Str_CalcCrc("hello world", 0), "");
+        Assert(str2_crc == Str_CalcCrc("goodbye world", 0), "");
     }
 }
 

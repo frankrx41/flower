@@ -3,6 +3,7 @@ Rename Engine_Memory_Copy -> Memory_Copy ?
 Add Storage_StoreTempVariable
 Fix memory leak
 Set MemNew local_name to __FUNCTION__ in Test_XXX 
+Update String_Copy, allow use negative number
 
 Rename local_namespace -> local_name (done)
 Rename Storage_FindVariable (done)

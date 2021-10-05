@@ -171,13 +171,10 @@ String* String_New(const tchar* str)
     string->m_char = NULL;
 	string->m_length = 0;
 	
-    if( str )
+    if( !Str_IsEmpty(str) )
     {
         int32 str_length = Str_CalcLength(str);
-        if( str_length > 0 )
-        {
-            String_Copy(string, str, str_length);
-        }
+        String_Copy(string, str, str_length);
     }
 
     return string;
