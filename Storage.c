@@ -41,6 +41,7 @@ Storage* Storage_Create(const tchar* local_name)
     Storage* storage = MemNew(local_name, Storage);
     storage->m_store_queue  = Queue_Create(local_name, StoreContent*);
     storage->m_local_name   = String_New(local_name);
+    storage->m_cache_store_content = NULL;
     return storage;
 }
 
@@ -110,7 +111,7 @@ bool Storage_IsExistVariable(Storage* storage, crc32 variable)
 static StoreContent* Storage_FindStoreContent(const Storage* storage, crc32 variable)
 {
     // Add cache
-    if( storage->m_cache_store_content->m_crc == variable )
+    if( storage->m_cache_store_content && storage->m_cache_store_content->m_crc == variable )
     {
         return storage->m_cache_store_content;
     }

@@ -44,7 +44,7 @@ void    Engine_Debug_Break();
 #if CONFIG_DEBUG
 #define Assert(must_true_condition, msg, ...) do{ \
     if(!(must_true_condition)) { \
-        if (msg && Str_CalcLength(msg) > 0) { Log(2, msg, ##__VA_ARGS__); } \
+        if (msg && msg[0] != 0) { Log(2, msg, ##__VA_ARGS__); } \
         else { Log(2, "Error at file %s, function %s, line %u: %s\n", __FILE__, __FUNCTION__, __LINE__, #must_true_condition); } \
         Engine_Debug_Break(); \
     } \

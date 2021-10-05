@@ -100,10 +100,7 @@ void Actor_Component_Add(Actor* actor, const tchar* component_name, Component* c
 
 void Actor_Component_Del(Actor* actor, const tchar* component_name)
 {
-    crc32 crc = Str_CalcCrc(component_name, 0);
-    tptr ptr = Storage_LoadPointer(actor->m_storage, crc);
-    MemDel(ptr);
-    Storage_DeleteVariable(actor->m_storage,crc);
+    Storage_DeleteVariable(actor->m_storage,Str_CalcCrc(component_name, 0));
 }
 
 tptr Actor_Component_Cast(Actor* actor, const tchar* component_name)

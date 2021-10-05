@@ -5,6 +5,7 @@
 #include "Sence.h"
 #include "Actor.h"
 #include "Queue.h"
+#include "Component.h"
 
 struct RenderContent
 {
@@ -27,18 +28,15 @@ int32 main()
 
     Sence* sence = Sence_Create("sence");
     Actor* actor = Sence_Actor_Create("actor", sence);
-    
-    Actor_AddComponent(actor, RenderContent);
-    
-    RenderContent* render_content = Actor_Cast(actor, RenderContent);
-    render_content->m_render_data_queue = Queue_Create("a", RenderData*);
-    RenderContent_Render_Plat(render_content, 0, 0, "i");
 
+    Actor_Component_Add(actor, Render);
+    Actor_RenderComponent_AddRenderData_Plat(actor, 20, 10, "hello world" );
 
     RenderManager_RenderSenceActor(sence);
 
     RenderManager_RenderToScreen();
 
+    Actor_Component_Del(actor, Render);
 
 
 }
