@@ -96,6 +96,11 @@ crc32 Str_CalcCrc(const tchar* str, uint32 length)
     return ~crc;
 }
 
+bool Str_IsEmpty(const tchar* str)
+{
+    return str ? str[0] == NULL : true;
+}
+
 uint32 String_GetLength(const String* string)
 {
     return string->m_length;

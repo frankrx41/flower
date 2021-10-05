@@ -39,12 +39,15 @@ typedef tchar bool;
 
 // 0 info, 1 warn, 2 error
 error   Log(int32 type, const tchar* format, ...);
-void    Engine_Debug_Break();
 
 #if CONFIG_DEBUG
+
+bool    Str_IsEmpty(const tchar* str);
+void    Engine_Debug_Break();
+
 #define Assert(must_true_condition, msg, ...) do{ \
     if(!(must_true_condition)) { \
-        if (msg && msg[0] != 0) { Log(2, msg, ##__VA_ARGS__); } \
+        if (!(Str_IsEmpty(msg))) { Log(2, msg, ##__VA_ARGS__); } \
         else { Log(2, "Error at file %s, function %s, line %u: %s\n", __FILE__, __FUNCTION__, __LINE__, #must_true_condition); } \
         Engine_Debug_Break(); \
     } \

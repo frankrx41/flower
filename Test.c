@@ -11,7 +11,7 @@
 
 void Storage_Test0()
 {
-    Storage* storage = Storage_Create("test");
+    Storage* storage = Storage_Create(__FUNCTION__);
     Storage_StoreInt32(storage, Str_CalcCrc("a",0), 123);
 
     printf("%d\n", Storage_IsExistVariable(storage, Str_CalcCrc("a", 0)));
@@ -71,9 +71,27 @@ void Queue_Test0()
 
 }
 
+void String_Test2()
+{
+    {
+        bool is_empty = Str_IsEmpty(NULL);
+        Assert(is_empty == true, "");
+    }
+
+    {
+        bool is_empty = Str_IsEmpty("");
+        Assert(is_empty == true, "");
+    }
+
+    {
+        bool is_empty = Str_IsEmpty("haha");
+        Assert(is_empty == false, "");
+    }
+}
+
+
 void String_Test1()
 {
-    Log(2, "error %s\n", "hello");
 
     String* a = String_New(NULL);
 

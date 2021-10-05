@@ -7,14 +7,11 @@
 #include "Queue.h"
 #include "Component.h"
 
-struct RenderContent
-{
-    Queue(RenderData*)* m_render_data_queue;
-};
 
 int32 main()
 {
-    Storage_Test0();
+    String_Test2();
+    // Storage_Test0();
     // Queue_Test0();
 }
 

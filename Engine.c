@@ -51,6 +51,7 @@ Engine* Engine_GetInstance()
 error Engine_MainLoop()
 {
     Assert(Engine_GetInstance()->m_is_initialized == true, "");
+
     for(;;)
     {
         Engine_Timming_TrimSpeed_Plat();
