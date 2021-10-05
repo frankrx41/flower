@@ -5,7 +5,7 @@
 #include "String.h"
 
 tptr    Engine_Memory_Alloc_Plat    (tsize size);
-error   Engine_Memory_Free_Plat     (tptr ptr);
+void    Engine_Memory_Free_Plat     (tptr ptr);
 tptr    Engine_Memory_Copy_Plat     (tptr dst_ptr, const tptr src_ptr, tsize size);
 tptr    Engine_Memory_Set_Plat      (tptr address, int32 val, tsize size);
 

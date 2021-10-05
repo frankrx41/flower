@@ -78,7 +78,6 @@ void Engine_Timming_TrimSpeed_Plat()
 
     Engine_Timming_GetInstance()->m_prev_frame_delta_seconds  = (curt64 - oldt64) / (Engine_Timming_GetInstance_Plat()->m_FrameCnt * Engine_Timming_GetInstance()->m_frame_rate);
     Engine_Timming_GetInstance_Plat()->m_CounterOld   = counter_cur;
-    return 0;
 }
 
 

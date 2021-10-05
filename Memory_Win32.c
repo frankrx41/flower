@@ -21,9 +21,8 @@ tptr Engine_Memory_Set_Plat(tptr dst, int32 val, tsize size)
     memset(dst, val, size);
 }
 
-error Engine_Memory_Free_Plat(void * memory)
+void Engine_Memory_Free_Plat(void * memory)
 {
     free(memory);
-    return 0;
 }
 
