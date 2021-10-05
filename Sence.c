@@ -1,6 +1,6 @@
 #include "CoreMini.h"
 
-#include "Memory.h"
+#include "MemoryManager.h"
 #include "Queue.h"
 #include "String.h"
 #include "Sence.h"

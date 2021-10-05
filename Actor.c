@@ -2,7 +2,7 @@
 
 #include "Storage.h"
 #include "Event.h"
-#include "Memory.h"
+#include "MemoryManager.h"
 #include "String.h"
 #include "Actor.h"
 #include "Queue.h"

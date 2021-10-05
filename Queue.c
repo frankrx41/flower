@@ -1,7 +1,7 @@
 #include "CoreMini.h"
 
 #include "Queue.h"
-#include "Memory.h"
+#include "MemoryManager.h"
 #include "String.h"
 
 

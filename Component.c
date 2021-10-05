@@ -2,7 +2,7 @@
 
 #include "Component.h"
 #include "Actor.h"
-#include "Memory.h"
+#include "MemoryManager.h"
 #include "Queue.h"
 #include "Render.h"
 

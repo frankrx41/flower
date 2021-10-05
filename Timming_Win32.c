@@ -3,7 +3,7 @@
 
 #define PUBLIC_TIMMING      1
 #include "Timming.h"
-#include "Memory.h"
+#include "MemoryManager.h"
 
 #include <Windows.h>
 
@@ -21,7 +21,7 @@ struct TimmingPlatformData
     UINT32          m_StartTime;
 };
 
-TimmingPlatformData* Engine_Timming_GetInstance_Plat()
+TimmingPlatformData* TimmingManager_GetData_Plat()
 {
     return Engine_Timming_GetInstance()->m_platform_data;
 }
@@ -51,10 +51,10 @@ void Engine_Timming_SetFrameRate_Plat(float rate)
     success = QueryPerformanceCounter(&counter_old);
     Assert( success == true, "" );
 
-    Engine_Timming_GetInstance_Plat()->m_CounterOld   = counter_old;
-    Engine_Timming_GetInstance_Plat()->m_FrameCnt     = frame_count;
+    TimmingManager_GetData_Plat()->m_CounterOld   = counter_old;
+    TimmingManager_GetData_Plat()->m_FrameCnt     = frame_count;
     Engine_Timming_GetInstance()->m_frame_rate    = rate;
-    Engine_Timming_GetInstance_Plat()->m_OneMSFrameCnt = cpu_frequency / 1000;
+    TimmingManager_GetData_Plat()->m_OneMSFrameCnt = cpu_frequency / 1000;
 }
 
 void Engine_Timming_TrimSpeed_Plat()
@@ -65,21 +65,21 @@ void Engine_Timming_TrimSpeed_Plat()
     QueryPerformanceCounter(&counter_cur);
     curt64 = counter_cur.QuadPart;
 
-    oldt64 = Engine_Timming_GetInstance_Plat()->m_CounterOld.QuadPart;
+    oldt64 = TimmingManager_GetData_Plat()->m_CounterOld.QuadPart;
 
     INT64 passed_frame_count = curt64 - oldt64;
 
-    while( passed_frame_count < Engine_Timming_GetInstance_Plat()->m_FrameCnt )
+    while( passed_frame_count < TimmingManager_GetData_Plat()->m_FrameCnt )
     {
-        if(Engine_Timming_GetInstance_Plat()->m_FrameCnt-passed_frame_count > Engine_Timming_GetInstance_Plat()->m_OneMSFrameCnt*2)
+        if(TimmingManager_GetData_Plat()->m_FrameCnt-passed_frame_count > TimmingManager_GetData_Plat()->m_OneMSFrameCnt*2)
             Sleep(1);
         QueryPerformanceCounter(&counter_cur);
         curt64 = counter_cur.QuadPart;
         passed_frame_count = curt64 - oldt64;
     }
 
-    Engine_Timming_GetInstance()->m_prev_frame_delta_seconds  = (curt64 - oldt64) / (Engine_Timming_GetInstance_Plat()->m_FrameCnt * Engine_Timming_GetInstance()->m_frame_rate);
-    Engine_Timming_GetInstance_Plat()->m_CounterOld   = counter_cur;
+    Engine_Timming_GetInstance()->m_prev_frame_delta_seconds  = (curt64 - oldt64) / (TimmingManager_GetData_Plat()->m_FrameCnt * Engine_Timming_GetInstance()->m_frame_rate);
+    TimmingManager_GetData_Plat()->m_CounterOld   = counter_cur;
 }
 
 

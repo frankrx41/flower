@@ -3,6 +3,8 @@ Add Storage_StoreTempVariable
 Update String_Copy, allow use negative number
 Add Str_Cat, join, IsSame ... function
 Rename const tchar* local_name -> ?
+Rename Memory -> MemoryManager
+Update Timming
 
 Add Input
 Add Component_Action

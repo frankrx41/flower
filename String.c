@@ -1,7 +1,7 @@
 #include "CoreMini.h"
 
 #include "String.h"
-#include "Memory.h"
+#include "MemoryManager.h"
 
 /*
 Code Style:
@@ -32,7 +32,7 @@ static void String_ReAllocSize(String* string, uint32 length)
     // make length is a litter big
     length = (((length>>4) +1) << 4) + 4;
 
-    if( string->m_char != NULL && Engine_Memory_GetSize(string->m_char) >= length )
+    if( string->m_char != NULL && Memory_GetSize(string->m_char) >= length )
     {
         return;
     }

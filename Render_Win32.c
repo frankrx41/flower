@@ -2,7 +2,7 @@
 #include "CoreMini.h"
 
 
-#include "Memory.h"
+#include "MemoryManager.h"
 #include "Render.h"
 #include "String.h"
 
