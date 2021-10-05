@@ -4,8 +4,11 @@ Update String_Copy, allow use negative number
 Add Str_Cat, join, IsSame ... function
 Rename const tchar* local_name -> ?
 
-Fix memory leak
+Add Input
+Add Component_Action
 
+
+Fix memory leak (done)
 Remove error, change it to void (done)
 Set MemNew local_name to __FUNCTION__ in Test_XXX (done)
 Rename local_namespace -> local_name (done)

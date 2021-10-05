@@ -198,9 +198,7 @@ void Engine_Debug_UnitTesting()
     String_Test1();
     String_Test2();
 
-    Engine_Profile_Memory();
     Actor_Test0();
-    Engine_Profile_Memory();
 
     Engine_Test0();
 
