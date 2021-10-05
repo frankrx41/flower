@@ -4,6 +4,7 @@
 #include "Queue.h"
 #include "String.h"
 
+
 struct MemoryManager
 {
     uint32  m_alloc_id;
@@ -60,9 +61,9 @@ static MemoryBlock* CastToMemoryBlock(tptr ptr)
 };
 
 ////////////////////////////////////////////////////////////////////////////////
-MemoryManager* MemoryManager_Create()
+MemoryManager* MemoryManager_Create(const tchar* local_name)
 {
-    MemoryManager* memory_manager = MemNew(LOCAL_NAME, MemoryManager);
+    MemoryManager* memory_manager = MemNew(local_name, MemoryManager);
     memory_manager->m_alloc_id = 0;
     memory_manager->m_local_name_queue = Queue_Create(LOCAL_NAME, MemoryProfileData*);
     return memory_manager;

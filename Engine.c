@@ -1,36 +1,36 @@
 #include "CoreMini.h"
 
 #include "Engine.h"
-
-#define PUBLIC_MEMORY 1
 #include "MemoryManager.h"
-
-#define PUBLIC_TIMMING 1
-#include "Timming.h"
-
+#include "TimmingManager.h"
 #include "Render.h"
+
+#define LOCAL_NAME          "GPYM"
+
 
 struct Engine
 {
 
     bool    m_is_initialized;
 
-    Timming         m_timming;
+    TimmingManager* m_timming_manager;
     MemoryManager*  m_memory_manager;
 
 };
 
 
-MemoryManager*    MemoryManager_Create        ();
+MemoryManager*      MemoryManager_Create    (const tchar* local_name);
+TimmingManager*     TimmingManager_Create   (const tchar* local_name);
 
 void Engine_Initialize()
 {
-    Engine_Timming_Initialize();
+    Engine* engine = Engine_GetInstance();
+
     RenderManager_Initialize();
 
-    Engine* engine = Engine_GetInstance();
-    engine->m_memory_manager = MemoryManager_Create();
-    engine->m_is_initialized = true;
+    engine->m_timming_manager   = TimmingManager_Create(LOCAL_NAME);
+    engine->m_memory_manager    = MemoryManager_Create(LOCAL_NAME);
+    engine->m_is_initialized    = true;
 }
 
 Engine* Engine_GetInstance()
@@ -45,14 +45,14 @@ void Engine_MainLoop()
 
     for(;;)
     {
-        Engine_Timming_TrimSpeed_Plat();
+        TimmingManager_TrimSpeed(Engine_GetInstance()->m_timming_manager);
     }
 }
 
-// Timming
-Timming* Engine_Timming_GetInstance()
+// TimmingManager
+TimmingManager* TimmingManager_GetInstance()
 {
-    return &Engine_GetInstance()->m_timming;
+    return Engine_GetInstance()->m_timming_manager;
 }
 
 // MemoryManager

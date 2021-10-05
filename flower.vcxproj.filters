@@ -16,9 +16,6 @@
     <ClCompile Include="Memory_Win32.c">
       <Filter>Platform\Win32</Filter>
     </ClCompile>
-    <ClCompile Include="Timming.c">
-      <Filter>Engine</Filter>
-    </ClCompile>
     <ClCompile Include="Queue.c">
       <Filter>Library\Queue</Filter>
     </ClCompile>
@@ -48,12 +45,12 @@
     <ClCompile Include="MemoryManager.c">
       <Filter>Engine</Filter>
     </ClCompile>
+    <ClCompile Include="TimmingManager.c">
+      <Filter>Engine</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CoreMini.h" />
-    <ClInclude Include="Timming.h">
-      <Filter>Engine</Filter>
-    </ClInclude>
     <ClInclude Include="Engine.h">
       <Filter>Engine</Filter>
     </ClInclude>
@@ -82,6 +79,9 @@
       <Filter>Sence\Actor</Filter>
     </ClInclude>
     <ClInclude Include="MemoryManager.h">
+      <Filter>Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="TimmingManager.h">
       <Filter>Engine</Filter>
     </ClInclude>
   </ItemGroup>

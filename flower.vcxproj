@@ -95,7 +95,7 @@
     <ClCompile Include="Storage.c" />
     <ClCompile Include="String.c" />
     <ClCompile Include="Test.c" />
-    <ClCompile Include="Timming.c" />
+    <ClCompile Include="TimmingManager.c" />
     <ClCompile Include="Timming_Win32.c" />
   </ItemGroup>
   <ItemGroup>
@@ -110,7 +110,7 @@
     <ClInclude Include="Sence.h" />
     <ClInclude Include="Storage.h" />
     <ClInclude Include="String.h" />
-    <ClInclude Include="Timming.h" />
+    <ClInclude Include="TimmingManager.h" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="Todo.txt" />
