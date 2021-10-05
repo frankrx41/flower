@@ -18,8 +18,8 @@ struct String
     tchar*  m_char;
 };
 
-#define LOCAL_NAMESPACE         "String"
-#define LOCAL_NAMESPACE_CHAR    "Char"
+#define LOCAL_NAME          "String"
+#define LOCAL_NAME_CHAR     "Char"
 
 
 static void String_ReAllocSize(String* string, uint32 length)
@@ -35,7 +35,7 @@ static void String_ReAllocSize(String* string, uint32 length)
     }
 
     MemSafeDel(string->m_char);
-    string->m_char = MemNewSize(LOCAL_NAMESPACE_CHAR, length);
+    string->m_char = MemNewSize(LOCAL_NAME_CHAR, length);
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -162,7 +162,7 @@ void String_Copy(String* string, const tchar* str, uint32 length)
 
 String* String_New(const tchar* str)
 {
-    String* string = MemNew(LOCAL_NAMESPACE, String);
+    String* string = MemNew(LOCAL_NAME, String);
     string->m_char = NULL;
 	string->m_length = 0;
 	

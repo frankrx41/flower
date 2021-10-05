@@ -8,13 +8,6 @@
 #define PUBLIC_TIMMING 1
 #include "Timming.h"
 
-#if CONFIG_DEBUG
-#define CHECK_ENGINE_IS_INITIALIZED Assert(Engine_GetInstance()->m_is_initialized == true, NULL)
-#else
-#define CHECK_ENGINE_IS_INITIALIZED
-#endif
-
-
 struct Engine
 {
 
@@ -57,7 +50,7 @@ Engine* Engine_GetInstance()
 
 error Engine_MainLoop()
 {
-    CHECK_ENGINE_IS_INITIALIZED;
+    Assert(Engine_GetInstance()->m_is_initialized == true, "");
     for(;;)
     {
         Engine_Timming_TrimSpeed_Plat();

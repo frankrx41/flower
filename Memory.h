@@ -12,11 +12,11 @@ struct Memory
 // Memory
 error   Engine_Memory_Initialize    ();
 
-tptr    Engine_Memory_Alloc         (const tchar* local_namespace, tsize size);
+tptr    Engine_Memory_Alloc         (const tchar* local_name, tsize size);
 error   Engine_Memory_Free          (tptr ptr);
-tptr    Engine_Memory_AllocPtrSize  (const tchar* local_namespace, const tptr ptr);
-tptr    Engine_Memory_Clone         (const tchar* local_namespace, const tptr ptr);
-tptr    Engine_Memory_SafeClone     (const tchar* local_namespace, const tptr ptr);
+tptr    Engine_Memory_AllocPtrSize  (const tchar* local_name, const tptr ptr);
+tptr    Engine_Memory_Clone         (const tchar* local_name, const tptr ptr);
+tptr    Engine_Memory_SafeClone     (const tchar* local_name, const tptr ptr);
 
 tptr    Engine_Memory_Copy          (tptr dst_ptr, const tptr src_ptr, tsize size);
 tptr    Engine_Memory_Set           (tptr ptr, int32 val, tsize size);
@@ -27,8 +27,9 @@ tsize   Engine_Memory_GetSize       (const tptr ptr);
 
 Memory* Engine_Memory_GetInstance   ();
 
-#define MemNew(local_namespace, type)       (type*)Engine_Memory_Alloc(local_namespace, sizeof(type))
-#define MemNewSize(local_namespace, size)   Engine_Memory_Alloc(local_namespace, size)
-#define MemClone(local_namespace, ptr)      Engine_Memory_Clone(local_namespace, (tptr)ptr)
+#define MemNew(local_name, type)            (type*)Engine_Memory_Alloc(local_name, sizeof(type))
+#define MemNewSize(local_name, size)        Engine_Memory_Alloc(local_name, size)
+#define MemClone(local_name, ptr)           Engine_Memory_Clone(local_name, (tptr)ptr)
+#define MemSafeClone(local_name, ptr)       Engine_Memory_SafeClone(local_name, (tptr)ptr)
 #define MemDel(ptr)                         do{Engine_Memory_Free(ptr); ptr = NULL;}while(0)
 #define MemSafeDel(ptr)                     do{if(ptr){Engine_Memory_Free(ptr); ptr = NULL;}}while(0)
