@@ -11,13 +11,10 @@
 
 #include <stdio.h>
 
-#include "Engine.h"
-
 
 static void Storage_Test0()
 {
     Storage* storage = Storage_Create(__FUNCTION__);
-    Engine_Profile_Memory();
     
     Storage_StoreInt32(storage, Str_CalcCrc("a",0), 123);
 
@@ -34,8 +31,6 @@ static void Storage_Test0()
     Storage_DeleteVariable(storage, Str_CalcCrc("a",0));
 
     Storage_Destroy(storage);
-    Engine_Profile_Memory();
-
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -57,8 +52,6 @@ static bool Queue_Test_Find(Data* a, int32 v)
 
 static void Queue_Test0()
 {
-    Engine_Profile_Memory();
-
     Queue(Data*)* queue = Queue_Create(__FUNCTION__, Data*);
 
     Data x = {1};
@@ -79,9 +72,6 @@ static void Queue_Test0()
     Queue_RemoveFrist(Data*)(queue, (FindDataFunc)Queue_Test_Find, (tptr)1);
 
     Queue_Destroy(queue);
-
-    Engine_Profile_Memory();
-
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -95,7 +85,7 @@ static void Log_Test0()
 ////////////////////////////////////////////////////////////////////////////////
 static void Memory_Test0()
 {
-    tptr ptr = MemNewSize("a", 256);
+    tptr ptr = MemNewSize(__FUNCTION__, 256);
     MemDel(ptr);
 };
 
@@ -163,10 +153,8 @@ static void String_Test0()
 ////////////////////////////////////////////////////////////////////////////////
 void Actor_Test0()
 {
-    RenderManager_Initialize();
-
-    Sence* sence = Sence_Create("sence");
-    Actor* actor = Sence_Actor_Create("actor", sence);
+    Sence* sence = Sence_Create(__FUNCTION__);
+    Actor* actor = Sence_Actor_Create(__FUNCTION__, sence);
 
     Actor_Component_Add(actor, Render);
     Actor_RenderComponent_AddRenderData2D(actor, 0, 10, "hello world" );
@@ -176,6 +164,10 @@ void Actor_Test0()
     RenderManager_RenderToScreen();
 
     Actor_Component_Del(actor, Render);
+
+
+    Actor_Destroy(actor);
+    Sence_Destroy(sence);
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -192,6 +184,8 @@ void Engine_Test0()
 ////////////////////////////////////////////////////////////////////////////////
 void Engine_Debug_UnitTesting()
 {
+    Engine_Profile_Memory();
+
     Storage_Test0();
 
     Queue_Test0();
@@ -204,7 +198,11 @@ void Engine_Debug_UnitTesting()
     String_Test1();
     String_Test2();
 
+    Engine_Profile_Memory();
     Actor_Test0();
+    Engine_Profile_Memory();
 
     Engine_Test0();
+
+    Engine_Profile_Memory();
 }

@@ -14,7 +14,7 @@ typedef struct RenderManagerPlatformData RenderManagerPlatformData;
 typedef struct PixData PixData;
 
 
-#define LOCAL_NAME  "Render"
+#define LOCAL_NAME  "GPYM"
 
 
 struct RenderData2D

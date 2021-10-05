@@ -8,6 +8,8 @@
 #define PUBLIC_TIMMING 1
 #include "Timming.h"
 
+#include "Render.h"
+
 struct Engine
 {
 
@@ -22,6 +24,7 @@ void Engine_Initialize()
 {
     Engine_Memory_Initialize();
     Engine_Timming_Initialize();
+    RenderManager_Initialize();
 
     Engine* engine = Engine_GetInstance();
     engine->m_is_initialized = true;

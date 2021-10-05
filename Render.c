@@ -10,7 +10,7 @@
 void RenderManager_Initialize_Plat();
 void RenderManager_RenderToScreen_Plat();
 void RenderManager_SwapBuffer_Plat();
-void RenderManager_RenderEachActor_Plat(Actor* actor, tptr ptr);
+void RenderManager_RenderEachActor(Actor* actor, tptr ptr);
 
 struct RenderManager
 {
@@ -43,7 +43,7 @@ tptr RenderManager_GetPlatformData()
 
 void RenderManager_RenderSenceActor(Sence* sence)
 {
-    Queue_ForEach(Sence_GetActorQueue(sence), RenderManager_RenderEachActor_Plat, NULL);
+    Queue_ForEach(Sence_GetActorQueue(sence), RenderManager_RenderEachActor, NULL);
 }
 
 void RenderManager_RenderToScreen()
