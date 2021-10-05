@@ -2,7 +2,7 @@
 
 typedef struct RenderManager RenderManager;
 typedef struct Sence Sence;
-typedef struct RenderData RenderData;
+typedef struct RenderData2D RenderData2D;
 
 
 void    RenderManager_Initialize        ();
@@ -11,7 +11,7 @@ tptr    RenderManager_GetPlatformData   ();
 void    RenderManager_RenderSenceActor  (Sence* sence);
 void    RenderManager_RenderToScreen    ();
 
-RenderData* RenderData_Create           (int32 size, ...);
-void        RenderData_Destory          (RenderData* render_data);
+RenderData2D*   RenderData2D_Create     (int32 x, int32 y, const tchar* str);
+void            RenderData2D_Destory    (RenderData2D* render_data_2d);
 
 RenderManager* RenderManager_GetInstance();

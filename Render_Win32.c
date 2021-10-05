@@ -4,10 +4,7 @@
 
 #include "Memory.h"
 #include "Render.h"
-#include "Queue.h"
-#include "Actor.h"
 #include "String.h"
-#include "Component.h"
 
 #include <stdio.h>
 #include <windows.h>
@@ -20,7 +17,7 @@ typedef struct PixData PixData;
 #define LOCAL_NAME  "Render"
 
 
-struct RenderData
+struct RenderData2D
 {
     uint32  m_x;
     uint32  m_y;
@@ -103,29 +100,29 @@ void RenderManager_SwapBuffer_Plat()
     data->m_front_buffer = back_buffer;
 }
 
-void RenderManager_RenderEachRenderData_Plat(RenderData* render_data, tptr ptr)
+void RenderManager_RenderEachRenderData2D_Plat(RenderData2D* render_data_2d, tptr ptr)
 {
     RenderManagerPlatformData* data = RenderManager_GetPlatformData();
 
-    uint32 index = data->m_width * render_data->m_y + render_data->m_x;
-    for( uint32 i=0; i<String_GetLength(render_data->m_string); i++ )
+    uint32 index = data->m_width * render_data_2d->m_y + render_data_2d->m_x;
+    for( uint32 i=0; i<String_GetLength(render_data_2d->m_string); i++ )
     {
-        data->m_back_buffer[index+i].m_tchar = String_CStr(render_data->m_string)[i];
+        data->m_back_buffer[index+i].m_tchar = String_CStr(render_data_2d->m_string)[i];
     }
 }
 
-RenderData* RenderData_Create(int32 x, int32 y, const tchar* str)
+RenderData2D* RenderData2D_Create(int32 x, int32 y, const tchar* str)
 {
-    RenderData* render_data = MemNew(LOCAL_NAME, RenderData);
-    render_data->m_x = x;
-    render_data->m_y = y;
-    render_data->m_string = String_New(str);
+    RenderData2D* render_data_2d = MemNew(LOCAL_NAME, RenderData2D);
+    render_data_2d->m_x = x;
+    render_data_2d->m_y = y;
+    render_data_2d->m_string = String_New(str);
 
-    return render_data;
+    return render_data_2d;
 }
 
-void RenderData_Destory(RenderData* render_data)
+void RenderData2D_Destory(RenderData2D* render_data_2d)
 {
-    String_Del(render_data->m_string);
-    MemDel(render_data);
+    String_Del(render_data_2d->m_string);
+    MemDel(render_data_2d);
 }

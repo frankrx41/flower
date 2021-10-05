@@ -30,7 +30,7 @@ int32 main()
     Actor* actor = Sence_Actor_Create("actor", sence);
 
     Actor_Component_Add(actor, Render);
-    Actor_RenderComponent_AddRenderData_Plat(actor, 20, 10, "hello world" );
+    Actor_RenderComponent_AddRenderData2D(actor, 0, 10, "hello world" );
 
     RenderManager_RenderSenceActor(sence);
 
