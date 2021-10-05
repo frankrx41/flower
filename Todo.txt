@@ -1,10 +1,11 @@
 Rename Engine_Memory_Copy -> Memory_Copy ?
 Add Storage_StoreTempVariable
-Fix memory leak
 Update String_Copy, allow use negative number
 Add Str_Cat, join, IsSame ... function
 
-Remove error, change it to void
+Fix memory leak
+
+Remove error, change it to void (done)
 Set MemNew local_name to __FUNCTION__ in Test_XXX (done)
 Rename local_namespace -> local_name (done)
 Rename Storage_FindVariable (done)
