@@ -3,6 +3,7 @@
 typedef struct Actor Actor;
 typedef struct Sence Sence;
 typedef enum Event Event;
+typedef void Component;
 
 
 typedef void (*ActorActionFunc)(Actor*);
@@ -15,11 +16,11 @@ void    Actor_RegisterEvent     (Actor* actor, Event event, ActorActionFunc acto
 void    Actor_UnregisterEvent   (Actor* actor, Event event);
 void    Actor_ProcessEvent      (Actor* actor, Event event);
 
-void    Actor_AddComponent      (Actor* actor, const tchar* component_name, tsize size);
-void    Actor_DelComponent      (Actor* actor, const tchar* component_name);
-tptr    Actor_Cast              (Actor* actor, const tchar* component_name);
+void    Actor_Component_Add     (Actor* actor, const tchar* component_name, Component* component);
+void    Actor_Component_Del     (Actor* actor, const tchar* component_name);
+tptr    Actor_Component_Cast    (Actor* actor, const tchar* component_name);
 
-
-#define Actor_AddComponent(actor, component)    Actor_AddComponent(actor, MACRO_TOSTR(component), sizeof(component))
-#define Actor_Cast(actor, component)            (component*)Actor_Cast(actor, MACRO_TOSTR(component))
+#define Actor_Component_Del(actor, component)   Actor_Component_Del(actor, MACRO_TOSTR(component))
+#define Actor_Component_Add(actor, component)   Actor_Component_Add(actor, MACRO_TOSTR(component), MACRO_CONNNECT(MACRO_CONNNECT(Component_,component),_Create)(MACRO_TOSTR(component)))
+#define Actor_Component_Cast(actor, component)  (Component*)Actor_Component_Cast(actor, MACRO_TOSTR(component))
 

@@ -7,34 +7,33 @@
 #include "Queue.h"
 #include "Actor.h"
 #include "String.h"
+#include "Component.h"
 
 #include <stdio.h>
 #include <windows.h>
 
-typedef struct RenderData RenderData;
+
 typedef struct RenderManagerPlatformData RenderManagerPlatformData;
 typedef struct PixData PixData;
 
 
 #define LOCAL_NAME  "Render"
 
-struct RenderContent
-{
-    Queue(RenderData*)* m_render_data_queue;
-};
 
 struct RenderData
 {
     uint32  m_x;
     uint32  m_y;
-    uint32  m_length;
-    tchar   m_char[8];
+    String* m_string;
+    // TODO: Add color
+    // int32   m_info;
 };
 
 struct PixData
 {
     tchar   m_tchar;
-    WORD    m_info;
+    // TODO: Add color
+    // int32   m_info;
 };
 
 struct RenderManagerPlatformData
@@ -67,12 +66,11 @@ void RenderManager_Initialize_Plat()
     SetConsoleCursorInfo(data->m_std_output, &cc_info);
 }
 
-static Render_PrintAtXY(uint32 x, uint32 y, tchar ch)
+static void Render_PrintCharAtXY_Plat(uint32 x, uint32 y, tchar ch)
 {
     RenderManagerPlatformData* data = RenderManager_GetPlatformData();
     COORD coord_screen = { x, y };
     SetConsoleCursorPosition(data->m_std_output, coord_screen);
-    // for( uint32 i=0; str[i] != NULL; i++ )
     {
         printf("%c", ch);
     }
@@ -91,53 +89,43 @@ void RenderManager_RenderToScreen_Plat()
             uint32 i = x + y*data->m_width;
             if( data->m_front_buffer[i].m_tchar != data->m_back_buffer[i].m_tchar )
             {
-                Render_PrintAtXY(x, y, data->m_back_buffer[i].m_tchar);
+                Render_PrintCharAtXY_Plat(x, y, data->m_back_buffer[i].m_tchar);
             }
         }
     }
+}
 
+void RenderManager_SwapBuffer_Plat()
+{
+    RenderManagerPlatformData* data = RenderManager_GetPlatformData();
     PixData* back_buffer = data->m_back_buffer;
     data->m_back_buffer = data->m_front_buffer;
     data->m_front_buffer = back_buffer;
 }
-
 
 void RenderManager_RenderEachRenderData_Plat(RenderData* render_data, tptr ptr)
 {
     RenderManagerPlatformData* data = RenderManager_GetPlatformData();
 
     uint32 index = data->m_width * render_data->m_y + render_data->m_x;
-    for( uint32 i=0; i<render_data->m_length; i++ )
+    for( uint32 i=0; i<String_GetLength(render_data->m_string); i++ )
     {
-        data->m_back_buffer[index+i].m_tchar = render_data->m_char[i];
+        data->m_back_buffer[index+i].m_tchar = String_CStr(render_data->m_string)[i];
     }
 }
 
-void RenderManager_RenderEachActor_Plat(Actor* actor, tptr ptr)
-{
-    RenderContent* render_content = Actor_Cast(actor, RenderContent);
-    if( render_content )
-    {
-        Queue_ForEach(render_content->m_render_data_queue, RenderManager_RenderEachRenderData_Plat, NULL);
-    }
-}
-
-
-void RenderContent_Render_Plat(RenderContent* render_content ,uint32 x, uint32 y, const tchar* str)
+RenderData* RenderData_Create(int32 x, int32 y, const tchar* str)
 {
     RenderData* render_data = MemNew(LOCAL_NAME, RenderData);
     render_data->m_x = x;
     render_data->m_y = y;
-    render_data->m_length = Str_CalcLength(str);
-    for( uint32 i=0; i<render_data->m_length; i++)
-    {
-        render_data->m_char[i] = str[i];
-    }
-    Queue_Push(RenderData*, render_content->m_render_data_queue, render_data);
+    render_data->m_string = String_New(str);
+
+    return render_data;
 }
 
-void RenderContent_Clear_Plat(RenderContent* render_content ,uint32 x, uint32 y, const tchar* str)
+void RenderData_Destory(RenderData* render_data)
 {
-    Assert(false, "Waiting impl");
+    String_Del(render_data->m_string);
+    MemDel(render_data);
 }
-

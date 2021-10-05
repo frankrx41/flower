@@ -33,6 +33,7 @@ struct Storage
 {
     String*                 m_local_name;
     Queue(StoreContent*)*   m_store_queue;
+    StoreContent*           m_cache_store_content;
 };
 
 Storage* Storage_Create(const tchar* local_name)
@@ -70,7 +71,7 @@ void Storage_StoreFloat(Storage* storage, crc32 variable, float value)
     Queue_Push(StoreContent*, storage->m_store_queue, store_content);
 }
 
-void Storage_StoreStruct(Storage* storage, crc32 variable, tptr value)
+void Storage_StorePointer(Storage* storage, crc32 variable, tptr value)
 {
     StoreContent* store_content = MemNew(String_CStr(storage->m_local_name), StoreContent);
     store_content->m_crc        = variable;
@@ -95,51 +96,51 @@ static bool Storage_FindVariable(StoreContent* store_content, crc32 variable)
     return false;
 }
 
-bool Storage_IsExistVariable(const Storage* storage, crc32 variable)
+bool Storage_IsExistVariable(Storage* storage, crc32 variable)
 {
     StoreContent* store_content = Queue_Find(StoreContent*)(storage->m_store_queue, (FindDataFunc)Storage_FindVariable, (tptr)variable);
     if( store_content )
     {
+        storage->m_cache_store_content = store_content;
         return true;
     }
     return false;
 }
 
-static StoreContent* Storage_LoadStoreContent(const Storage* storage, crc32 variable)
+static StoreContent* Storage_FindStoreContent(const Storage* storage, crc32 variable)
 {
+    // Add cache
+    if( storage->m_cache_store_content->m_crc == variable )
+    {
+        return storage->m_cache_store_content;
+    }
+
     StoreContent* store_content = Queue_Find(StoreContent*)(storage->m_store_queue, (FindDataFunc)Storage_FindVariable, (tptr)variable);
-    Assert(store_content != NULL, "You try to read a not exist var");
+    // Assert(store_content != NULL, "You try to read a not exist var");
 
     return store_content;
 }
 
 int32 Storage_LoadInt32(const Storage* storage, crc32 variable)
 {
-    StoreContent* store_content = Storage_LoadStoreContent(storage, variable);
-    return store_content->m_int32;
+    StoreContent* store_content = Storage_FindStoreContent(storage, variable);
+    return store_content ? store_content->m_int32 : 0;
 }
 
 float Storage_LoadFloat(const Storage* storage, crc32 variable)
 {
-    StoreContent* store_content = Storage_LoadStoreContent(storage, variable);
-    return store_content->m_float;
+    StoreContent* store_content = Storage_FindStoreContent(storage, variable);
+    return store_content ? store_content->m_float : 0.f;
 }
 
-tptr Storage_LoadStruct(const Storage* storage, crc32 variable)
+tptr Storage_LoadPointer(const Storage* storage, crc32 variable)
 {
-    StoreContent* store_content = Storage_LoadStoreContent(storage, variable);
-    return store_content->m_pointer;
+    StoreContent* store_content = Storage_FindStoreContent(storage, variable);
+    return store_content ? store_content->m_pointer : NULL;
 }
 
-tptr Storage_DeleteVariable(Storage* storage, crc32 variable)
+void Storage_DeleteVariable(Storage* storage, crc32 variable)
 {
-    StoreContent* store_content = Storage_LoadStoreContent(storage, variable);
-    tptr ptr = NULL;
-    if( store_content->m_store_type == StoreType_Struct )
-    {
-        ptr = store_content->m_pointer;
-    }
+    StoreContent* store_content = Storage_FindStoreContent(storage, variable);
     MemDel(store_content);
-
-    return ptr;
 }

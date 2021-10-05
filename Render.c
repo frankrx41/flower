@@ -8,8 +8,8 @@
 
 
 void RenderManager_Initialize_Plat();
-void RenderManager_RenderEachRenderData_Plat(RenderData* render_data, tptr);
 void RenderManager_RenderToScreen_Plat();
+void RenderManager_SwapBuffer_Plat();
 void RenderManager_RenderEachActor_Plat(Actor* actor, tptr ptr);
 
 struct RenderManager
@@ -49,5 +49,6 @@ void RenderManager_RenderSenceActor(Sence* sence)
 void RenderManager_RenderToScreen()
 {
     RenderManager_RenderToScreen_Plat();
+    RenderManager_SwapBuffer_Plat();
 }
 

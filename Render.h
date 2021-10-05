@@ -1,6 +1,5 @@
 #pragma once
 
-typedef struct RenderContent RenderContent;
 typedef struct RenderManager RenderManager;
 typedef struct Sence Sence;
 typedef struct RenderData RenderData;
@@ -12,6 +11,7 @@ tptr    RenderManager_GetPlatformData   ();
 void    RenderManager_RenderSenceActor  (Sence* sence);
 void    RenderManager_RenderToScreen    ();
 
-RenderManager* RenderManager_GetInstance();
+RenderData* RenderData_Create           (int32 size, ...);
+void        RenderData_Destory          (RenderData* render_data);
 
-void RenderContent_Render_Plat(RenderContent* render_content ,uint32 x, uint32 y, const tchar* str);
+RenderManager* RenderManager_GetInstance();

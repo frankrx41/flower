@@ -81,6 +81,8 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Actor.c" />
+    <ClCompile Include="Component.c" />
+    <ClCompile Include="ComponentRender_Win32.c" />
     <ClCompile Include="Debug_Win32.c" />
     <ClCompile Include="Engine.c" />
     <ClCompile Include="Event.c" />
@@ -99,6 +101,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Actor.h" />
+    <ClInclude Include="Component.h" />
     <ClInclude Include="CoreMini.h" />
     <ClInclude Include="Engine.h" />
     <ClInclude Include="Event.h" />

@@ -68,4 +68,6 @@ void    Engine_Debug_Break();
 #define MACRO_REMOVE_BRACKETS(...)  _MACRO_REMOVE_BRACKETS##__VA_ARGS__
 #define _MACRO_TOSTR(...) #__VA_ARGS__
 #define MACRO_TOSTR(...) _MACRO_TOSTR(__VA_ARGS__)
+#define _MACRO_CONNNECT(a,b)    a##b
+#define MACRO_CONNNECT(a,b)     _MACRO_CONNNECT(a,b)
 

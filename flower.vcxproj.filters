@@ -30,9 +30,6 @@
     <ClCompile Include="Sence.c">
       <Filter>Sence</Filter>
     </ClCompile>
-    <ClCompile Include="Actor.c">
-      <Filter>Sence</Filter>
-    </ClCompile>
     <ClCompile Include="Storage.c">
       <Filter>Engine</Filter>
     </ClCompile>
@@ -43,6 +40,15 @@
       <Filter>Render</Filter>
     </ClCompile>
     <ClCompile Include="Render_Win32.c">
+      <Filter>Platform\Win32</Filter>
+    </ClCompile>
+    <ClCompile Include="Actor.c">
+      <Filter>Sence\Actor</Filter>
+    </ClCompile>
+    <ClCompile Include="Component.c">
+      <Filter>Sence\Actor</Filter>
+    </ClCompile>
+    <ClCompile Include="ComponentRender_Win32.c">
       <Filter>Platform\Win32</Filter>
     </ClCompile>
   </ItemGroup>
@@ -69,14 +75,17 @@
     <ClInclude Include="Event.h">
       <Filter>Event</Filter>
     </ClInclude>
-    <ClInclude Include="Actor.h">
-      <Filter>Sence</Filter>
-    </ClInclude>
     <ClInclude Include="Sence.h">
       <Filter>Sence</Filter>
     </ClInclude>
     <ClInclude Include="Render.h">
       <Filter>Render</Filter>
+    </ClInclude>
+    <ClInclude Include="Actor.h">
+      <Filter>Sence\Actor</Filter>
+    </ClInclude>
+    <ClInclude Include="Component.h">
+      <Filter>Sence\Actor</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -106,6 +115,9 @@
     </Filter>
     <Filter Include="Render">
       <UniqueIdentifier>{d5adcd47-4bd5-46ef-9e1d-cfbd285f50cb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Sence\Actor">
+      <UniqueIdentifier>{9a4dcc65-aff1-45e9-b61f-cea1b87fc800}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
