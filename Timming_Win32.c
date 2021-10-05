@@ -24,15 +24,12 @@ TimmingPlatformData* Engine_Timming_GetInstance_Plat()
     return Engine_Timming_GetInstance()->m_platform_data;
 }
 
-error Engine_Timming_Initialize_Plat()
+void Engine_Timming_Initialize_Plat()
 {
-
     Engine_Timming_GetInstance()->m_platform_data = MemNew("Timming", TimmingPlatformData);
-
-    return 0;
 }
 
-error Engine_Timming_SetFrameRate_Plat(float rate)
+void Engine_Timming_SetFrameRate_Plat(float rate)
 {
     INT64 cpu_frequency;
     BOOL success;
@@ -41,8 +38,7 @@ error Engine_Timming_SetFrameRate_Plat(float rate)
     {
         LARGE_INTEGER cpu_frequency_large_int;
         success = QueryPerformanceFrequency(&cpu_frequency_large_int);
-        if( !success )
-            return -1;
+        Assert( success == true, "" );
         cpu_frequency = cpu_frequency_large_int.QuadPart;
     }
 
@@ -51,20 +47,15 @@ error Engine_Timming_SetFrameRate_Plat(float rate)
 
     LARGE_INTEGER counter_old;
     success = QueryPerformanceCounter(&counter_old);
-    if( !success )
-        return -2;
+    Assert( success == true, "" );
 
     Engine_Timming_GetInstance_Plat()->m_CounterOld   = counter_old;
     Engine_Timming_GetInstance_Plat()->m_FrameCnt     = frame_count;
     Engine_Timming_GetInstance()->m_frame_rate    = rate;
     Engine_Timming_GetInstance_Plat()->m_OneMSFrameCnt = cpu_frequency / 1000;
-    return 0;
 }
 
-
-error   Engine_Timming_SetFrameRateLimit     (bool is_limit);
-bool    Engine_Timming_IslimitFrameRate   ();
-error Engine_Timming_TrimSpeed_Plat()
+void Engine_Timming_TrimSpeed_Plat()
 {
     LARGE_INTEGER counter_cur;
     INT64 curt64,oldt64;

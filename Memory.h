@@ -10,10 +10,10 @@ struct Memory
 #endif
 
 // Memory
-error   Engine_Memory_Initialize    ();
+void    Engine_Memory_Initialize    ();
 
 tptr    Engine_Memory_Alloc         (const tchar* local_name, tsize size);
-error   Engine_Memory_Free          (tptr ptr);
+void    Engine_Memory_Free          (tptr ptr);
 tptr    Engine_Memory_AllocPtrSize  (const tchar* local_name, const tptr ptr);
 tptr    Engine_Memory_Clone         (const tchar* local_name, const tptr ptr);
 tptr    Engine_Memory_SafeClone     (const tchar* local_name, const tptr ptr);
@@ -26,6 +26,9 @@ tptr    Engine_Memory_Zero          (tptr ptr);
 tsize   Engine_Memory_GetSize       (const tptr ptr);
 
 Memory* Engine_Memory_GetInstance   ();
+
+void    Engine_Profile_Memory       ();
+
 
 #define MemNew(local_name, type)            (type*)Engine_Memory_Alloc(local_name, sizeof(type))
 #define MemNewSize(local_name, size)        Engine_Memory_Alloc(local_name, size)

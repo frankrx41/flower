@@ -12,34 +12,19 @@ struct Engine
 {
 
     bool    m_is_initialized;
-    error   m_last_error;
 
     Timming m_timming;
     Memory  m_memory;
 
 };
 
-// Engine
-error Engine_GetLastError()
-{
-    return Engine_GetInstance()->m_last_error;
-}
-
-error Engine_SetLastError(int32 code)
-{
-    error prev_error = Engine_GetInstance()->m_last_error;
-    Engine_GetInstance()->m_last_error = code;
-    return prev_error;
-}
-
-error Engine_Initialize()
+void Engine_Initialize()
 {
     Engine_Timming_Initialize();
     Engine_Memory_Initialize();
 
     Engine* engine = Engine_GetInstance();
     engine->m_is_initialized = true;
-    return 0;
 }
 
 Engine* Engine_GetInstance()
@@ -48,7 +33,7 @@ Engine* Engine_GetInstance()
     return &engine;
 }
 
-error Engine_MainLoop()
+void Engine_MainLoop()
 {
     Assert(Engine_GetInstance()->m_is_initialized == true, "");
 

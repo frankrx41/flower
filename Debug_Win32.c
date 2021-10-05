@@ -9,7 +9,7 @@ void Engine_Debug_Break()
     __debugbreak();
 }
 
-error Log(int32 type, const tchar* format, ...)
+void Log(int32 type, const tchar* format, ...)
 {
     String* string = String_New("");
     va_list ap;
@@ -18,5 +18,4 @@ error Log(int32 type, const tchar* format, ...)
     va_end(ap);
 
     OutputDebugStringA(String_CStr(string));
-    return 0;
 }

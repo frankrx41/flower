@@ -41,11 +41,10 @@ static MemoryBlock* CastToMemoryBlock(tptr ptr)
 };
 
 ////////////////////////////////////////////////////////////////////////////////
-error Engine_Memory_Initialize()
+void Engine_Memory_Initialize()
 {
     Memory* memory = Engine_Memory_GetInstance();
     memory->m_alloc_id = 0;
-    return 0;
 }
 
 tptr Engine_Memory_Alloc(const tchar* local_name, tsize size)
@@ -60,7 +59,7 @@ tptr Engine_Memory_Alloc(const tchar* local_name, tsize size)
     return memory_block->m_byte;
 }
 
-error Engine_Memory_Free(tptr ptr)
+void Engine_Memory_Free(tptr ptr)
 {
     Assert(ptr != NULL, "");
 
@@ -68,7 +67,6 @@ error Engine_Memory_Free(tptr ptr)
     dst_block = CastToMemoryBlock(ptr);
 
     Engine_Memory_Free_Plat(dst_block);
-    return 0;
 }
 
 tptr Engine_Memory_AllocPtrSize(const tchar* local_name, const tptr ptr)
@@ -165,4 +163,9 @@ tsize Engine_Memory_GetSize(const tptr ptr)
     MemoryBlock * memory_block;
     memory_block = CastToMemoryBlock(ptr);
     return memory_block->m_alloc_size;
+}
+
+////////////////////////////////////////////////////////////////////////////////
+void Engine_Profile_Memory()
+{
 }

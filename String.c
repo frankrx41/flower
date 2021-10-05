@@ -133,7 +133,6 @@ void String_FormatArgs(String* string, const tchar* format, va_list args)
     String_Copy(string, buffer, 0);
 }
 
-
 void String_Copy(String* string, const tchar* str, uint32 length)
 {
     // length == 0 means copy full str
@@ -144,7 +143,7 @@ void String_Copy(String* string, const tchar* str, uint32 length)
 
     if( length < 0 )
     {
-        Assert( false, "We hope negative number means copy from right side, but we have no impl it");
+        Assert( false, "We hope negative number means copy from right side, but we have no impl it" );
     }
 
     {

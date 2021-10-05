@@ -18,7 +18,6 @@ typedef unsigned char   byte;
 typedef signed char     tchar;
 typedef void *          tptr;
 typedef uint32          tsize;
-typedef int32           error;
 typedef uint32          crc32;
 
 #define NULL            ( 0 )
@@ -41,7 +40,7 @@ typedef tchar bool;
 #if CONFIG_DEBUG
 
 // 0 info, 1 warn, 2 error
-error   Log                 (int32 type, const tchar* format, ...);
+void    Log                 (int32 type, const tchar* format, ...);
 bool    Str_IsEmpty         (const tchar* str);
 void    Engine_Debug_Break  ();
 

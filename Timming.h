@@ -15,15 +15,15 @@ struct Timming
 #endif
 
 // Timming
-error   Engine_Timming_Initialize               ();
-error   Engine_Timming_SetFrameRate             (float fps);
+void    Engine_Timming_Initialize               ();
+void    Engine_Timming_SetFrameRate             (float fps);
 float   Engine_Timming_GetFrameRate             ();
-error   Engine_Timming_SetFrameRateLimit        (bool is_limit);
+void    Engine_Timming_SetFrameRateLimit        (bool is_limit);
 bool    Engine_Timming_IslimitFrameRate         ();
 float   Engine_Timming_GetPrevFrameDeltaSeconds ();
 
-error   Engine_Timming_Initialize_Plat          ();
-error   Engine_Timming_SetFrameRate_Plat        (float fps);
-error   Engine_Timming_TrimSpeed_Plat           ();
+void    Engine_Timming_Initialize_Plat          ();
+void    Engine_Timming_SetFrameRate_Plat        (float fps);
+void    Engine_Timming_TrimSpeed_Plat           ();
 
 Timming* Engine_Timming_GetInstance             ();
