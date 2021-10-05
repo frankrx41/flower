@@ -17,10 +17,10 @@ void Storage_Test0()
     printf("%d\n", Storage_IsExistVariable(storage, Str_CalcCrc("a", 0)));
     printf("%d\n", Storage_IsExistVariable(storage, Str_CalcCrc("b", 0)));
 
-    int32 data = Storage_LoadInt32(storage, Str_CalcCrc("a",0));
-    // data = Storage_LoadInt32(storage, Str_CalcCrc("b",0));
-    printf("%d\n", data);
-
+    int32 data1 = Storage_ReadInt32(storage, Str_CalcCrc("a",0));
+    int32 data2 = Storage_ReadInt32(storage, Str_CalcCrc("b",0));
+    printf("%d\n", data1);
+    printf("%d\n", data2);
 }
 
 

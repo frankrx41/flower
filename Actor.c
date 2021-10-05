@@ -105,6 +105,6 @@ void Actor_Component_Del(Actor* actor, const tchar* component_name)
 
 tptr Actor_Component_Cast(Actor* actor, const tchar* component_name)
 {
-    tptr ptr = Storage_LoadPointer(actor->m_storage, Str_CalcCrc(component_name, 0));
+    tptr ptr = Storage_ReadPointer(actor->m_storage, Str_CalcCrc(component_name, 0));
     return ptr;
 }

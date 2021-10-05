@@ -14,16 +14,12 @@ struct RenderContent
 
 int32 main()
 {
-    // Engine_Initialize();
-    //
-    // Engine_MainLoop();
-    //
-    // Engine_SetSence();
-
-    // Storage_Test0();
+    Storage_Test0();
     // Queue_Test0();
+}
 
-
+void Actor_Test0()
+{
     RenderManager_Initialize();
 
     Sence* sence = Sence_Create("sence");
@@ -37,6 +33,14 @@ int32 main()
     RenderManager_RenderToScreen();
 
     Actor_Component_Del(actor, Render);
+}
 
+void Engine_Test0()
+{
+    // Engine_Initialize();
+    //
+    // Engine_MainLoop();
+    //
+    // Engine_SetSence();
 
 }

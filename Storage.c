@@ -122,19 +122,19 @@ static StoreContent* Storage_FindStoreContent(const Storage* storage, crc32 vari
     return store_content;
 }
 
-int32 Storage_LoadInt32(const Storage* storage, crc32 variable)
+int32 Storage_ReadInt32(const Storage* storage, crc32 variable)
 {
     StoreContent* store_content = Storage_FindStoreContent(storage, variable);
     return store_content ? store_content->m_int32 : 0;
 }
 
-float Storage_LoadFloat(const Storage* storage, crc32 variable)
+float Storage_ReadFloat(const Storage* storage, crc32 variable)
 {
     StoreContent* store_content = Storage_FindStoreContent(storage, variable);
     return store_content ? store_content->m_float : 0.f;
 }
 
-tptr Storage_LoadPointer(const Storage* storage, crc32 variable)
+tptr Storage_ReadPointer(const Storage* storage, crc32 variable)
 {
     StoreContent* store_content = Storage_FindStoreContent(storage, variable);
     return store_content ? store_content->m_pointer : NULL;
