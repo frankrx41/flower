@@ -4,12 +4,15 @@
 #include "Memory.h"
 #include "Queue.h"
 #include "Storage.h"
+#include "Actor.h"
+#include "Component.h"
+#include "Render.h"
+#include "Sence.h"
 
 #include <stdio.h>
 
 
-
-void Storage_Test0()
+static void Storage_Test0()
 {
     Storage* storage = Storage_Create(__FUNCTION__);
     Storage_StoreInt32(storage, Str_CalcCrc("a",0), 123);
@@ -23,33 +26,27 @@ void Storage_Test0()
     printf("%d\n", data2);
 }
 
-
-
+////////////////////////////////////////////////////////////////////////////////
 typedef struct Data Data;
 struct Data
 {
     int32 m_a;
 };
 
-void Print_Data(Data* a, tptr ptr)
+static void Queue_Test_Print_Data(Data* a, tptr ptr)
 {
-    printf("%d\n", a->m_a);
+    printf("%d: %d\n", (int32)ptr, a->m_a);
 }
 
-
-bool QueueFind(Data* a, int32 v)
+static bool Queue_Test_Find(Data* a, int32 v)
 {
-    if(a->m_a == v)
-    {
-        return true;
-    }
-    return false;
+    return a->m_a == v;
 }
 
-void Queue_Test0()
+static void Queue_Test0()
 {
 
-    Queue(Data*)* queue = Queue_Create("test", Data*);
+    Queue(Data*)* queue = Queue_Create(__FUNCTION__, Data*);
 
     Data x = {1};
     Data y = {2};
@@ -59,33 +56,34 @@ void Queue_Test0()
     Queue_Push(Data*, queue, &y);
     Queue_Push(Data*, queue, &z);
 
-    Queue_ForEach(queue, Print_Data, NULL);
+    Queue_ForEach(queue, Queue_Test_Print_Data, (tptr)2);
 
-    Queue_RemoveFrist(Data*)(queue, (FindDataFunc)QueueFind, (tptr)2);
+    Queue_RemoveFrist(Data*)(queue, (FindDataFunc)Queue_Test_Find, (tptr)2);
 
     printf("\n");
-    Queue_ForEach(queue, Print_Data, NULL);
+    Queue_ForEach(queue, Queue_Test_Print_Data, (tptr)7);
 
 
     Queue_Destroy(queue);
-
 }
 
-void Log_Test0()
+////////////////////////////////////////////////////////////////////////////////
+static void Log_Test0()
 {
     Log(0, "info %s", "hello");
     Log(1, "warn %s", "hello");
     Log(2, "error %s", "hello");
 };
 
-void Memory_Test0()
+////////////////////////////////////////////////////////////////////////////////
+static void Memory_Test0()
 {
     tptr ptr = MemNewSize("a", 256);
     MemDel(ptr);
 };
 
-
-void String_Test2()
+////////////////////////////////////////////////////////////////////////////////
+static void String_Test2()
 {
     {
         bool is_empty = Str_IsEmpty(NULL);
@@ -103,8 +101,7 @@ void String_Test2()
     }
 }
 
-
-void String_Test1()
+static void String_Test1()
 {
     String* a = String_New(NULL);
 
@@ -119,7 +116,7 @@ void String_Test1()
     String_Del(a);
 };
 
-void String_Test0()
+static void String_Test0()
 {
 
     String* string1 = String_New("hello world");
@@ -146,3 +143,51 @@ void String_Test0()
     }
 }
 
+////////////////////////////////////////////////////////////////////////////////
+void Actor_Test0()
+{
+    RenderManager_Initialize();
+
+    Sence* sence = Sence_Create("sence");
+    Actor* actor = Sence_Actor_Create("actor", sence);
+
+    Actor_Component_Add(actor, Render);
+    Actor_RenderComponent_AddRenderData2D(actor, 0, 10, "hello world" );
+
+    RenderManager_RenderSenceActor(sence);
+
+    RenderManager_RenderToScreen();
+
+    Actor_Component_Del(actor, Render);
+}
+
+////////////////////////////////////////////////////////////////////////////////
+void Engine_Test0()
+{
+    // Engine_Initialize();
+    //
+    // Engine_MainLoop();
+    //
+    // Engine_SetSence();
+
+}
+
+////////////////////////////////////////////////////////////////////////////////
+void Engine_Debug_UnitTesting()
+{
+    Storage_Test0();
+
+    Queue_Test0();
+
+    Log_Test0();
+
+    Memory_Test0();
+
+    String_Test0();
+    String_Test1();
+    String_Test2();
+
+    Actor_Test0();
+
+    Engine_Test0();
+}
