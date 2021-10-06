@@ -5,6 +5,8 @@
 #include "MemoryManager.h"
 #include "String.h"
 #include "Actor.h"
+
+#include "Data32.h"
 #include "Queue.h"
 
 
@@ -95,7 +97,7 @@ void Actor_ProcessEvent(Actor* actor, Event event)
 
 void Actor_Component_Add(Actor* actor, const tchar* component_name, Component* component)
 {
-    Storage_StorePointer(actor->m_storage, Str_CalcCrc(component_name, 0), component);
+    Storage_StoreData32(actor->m_storage, Str_CalcCrc(component_name, 0), Data32(tptr, component));
 }
 
 void Actor_Component_Del(Actor* actor, const tchar* component_name)
@@ -105,7 +107,7 @@ void Actor_Component_Del(Actor* actor, const tchar* component_name)
 
 tptr Actor_Component_Cast(Actor* actor, const tchar* component_name)
 {
-    tptr ptr = Storage_ReadPointer(actor->m_storage, Str_CalcCrc(component_name, 0));
+    tptr ptr = Storage_ReadData32(actor->m_storage, Str_CalcCrc(component_name, 0)).m_pointer;
     return ptr;
 }
 

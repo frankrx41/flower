@@ -195,6 +195,8 @@ static tptr Queue_RemoveNode(Queue* queue, Node* node)
 
 void Queue_RemoveByPointer(struct Queue* queue, tptr ptr)
 {
+    Assert(ptr != NULL, "");
+
     Node* node = queue->m_head->m_node_next;
     for(; !Queue_IsHead(queue, node); node = node->m_node_next)
     {

@@ -4,6 +4,7 @@
 #include "Storage.h"
 #include "MemoryManager.h"
 #include "String.h"
+#include "Data32.h"
 
 
 typedef enum StoreType StoreType;
@@ -20,13 +21,7 @@ typedef struct StoreContent StoreContent;
 struct StoreContent
 {
     crc32       m_crc;
-    StoreType   m_store_type;
-    union
-    {
-        int32   m_int32;
-        float   m_float;
-        tptr    m_pointer;
-    };
+    data32      m_data32;
 };
 
 struct Storage
@@ -60,49 +55,18 @@ void Storage_Destroy(Storage* storage)
     MemDel(storage);
 }
 
-void Storage_StoreInt32(Storage* storage, crc32 variable, int32 value)
+void Storage_StoreData32(Storage* storage, crc32 variable, data32 data)
 {
     StoreContent* store_content = MemNew(String_CStr(storage->m_local_name), StoreContent);
     store_content->m_crc        = variable;
-    store_content->m_store_type = StoreType_Int32;
-    store_content->m_int32      = value;
-    
-    Queue_Push(StoreContent*, storage->m_store_queue, store_content);
-}
-
-void Storage_StoreFloat(Storage* storage, crc32 variable, float value)
-{
-    StoreContent* store_content = MemNew(String_CStr(storage->m_local_name), StoreContent);
-    store_content->m_crc        = variable;
-    store_content->m_store_type = StoreType_Int32;
-    store_content->m_float      = value;
-    
-    Queue_Push(StoreContent*, storage->m_store_queue, store_content);
-}
-
-void Storage_StorePointer(Storage* storage, crc32 variable, tptr value)
-{
-    StoreContent* store_content = MemNew(String_CStr(storage->m_local_name), StoreContent);
-    store_content->m_crc        = variable;
-    store_content->m_store_type = StoreType_Struct;
-    store_content->m_pointer    = value;
+    store_content->m_data32     = data;
 
     Queue_Push(StoreContent*, storage->m_store_queue, store_content);
-}
-
-uint32 Storage_GetSotreCount(const Storage* storage)
-{
-    return
-    Queue_GetLength(storage->m_store_queue);
 }
 
 static bool Storage_FindVariable(StoreContent* store_content, crc32 variable)
 {
-    if(store_content->m_crc == variable)
-    {
-        return true;
-    }
-    return false;
+    return store_content->m_crc == variable;
 }
 
 bool Storage_IsExistVariable(Storage* storage, crc32 variable)
@@ -130,33 +94,21 @@ static StoreContent* Storage_FindStoreContent(const Storage* storage, crc32 vari
     return store_content;
 }
 
-int32 Storage_ReadInt32(const Storage* storage, crc32 variable)
+data32 Storage_ReadData32(const Storage* storage, crc32 variable)
 {
     StoreContent* store_content = Storage_FindStoreContent(storage, variable);
-    return store_content ? store_content->m_int32 : 0;
+    return store_content ? store_content->m_data32 : data32_null;
 }
-
-float Storage_ReadFloat(const Storage* storage, crc32 variable)
-{
-    StoreContent* store_content = Storage_FindStoreContent(storage, variable);
-    return store_content ? store_content->m_float : 0.f;
-}
-
-tptr Storage_ReadPointer(const Storage* storage, crc32 variable)
-{
-    StoreContent* store_content = Storage_FindStoreContent(storage, variable);
-    return store_content ? store_content->m_pointer : NULL;
-}
-
-bool Storage_FindStoreContentData(StoreContent* store_content, crc32 variable)
-{
-    return store_content->m_crc == variable;
-}
-
 
 void Storage_DeleteVariable(Storage* storage, crc32 variable)
 {
     StoreContent* store_content = Storage_FindStoreContent(storage, variable);
     Queue_RemoveByPointer(storage->m_store_queue, store_content);
     MemDel(store_content);
+}
+
+uint32 Storage_GetSotreCount(const Storage* storage)
+{
+    return
+    Queue_GetLength(storage->m_store_queue);
 }

@@ -18,17 +18,19 @@ static void Storage_Test0()
 {
     Storage* storage = Storage_Create(__FUNCTION__);
     
-    Storage_StoreInt32(storage, Str_CalcCrc("a",0), 123);
+    Storage_StoreData32(storage, Str_CalcCrc("a",0), Data32(int32, 123));
 
+    bool is_exist_a = Storage_IsExistVariable(storage, Str_CalcCrc("a", 0));
+    bool is_exist_b = Storage_IsExistVariable(storage, Str_CalcCrc("b", 0));
 
-    printf("%d\n", Storage_IsExistVariable(storage, Str_CalcCrc("a", 0)));
-    printf("%d\n", Storage_IsExistVariable(storage, Str_CalcCrc("b", 0)));
+    Assert(is_exist_a == true, "");
+    Assert(is_exist_b == false, "");
 
-    int32 data1 = Storage_ReadInt32(storage, Str_CalcCrc("a",0));
-    int32 data2 = Storage_ReadInt32(storage, Str_CalcCrc("b",0));
-    printf("%d\n", data1);
-    printf("%d\n", data2);
+    int32 data1 = Storage_ReadData32(storage, Str_CalcCrc("a",0)).m_int32;
+    int32 data2 = Storage_ReadData32(storage, Str_CalcCrc("b",0)).m_int32;
 
+    Assert(data1 == 123, "");
+    Assert(data2 == 0, "");
 
     Storage_DeleteVariable(storage, Str_CalcCrc("a",0));
 
@@ -186,15 +188,19 @@ void Engine_Test0()
 void Data32_Test0()
 {
     data32 d1 = Data32(int32, 32);
-    data32 d2 = Data32(float, 3.2);
+    data32 d2 = Data32(float, 3.2f);
     data32 d3 = Data32(tptr, &d1);
+    data32 d4 = Data32(uint32, 123);
+
     int32 i = Data32_Cast(int32, d1);
     float f = Data32_Cast(float, d2);
     tptr p = Data32_Cast(tptr, d3);
+    int32 u = Data32_Cast(uint32, d4);
 
     Assert(i == 32, "");
-    Assert(f == 3.2, "");
+    Assert(f == 3.2f, "");
     Assert(p == &d1, "");
+    Assert(u == 123, "");
 }
 
 ////////////////////////////////////////////////////////////////////////////////

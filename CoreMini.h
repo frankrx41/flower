@@ -52,8 +52,7 @@ void    Engine_Profile_Memory   ();
         Engine_Debug_Break(); \
     } \
 }while(0)
-
-#define StaticAssert(must_be_true_condition, msg)   static tchar[(must_be_true_condition) ? 0 : -1]
+#define StaticAssert(must_be_true_condition, msg)   typedef char static_assertion[(must_be_true_condition) ? 1 : -1]
 #else
 
 #define Log(...)

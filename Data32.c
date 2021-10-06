@@ -2,8 +2,12 @@
 
 #include "Data32.h"
 
+#include <stdarg.h>
+
 #undef Data32_Cast
 #undef Data32
+
+const data32 data32_null = {0};
 
 tptr Data32_Cast(const tchar* type, data32 data)
 {
@@ -15,15 +19,21 @@ tptr Data32_Cast(const tchar* type, data32 data)
     }
 }
 
-// We cannot convert from 'float' to 'tptr', so we covert to 'uint32' first.
-data32 Data32(const tchar* type, int32 i, float f, tptr p)
+data32 Data32(const tchar* type, ...)
 {
     data32 data32;
+
+    va_list ap;
+    va_start(ap, type);
+
     switch( type[0] )
     {
-    case 'i':   data32.m_int32 = i; break;
-    case 'f':   data32.m_float = f; break;
-    default:    data32.m_pointer = p;
+    case 'i':   data32.m_int32  = va_arg(ap, int32);    break;
+    case 'f':   data32.m_float  = (float)va_arg(ap, double);   break;  // float is promoted to double
+    case 'u':   data32.m_uint32 = va_arg(ap, uint32);   break;
+    default:    data32.m_pointer = va_arg(ap, tptr);    break;;
     }
+
+    va_end(ap);
     return data32;
 }
