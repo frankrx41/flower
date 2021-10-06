@@ -4,7 +4,7 @@ typedef struct Actor Actor;
 typedef struct Sence Sence;
 typedef enum Event Event;
 typedef void Component;
-typedef struct RenderData2D RenderData2D;
+typedef struct RenderDataText RenderDataText;
 
 
 typedef void (*ActorActionFunc)(Actor*);

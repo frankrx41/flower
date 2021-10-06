@@ -17,20 +17,19 @@ typedef struct PixData PixData;
 #define LOCAL_NAME  "GPYM"
 
 
-struct RenderData2D
+struct RenderDataText
 {
-    uint32  m_x;
-    uint32  m_y;
+    bool    m_disable;
+    uint32  m_offset_x;
+    uint32  m_offset_y;
+    uint32  m_info;
     String* m_string;
-    // TODO: Add color
-    // int32   m_info;
 };
 
 struct PixData
 {
     tchar   m_tchar;
-    // TODO: Add color
-    // int32   m_info;
+    uint32  m_info;
 };
 
 struct RenderManagerPlatformData
@@ -100,29 +99,37 @@ void RenderManager_SwapBuffer_Plat()
     data->m_front_buffer = back_buffer;
 }
 
-void RenderManager_RenderEachRenderData2D_Plat(RenderData2D* render_data_2d, tptr ptr)
+void RenderManager_RenderEachRenderDataText_Plat(RenderDataText* render_data_text, tptr ptr)
 {
+    if( render_data_text->m_disable )
+    {
+        return;
+    }
+
     RenderManagerPlatformData* data = RenderManager_GetPlatformData();
 
-    uint32 index = data->m_width * render_data_2d->m_y + render_data_2d->m_x;
-    for( uint32 i=0; i<String_GetLength(render_data_2d->m_string); i++ )
+    // TODO: Use Actor Location
+    uint32 index = data->m_width * render_data_text->m_offset_y + render_data_text->m_offset_x;
+    for( uint32 i=0; i<String_GetLength(render_data_text->m_string); i++ )
     {
-        data->m_back_buffer[index+i].m_tchar = String_CStr(render_data_2d->m_string)[i];
+        data->m_back_buffer[index+i].m_tchar = String_CStr(render_data_text->m_string)[i];
     }
 }
 
-RenderData2D* RenderData2D_Create(const tchar* local_name, int32 x, int32 y, const tchar* str)
+RenderDataText* RenderDataText_Create(const tchar* local_name, int32 x, int32 y, const tchar* str)
 {
-    RenderData2D* render_data_2d = MemNew(local_name, RenderData2D);
-    render_data_2d->m_x = x;
-    render_data_2d->m_y = y;
-    render_data_2d->m_string = String_New(local_name, str);
+    RenderDataText* render_data_text = MemNew(local_name, RenderDataText);
+    render_data_text->m_offset_x = x;
+    render_data_text->m_offset_y = y;
+    render_data_text->m_string  = String_New(local_name, str);
+    render_data_text->m_disable = false;
+    render_data_text->m_info    = 0;
 
-    return render_data_2d;
+    return render_data_text;
 }
 
-void RenderData2D_Destory(RenderData2D* render_data_2d)
+void RenderDataText_Destory(RenderDataText* render_data_text)
 {
-    String_Del(render_data_2d->m_string);
-    MemDel(render_data_2d);
+    String_Del(render_data_text->m_string);
+    MemDel(render_data_text);
 }

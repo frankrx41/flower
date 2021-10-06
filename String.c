@@ -154,6 +154,11 @@ tchar* String_CStr(const String* string)
     return string->m_char;
 }
 
+bool String_IsSame(const String* str1, const String* str2)
+{
+    return String_GetCrc(str1) == String_GetCrc(str2);
+}
+
 void String_Format(String* string, const tchar* format, ...)
 {
     va_list ap;

@@ -5,10 +5,14 @@ Add Str_Cat, join, IsSame ... function
 Rename const tchar* local_name -> ?
 Update Timming
 Rename tptr
+Add CB in FindDataFunc ProcessDataFunc CompareDataFunc
+Add RenderDataText info
 
 Add Input
+Add Component_Location
 Add Component_Action
 
+Rename RenderData2D -> RenderDataText (done)
 Rename union int32 float tptr to data32 (done)
 Rename Memory -> MemoryManager (done)
 Fix memory leak (done)

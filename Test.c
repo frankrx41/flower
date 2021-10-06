@@ -8,9 +8,6 @@
 #include "Component.h"
 #include "Render.h"
 #include "Sence.h"
-
-#include <stdio.h>
-
 #include "Data32.h"
 
 
@@ -44,9 +41,22 @@ struct Data
     int32 m_a;
 };
 
-static void Queue_Test_Print_Data(Data* a, tptr ptr)
+static void Queue_Test_Print_Data1(Data* a, tptr ptr)
 {
-    printf("%d: %d\n", (int32)ptr, a->m_a);
+    Assert((int32)ptr == 2, "");
+    static int32 call_count = 0;
+    static int32 array[3] = {1,2,3};
+    Assert(a->m_a == array[call_count], "");
+    call_count++;
+}
+
+static void Queue_Test_Print_Data2(Data* a, tptr ptr)
+{
+    Assert((int32)ptr == 7, "");
+    static int32 call_count = 0;
+    static int32 array[3] = {1,3};
+    Assert(a->m_a == array[call_count], "");
+    call_count++;
 }
 
 static bool Queue_Test_Find(Data* a, int32 v)
@@ -66,12 +76,11 @@ static void Queue_Test0()
     Queue_Push(Data*, queue, &y);
     Queue_Push(Data*, queue, &z);
 
-    Queue_ForEach(queue, Queue_Test_Print_Data, (tptr)2);
+    Queue_ForEach(queue, Queue_Test_Print_Data1, (tptr)2);
 
     Queue_RemoveFrist(Data*)(queue, (FindDataFunc)Queue_Test_Find, (tptr)2);
 
-    printf("\n");
-    Queue_ForEach(queue, Queue_Test_Print_Data, (tptr)7);
+    Queue_ForEach(queue, Queue_Test_Print_Data2, (tptr)7);
 
     Queue_RemoveFrist(Data*)(queue, (FindDataFunc)Queue_Test_Find, (tptr)1);
 
@@ -132,8 +141,9 @@ static void String_Test0()
 
     String* string1 = String_New(__FUNCTION__, "hello world");
     String* string2 = String_New(__FUNCTION__, "goodbye world");
-    printf(String_CStr(string1));
-    printf("\n");
+    
+    Assert(Str_IsSame(String_CStr(string1), "hello world"), "");
+    Assert(!Str_IsSame(String_CStr(string1), "goodbye world"), "");
 
     crc32 str1_crc = Str_CalcCrc("hello world", 0);
     crc32 str2_crc = Str_CalcCrc("goodbye world", 0);
@@ -161,7 +171,7 @@ void Actor_Test0()
     Actor* actor = Sence_Actor_Create(__FUNCTION__, sence);
 
     Actor_Component_Add(actor, Render);
-    Actor_RenderComponent_AddRenderData2D(actor, 0, 10, "hello world" );
+    Actor_RenderComponent_RenderDataText_Add(actor, 0, 10, "hello world" );
 
     RenderManager_RenderSenceActor(sence);
 
