@@ -51,6 +51,9 @@
     <ClCompile Include="Data32.c">
       <Filter>Library\Data32</Filter>
     </ClCompile>
+    <ClCompile Include="Vec.c">
+      <Filter>Library\Vec</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CoreMini.h" />
@@ -90,6 +93,9 @@
     <ClInclude Include="Data32.h">
       <Filter>Library\Data32</Filter>
     </ClInclude>
+    <ClInclude Include="Vec.h">
+      <Filter>Library\Vec</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Platform">
@@ -124,6 +130,9 @@
     </Filter>
     <Filter Include="Library\Data32">
       <UniqueIdentifier>{3271d12d-2253-4b03-aeb7-559e9c26077d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Library\Vec">
+      <UniqueIdentifier>{7fb445ef-924a-4d46-b6e4-d7515349f480}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
