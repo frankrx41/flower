@@ -2,7 +2,6 @@
 
 #include "Data32.h"
 
-#include <stdarg.h>
 
 #undef Data32_Cast
 #undef Data32

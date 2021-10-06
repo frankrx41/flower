@@ -96,6 +96,7 @@
     <ClInclude Include="Vec.h">
       <Filter>Library\Vec</Filter>
     </ClInclude>
+    <ClInclude Include="Platform.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Platform">

@@ -1,11 +1,11 @@
-#define PLATFORM_WIN32      1
 #include "CoreMini.h"
-
 
 #include "MemoryManager.h"
 #include "Render.h"
 #include "String.h"
 
+#define PLATFORM_WIN32      1
+#include "Platform.h"
 #include <stdio.h>
 #include <windows.h>
 

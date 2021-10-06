@@ -1,9 +1,11 @@
-#define PLATFORM_WIN32      1
+// #define PLATFORM_WIN32      1
 #include "CoreMini.h"
 
 #include "TimmingManager.h"
 #include "MemoryManager.h"
 
+#define PLATFORM_WIN32      1
+#include "Platform.h"
 #include <Windows.h>
 
 typedef struct TimmingPlatformData TimmingPlatformData;

@@ -165,6 +165,7 @@ void String_Format(String* string, const tchar* format, ...)
     va_start(ap, format);
 
     String_FormatArgs(string, format, ap);
+    va_end(ap);
 }
 
 void String_FormatArgs(String* string, const tchar* format, va_list args)

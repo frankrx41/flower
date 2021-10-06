@@ -108,6 +108,7 @@
     <ClInclude Include="Engine.h" />
     <ClInclude Include="Event.h" />
     <ClInclude Include="MemoryManager.h" />
+    <ClInclude Include="Platform.h" />
     <ClInclude Include="Queue.h" />
     <ClInclude Include="Render.h" />
     <ClInclude Include="Sence.h" />

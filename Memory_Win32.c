@@ -1,5 +1,7 @@
 #include "CoreMini.h"
 
+#define PLATFORM_WIN32 1
+#include "Platform.h"
 #include <stdlib.h>
 #include <string.h>
 

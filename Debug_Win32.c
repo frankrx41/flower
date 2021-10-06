@@ -1,7 +1,9 @@
-#define PLATFORM_WIN32      1
 #include "CoreMini.h"
 
 #include "String.h"
+
+#define PLATFORM_WIN32      1
+#include "Platform.h"
 #include <Windows.h>
 
 #define LOCAL_NAME  "Debug"

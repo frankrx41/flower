@@ -1,19 +1,25 @@
 #pragma once
 
+#include <stdarg.h>
+
+#undef va_arg
+#undef va_start
+#undef va_end
+#define va_start(ap, type)  (ap = (va_list)ADDRESS_OF(type) + INT32_SIZEOF(type))
+#define va_end(ap)          (ap = (va_list)NULL)
+#define va_arg(ap,t)        (*(t *)((ap += INT32_SIZEOF(t)) - INT32_SIZEOF(t)))
+
 /*
 Code Style
 
 Start with _ means not want be call
 */
 
-#if PLATFORM_WIN32
-#define KEEP_LEGACY_TYPE 1
-#endif
-
 // New key word
 typedef int             int32;
 typedef unsigned int    uint32;
 typedef unsigned char   byte;
+typedef char*           va_list;
 
 typedef signed char     tchar;
 typedef void *          tptr;
@@ -29,13 +35,8 @@ typedef tchar bool;
 
 // Do not use those key word
 // For multi-platform
-#if !KEEP_LEGACY_TYPE
 #define int
 #define char
-#endif
-
-// Useful function
-
 
 #if CONFIG_DEBUG
 
@@ -76,4 +77,7 @@ void    Engine_Profile_Memory   ();
 #define MACRO_TOSTR(...) _MACRO_TOSTR(__VA_ARGS__)
 #define _MACRO_CONNNECT(a,b)    a##b
 #define MACRO_CONNNECT(a,b)     _MACRO_CONNNECT(a,b)
+
+#define ADDRESS_OF(v)       (&(v))
+#define INT32_SIZEOF(n)     ((sizeof(n) + sizeof(int32) - 1) & ~(sizeof(int32) - 1))
 
