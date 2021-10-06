@@ -93,10 +93,10 @@ void RenderManager_SwapBuffer_Plat()
     data->m_front_buffer = back_buffer;
 }
 
-void CallBack_Render_ShaderText_Plat(ShaderText* render_data_text, tptr ptr)
+void CallBack_Render_ShaderText_Plat(ShaderText* shader_text, vec3 vec)
 {
     // TODO
-    // if( render_data_text->m_disable )
+    // if( shader_text->m_disable )
     // {
     //     return;
     // }
@@ -104,9 +104,9 @@ void CallBack_Render_ShaderText_Plat(ShaderText* render_data_text, tptr ptr)
     RenderManagerPlatformData* data = RenderManager_GetPlatformData();
 
     // TODO: Use Actor Location
-    // uint32 index = data->m_width * render_data_text->m_offset_y + render_data_text->m_offset_x;
-    // for( uint32 i=0; i<String_GetLength(render_data_text->m_string); i++ )
+    // uint32 index = data->m_width * shader_text->m_offset_y + shader_text->m_offset_x;
+    // for( uint32 i=0; i<String_GetLength(shader_text->m_string); i++ )
     // {
-    //     data->m_back_buffer[index+i].m_tchar = String_CStr(render_data_text->m_string)[i];
+    //     data->m_back_buffer[index+i].m_tchar = String_CStr(shader_text->m_string)[i];
     // }
 }

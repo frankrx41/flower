@@ -17,17 +17,17 @@ struct ShaderText
 
 ShaderText* ShaderText_Create(const tchar* local_name, vec3 vec, const tchar* str)
 {
-    ShaderText* render_data_text = MemNew(local_name, ShaderText);
-    render_data_text->m_vec3    = vec;
-    render_data_text->m_string  = String_New(local_name, str);
-    render_data_text->m_disable = false;
-    render_data_text->m_info    = 0;
+    ShaderText* shader_text = MemNew(local_name, ShaderText);
+    shader_text->m_vec3    = vec;
+    shader_text->m_string  = String_New(local_name, str);
+    shader_text->m_disable = false;
+    shader_text->m_info    = 0;
 
-    return render_data_text;
+    return shader_text;
 }
 
-void ShaderText_Destory(ShaderText* render_data_text)
+void ShaderText_Destory(ShaderText* shader_text)
 {
-    String_Del(render_data_text->m_string);
-    MemDel(render_data_text);
+    String_Del(shader_text->m_string);
+    MemDel(shader_text);
 }

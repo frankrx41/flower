@@ -9,7 +9,7 @@
 #include "Vec.h"
 #include "ShaderText.h"
 
-void CallBack_Render_ShaderText_Plat(ShaderText* render_data_text, tptr);
+void CallBack_Render_ShaderText_Plat(ShaderText* shader_text, vec3 vec);
 
 
 // Location
@@ -44,9 +44,9 @@ ShaderText* Actor_Component_Render_ShaderText_Add(Actor* actor, vec3 vec, const 
     RenderComponent* render_component = Actor_Component_Cast(actor, Component_Render);
     if( render_component )
     {
-        ShaderText* render_data = ShaderText_Create(Actor_GetLocalName(actor), vec, str);
-        Component_Render_ShaderText_Add(render_component, render_data);
-        return render_data;
+        ShaderText* shader_text = ShaderText_Create(Actor_GetLocalName(actor), vec, str);
+        Component_Render_ShaderText_Add(render_component, shader_text);
+        return shader_text;
     }
     return NULL;
 }
@@ -107,7 +107,7 @@ void CallBack_Actor_RenderEachActor(Actor* actor, tptr ptr)
     if( render_component )
     {
         vec3 vec = Actor_Component_Location_Get(actor);
-        Queue_ForEach(Component_Render_ShaderText_GetQueue(render_component), CallBack_Render_ShaderText_Plat, &vec);
+        Queue_ForEach(Component_Render_ShaderText_GetQueue(render_component), (CB_ProcessData)CallBack_Render_ShaderText_Plat, &vec);
     }
 }
 
