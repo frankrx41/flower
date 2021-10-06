@@ -168,7 +168,27 @@ static void String_Test0()
     }
 }
 
+
 ////////////////////////////////////////////////////////////////////////////////
+void Actor_Test2()
+{
+    Sence* sence = Sence_Create(__FUNCTION__);
+    Actor* actor = Sence_Actor_Create(__FUNCTION__, sence);
+
+    Actor_Component_New(actor, Component_Render);
+    Actor_Component_Render_ShaderText_Add(actor, Vec3(0, 10, 0), "hello world" );
+    Actor_Component_Render_ShaderText_Add(actor, Vec3(1, 2, 0), "goodbye world" );
+
+    RenderManager_RenderSence(sence);
+
+    RenderManager_RenderToScreen();
+
+    Actor_Component_Del(actor, Component_Render);
+
+    Sence_Actor_Destroy(sence, NULL, actor);
+    Sence_Destroy(sence);
+}
+
 void Actor_Test1()
 {
     Sence* sence = Sence_Create(__FUNCTION__);
@@ -239,6 +259,10 @@ void Engine_Debug_UnitTesting()
 {
     Engine_Profile_Memory();
 
+    Actor_Test2();
+
+    return;
+
     Data32_Test0();
 
     Storage_Test0();
@@ -253,6 +277,7 @@ void Engine_Debug_UnitTesting()
     String_Test1();
     String_Test2();
 
+    Actor_Test2();
     Actor_Test1();
     Actor_Test0();
 

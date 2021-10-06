@@ -51,6 +51,8 @@ void RenderManager_Initialize_Plat()
     data->m_front_buffer = data->m_buffer[0];
     data->m_back_buffer = data->m_buffer[1];
 
+    data->m_std_output  = GetStdHandle(STD_OUTPUT_HANDLE);
+
     CONSOLE_CURSOR_INFO cc_info;
     cc_info.bVisible    = 0;
     cc_info.dwSize      = 100;
@@ -105,14 +107,14 @@ static void Render_InBackBuff_Plat(int32 x, int32 y, const tchar* str)
     }
 }
 
-void CallBack_Render_ShaderText_Plat(ShaderText* shader_text, vec3 actor_vec)
+void CallBack_Render_ShaderText_Plat(ShaderText* shader_text, vec3* actor_vec)
 {
     if( ShaderText_IsDisable(shader_text) )
     {
         return;
     }
 
-    vec3 vec = Vec3_Add(ShaderText_GetVec3(shader_text), actor_vec);
+    vec3 vec = Vec3_Add(ShaderText_GetVec3(shader_text), *actor_vec);
 
     Render_InBackBuff_Plat((int32)vec.m_x, (int32)vec.m_y, ShaderText_GetStr(shader_text));
 }
