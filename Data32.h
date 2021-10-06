@@ -2,6 +2,8 @@
 
 typedef union data32 data32;
 
+extern const data32 data32_null;
+
 union data32
 {
     int32   m_int32;
@@ -14,8 +16,6 @@ StaticAssert(sizeof(data32) == sizeof(float), "");
 
 data32  Data32(const tchar* type, ...);
 tptr    Data32_Cast(const tchar* type, data32 data);
-
-extern const data32 data32_null;
 
 #define Float(x)    ((float)(x))
 #define Int32(x)    ((int32)(x))

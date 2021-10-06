@@ -1,10 +1,12 @@
 #pragma once
 
+
 typedef struct Actor Actor;
 typedef struct Sence Sence;
 typedef struct RenderDataText RenderDataText;
 typedef enum Event Event;
 typedef enum Component Component;
+typedef struct vec3 vec3;
 
 
 typedef void (*ActorActionFunc)(Actor*);
@@ -21,8 +23,12 @@ void    Actor_RegisterEvent     (Actor* actor, Event event, ActorActionFunc acto
 void    Actor_UnregisterEvent   (Actor* actor, Event event);
 void    Actor_ProcessEvent      (Actor* actor, Event event);
 
-RenderDataText*     Actor_Component_Render_RenderDataText_Add        (Actor* actor, uint32 x, uint32 y, const tchar* str);
-void                Actor_Component_Render_RenderDataText_ClearAll   (Actor* actor);
+RenderDataText*     Actor_Component_Render_RenderDataText_Add       (Actor* actor, uint32 x, uint32 y, const tchar* str);
+void                Actor_Component_Render_RenderDataText_ClearAll  (Actor* actor);
+
+void                Actor_Component_Location_Set                    (Actor* actor, vec3 vec);
+void                Actor_Component_Location_Move                   (Actor* actor, vec3 offset_vec);
+vec3                Actor_Component_Location_Get                    (Actor* actor);
 
 
 void    Actor_Component_New     (Actor* actor, const tchar* component_name, Component component_enum, CB_ComponentCreateFunc cb_component_create_func);

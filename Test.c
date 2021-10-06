@@ -165,6 +165,24 @@ static void String_Test0()
 }
 
 ////////////////////////////////////////////////////////////////////////////////
+void Actor_Test1()
+{
+    Sence* sence = Sence_Create(__FUNCTION__);
+    Actor* actor = Sence_Actor_Create(__FUNCTION__, sence);
+
+    Actor_Component_New(actor, Component_Location);
+    Actor_Component_Render_RenderDataText_Add(actor, 0, 10, "hello world" );
+
+    RenderManager_RenderSenceActor(sence);
+
+    RenderManager_RenderToScreen();
+
+    Actor_Component_Del(actor, Component_Location);
+
+    Actor_Destroy(actor);
+    Sence_Destroy(sence);
+}
+
 void Actor_Test0()
 {
     Sence* sence = Sence_Create(__FUNCTION__);
@@ -231,6 +249,7 @@ void Engine_Debug_UnitTesting()
     String_Test1();
     String_Test2();
 
+    Actor_Test1();
     Actor_Test0();
 
     Engine_Test0();

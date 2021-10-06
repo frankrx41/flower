@@ -80,8 +80,10 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="ActionComponent.c" />
     <ClCompile Include="Actor.c" />
-    <ClCompile Include="Component.c" />
+    <ClCompile Include="LocationComponent.c" />
+    <ClCompile Include="RenderComponent.c" />
     <ClCompile Include="Data32.c" />
     <ClCompile Include="Debug_Win32.c" />
     <ClCompile Include="Engine.c" />

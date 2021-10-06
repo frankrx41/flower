@@ -90,3 +90,4 @@ void RenderManager_RenderEachActor(Actor* actor, tptr ptr)
         Queue_ForEach(Component_Render_RenderDataText_GetQueue(render_component), RenderManager_RenderEachRenderDataText_Plat, NULL);
     }
 }
+
