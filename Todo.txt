@@ -3,13 +3,13 @@ Add Storage_StoreTempVariable
 Update String_Copy, allow use negative number
 Add Str_Cat, join, IsSame ... function
 Rename const tchar* local_name -> ?
-Rename Memory -> MemoryManager
 Update Timming
 
+Rename union int32 float tptr to data32
 Add Input
 Add Component_Action
 
-
+Rename Memory -> MemoryManager (done)
 Fix memory leak (done)
 Remove error, change it to void (done)
 Set MemNew local_name to __FUNCTION__ in Test_XXX (done)

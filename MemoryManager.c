@@ -241,5 +241,4 @@ void Engine_Profile_Memory()
     Log(0, "=====================================================\n");
     Queue_ForEach( memory_profile_data_queue, Memory_ProfileLog, NULL );
     Log(0, "=====================================================\n");
-
 }
