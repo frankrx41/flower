@@ -30,9 +30,6 @@
     <ClCompile Include="Event.c">
       <Filter>Event</Filter>
     </ClCompile>
-    <ClCompile Include="Render.c">
-      <Filter>Render</Filter>
-    </ClCompile>
     <ClCompile Include="Render_Win32.c">
       <Filter>Platform\Win32</Filter>
     </ClCompile>
@@ -51,13 +48,22 @@
     <ClCompile Include="Vec.c">
       <Filter>Library\Vec</Filter>
     </ClCompile>
-    <ClCompile Include="ActionComponent.c">
-      <Filter>Sence\Actor\Component</Filter>
-    </ClCompile>
     <ClCompile Include="LocationComponent.c">
       <Filter>Sence\Actor\Component</Filter>
     </ClCompile>
     <ClCompile Include="RenderComponent.c">
+      <Filter>Sence\Actor\Component</Filter>
+    </ClCompile>
+    <ClCompile Include="ActorComponent.c">
+      <Filter>Sence\Actor</Filter>
+    </ClCompile>
+    <ClCompile Include="ShaderText.c">
+      <Filter>Render</Filter>
+    </ClCompile>
+    <ClCompile Include="RenderManager.c">
+      <Filter>Render</Filter>
+    </ClCompile>
+    <ClCompile Include="ActionComponent.c">
       <Filter>Sence\Actor\Component</Filter>
     </ClCompile>
   </ItemGroup>
@@ -81,9 +87,6 @@
     <ClInclude Include="Sence.h">
       <Filter>Sence</Filter>
     </ClInclude>
-    <ClInclude Include="Render.h">
-      <Filter>Render</Filter>
-    </ClInclude>
     <ClInclude Include="Actor.h">
       <Filter>Sence\Actor</Filter>
     </ClInclude>
@@ -102,6 +105,24 @@
     <ClInclude Include="Platform.h" />
     <ClInclude Include="Component.h">
       <Filter>Sence\Actor</Filter>
+    </ClInclude>
+    <ClInclude Include="RenderComponent.h">
+      <Filter>Sence\Actor\Component</Filter>
+    </ClInclude>
+    <ClInclude Include="LocationComponent.h">
+      <Filter>Sence\Actor\Component</Filter>
+    </ClInclude>
+    <ClInclude Include="ActorComponent.h">
+      <Filter>Sence\Actor</Filter>
+    </ClInclude>
+    <ClInclude Include="ShaderText.h">
+      <Filter>Render</Filter>
+    </ClInclude>
+    <ClInclude Include="RenderManager.h">
+      <Filter>Render</Filter>
+    </ClInclude>
+    <ClInclude Include="ActionComponent.h">
+      <Filter>Sence\Actor\Component</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

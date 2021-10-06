@@ -14,4 +14,6 @@ enum Event
     Event_OnAction_MoveDown,
     Event_OnAction_MoveLeft,
     Event_OnAction_MoveRight,
+
+    Event_Max
 };

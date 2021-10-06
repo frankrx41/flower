@@ -1,13 +1,16 @@
 #include "CoreMini.h"
 
 #include "MemoryManager.h"
-#include "Render.h"
+#include "RenderManager.h"
 #include "String.h"
+#include "Vec.h"
 
 #define PLATFORM_WIN32      1
 #include "Platform.h"
 #include <stdio.h>
 #include <windows.h>
+
+#include "RenderComponent.h"
 
 
 typedef struct RenderManagerPlatformData RenderManagerPlatformData;
@@ -16,15 +19,6 @@ typedef struct PixData PixData;
 
 #define LOCAL_NAME  "GPYM"
 
-
-struct RenderDataText
-{
-    bool    m_disable;
-    uint32  m_offset_x;
-    uint32  m_offset_y;
-    uint32  m_info;
-    String* m_string;
-};
 
 struct PixData
 {
@@ -99,37 +93,20 @@ void RenderManager_SwapBuffer_Plat()
     data->m_front_buffer = back_buffer;
 }
 
-void RenderManager_RenderEachRenderDataText_Plat(RenderDataText* render_data_text, tptr ptr)
+void CallBack_Render_ShaderText_Plat(ShaderText* render_data_text, tptr ptr)
 {
-    if( render_data_text->m_disable )
-    {
-        return;
-    }
+    // TODO
+    // if( render_data_text->m_disable )
+    // {
+    //     return;
+    // }
 
     RenderManagerPlatformData* data = RenderManager_GetPlatformData();
 
     // TODO: Use Actor Location
-    uint32 index = data->m_width * render_data_text->m_offset_y + render_data_text->m_offset_x;
-    for( uint32 i=0; i<String_GetLength(render_data_text->m_string); i++ )
-    {
-        data->m_back_buffer[index+i].m_tchar = String_CStr(render_data_text->m_string)[i];
-    }
-}
-
-RenderDataText* RenderDataText_Create(const tchar* local_name, int32 x, int32 y, const tchar* str)
-{
-    RenderDataText* render_data_text = MemNew(local_name, RenderDataText);
-    render_data_text->m_offset_x = x;
-    render_data_text->m_offset_y = y;
-    render_data_text->m_string  = String_New(local_name, str);
-    render_data_text->m_disable = false;
-    render_data_text->m_info    = 0;
-
-    return render_data_text;
-}
-
-void RenderDataText_Destory(RenderDataText* render_data_text)
-{
-    String_Del(render_data_text->m_string);
-    MemDel(render_data_text);
+    // uint32 index = data->m_width * render_data_text->m_offset_y + render_data_text->m_offset_x;
+    // for( uint32 i=0; i<String_GetLength(render_data_text->m_string); i++ )
+    // {
+    //     data->m_back_buffer[index+i].m_tchar = String_CStr(render_data_text->m_string)[i];
+    // }
 }

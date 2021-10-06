@@ -3,7 +3,7 @@
 #include "Engine.h"
 #include "MemoryManager.h"
 #include "TimmingManager.h"
-#include "Render.h"
+#include "RenderManager.h"
 
 #define LOCAL_NAME          "GPYM"
 

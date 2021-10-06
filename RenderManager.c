@@ -4,13 +4,13 @@
 #include "Actor.h"
 #include "Queue.h"
 #include "Sence.h"
-#include "Render.h"
+#include "RenderManager.h"
 
 
 void RenderManager_Initialize_Plat();
 void RenderManager_RenderToScreen_Plat();
 void RenderManager_SwapBuffer_Plat();
-void RenderManager_RenderEachActor(Actor* actor, tptr ptr);
+void CallBack_Actor_RenderEachActor(Actor* actor, tptr ptr);
 
 struct RenderManager
 {
@@ -41,9 +41,9 @@ tptr RenderManager_GetPlatformData()
     return RenderManager_GetInstance()->m_platform_data;
 }
 
-void RenderManager_RenderSenceActor(Sence* sence)
+void RenderManager_RenderSence(Sence* sence)
 {
-    Queue_ForEach(Sence_GetActorQueue(sence), RenderManager_RenderEachActor, NULL);
+    Queue_ForEach(Sence_GetActorQueue(sence), CallBack_Actor_RenderEachActor, NULL);
 }
 
 void RenderManager_RenderToScreen()

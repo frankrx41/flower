@@ -1,9 +1,9 @@
 #include "CoreMini.h"
 
-#include "Component.h"
 #include "Actor.h"
 #include "MemoryManager.h"
 #include "Vec.h"
+#include "LocationComponent.h"
 
 struct LocationComponent
 {
@@ -23,33 +23,20 @@ void Component_Location_Destroy(LocationComponent* location_component)
     MemDel(location_component);
 }
 
-
-void Actor_Component_Location_Set(Actor* actor, vec3 vec)
+void Component_Location_Set(LocationComponent* location_component, vec3 vec)
 {
-    LocationComponent* location_component = Actor_Component_Cast(actor, Component_Location);
-    if( location_component )
-    {
-        location_component->m_vec3 = vec;
-    }
+    Assert(location_component != NULL, "");
+    location_component->m_vec3 = vec;
 }
 
-void Actor_Component_Location_Move(Actor* actor, vec3 offset_vec)
+void Component_Location_Move(LocationComponent* location_component, vec3 offset_vec)
 {
-    LocationComponent* location_component = Actor_Component_Cast(actor, Component_Location);
-    if( location_component )
-    {
-        location_component->m_vec3 = Vec3_Add(location_component->m_vec3, offset_vec);
-    }
+    Assert(location_component != NULL, "");
+    location_component->m_vec3 = Vec3_Add(location_component->m_vec3, offset_vec);
 }
 
-vec3 Actor_Component_Location_Get(Actor* actor)
+vec3 Component_Location_Get(LocationComponent* location_component)
 {
-    LocationComponent* location_component = Actor_Component_Cast(actor, Component_Location);
-    if( location_component )
-    {
-        return location_component->m_vec3;
-    }
-    return vec3_null;
+    Assert(location_component != NULL, "");
+    return location_component->m_vec3;
 }
-
-

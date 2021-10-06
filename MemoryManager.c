@@ -88,7 +88,7 @@ tptr MemoryManager_Alloc(MemoryManager* memory_manager,const tchar* local_name, 
     if( is_profile )
     {
         Queue(MemoryProfileData*)* memory_profile_data_queue = memory_manager->m_local_name_queue;
-        MemoryProfileData* memory_profile_data = Queue_Find(MemoryProfileData*)( memory_profile_data_queue, (FindDataFunc)Memory_Profile_FindData, (tptr)memory_block->m_crc );
+        MemoryProfileData* memory_profile_data = Queue_Find(MemoryProfileData*)( memory_profile_data_queue, (CB_FindData)Memory_Profile_FindData, (tptr)memory_block->m_crc );
         if( memory_profile_data )
         {
             memory_profile_data->m_alloc_size += size;
@@ -125,7 +125,7 @@ void MemoryManager_Free(MemoryManager* memory_manager, tptr ptr)
     if( is_profile )
     {
         Queue(MemoryProfileData*)* memory_profile_data_queue = memory_manager->m_local_name_queue;
-        MemoryProfileData* memory_profile_data = Queue_Find(MemoryProfileData*)( memory_profile_data_queue, (FindDataFunc)Memory_Profile_FindData, (tptr)memory_block->m_crc );
+        MemoryProfileData* memory_profile_data = Queue_Find(MemoryProfileData*)( memory_profile_data_queue, (CB_FindData)Memory_Profile_FindData, (tptr)memory_block->m_crc );
         if( memory_profile_data )
         {
             memory_profile_data->m_alloc_size -= memory_block->m_alloc_size;

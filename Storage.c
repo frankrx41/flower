@@ -40,7 +40,7 @@ Storage* Storage_Create(const tchar* local_name)
     return storage;
 }
 
-static void Storage_StoreContent_ForEachDelete(StoreContent* store_content, tptr ptr)
+static void CallBack_Storage_StoreContent_Delete(StoreContent* store_content)
 {
     MemDel(store_content);
 }
@@ -48,10 +48,7 @@ static void Storage_StoreContent_ForEachDelete(StoreContent* store_content, tptr
 void Storage_Destroy(Storage* storage)
 {
     String_Del(storage->m_local_name);
-
-    Queue_ForEach(storage->m_store_queue, Storage_StoreContent_ForEachDelete, NULL);
-    Queue_Destroy(storage->m_store_queue);
-
+    Queue_Destroy(storage->m_store_queue, CallBack_Storage_StoreContent_Delete);
     MemDel(storage);
 }
 
@@ -71,7 +68,7 @@ static bool Storage_FindVariable(StoreContent* store_content, crc32 variable)
 
 bool Storage_IsExistVariable(Storage* storage, crc32 variable)
 {
-    StoreContent* store_content = Queue_Find(StoreContent*)(storage->m_store_queue, (FindDataFunc)Storage_FindVariable, (tptr)variable);
+    StoreContent* store_content = Queue_Find(StoreContent*)(storage->m_store_queue, (CB_FindData)Storage_FindVariable, (tptr)variable);
     if( store_content )
     {
         storage->m_cache_store_content = store_content;
@@ -88,7 +85,7 @@ static StoreContent* Storage_FindStoreContent(const Storage* storage, crc32 vari
         return storage->m_cache_store_content;
     }
 
-    StoreContent* store_content = Queue_Find(StoreContent*)(storage->m_store_queue, (FindDataFunc)Storage_FindVariable, (tptr)variable);
+    StoreContent* store_content = Queue_Find(StoreContent*)(storage->m_store_queue, (CB_FindData)Storage_FindVariable, (tptr)variable);
     // Assert(store_content != NULL, "You try to read a not exist var");
 
     return store_content;
@@ -103,7 +100,7 @@ data32 Storage_ReadData32(const Storage* storage, crc32 variable)
 void Storage_DeleteVariable(Storage* storage, crc32 variable)
 {
     StoreContent* store_content = Storage_FindStoreContent(storage, variable);
-    Queue_RemoveByPointer(storage->m_store_queue, store_content);
+    Queue_RemoveFindFirst(StoreContent*)(storage->m_store_queue, NULL, store_content);
     MemDel(store_content);
 }
 

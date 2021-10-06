@@ -1,14 +1,18 @@
 #include "CoreMini.h"
 
+#include "ActorComponent.h"
+#include "LocationComponent.h"
+#include "RenderComponent.h"
 #include "String.h"
 #include "MemoryManager.h"
 #include "Queue.h"
 #include "Storage.h"
 #include "Actor.h"
 #include "Component.h"
-#include "Render.h"
+#include "RenderManager.h"
 #include "Sence.h"
 #include "Data32.h"
+#include "Vec.h"
 
 
 static void Storage_Test0()
@@ -78,13 +82,13 @@ static void Queue_Test0()
 
     Queue_ForEach(queue, Queue_Test_Print_Data1, (tptr)2);
 
-    Queue_RemoveFrist(Data*)(queue, (FindDataFunc)Queue_Test_Find, (tptr)2);
+    Queue_RemoveFindFirst(Data*)(queue, (CB_FindData)Queue_Test_Find, (tptr)2);
 
     Queue_ForEach(queue, Queue_Test_Print_Data2, (tptr)7);
 
-    Queue_RemoveFrist(Data*)(queue, (FindDataFunc)Queue_Test_Find, (tptr)1);
+    Queue_RemoveFindFirst(Data*)(queue, (CB_FindData)Queue_Test_Find, (tptr)1);
 
-    Queue_Destroy(queue);
+    Queue_Destroy(queue, NULL);
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -171,15 +175,15 @@ void Actor_Test1()
     Actor* actor = Sence_Actor_Create(__FUNCTION__, sence);
 
     Actor_Component_New(actor, Component_Location);
-    Actor_Component_Render_RenderDataText_Add(actor, 0, 10, "hello world" );
+    Actor_Component_Render_ShaderText_Add(actor, Vec3(2, 2, 0), "hello world" );
 
-    RenderManager_RenderSenceActor(sence);
+    RenderManager_RenderSence(sence);
 
     RenderManager_RenderToScreen();
 
     Actor_Component_Del(actor, Component_Location);
 
-    Actor_Destroy(actor);
+    Sence_Actor_Destroy(sence, NULL, actor);
     Sence_Destroy(sence);
 }
 
@@ -189,15 +193,15 @@ void Actor_Test0()
     Actor* actor = Sence_Actor_Create(__FUNCTION__, sence);
 
     Actor_Component_New(actor, Component_Render);
-    Actor_Component_Render_RenderDataText_Add(actor, 0, 10, "hello world" );
+    Actor_Component_Render_ShaderText_Add(actor, Vec3(0, 10, 0), "hello world" );
 
-    RenderManager_RenderSenceActor(sence);
+    RenderManager_RenderSence(sence);
 
     RenderManager_RenderToScreen();
 
     Actor_Component_Del(actor, Component_Render);
 
-    Actor_Destroy(actor);
+    Sence_Actor_Destroy(sence, NULL, actor);
     Sence_Destroy(sence);
 }
 

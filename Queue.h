@@ -2,17 +2,18 @@
 
 #define Queue struct Queue
 
-typedef bool (*FindDataFunc)(tptr data, tptr ptr);
-typedef void (*ProcessDataFunc)(tptr data, tptr ptr);
-typedef bool (*CompareDataFunc)(tptr a, tptr b);
+typedef bool (*CB_FindData)     (tptr data, tptr ptr);
+typedef void (*CB_ProcessData)  (tptr data, tptr ptr);
+typedef bool (*CB_CompareData)  (tptr dat1, tptr dat2);
+typedef void (*CB_DestroyData)  (tptr data);
 
 Queue*  Queue_Create        (const tchar* local_name, const tchar* type_str);
-void    Queue_Destroy       (Queue* queue);
+void    Queue_Destroy       (Queue* queue, CB_DestroyData cb_destroy_data);
 
 bool    Queue_IsEmpty       (const Queue* queue);
-tptr    Queue_Find          (const Queue* queue, FindDataFunc find_data_func, tptr ptr);
+tptr    Queue_Find          (const Queue* queue, CB_FindData cb_find_data, tptr ptr);
 uint32  Queue_GetLength     (const Queue* queue);
-void    Queue_ForEach       (const Queue* queue, ProcessDataFunc process_data_func, tptr ptr);
+void    Queue_ForEach       (const Queue* queue, CB_ProcessData cb_process_data, tptr ptr);
 
 void    Queue_Push          (Queue* queue, tptr reference_data, const tchar* type_str);
 
@@ -21,21 +22,20 @@ tptr    Queue_Dequeue       (Queue* queue);
 tptr    Queue_PeekFirst     (const Queue* queue);
 tptr    Queue_PeekTail      (const Queue* queue);
 
-void    Queue_RemoveByPointer   (Queue* queue, tptr ptr);
-tptr    Queue_RemoveFindFrist   (Queue* queue, FindDataFunc find_data_func, tptr ptr);
-int32   Queue_RemoveFindAll     (Queue* queue, FindDataFunc find_data_func, tptr ptr);
+tptr    Queue_RemoveFindFirst   (Queue* queue, CB_FindData cb_find_data, tptr ptr);
+int32   Queue_RemoveFindAll     (Queue* queue, CB_FindData cb_find_data, tptr ptr);
 
-void    Queue_Clear         (Queue* queue);
-void    Queue_Sort          (Queue* queue, CompareDataFunc compare_data_func);
+void    Queue_Clear         (Queue* queue, CB_DestroyData cb_destroy_data);
+void    Queue_Sort          (Queue* queue, CB_CompareData cb_compare_data);
 
 #undef Queue
-#define Queue(type)                         struct Queue
-#define Queue_Create(local_name, type)      Queue_Create(local_name, #type)
+#define Queue(type)                             struct Queue
+#define Queue_Create(local_name, type)          Queue_Create(local_name, #type)
 #define Queue_Push(type, queue, reference_data) Queue_Push(queue, (tptr)reference_data, MACRO_TOSTR(type))
-#define Queue_Find(type)                    (type)Queue_Find
-#define Queue_Pop(type)                     (type)Queue_Pop
-#define Queue_Dequeue(type)                 (type)Queue_Dequeue
-#define Queue_PeekHead(type)                (type)Queue_PeekFirst
-#define Queue_PeekTail(type)                (type)Queue_PeekTail
-#define Queue_RemoveFrist(type)             (type)Queue_RemoveFindFrist
+#define Queue_Find(type)                        (type)Queue_Find
+#define Queue_Pop(type)                         (type)Queue_Pop
+#define Queue_Dequeue(type)                     (type)Queue_Dequeue
+#define Queue_PeekHead(type)                    (type)Queue_PeekFirst
+#define Queue_PeekTail(type)                    (type)Queue_PeekTail
+#define Queue_RemoveFindFirst(type)             (type)Queue_RemoveFindFirst
 
