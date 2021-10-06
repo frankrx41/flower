@@ -12,6 +12,7 @@
 #include "RenderManager.h"
 #include "Sence.h"
 #include "Data32.h"
+#include "Engine.h"
 #include "Vec.h"
 
 
@@ -45,7 +46,7 @@ struct Data
     int32 m_a;
 };
 
-static void Queue_Test_Print_Data1(Data* a, tptr ptr)
+static void CallBack_Queue_Test_Print_Data1(Data* a, tptr ptr)
 {
     Assert((int32)ptr == 2, "");
     static int32 call_count = 0;
@@ -63,7 +64,7 @@ static void Queue_Test_Print_Data2(Data* a, tptr ptr)
     call_count++;
 }
 
-static bool Queue_Test_Find(Data* a, int32 v)
+static bool CallBack_Queue_Test_Find(Data* a, int32 v)
 {
     return a->m_a == v;
 }
@@ -80,13 +81,13 @@ static void Queue_Test0()
     Queue_Push(Data*, queue, &y);
     Queue_Push(Data*, queue, &z);
 
-    Queue_ForEach(queue, Queue_Test_Print_Data1, (tptr)2);
+    Queue_ForEach(queue, CallBack_Queue_Test_Print_Data1, (tptr)2);
 
-    Queue_RemoveFindFirst(Data*)(queue, (CB_FindData)Queue_Test_Find, (tptr)2);
+    Queue_RemoveFindFirst(Data*)(queue, (CB_FindData)CallBack_Queue_Test_Find, (tptr)2);
 
     Queue_ForEach(queue, Queue_Test_Print_Data2, (tptr)7);
 
-    Queue_RemoveFindFirst(Data*)(queue, (CB_FindData)Queue_Test_Find, (tptr)1);
+    Queue_RemoveFindFirst(Data*)(queue, (CB_FindData)CallBack_Queue_Test_Find, (tptr)1);
 
     Queue_Destroy(queue, NULL);
 }
@@ -179,9 +180,9 @@ void Actor_Test2()
     Actor_Component_Render_ShaderText_Add(actor, Vec3(0, 10, 0), "hello world" );
     Actor_Component_Render_ShaderText_Add(actor, Vec3(1, 2, 0), "goodbye world" );
 
-    RenderManager_RenderSence(sence);
+    RenderManager_RenderSence(RenderManager_GetInstance(), sence);
 
-    RenderManager_RenderToScreen();
+    RenderManager_RenderToScreen(RenderManager_GetInstance());
 
     Actor_Component_Del(actor, Component_Render);
 
@@ -197,9 +198,9 @@ void Actor_Test1()
     Actor_Component_New(actor, Component_Location);
     Actor_Component_Render_ShaderText_Add(actor, Vec3(2, 2, 0), "hello world" );
 
-    RenderManager_RenderSence(sence);
+    RenderManager_RenderSence(RenderManager_GetInstance(), sence);
 
-    RenderManager_RenderToScreen();
+    RenderManager_RenderToScreen(RenderManager_GetInstance());
 
     Actor_Component_Del(actor, Component_Location);
 
@@ -215,9 +216,9 @@ void Actor_Test0()
     Actor_Component_New(actor, Component_Render);
     Actor_Component_Render_ShaderText_Add(actor, Vec3(0, 10, 0), "hello world" );
 
-    RenderManager_RenderSence(sence);
+    RenderManager_RenderSence(RenderManager_GetInstance(), sence);
 
-    RenderManager_RenderToScreen();
+    RenderManager_RenderToScreen(RenderManager_GetInstance());
 
     Actor_Component_Del(actor, Component_Render);
 
@@ -226,16 +227,6 @@ void Actor_Test0()
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-void Engine_Test0()
-{
-    // Engine_Initialize();
-    //
-    // Engine_MainLoop();
-    //
-    // Engine_SetSence();
-
-}
-
 void Data32_Test0()
 {
     data32 d1 = Data32(int32, 32);
@@ -255,13 +246,29 @@ void Data32_Test0()
 }
 
 ////////////////////////////////////////////////////////////////////////////////
+void Engine_Test0()
+{
+    Sence* sence = Sence_Create(__FUNCTION__);
+    Actor* actor = Sence_Actor_Create(__FUNCTION__, sence);
+
+    Actor_Component_New(actor, Component_Render);
+    Actor_Component_Render_ShaderText_Add(actor, Vec3(0, 10, 0), "hello world" );
+
+    Engine_Sence_SetCurrentSence(sence);
+
+    Engine_MainLoop();
+
+
+    Actor_Component_Del(actor, Component_Render);
+
+    Sence_Actor_Destroy(sence, NULL, actor);
+    Sence_Destroy(sence);
+}
+
+////////////////////////////////////////////////////////////////////////////////
 void Engine_Debug_UnitTesting()
 {
     Engine_Profile_Memory();
-
-    Actor_Test2();
-
-    return;
 
     Data32_Test0();
 

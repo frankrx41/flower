@@ -39,10 +39,10 @@ struct RenderManagerPlatformData
     HANDLE      m_std_output;
 };
 
-void RenderManager_Initialize_Plat()
+void RenderManager_Initialize_Plat(RenderManager* render_manager)
 {
     RenderManagerPlatformData* data = MemNew(LOCAL_NAME, RenderManagerPlatformData);
-    RenderManager_SetPlatformData(data);
+    RenderManager_SetPlatformData(render_manager, data);
     data->m_width       = 80;
     data->m_height      = 25;
     data->m_buffer[0]   = MemNewSize(LOCAL_NAME, data->m_width*data->m_height*sizeof(PixData) );
@@ -62,17 +62,17 @@ void RenderManager_Initialize_Plat()
     SetConsoleCursorInfo(data->m_std_output, &cc_info);
 }
 
-static void Render_PrintCharAtXY_Plat(uint32 x, uint32 y, tchar ch)
+static void Render_PrintCharAtXY_Plat(RenderManager* render_manager, uint32 x, uint32 y, tchar ch)
 {
-    RenderManagerPlatformData* data = RenderManager_GetPlatformData();
+    RenderManagerPlatformData* data = RenderManager_GetPlatformData(render_manager);
     COORD coord_screen = { x, y };
     SetConsoleCursorPosition(data->m_std_output, coord_screen);
     printf("%c", ch);
 }
 
-void RenderManager_RenderToScreen_Plat()
+void RenderManager_RenderToScreen_Plat(RenderManager* render_manager)
 {
-    RenderManagerPlatformData* data = RenderManager_GetPlatformData();
+    RenderManagerPlatformData* data = RenderManager_GetPlatformData(render_manager);
 
     uint32 length = data->m_width * data->m_height;
 
@@ -83,16 +83,16 @@ void RenderManager_RenderToScreen_Plat()
             uint32 i = x + y*data->m_width;
             if( data->m_front_buffer[i].m_tchar != data->m_back_buffer[i].m_tchar )
             {
-                Render_PrintCharAtXY_Plat(x, y, data->m_back_buffer[i].m_tchar);
+                Render_PrintCharAtXY_Plat(render_manager, x, y, data->m_back_buffer[i].m_tchar);
                 Log(0, "%c", data->m_back_buffer[i].m_tchar);
             }
         }
     }
 }
 
-void RenderManager_SwapBuffer_Plat()
+void RenderManager_SwapBuffer_Plat(RenderManager* render_manager)
 {
-    RenderManagerPlatformData* data = RenderManager_GetPlatformData();
+    RenderManagerPlatformData* data = RenderManager_GetPlatformData(render_manager);
     PixData* back_buffer = data->m_back_buffer;
     data->m_back_buffer = data->m_front_buffer;
     data->m_front_buffer = back_buffer;
@@ -107,9 +107,9 @@ void RenderManager_SwapBuffer_Plat()
     }
 }
 
-static void Render_InBackBuffer_Plat(int32 x, int32 y, const tchar* str)
+void Render_InBackBuffer_Plat(RenderManager* render_manager, int32 x, int32 y, const tchar* str)
 {
-    RenderManagerPlatformData* data = RenderManager_GetPlatformData();
+    RenderManagerPlatformData* data = RenderManager_GetPlatformData(render_manager);
 
     uint32 index = data->m_width * y + x;
     for( uint32 i=0; str[i] != NULL; i++ )
@@ -118,14 +118,3 @@ static void Render_InBackBuffer_Plat(int32 x, int32 y, const tchar* str)
     }
 }
 
-void CallBack_Render_ShaderText_Plat(ShaderText* shader_text, vec3* actor_vec)
-{
-    if( ShaderText_IsDisable(shader_text) )
-    {
-        return;
-    }
-
-    vec3 vec = Vec3_Add(ShaderText_GetVec3(shader_text), *actor_vec);
-
-    Render_InBackBuffer_Plat((int32)vec.m_x, (int32)vec.m_y, ShaderText_GetStr(shader_text));
-}

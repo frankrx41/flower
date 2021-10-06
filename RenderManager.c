@@ -6,11 +6,13 @@
 #include "Sence.h"
 #include "RenderManager.h"
 
+#include "MemoryManager.h"
 
-void RenderManager_Initialize_Plat();
-void RenderManager_RenderToScreen_Plat();
-void RenderManager_SwapBuffer_Plat();
-void CallBack_Actor_RenderEachActor(Actor* actor, tptr ptr);
+
+void    RenderManager_Initialize_Plat       (RenderManager* render_manager);
+void    RenderManager_RenderToScreen_Plat   (RenderManager* render_manager);
+void    RenderManager_SwapBuffer_Plat       (RenderManager* render_manager);
+void    CallBack_Actor_RenderEachActor      (Actor* actor, RenderManager* render_manager);
 
 struct RenderManager
 {
@@ -18,37 +20,34 @@ struct RenderManager
     tptr            m_platform_data;
 };
 
-RenderManager* RenderManager_GetInstance()
-{
-    static RenderManager render_manager;
-    return &render_manager;
-}
 
-void RenderManager_Initialize()
+
+RenderManager* RenderManager_Create(const tchar* local_name)
 {
-    RenderManager* render_manager = RenderManager_GetInstance();
-    RenderManager_Initialize_Plat();
+    RenderManager* render_manager = MemNew(local_name, RenderManager);
+    RenderManager_Initialize_Plat(render_manager);
     render_manager->m_is_initialized = true;
+    return render_manager;
 }
 
-void RenderManager_SetPlatformData(tptr ptr)
+void RenderManager_SetPlatformData(RenderManager* render_manager, tptr ptr)
 {
-    RenderManager_GetInstance()->m_platform_data = ptr;
+    render_manager->m_platform_data = ptr;
 }
 
-tptr RenderManager_GetPlatformData()
+tptr RenderManager_GetPlatformData(RenderManager* render_manager)
 {
-    return RenderManager_GetInstance()->m_platform_data;
+    return render_manager->m_platform_data;
 }
 
-void RenderManager_RenderSence(Sence* sence)
+void RenderManager_RenderSence(RenderManager* render_manager, Sence* sence)
 {
-    Queue_ForEach(Sence_GetActorQueue(sence), CallBack_Actor_RenderEachActor, NULL);
+    Queue_ForEach(Sence_GetActorQueue(sence), CallBack_Actor_RenderEachActor, render_manager);
 }
 
-void RenderManager_RenderToScreen()
+void RenderManager_RenderToScreen(RenderManager* render_manager)
 {
-    RenderManager_RenderToScreen_Plat();
-    RenderManager_SwapBuffer_Plat();
+    RenderManager_RenderToScreen_Plat(render_manager);
+    RenderManager_SwapBuffer_Plat(render_manager);
 }
 

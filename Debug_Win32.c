@@ -13,7 +13,7 @@ void Engine_Debug_Break()
     __debugbreak();
 }
 
-void Engine_Log(int32 type, const tchar* format, ...)
+void Engine_Debug_Log(int32 type, const tchar* format, ...)
 {
     String* string = String_New(LOCAL_NAME, "");
     va_list ap;

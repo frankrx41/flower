@@ -9,9 +9,6 @@
 #include "Vec.h"
 #include "ShaderText.h"
 
-void CallBack_Render_ShaderText_Plat(ShaderText* shader_text, vec3 vec);
-
-
 // Location
 void Actor_Component_Location_Set(Actor* actor, vec3 vec)
 {
@@ -101,13 +98,39 @@ void Actor_Component_Action_EventRespond_Clear(Actor* actor)
 
 
 // CallBack
-void CallBack_Actor_RenderEachActor(Actor* actor, tptr ptr)
+typedef struct RenderManager RenderManager;
+
+void Render_InBackBuffer_Plat(RenderManager* render_manager, int32 x, int32 y, const tchar* str);
+
+typedef struct RenderManagerWithVec RenderManagerWithVec;
+struct RenderManagerWithVec
+{
+    RenderManager*  m_render_manager;
+    vec3            m_vec3;
+};
+
+void CallBack_Render_ShaderText_Plat(ShaderText* shader_text, RenderManagerWithVec* render_manager_with_vec)
+{
+    if( ShaderText_IsDisable(shader_text) )
+    {
+        return;
+    }
+
+    vec3 vec = Vec3_Add(ShaderText_GetVec3(shader_text), render_manager_with_vec->m_vec3);
+
+    Render_InBackBuffer_Plat(render_manager_with_vec->m_render_manager, (int32)vec.m_x, (int32)vec.m_y, ShaderText_GetStr(shader_text));
+}
+
+void CallBack_Actor_RenderEachActor(Actor* actor, RenderManager* render_manager)
 {
     RenderComponent* render_component = Actor_Component_Cast(actor, Component_Render);
     if( render_component )
     {
         vec3 vec = Actor_Component_Location_Get(actor);
-        Queue_ForEach(Component_Render_ShaderText_GetQueue(render_component), (CB_ProcessData)CallBack_Render_ShaderText_Plat, &vec);
+        RenderManagerWithVec render_manager_with_vec;
+        render_manager_with_vec.m_vec3              = vec;
+        render_manager_with_vec.m_render_manager    = render_manager;
+        Queue_ForEach(Component_Render_ShaderText_GetQueue(render_component), (CB_ProcessData)CallBack_Render_ShaderText_Plat, &render_manager_with_vec);
     }
 }
 

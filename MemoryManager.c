@@ -70,7 +70,7 @@ MemoryManager* MemoryManager_Create(const tchar* local_name)
     return memory_manager;
 }
 
-static bool Memory_Profile_FindData(MemoryProfileData* memory_profile_data, crc32 crc)
+static bool CallBack_Memory_Profile_FindData(MemoryProfileData* memory_profile_data, crc32 crc)
 {
     return memory_profile_data->m_crc == crc;
 }
@@ -88,7 +88,7 @@ tptr MemoryManager_Alloc(MemoryManager* memory_manager,const tchar* local_name, 
     if( is_profile )
     {
         Queue(MemoryProfileData*)* memory_profile_data_queue = memory_manager->m_local_name_queue;
-        MemoryProfileData* memory_profile_data = Queue_Find(MemoryProfileData*)( memory_profile_data_queue, (CB_FindData)Memory_Profile_FindData, (tptr)memory_block->m_crc );
+        MemoryProfileData* memory_profile_data = Queue_Find(MemoryProfileData*)( memory_profile_data_queue, (CB_FindData)CallBack_Memory_Profile_FindData, (tptr)memory_block->m_crc );
         if( memory_profile_data )
         {
             memory_profile_data->m_alloc_size += size;
@@ -125,7 +125,7 @@ void MemoryManager_Free(MemoryManager* memory_manager, tptr ptr)
     if( is_profile )
     {
         Queue(MemoryProfileData*)* memory_profile_data_queue = memory_manager->m_local_name_queue;
-        MemoryProfileData* memory_profile_data = Queue_Find(MemoryProfileData*)( memory_profile_data_queue, (CB_FindData)Memory_Profile_FindData, (tptr)memory_block->m_crc );
+        MemoryProfileData* memory_profile_data = Queue_Find(MemoryProfileData*)( memory_profile_data_queue, (CB_FindData)CallBack_Memory_Profile_FindData, (tptr)memory_block->m_crc );
         if( memory_profile_data )
         {
             memory_profile_data->m_alloc_size -= memory_block->m_alloc_size;
@@ -232,9 +232,8 @@ tsize Memory_GetSize(const tptr ptr)
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-typedef void (*ProcessDataFunc)(tptr data, tptr ptr);
 
-static void Memory_ProfileLog(MemoryProfileData* memory_profile_data, tptr ptr)
+static void CallBack_Memory_ProfileLog(MemoryProfileData* memory_profile_data, tptr ptr)
 {
     Log(0, "%-20s: %d / %d \n", String_CStr(memory_profile_data->m_local_name), memory_profile_data->m_alloc_size, memory_profile_data->m_alloc_size_max);
 }
@@ -246,6 +245,18 @@ void Engine_Profile_Memory()
     Queue(MemoryProfileData*)* memory_profile_data_queue = memory_manager->m_local_name_queue;
     Log(0, "Memory Profile\n");
     Log(0, "=====================================================\n");
-    Queue_ForEach( memory_profile_data_queue, Memory_ProfileLog, NULL );
+    Queue_ForEach( memory_profile_data_queue, CallBack_Memory_ProfileLog, NULL );
     Log(0, "=====================================================\n");
+}
+
+static void CallBack_Memory_Check_Memory_Leak(MemoryProfileData* memory_profile_data, tptr ptr)
+{
+    Assert(memory_profile_data->m_alloc_size == 0, "There has a memory leak!");
+}
+
+void Engine_Memory_Check_Memory_Leak()
+{
+    MemoryManager* memory_manager = MemoryManager_GetInstance();
+    Queue(MemoryProfileData*)* memory_profile_data_queue = memory_manager->m_local_name_queue;
+    Queue_ForEach( memory_profile_data_queue, CallBack_Memory_Check_Memory_Leak, NULL );
 }

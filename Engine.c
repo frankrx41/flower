@@ -15,21 +15,26 @@ struct Engine
 
     TimmingManager* m_timming_manager;
     MemoryManager*  m_memory_manager;
-
+    RenderManager*  m_render_manager;
+    
+    Sence*          m_current_sence;
 };
 
-
+RenderManager*      RenderManager_Create    (const tchar* local_name);
 MemoryManager*      MemoryManager_Create    (const tchar* local_name);
 TimmingManager*     TimmingManager_Create   (const tchar* local_name);
+void                Engine_Memory_Check_Memory_Leak ();
 
 void Engine_Initialize()
 {
     Engine* engine = Engine_GetInstance();
 
-    RenderManager_Initialize();
-
+    engine->m_render_manager    = RenderManager_Create(LOCAL_NAME);
     engine->m_timming_manager   = TimmingManager_Create(LOCAL_NAME);
     engine->m_memory_manager    = MemoryManager_Create(LOCAL_NAME);
+
+    TimmingManager_SetFrameRate(engine->m_timming_manager, 60);
+    
     engine->m_is_initialized    = true;
 }
 
@@ -45,8 +50,28 @@ void Engine_MainLoop()
 
     for(;;)
     {
-        TimmingManager_TrimSpeed(Engine_GetInstance()->m_timming_manager);
+        Sence* curent_sence = Engine_Sence_GetCurrentSence();
+        RenderManager_RenderSence(RenderManager_GetInstance(), curent_sence);
+
+        RenderManager_RenderToScreen(RenderManager_GetInstance());
+
+        TimmingManager_TrimSpeed(TimmingManager_GetInstance());
     }
+}
+
+void Engine_Exit()
+{
+    Engine_Memory_Check_Memory_Leak();
+}
+
+Sence* Engine_Sence_GetCurrentSence()
+{
+    return Engine_GetInstance()->m_current_sence;
+}
+
+void Engine_Sence_SetCurrentSence(Sence* sence)
+{
+    Engine_GetInstance()->m_current_sence = sence;
 }
 
 // TimmingManager
@@ -59,4 +84,16 @@ TimmingManager* TimmingManager_GetInstance()
 MemoryManager* MemoryManager_GetInstance()
 {
     return Engine_GetInstance()->m_memory_manager;
+}
+
+// RenderManager
+RenderManager* RenderManager_GetInstance()
+{
+    return Engine_GetInstance()->m_render_manager;
+}
+
+// Sence
+void Engin_Sence_SetCurrentSence(Sence* sence)
+{
+    Engine_GetInstance()->m_current_sence;
 }

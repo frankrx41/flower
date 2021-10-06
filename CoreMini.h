@@ -20,6 +20,8 @@ typedef int             int32;
 typedef unsigned int    uint32;
 typedef unsigned char   byte;
 typedef char*           va_list;
+typedef __int64         int64;
+typedef unsigned __int64 uint64;
 
 typedef signed char     tchar;
 typedef void *          tptr;
@@ -41,11 +43,11 @@ typedef tchar bool;
 #if CONFIG_DEBUG
 
 // 0 info, 1 warn, 2 error
-void    Engine_Log              (int32 type, const tchar* format, ...);
+void    Engine_Debug_Log              (int32 type, const tchar* format, ...);
 bool    Str_IsEmpty             (const tchar* str);
 void    Engine_Debug_Break      ();
 void    Engine_Profile_Memory   ();
-#define Log                     Engine_Log
+#define Log                     Engine_Debug_Log
 
 #define Assert(must_true_condition, msg, ...) do{ \
     if(!(must_true_condition)) { \

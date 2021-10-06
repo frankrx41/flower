@@ -17,7 +17,7 @@ struct TimmingManager
 };
 
 float   TimmingManager_TrimSpeed_Plat       (TimmingManager* timming_manager, TimmingPlatformData* timming_platform_data);
-void    TimmingManager_SetFrameRate_Plat    (TimmingManager* timming_manager, float fps);
+void    TimmingManager_SetFrameRate_Plat    (TimmingPlatformData* timming_manager, float fps);
 tptr    TimmingManager_PlatformData_Create  (const tchar* local_name);
 
 
@@ -48,7 +48,7 @@ void TimmingManager_SetFrameRate(TimmingManager* timming_manager, float fps)
 {
     Assert(timming_manager->m_is_initialized == true, NULL);
     timming_manager->m_frame_rate = fps;
-    TimmingManager_SetFrameRate_Plat(timming_manager, fps);
+    TimmingManager_SetFrameRate_Plat(timming_manager->m_platform_data, fps);
 }
 
 void TimmingManager_SetFrameRateLimit(TimmingManager* timming_manager, bool is_limit)
@@ -66,4 +66,6 @@ bool TimmingManager_IslimitFrameRate(TimmingManager* timming_manager)
 void TimmingManager_TrimSpeed(TimmingManager* timming_manager)
 {
     timming_manager->m_prev_frame_delta_seconds = TimmingManager_TrimSpeed_Plat(timming_manager, timming_manager->m_platform_data);
+    // Log(0, "%f\n", timming_manager->m_prev_frame_delta_seconds);
+    Assert(timming_manager->m_prev_frame_delta_seconds < 1.f, "Fps is too low!");
 }
