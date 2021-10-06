@@ -8,6 +8,7 @@
 #include "RenderComponent.h"
 #include "Vec.h"
 #include "ShaderText.h"
+#include "Sence.h"
 
 // Location
 void Actor_Component_Location_Set(Actor* actor, vec3 vec)
@@ -73,6 +74,7 @@ void Actor_Component_Action_EventRespond_Add(Actor* actor, Event event, CB_Event
     if( action_component )
     {
         Component_Action_EventRespond_Add(action_component, event, cb_event_respond);
+        Sence_Actor_AddEventGroup(Actor_GetSence(actor), actor, event);
     }
 }
 

@@ -75,6 +75,12 @@ void Sence_Actor_SendEvent(Sence* sence, Event event)
     Queue_ForEach(sence->m_actor_event_queue_list[event], (CB_ProcessData)CallBack_Actor_ProcessEachActorEvent, &event_struct);
 }
 
+void Sence_Actor_AddEventGroup(Sence* sence, Actor* actor, Event event)
+{
+    Assert(event > Event_Null && event < Event_Max, "Invalid event!");
+    Queue_Push(Actor*, sence->m_actor_event_queue_list[event], actor);
+}
+
 tptr Sence_GetActorQueue(Sence* sence)
 {
     return sence->m_actor_queue;

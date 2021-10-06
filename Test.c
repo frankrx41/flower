@@ -255,7 +255,7 @@ void CallBack_ActorOnEvent(Actor* actor, EventStruct* event_struct)
     // float x = Actor_Component_Storage_ReadData32(actor, Str_CalcCrc("X", 0)).m_float;
     // float y = Actor_Component_Storage_ReadData32(actor, Str_CalcCrc("Y", 0)).m_float;
 
-    Actor_Component_Location_Move(actor, Vec3(0.1f, 0.1f, 0));
+    Actor_Component_Location_Move(actor, Vec3(0.2f, 0.05f, 0));
 }
 
 void Engine_Test0()
@@ -267,6 +267,9 @@ void Engine_Test0()
     Actor_Component_Render_ShaderText_Add(actor, Vec3(5, 5, 0), "hello world" );
 
     Actor_Component_New(actor, Component_Action);
+    Actor_Component_New(actor, Component_Location);
+
+    Actor_Component_Location_Set(actor, Vec3(0,0,0));
     Actor_Component_Action_EventRespond_Add(actor, Event_Tick, CallBack_ActorOnEvent);
 
 

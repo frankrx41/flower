@@ -4,6 +4,8 @@
 #include "MemoryManager.h"
 #include "TimmingManager.h"
 #include "RenderManager.h"
+#include "Sence.h"
+#include "Event.h"
 
 #define LOCAL_NAME          "GPYM"
 
@@ -56,6 +58,7 @@ void Engine_MainLoop()
         RenderManager_RenderToScreen(RenderManager_GetInstance());
 
         TimmingManager_TrimSpeed(TimmingManager_GetInstance());
+        Sence_Actor_SendEvent(curent_sence, Event_Tick);
     }
 }
 

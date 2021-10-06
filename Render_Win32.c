@@ -112,7 +112,7 @@ void Render_InBackBuffer_Plat(RenderManager* render_manager, int32 x, int32 y, c
     RenderManagerPlatformData* data = RenderManager_GetPlatformData(render_manager);
 
     uint32 index = data->m_width * y + x;
-    for( uint32 i=0; str[i] != NULL; i++ )
+    for( uint32 i=0; str[i] != NULL && index+i < data->m_width*data->m_height; i++ )
     {
         data->m_back_buffer[index+i].m_tchar = str[i];
     }

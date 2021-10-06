@@ -29,7 +29,8 @@ void    Actor_Component_New     (Actor* actor, const tchar* component_name, Comp
 void    Actor_Component_Del     (Actor* actor, const tchar* component_name, Component component_enum, CB_ComponentDestroy cb_component_destroy_func);
 tptr    Actor_Component_Cast    (Actor* actor, const tchar* component_name, Component component_enum);
 
-const tchar* Actor_GetLocalName (Actor* actor);
+const tchar*    Actor_GetLocalName  (Actor* actor);
+Sence*          Actor_GetSence      (Actor* actor);
 
 // #define Actor_Component_Add(actor, component)   Actor_Component_Add(actor, MACRO_TOSTR(component), MACRO_CONNNECT(MACRO_CONNNECT(Component_,component),_Create)(Actor_GetLocalName(actor)))
 

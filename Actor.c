@@ -25,7 +25,6 @@ struct Actor
     uint32                  m_id;
     String*                 m_local_name;
     Storage*                m_component;
-    // Queue(ActorEventRespond*)*    m_event_action_queue;
     Sence*                  m_sence;
 };
 
@@ -75,5 +74,10 @@ tptr Actor_Component_Cast(Actor* actor, const tchar* component_name, Component c
 const tchar* Actor_GetLocalName(Actor* actor)
 {
     return String_CStr(actor->m_local_name);
+}
+
+Sence* Actor_GetSence(Actor* actor)
+{
+    return actor->m_sence;
 }
 
