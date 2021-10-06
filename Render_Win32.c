@@ -48,6 +48,9 @@ void RenderManager_Initialize_Plat()
     data->m_buffer[0]   = MemNewSize(LOCAL_NAME, data->m_width*data->m_height*sizeof(PixData) );
     data->m_buffer[1]   = MemNewSize(LOCAL_NAME, data->m_width*data->m_height*sizeof(PixData) );
 
+    MemZero(data->m_buffer[0]);
+    MemZero(data->m_buffer[1]);
+
     data->m_front_buffer = data->m_buffer[0];
     data->m_back_buffer = data->m_buffer[1];
 
@@ -64,9 +67,7 @@ static void Render_PrintCharAtXY_Plat(uint32 x, uint32 y, tchar ch)
     RenderManagerPlatformData* data = RenderManager_GetPlatformData();
     COORD coord_screen = { x, y };
     SetConsoleCursorPosition(data->m_std_output, coord_screen);
-    {
-        printf("%c", ch);
-    }
+    printf("%c", ch);
 }
 
 void RenderManager_RenderToScreen_Plat()
@@ -83,6 +84,7 @@ void RenderManager_RenderToScreen_Plat()
             if( data->m_front_buffer[i].m_tchar != data->m_back_buffer[i].m_tchar )
             {
                 Render_PrintCharAtXY_Plat(x, y, data->m_back_buffer[i].m_tchar);
+                Log(0, "%c", data->m_back_buffer[i].m_tchar);
             }
         }
     }
@@ -94,9 +96,18 @@ void RenderManager_SwapBuffer_Plat()
     PixData* back_buffer = data->m_back_buffer;
     data->m_back_buffer = data->m_front_buffer;
     data->m_front_buffer = back_buffer;
+
+    if( data->m_back_buffer == data->m_buffer[0] )
+    {
+        MemZero(data->m_buffer[0]);
+    }
+    else
+    {
+        MemZero(data->m_buffer[1]);
+    }
 }
 
-static void Render_InBackBuff_Plat(int32 x, int32 y, const tchar* str)
+static void Render_InBackBuffer_Plat(int32 x, int32 y, const tchar* str)
 {
     RenderManagerPlatformData* data = RenderManager_GetPlatformData();
 
@@ -116,5 +127,5 @@ void CallBack_Render_ShaderText_Plat(ShaderText* shader_text, vec3* actor_vec)
 
     vec3 vec = Vec3_Add(ShaderText_GetVec3(shader_text), *actor_vec);
 
-    Render_InBackBuff_Plat((int32)vec.m_x, (int32)vec.m_y, ShaderText_GetStr(shader_text));
+    Render_InBackBuffer_Plat((int32)vec.m_x, (int32)vec.m_y, ShaderText_GetStr(shader_text));
 }

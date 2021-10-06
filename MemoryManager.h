@@ -23,5 +23,6 @@ MemoryManager* MemoryManager_GetInstance();
 #define MemNewSize(local_name, size)        MemoryManager_Alloc(MemoryManager_GetInstance(), local_name, size)
 #define MemClone(local_name, ptr)           MemoryManager_Clone(MemoryManager_GetInstance(), local_name, (tptr)ptr)
 #define MemSafeClone(local_name, ptr)       MemoryManager_SafeClone(MemoryManager_GetInstance(), local_name, (tptr)ptr)
+#define MemZero(ptr)                        Memory_Zero(ptr)
 #define MemDel(ptr)                         do{MemoryManager_Free(MemoryManager_GetInstance(), ptr); ptr = NULL;}while(0)
 #define MemSafeDel(ptr)                     do{if(ptr){MemoryManager_Free(MemoryManager_GetInstance(), ptr); ptr = NULL;}}while(0)

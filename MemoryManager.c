@@ -239,6 +239,7 @@ static void Memory_ProfileLog(MemoryProfileData* memory_profile_data, tptr ptr)
     Log(0, "%-20s: %d / %d \n", String_CStr(memory_profile_data->m_local_name), memory_profile_data->m_alloc_size, memory_profile_data->m_alloc_size_max);
 }
 
+#undef Engine_Profile_Memory
 void Engine_Profile_Memory()
 {
     MemoryManager* memory_manager = MemoryManager_GetInstance();
