@@ -170,15 +170,14 @@ void Actor_Test0()
     Sence* sence = Sence_Create(__FUNCTION__);
     Actor* actor = Sence_Actor_Create(__FUNCTION__, sence);
 
-    Actor_Component_Add(actor, Render);
-    Actor_RenderComponent_RenderDataText_Add(actor, 0, 10, "hello world" );
+    Actor_Component_New(actor, Component_Render);
+    Actor_Component_Render_RenderDataText_Add(actor, 0, 10, "hello world" );
 
     RenderManager_RenderSenceActor(sence);
 
     RenderManager_RenderToScreen();
 
-    Actor_Component_Del(actor, Render);
-
+    Actor_Component_Del(actor, Component_Render);
 
     Actor_Destroy(actor);
     Sence_Destroy(sence);

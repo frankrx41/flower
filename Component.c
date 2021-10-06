@@ -59,10 +59,10 @@ void Component_Render_RenderDataText_ClearAll(RenderComponent* render_component)
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-RenderDataText* Actor_RenderComponent_RenderDataText_Add(Actor* actor, uint32 x, uint32 y, const tchar* str)
+RenderDataText* Actor_Component_Render_RenderDataText_Add(Actor* actor, uint32 x, uint32 y, const tchar* str)
 {
     Assert(actor != NULL, "");
-    RenderComponent* render_component = Actor_Component_Cast(actor, Render);
+    RenderComponent* render_component = Actor_Component_Cast(actor, Component_Render);
     if( render_component )
     {
         RenderDataText* render_data = RenderDataText_Create(Actor_GetLocalName(actor), x, y, str);
@@ -72,9 +72,9 @@ RenderDataText* Actor_RenderComponent_RenderDataText_Add(Actor* actor, uint32 x,
     return NULL;
 }
 
-void Actor_RenderComponent_RenderDataText_ClearAll(Actor* actor)
+void Actor_Component_Render_RenderDataText_ClearAll(Actor* actor)
 {
-    RenderComponent* render_component = Actor_Component_Cast(actor, Render);
+    RenderComponent* render_component = Actor_Component_Cast(actor, Component_Render);
     if( render_component )
     {
         Component_Render_RenderDataText_ClearAll(render_component);
@@ -84,7 +84,7 @@ void Actor_RenderComponent_RenderDataText_ClearAll(Actor* actor)
 ////////////////////////////////////////////////////////////////////////////////
 void RenderManager_RenderEachActor(Actor* actor, tptr ptr)
 {
-    RenderComponent* render_component = Actor_Component_Cast(actor, Render);
+    RenderComponent* render_component = Actor_Component_Cast(actor, Component_Render);
     if( render_component )
     {
         Queue_ForEach(Component_Render_RenderDataText_GetQueue(render_component), RenderManager_RenderEachRenderDataText_Plat, NULL);
