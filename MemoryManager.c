@@ -29,6 +29,7 @@ struct MemoryProfileData
     String* m_local_name;
     crc32   m_crc;
     tsize   m_alloc_size;
+    tsize   m_alloc_size_max;
 };
 
 //  +----+--------------+-------------------------
@@ -91,6 +92,10 @@ tptr MemoryManager_Alloc(MemoryManager* memory_manager,const tchar* local_name, 
         if( memory_profile_data )
         {
             memory_profile_data->m_alloc_size += size;
+            if( memory_profile_data->m_alloc_size > memory_profile_data->m_alloc_size_max )
+            {
+                memory_profile_data->m_alloc_size_max = memory_profile_data->m_alloc_size;
+            }
         }
         else
         {
@@ -98,6 +103,7 @@ tptr MemoryManager_Alloc(MemoryManager* memory_manager,const tchar* local_name, 
             memory_profile_data->m_crc = memory_block->m_crc;
             memory_profile_data->m_local_name = String_New(LOCAL_NAME, local_name);
             memory_profile_data->m_alloc_size = size;
+            memory_profile_data->m_alloc_size_max = size;
             Queue_Push(MemoryProfileData*, memory_profile_data_queue, memory_profile_data);
         }
     }
@@ -230,7 +236,7 @@ typedef void (*ProcessDataFunc)(tptr data, tptr ptr);
 
 static void Memory_ProfileLog(MemoryProfileData* memory_profile_data, tptr ptr)
 {
-    Log(0, "%-20s: %d \n", String_CStr(memory_profile_data->m_local_name), memory_profile_data->m_alloc_size);
+    Log(0, "%-20s: %d / %d \n", String_CStr(memory_profile_data->m_local_name), memory_profile_data->m_alloc_size, memory_profile_data->m_alloc_size_max);
 }
 
 void Engine_Profile_Memory()
