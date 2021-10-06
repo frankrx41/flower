@@ -11,6 +11,7 @@
 #include <windows.h>
 
 #include "RenderComponent.h"
+#include "ShaderText.h"
 
 
 typedef struct RenderManagerPlatformData RenderManagerPlatformData;
@@ -93,20 +94,25 @@ void RenderManager_SwapBuffer_Plat()
     data->m_front_buffer = back_buffer;
 }
 
-void CallBack_Render_ShaderText_Plat(ShaderText* shader_text, vec3 vec)
+static void Render_InBackBuff_Plat(int32 x, int32 y, const tchar* str)
 {
-    // TODO
-    // if( shader_text->m_disable )
-    // {
-    //     return;
-    // }
-
     RenderManagerPlatformData* data = RenderManager_GetPlatformData();
 
-    // TODO: Use Actor Location
-    // uint32 index = data->m_width * shader_text->m_offset_y + shader_text->m_offset_x;
-    // for( uint32 i=0; i<String_GetLength(shader_text->m_string); i++ )
-    // {
-    //     data->m_back_buffer[index+i].m_tchar = String_CStr(shader_text->m_string)[i];
-    // }
+    uint32 index = data->m_width * y + x;
+    for( uint32 i=0; str[i] != NULL; i++ )
+    {
+        data->m_back_buffer[index+i].m_tchar = str[i];
+    }
+}
+
+void CallBack_Render_ShaderText_Plat(ShaderText* shader_text, vec3 actor_vec)
+{
+    if( ShaderText_IsDisable(shader_text) )
+    {
+        return;
+    }
+
+    vec3 vec = Vec3_Add(ShaderText_GetVec3(shader_text), actor_vec);
+
+    Render_InBackBuff_Plat((int32)vec.m_x, (int32)vec.m_y, ShaderText_GetStr(shader_text));
 }
