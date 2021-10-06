@@ -48,6 +48,9 @@
     <ClCompile Include="TimmingManager.c">
       <Filter>Engine</Filter>
     </ClCompile>
+    <ClCompile Include="Data32.c">
+      <Filter>Library\Data32</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CoreMini.h" />
@@ -84,6 +87,9 @@
     <ClInclude Include="TimmingManager.h">
       <Filter>Engine</Filter>
     </ClInclude>
+    <ClInclude Include="Data32.h">
+      <Filter>Library\Data32</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Platform">
@@ -115,6 +121,9 @@
     </Filter>
     <Filter Include="Sence\Actor">
       <UniqueIdentifier>{9a4dcc65-aff1-45e9-b61f-cea1b87fc800}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Library\Data32">
+      <UniqueIdentifier>{3271d12d-2253-4b03-aeb7-559e9c26077d}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

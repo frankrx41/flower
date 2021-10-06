@@ -11,6 +11,8 @@
 
 #include <stdio.h>
 
+#include "Data32.h"
+
 
 static void Storage_Test0()
 {
@@ -181,10 +183,26 @@ void Engine_Test0()
 
 }
 
+void Data32_Test0()
+{
+    data32 d1 = Data32(int32, 32);
+    data32 d2 = Data32(float, 3.2);
+    data32 d3 = Data32(tptr, &d1);
+    int32 i = Data32_Cast(int32, d1);
+    float f = Data32_Cast(float, d2);
+    tptr p = Data32_Cast(tptr, d3);
+
+    Assert(i == 32, "");
+    Assert(f == 3.2, "");
+    Assert(p == &d1, "");
+}
+
 ////////////////////////////////////////////////////////////////////////////////
 void Engine_Debug_UnitTesting()
 {
     Engine_Profile_Memory();
+
+    Data32_Test0();
 
     Storage_Test0();
 
