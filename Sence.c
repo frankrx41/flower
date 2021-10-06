@@ -34,6 +34,10 @@ Sence* Sence_Create(const tchar* local_name)
 void Sence_Destroy(Sence* sence)
 {
     Queue_Destroy(sence->m_actor_queue, Actor_Destroy);
+    for(uint32 i=0; i<Event_Max; i++)
+    {
+        Queue_Destroy(sence->m_actor_event_queue_list[i], NULL);
+    }
     String_Del(sence->m_local_name);
     MemDel(sence);
 }
