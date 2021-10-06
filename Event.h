@@ -5,7 +5,9 @@ typedef enum Event Event;
 enum Event
 {
     Event_Null,
+
     Event_Tick,
+
     Event_OnKey_Any_Down,
     Event_OnKey_Any_Up,
     Event_OnKey_Any_Hold,

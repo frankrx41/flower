@@ -134,9 +134,17 @@ void CallBack_Actor_RenderEachActor(Actor* actor, RenderManager* render_manager)
     }
 }
 
-void CallBack_Actor_ProcessEachActorEvent(Actor* actor, Event event)
+void CallBack_Actor_ProcessEachActorEvent(Actor* actor, EventStruct* event_struct)
 {
     ActionComponent* action_component = Actor_Component_Cast(actor, Component_Action);
-    CB_EventRespond cb_actor_respond = Component_Action_EventRespond_Get(action_component, event);
-    cb_actor_respond(actor, NULL);
+
+    CB_EventRespond cb_actor_respond = Component_Action_EventRespond_Get(action_component, event_struct->m_event);
+
+    Assert(cb_actor_respond != NULL, "");
+
+    EventStruct event_struct_new;
+    event_struct_new.m_event    = event_struct->m_event;
+    event_struct_new.m_sence    = event_struct->m_sence;
+    event_struct_new.m_actor    = actor;
+    cb_actor_respond(actor, &event_struct_new);
 }

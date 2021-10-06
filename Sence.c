@@ -4,6 +4,8 @@
 #include "Queue.h"
 #include "String.h"
 #include "Sence.h"
+
+#include "ActionComponent.h"
 #include "Actor.h"
 #include "Event.h"
 
@@ -63,11 +65,14 @@ void Sence_Actor_Destroy(Sence* sence, CB_FindData cb_find_actor, tptr ptr)
     }
 }
 
-void CallBack_Actor_ProcessEachActorEvent(Actor* actor, Event event);
+void CallBack_Actor_ProcessEachActorEvent(Actor* actor, EventStruct* event_struct);
 
 void Sence_Actor_SendEvent(Sence* sence, Event event)
 {
-    Queue_ForEach(sence->m_actor_event_queue_list[event], (CB_ProcessData)CallBack_Actor_ProcessEachActorEvent, (tptr)event);
+    EventStruct event_struct;
+    event_struct.m_event    = event;
+    event_struct.m_sence    = sence;
+    Queue_ForEach(sence->m_actor_event_queue_list[event], (CB_ProcessData)CallBack_Actor_ProcessEachActorEvent, &event_struct);
 }
 
 tptr Sence_GetActorQueue(Sence* sence)

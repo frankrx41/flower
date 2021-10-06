@@ -2,7 +2,18 @@
 
 typedef enum Event Event;
 typedef struct ActionComponent ActionComponent;
-typedef void (*CB_EventRespond)(Actor*, tptr);
+typedef struct Sence Sence;
+typedef struct Actor Actor;
+
+typedef struct EventStruct EventStruct;
+struct EventStruct
+{
+    Event   m_event;
+    Actor*  m_actor;
+    Sence*  m_sence;
+};
+
+typedef void (*CB_EventRespond)(Actor*, EventStruct*);
 
 
 ActionComponent*    Component_Action_Create     (const tchar* local_name);

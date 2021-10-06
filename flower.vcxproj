@@ -98,6 +98,7 @@
     <ClCompile Include="Sence.c" />
     <ClCompile Include="ShaderText.c" />
     <ClCompile Include="Storage.c" />
+    <ClCompile Include="StorageComponent.c" />
     <ClCompile Include="String.c" />
     <ClCompile Include="Test.c" />
     <ClCompile Include="TimmingManager.c" />
@@ -122,6 +123,7 @@
     <ClInclude Include="Sence.h" />
     <ClInclude Include="ShaderText.h" />
     <ClInclude Include="Storage.h" />
+    <ClInclude Include="StorageComponent.h" />
     <ClInclude Include="String.h" />
     <ClInclude Include="TimmingManager.h" />
     <ClInclude Include="Vec.h" />

@@ -8,5 +8,6 @@ enum Component
     Component_Render,
     Component_Action,
     Component_Location,
+    Component_Storage,
 };
 

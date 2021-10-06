@@ -66,6 +66,9 @@
     <ClCompile Include="ActionComponent.c">
       <Filter>Sence\Actor\Component</Filter>
     </ClCompile>
+    <ClCompile Include="StorageComponent.c">
+      <Filter>Sence\Actor\Component</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CoreMini.h" />
@@ -122,6 +125,9 @@
       <Filter>Render</Filter>
     </ClInclude>
     <ClInclude Include="ActionComponent.h">
+      <Filter>Sence\Actor\Component</Filter>
+    </ClInclude>
+    <ClInclude Include="StorageComponent.h">
       <Filter>Sence\Actor\Component</Filter>
     </ClInclude>
   </ItemGroup>
