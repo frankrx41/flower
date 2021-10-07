@@ -15,7 +15,7 @@ tptr    Queue_Find          (const Queue* queue, CB_FindData cb_find_data, tptr 
 uint32  Queue_GetLength     (const Queue* queue);
 void    Queue_ForEach       (const Queue* queue, CB_ProcessData cb_process_data, tptr ptr);
 
-void    Queue_Push          (Queue* queue, tptr reference_data, const tchar* type_str);
+void    Queue_Push          (const tchar* local_name, Queue* queue, tptr reference_data, const tchar* type_str);
 
 tptr    Queue_Pop           (Queue* queue);
 tptr    Queue_Dequeue       (Queue* queue);
@@ -31,7 +31,7 @@ void    Queue_Sort          (Queue* queue, CB_CompareData cb_compare_data);
 #undef Queue
 #define Queue(type)                             struct Queue
 #define Queue_Create(local_name, type)          Queue_Create(local_name, #type)
-#define Queue_Push(type, queue, reference_data) Queue_Push(queue, (tptr)reference_data, MACRO_TOSTR(type))
+#define Queue_Push(type, local_name, queue, reference_data) Queue_Push(local_name, queue, (tptr)reference_data, MACRO_TOSTR(type))
 #define Queue_Find(type)                        (type)Queue_Find
 #define Queue_Pop(type)                         (type)Queue_Pop
 #define Queue_Dequeue(type)                     (type)Queue_Dequeue

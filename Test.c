@@ -81,9 +81,9 @@ static void Queue_Test0()
     Data y = {2};
     Data z = {3};
 
-    Queue_Push(Data*, queue, &x);
-    Queue_Push(Data*, queue, &y);
-    Queue_Push(Data*, queue, &z);
+    Queue_Push(Data*, __FUNCTION__, queue, &x);
+    Queue_Push(Data*, __FUNCTION__, queue, &y);
+    Queue_Push(Data*, __FUNCTION__, queue, &z);
 
     Queue_ForEach(queue, CallBack_Queue_Test_Print_Data1, (tptr)2);
 

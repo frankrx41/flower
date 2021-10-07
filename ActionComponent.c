@@ -48,7 +48,7 @@ void Component_Action_EventRespond_Add(ActionComponent* action_component, Event 
     EventRespond* event_respond = MemNew(String_CStr(action_component->m_local_name), EventRespond);
     event_respond->m_event              = event;
     event_respond->m_cb_actor_respond   = cb_event_respond;
-    Queue_Push(EventRespond*, action_component->m_event_respond_queue, event_respond);
+    Queue_Push(EventRespond*, NULL, action_component->m_event_respond_queue, event_respond);
 }
 
 static bool CallBack_EventRespond_FindEvent(EventRespond* event_respond, Event event)

@@ -36,7 +36,7 @@ SenceManager* SenceManager_Create(const tchar* local_name)
 Sence* SenceManager_Sence_Create(SenceManager* sence_manager, const tchar* local_name)
 {
     Sence* sence = Sence_Create(local_name);
-    Queue_Push(Sence*, sence_manager->m_sence_queue, sence);
+    Queue_Push(Sence*, local_name, sence_manager->m_sence_queue, sence);
 
     return sence;
 }

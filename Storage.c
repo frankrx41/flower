@@ -58,7 +58,7 @@ void Storage_StoreData32(Storage* storage, crc32 variable, data32 data)
     store_content->m_crc        = variable;
     store_content->m_data32     = data;
 
-    Queue_Push(StoreContent*, storage->m_store_queue, store_content);
+    Queue_Push(StoreContent*, NULL, storage->m_store_queue, store_content);
 }
 
 static bool CallBack_Storage_FindVariable(StoreContent* store_content, crc32 variable)

@@ -92,11 +92,15 @@ uint32 Queue_GetLength(const Queue* queue)
     return queue->m_length;
 }
 
-void Queue_Push(Queue* queue, tptr reference_data, const tchar* type_str)
+void Queue_Push(const tchar* local_name, Queue* queue, tptr reference_data, const tchar* type_str)
 {
     Assert(Str_CalcCrc(type_str, 0) == queue->m_type_crc32, "Push type is different from create type, do you forget the star(*) ?");
 
-    Node* new_node = MemNew(String_CStr(queue->m_local_name), Node);
+    if( local_name == NULL )
+    {
+        local_name = String_CStr(queue->m_local_name);
+    }
+    Node* new_node = MemNew(local_name, Node);
     new_node->m_reference_data = reference_data;
 
     Node* last_node = queue->m_head->m_node_prev;

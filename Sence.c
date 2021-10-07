@@ -46,7 +46,7 @@ void Sence_Destroy(Sence* sence)
 Actor* Sence_Actor_Create(const tchar* local_name, Sence* sence)
 {
     Actor* actor = Actor_Create(local_name, sence, sence->m_alloc_actor_id++);
-    Queue_Push(Actor*, sence->m_actor_queue, actor);
+    Queue_Push(Actor*, local_name, sence->m_actor_queue, actor);
     return actor;
 }
 
@@ -75,7 +75,7 @@ void Sence_Actor_SendEvent(Sence* sence, EventInfo* event_info)
 void Sence_Actor_AddEventGroup(Sence* sence, Actor* actor, Event event)
 {
     Assert(event > Event_Null && event < Event_Max, "Invalid event!");
-    Queue_Push(Actor*, sence->m_actor_event_queue_list[event], actor);
+    Queue_Push(Actor*, NULL, sence->m_actor_event_queue_list[event], actor);
 }
 
 tptr Sence_GetActorQueue(Sence* sence)

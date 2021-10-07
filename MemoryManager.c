@@ -112,7 +112,7 @@ tptr MemoryManager_Alloc(MemoryManager* memory_manager,const tchar* local_name, 
             memory_profile_data->m_local_name = String_New(LOCAL_NAME, local_name);
             memory_profile_data->m_alloc_size = size;
             memory_profile_data->m_alloc_size_max = size;
-            Queue_Push(MemoryProfileData*, memory_profile_data_queue, memory_profile_data);
+            Queue_Push(MemoryProfileData*, NULL, memory_profile_data_queue, memory_profile_data);
         }
     }
     else
