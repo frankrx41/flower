@@ -183,9 +183,9 @@ void Actor_Test2()
     Actor_Component_Render_ShaderText_Add(actor, Vec3(0, 10, 0), "hello world" );
     Actor_Component_Render_ShaderText_Add(actor, Vec3(1, 2, 0), "goodbye world" );
 
-    RenderManager_RenderSence(RenderManager_GetInstance(), sence);
+    RenderManager_RenderSence(RenderManager_GetInstance(Engine_GetInstance()), sence);
 
-    RenderManager_RenderToScreen(RenderManager_GetInstance());
+    RenderManager_RenderToScreen(RenderManager_GetInstance(Engine_GetInstance()));
 
     Actor_Component_Del(actor, Component_Render);
 
@@ -201,9 +201,9 @@ void Actor_Test1()
     Actor_Component_New(actor, Component_Location);
     Actor_Component_Render_ShaderText_Add(actor, Vec3(2, 2, 0), "hello world" );
 
-    RenderManager_RenderSence(RenderManager_GetInstance(), sence);
+    RenderManager_RenderSence(RenderManager_GetInstance(Engine_GetInstance()), sence);
 
-    RenderManager_RenderToScreen(RenderManager_GetInstance());
+    RenderManager_RenderToScreen(RenderManager_GetInstance(Engine_GetInstance()));
 
     Actor_Component_Del(actor, Component_Location);
 
@@ -219,9 +219,9 @@ void Actor_Test0()
     Actor_Component_New(actor, Component_Render);
     Actor_Component_Render_ShaderText_Add(actor, Vec3(0, 10, 0), "hello world" );
 
-    RenderManager_RenderSence(RenderManager_GetInstance(), sence);
+    RenderManager_RenderSence(RenderManager_GetInstance(Engine_GetInstance()), sence);
 
-    RenderManager_RenderToScreen(RenderManager_GetInstance());
+    RenderManager_RenderToScreen(RenderManager_GetInstance(Engine_GetInstance()));
 
     Actor_Component_Del(actor, Component_Render);
 
@@ -279,7 +279,7 @@ void Engine_Test0()
     Actor_Component_Action_EventRespond_Add(actor, Event_Tick, CallBack_ActorOnEvent);
 
 
-    Engine_Sence_SetCurrentSence(sence);
+    Engine_Sence_SetCurrentSence(Engine_GetInstance(), sence);
 
     Engine_MainLoop();
 

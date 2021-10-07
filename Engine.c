@@ -59,14 +59,14 @@ void Engine_MainLoop()
 
     for(;!Engine_GetInstance()->m_is_exit;)
     {
-        Sence* curent_sence = Engine_Sence_GetCurrentSence();
-        RenderManager_RenderSence(RenderManager_GetInstance(), curent_sence);
+        Sence* curent_sence = Engine_Sence_GetCurrentSence(Engine_GetInstance());
+        RenderManager_RenderSence(RenderManager_GetInstance(Engine_GetInstance()), curent_sence);
 
-        RenderManager_RenderToScreen(RenderManager_GetInstance());
+        RenderManager_RenderToScreen(RenderManager_GetInstance(Engine_GetInstance()));
 
-        TimmingManager_TrimSpeed(TimmingManager_GetInstance());
+        TimmingManager_TrimSpeed(TimmingManager_GetInstance(Engine_GetInstance()));
 
-        EventManager_SendEvent(Event_Tick, TimmingManager_GetPrevFrameDeltaSeconds(TimmingManager_GetInstance()));
+        EventManager_SendEvent(Event_Tick, TimmingManager_GetPrevFrameDeltaSeconds(TimmingManager_GetInstance(Engine_GetInstance())));
     }
 }
 
@@ -80,42 +80,37 @@ void Engine_UnInitialize()
     Engine_Memory_Check_Memory_Leak();
 }
 
-Sence* Engine_Sence_GetCurrentSence()
+Sence* Engine_Sence_GetCurrentSence(Engine* engine)
 {
-    return Engine_GetInstance()->m_current_sence;
-}
-
-void Engine_Sence_SetCurrentSence(Sence* sence)
-{
-    Engine_GetInstance()->m_current_sence = sence;
+    return engine->m_current_sence;
 }
 
 // TimmingManager
-TimmingManager* TimmingManager_GetInstance()
+TimmingManager* TimmingManager_GetInstance(Engine* engine)
 {
-    return Engine_GetInstance()->m_timming_manager;
+    return engine->m_timming_manager;
 }
 
 // MemoryManager
-MemoryManager* MemoryManager_GetInstance()
+MemoryManager* MemoryManager_GetInstance(Engine* engine)
 {
-    return Engine_GetInstance()->m_memory_manager;
+    return engine->m_memory_manager;
 }
 
 // RenderManager
-RenderManager* RenderManager_GetInstance()
+RenderManager* RenderManager_GetInstance(Engine* engine)
 {
-    return Engine_GetInstance()->m_render_manager;
+    return engine->m_render_manager;
 }
 
 // Sence
-void Engin_Sence_SetCurrentSence(Sence* sence)
+void Engine_Sence_SetCurrentSence(Engine* engine, Sence* sence)
 {
-    Engine_GetInstance()->m_current_sence;
+    engine->m_current_sence = sence;
 }
 
 // EventManager
-EventManager* EventManager_GetInstance()
+EventManager* EventManager_GetInstance(Engine* engine)
 {
-    return Engine_GetInstance()->m_event_manager;
+    return engine->m_event_manager;
 }

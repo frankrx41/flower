@@ -11,4 +11,4 @@ float   TimmingManager_GetPrevFrameDeltaSeconds (TimmingManager* timming_manager
 
 void    TimmingManager_TrimSpeed                (TimmingManager* timming_manager);
 
-TimmingManager* TimmingManager_GetInstance      ();
+TimmingManager* TimmingManager_GetInstance      (Engine* engine);

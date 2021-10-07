@@ -241,7 +241,7 @@ static void CallBack_Memory_ProfileLog(MemoryProfileData* memory_profile_data, t
 #undef Engine_Profile_Memory
 void Engine_Profile_Memory()
 {
-    MemoryManager* memory_manager = MemoryManager_GetInstance();
+    MemoryManager* memory_manager = MemoryManager_GetInstance(Engine_GetInstance());
     Queue(MemoryProfileData*)* memory_profile_data_queue = memory_manager->m_local_name_queue;
     Log(0, "Memory Profile\n");
     Log(0, "=====================================================\n");
@@ -256,7 +256,7 @@ static void CallBack_Memory_Check_Memory_Leak(MemoryProfileData* memory_profile_
 
 void Engine_Memory_Check_Memory_Leak()
 {
-    MemoryManager* memory_manager = MemoryManager_GetInstance();
+    MemoryManager* memory_manager = MemoryManager_GetInstance(Engine_GetInstance());
     Queue(MemoryProfileData*)* memory_profile_data_queue = memory_manager->m_local_name_queue;
     Queue_ForEach( memory_profile_data_queue, CallBack_Memory_Check_Memory_Leak, NULL );
 }

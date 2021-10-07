@@ -9,4 +9,4 @@ tptr    RenderManager_GetPlatformData   (RenderManager* render_manager);
 void    RenderManager_RenderSence       (RenderManager* render_manager, Sence* sence);
 void    RenderManager_RenderToScreen    (RenderManager* render_manager);
 
-RenderManager* RenderManager_GetInstance();
+RenderManager* RenderManager_GetInstance(Engine* engine);

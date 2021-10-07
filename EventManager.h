@@ -16,8 +16,8 @@ struct EventInfo
 void EventManger_SendEvent_Tick(EventManager* event_manager, Event event, float delta_seconds);
 
 
-EventManager* EventManager_GetInstance();
+EventManager* EventManager_GetInstance(Engine* engine);
 
 
-#define EventManager_SendEvent(event, ...)   MACRO_CONNNECT(EventManger_Send, event)(EventManager_GetInstance(), event, __VA_ARGS__)
+#define EventManager_SendEvent(event, ...)   MACRO_CONNNECT(EventManger_Send, event)(EventManager_GetInstance(Engine_GetInstance()), event, __VA_ARGS__)
 

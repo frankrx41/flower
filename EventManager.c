@@ -20,7 +20,7 @@ EventManager* EventManager_Create(const tchar* local_name)
 
 void EventManger_SendEvent_Tick(EventManager* event_manager, Event event, float delta_seconds)
 {
-    Sence* sence = Engine_Sence_GetCurrentSence();
+    Sence* sence = Engine_Sence_GetCurrentSence(Engine_GetInstance());
     EventInfo event_info;
     event_info.m_event = event;
     event_info.m_sence = sence;
