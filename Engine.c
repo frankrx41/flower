@@ -15,6 +15,7 @@ struct Engine
 {
 
     bool    m_is_initialized;
+    bool    m_is_exit;
 
     TimmingManager* m_timming_manager;
     MemoryManager*  m_memory_manager;
@@ -43,6 +44,7 @@ void Engine_Initialize()
     TimmingManager_SetFrameRate(engine->m_timming_manager, 60);
     
     engine->m_is_initialized    = true;
+    engine->m_is_exit           = false;
 }
 
 Engine* Engine_GetInstance()
@@ -55,7 +57,7 @@ void Engine_MainLoop()
 {
     Assert(Engine_GetInstance()->m_is_initialized == true, "");
 
-    for(;;)
+    for(;!Engine_GetInstance()->m_is_exit;)
     {
         Sence* curent_sence = Engine_Sence_GetCurrentSence();
         RenderManager_RenderSence(RenderManager_GetInstance(), curent_sence);
@@ -69,6 +71,11 @@ void Engine_MainLoop()
 }
 
 void Engine_Exit()
+{
+    Engine_GetInstance()->m_is_exit = true;
+}
+
+void Engine_UnInitialize()
 {
     Engine_Memory_Check_Memory_Leak();
 }

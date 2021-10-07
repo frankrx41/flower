@@ -256,6 +256,12 @@ void CallBack_ActorOnEvent(Actor* actor, const EventInfo* event_struct)
     // float y = Actor_Component_Storage_ReadData32(actor, Str_CalcCrc("Y", 0)).m_float;
 
     Actor_Component_Location_Move(actor, Vec3(0.2f, 0.05f, 0));
+
+    vec3 vec = Actor_Component_Location_Get(actor);
+    if( vec.m_y > 7 )
+    {
+        Engine_Exit();
+    }
 }
 
 void Engine_Test0()
@@ -279,6 +285,8 @@ void Engine_Test0()
 
 
     Actor_Component_Del(actor, Component_Render);
+    Actor_Component_Del(actor, Component_Action);
+    Actor_Component_Del(actor, Component_Location);
 
     Sence_Actor_Destroy(sence, NULL, actor);
     Sence_Destroy(sence);

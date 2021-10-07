@@ -10,5 +10,5 @@ int32 main()
 
     Engine_Debug_UnitTesting();
 
-    Engine_Exit();
+    Engine_UnInitialize();
 }
