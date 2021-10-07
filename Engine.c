@@ -33,10 +33,8 @@ SenceManager*       SenceManager_Create     (const tchar* local_name);
 
 void                Engine_Memory_Check_Memory_Leak ();
 
-void Engine_Initialize()
+void Engine_Initialize(Engine* engine)
 {
-    Engine* engine = Engine_GetInstance();
-
     engine->m_render_manager    = RenderManager_Create(LOCAL_NAME);
     engine->m_timming_manager   = TimmingManager_Create(LOCAL_NAME);
     engine->m_memory_manager    = MemoryManager_Create(LOCAL_NAME);
@@ -55,11 +53,9 @@ Engine* Engine_GetInstance()
     return &engine;
 }
 
-void Engine_MainLoop()
+void Engine_MainLoop(Engine* engine)
 {
     Assert(Engine_GetInstance()->m_is_initialized == true, "");
-
-    const Engine* engine = Engine_GetInstance();
 
     for(;!engine->m_is_exit;)
     {
@@ -74,14 +70,14 @@ void Engine_MainLoop()
     }
 }
 
-void Engine_Exit()
-{
-    Engine_GetInstance()->m_is_exit = true;
-}
-
-void Engine_UnInitialize()
+void Engine_UnInitialize(Engine* engine)
 {
     Engine_Memory_Check_Memory_Leak();
+}
+
+void Engine_SetExit(Engine* engine, bool is_exit)
+{
+    engine->m_is_exit = is_exit;
 }
 
 // TimmingManager

@@ -6,9 +6,11 @@ void Engine_Debug_UnitTesting();
 
 int32 main()
 {
-    Engine_Initialize();
+    Engine* engine = Engine_GetInstance();
 
-    Engine_Debug_UnitTesting();
+    Engine_Initialize(engine);
 
-    Engine_UnInitialize();
+    Engine_Debug_UnitTesting(engine);
+
+    Engine_UnInitialize(engine);
 }

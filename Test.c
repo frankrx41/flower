@@ -265,7 +265,7 @@ void CallBack_ActorOnEvent1(Actor* actor, const EventInfo* event_struct)
         }
         else
         {
-            Engine_Exit();
+            Engine_SetExit(Engine_GetInstance(), true);
         }
 
     }
@@ -302,7 +302,7 @@ void Engine_Test1()
 
     SenceManager_Sence_SetCurrent(sence1);
 
-    Engine_MainLoop();
+    Engine_MainLoop(Engine_GetInstance());
 
 
     Actor_Component_Del(actor1, Component_Render);
@@ -328,7 +328,7 @@ void CallBack_ActorOnEvent0(Actor* actor, const EventInfo* event_struct)
     vec3 vec = Actor_Component_Location_Get(actor);
     if( vec.m_y > 7 )
     {
-        Engine_Exit();
+        Engine_SetExit(Engine_GetInstance(), true);
     }
 }
 
@@ -348,7 +348,7 @@ void Engine_Test0()
 
     SenceManager_Sence_SetCurrent(sence);
 
-    Engine_MainLoop();
+    Engine_MainLoop(Engine_GetInstance());
 
 
     Actor_Component_Del(actor, Component_Render);
