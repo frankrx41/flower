@@ -1,4 +1,3 @@
-Rename Engine_Memory_Copy -> Memory_Copy ?
 Add Storage_StoreTempVariable
 Update String_Copy, allow use negative number
 Add Str_Cat, join, IsSame ... function
@@ -8,11 +7,12 @@ Add ShaderText info
 Add Queue_Sort
 Add CONFIG_SHIPPING
 Add Fps profile
-Add Component_Storage
 
 Add EventManger
 Add InputManager
 
+Rename Engine_Memory_Copy -> Memory_Copy (done)
+Add Component_Storage (done)
 Add SenceManager (done)
 Update Timming (done)
 Rename callback function to CallBack_ (done)

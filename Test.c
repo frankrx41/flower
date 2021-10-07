@@ -305,14 +305,13 @@ void Engine_Test1()
     Engine_MainLoop(Engine_GetInstance());
 
 
-    Actor_Component_Del(actor1, Component_Render);
-    Actor_Component_Del(actor1, Component_Action);
-    Actor_Component_Del(actor1, Component_Storage);
-
-    Actor_Component_Del(actor2, Component_Render);
+    // Actor_Component_Del(actor1, Component_Render);
+    // Actor_Component_Del(actor1, Component_Action);
+    // Actor_Component_Del(actor1, Component_Storage);
+    // Actor_Component_Del(actor2, Component_Render);
 
     Sence_Actor_Destroy(sence1, NULL, actor1);
-    Sence_Actor_Destroy(sence2, NULL, actor2);
+    // Sence_Actor_Destroy(sence2, NULL, actor2);
     SenceManager_Sence_Destroy(sence1);
     SenceManager_Sence_Destroy(sence2);
 }

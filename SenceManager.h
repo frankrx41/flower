@@ -3,6 +3,9 @@
 typedef struct Sence Sence;
 typedef struct SenceManager SenceManager;
 
+/*
+SenceManager_Sence_Destroy will call Sence_Actor_Destroy, and then call Actor_Destroy, you no need call Sence_Actor_Destroy
+*/
 
 Sence*  SenceManager_Sence_Create           (SenceManager* sence_manager, const tchar* local_name);
 Sence*  SenceManager_Sence_Destroy          (SenceManager* sence_manager, Sence* sence);
