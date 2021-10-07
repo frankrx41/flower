@@ -3,8 +3,8 @@
 typedef struct vec3 vec3;
 typedef struct Actor Actor;
 typedef struct ShaderText ShaderText;
-typedef struct EventStruct EventStruct;
-typedef void (*CB_EventRespond)(Actor*, EventStruct*);
+typedef struct EventInfo EventInfo;
+typedef void (*CB_EventRespond)(Actor*, const EventInfo*);
 typedef enum Event Event;
 typedef union data32 data32;
 

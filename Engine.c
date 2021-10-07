@@ -4,6 +4,7 @@
 #include "MemoryManager.h"
 #include "TimmingManager.h"
 #include "RenderManager.h"
+#include "EventManager.h"
 #include "Sence.h"
 #include "Event.h"
 
@@ -18,13 +19,17 @@ struct Engine
     TimmingManager* m_timming_manager;
     MemoryManager*  m_memory_manager;
     RenderManager*  m_render_manager;
-    
+    EventManager*   m_event_manager;
+
+    // TODO: Add SenceManager
     Sence*          m_current_sence;
 };
 
 RenderManager*      RenderManager_Create    (const tchar* local_name);
 MemoryManager*      MemoryManager_Create    (const tchar* local_name);
 TimmingManager*     TimmingManager_Create   (const tchar* local_name);
+EventManager*       EventManager_Create     (const tchar* local_name);
+
 void                Engine_Memory_Check_Memory_Leak ();
 
 void Engine_Initialize()
@@ -34,7 +39,7 @@ void Engine_Initialize()
     engine->m_render_manager    = RenderManager_Create(LOCAL_NAME);
     engine->m_timming_manager   = TimmingManager_Create(LOCAL_NAME);
     engine->m_memory_manager    = MemoryManager_Create(LOCAL_NAME);
-
+    engine->m_event_manager     = EventManager_Create(LOCAL_NAME);
     TimmingManager_SetFrameRate(engine->m_timming_manager, 60);
     
     engine->m_is_initialized    = true;
@@ -58,7 +63,8 @@ void Engine_MainLoop()
         RenderManager_RenderToScreen(RenderManager_GetInstance());
 
         TimmingManager_TrimSpeed(TimmingManager_GetInstance());
-        Sence_Actor_SendEvent(curent_sence, Event_Tick);
+
+        EventManager_SendEvent(Event_Tick, TimmingManager_GetPrevFrameDeltaSeconds(TimmingManager_GetInstance()));
     }
 }
 
@@ -99,4 +105,10 @@ RenderManager* RenderManager_GetInstance()
 void Engin_Sence_SetCurrentSence(Sence* sence)
 {
     Engine_GetInstance()->m_current_sence;
+}
+
+// EventManager
+EventManager* EventManager_GetInstance()
+{
+    return Engine_GetInstance()->m_event_manager;
 }

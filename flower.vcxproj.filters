@@ -24,23 +24,11 @@
     <ClCompile Include="Sence.c">
       <Filter>Sence</Filter>
     </ClCompile>
-    <ClCompile Include="Storage.c">
-      <Filter>Engine</Filter>
-    </ClCompile>
-    <ClCompile Include="Event.c">
-      <Filter>Event</Filter>
-    </ClCompile>
     <ClCompile Include="Render_Win32.c">
       <Filter>Platform\Win32</Filter>
     </ClCompile>
     <ClCompile Include="Actor.c">
       <Filter>Sence\Actor</Filter>
-    </ClCompile>
-    <ClCompile Include="MemoryManager.c">
-      <Filter>Engine</Filter>
-    </ClCompile>
-    <ClCompile Include="TimmingManager.c">
-      <Filter>Engine</Filter>
     </ClCompile>
     <ClCompile Include="Data32.c">
       <Filter>Library\Data32</Filter>
@@ -69,6 +57,18 @@
     <ClCompile Include="StorageComponent.c">
       <Filter>Sence\Actor\Component</Filter>
     </ClCompile>
+    <ClCompile Include="MemoryManager.c">
+      <Filter>Engine\Memory</Filter>
+    </ClCompile>
+    <ClCompile Include="TimmingManager.c">
+      <Filter>Engine\Timming</Filter>
+    </ClCompile>
+    <ClCompile Include="Storage.c">
+      <Filter>Library\Storage</Filter>
+    </ClCompile>
+    <ClCompile Include="EventManager.c">
+      <Filter>Engine\Event</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CoreMini.h" />
@@ -81,23 +81,14 @@
     <ClInclude Include="Queue.h">
       <Filter>Library\Queue</Filter>
     </ClInclude>
-    <ClInclude Include="Storage.h">
-      <Filter>Engine</Filter>
-    </ClInclude>
     <ClInclude Include="Event.h">
-      <Filter>Event</Filter>
+      <Filter>Engine\Event</Filter>
     </ClInclude>
     <ClInclude Include="Sence.h">
       <Filter>Sence</Filter>
     </ClInclude>
     <ClInclude Include="Actor.h">
       <Filter>Sence\Actor</Filter>
-    </ClInclude>
-    <ClInclude Include="MemoryManager.h">
-      <Filter>Engine</Filter>
-    </ClInclude>
-    <ClInclude Include="TimmingManager.h">
-      <Filter>Engine</Filter>
     </ClInclude>
     <ClInclude Include="Data32.h">
       <Filter>Library\Data32</Filter>
@@ -130,6 +121,18 @@
     <ClInclude Include="StorageComponent.h">
       <Filter>Sence\Actor\Component</Filter>
     </ClInclude>
+    <ClInclude Include="MemoryManager.h">
+      <Filter>Engine\Memory</Filter>
+    </ClInclude>
+    <ClInclude Include="TimmingManager.h">
+      <Filter>Engine\Timming</Filter>
+    </ClInclude>
+    <ClInclude Include="Storage.h">
+      <Filter>Library\Storage</Filter>
+    </ClInclude>
+    <ClInclude Include="EventManager.h">
+      <Filter>Engine\Event</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Platform">
@@ -153,9 +156,6 @@
     <Filter Include="Sence">
       <UniqueIdentifier>{cb494a3a-ffc1-47e9-b92b-ac4850117bf0}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Event">
-      <UniqueIdentifier>{19bc11b5-9e9c-4a38-a8a3-c8e342edac70}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Render">
       <UniqueIdentifier>{d5adcd47-4bd5-46ef-9e1d-cfbd285f50cb}</UniqueIdentifier>
     </Filter>
@@ -170,6 +170,18 @@
     </Filter>
     <Filter Include="Sence\Actor\Component">
       <UniqueIdentifier>{3f1c0d80-9c00-4d49-b5ba-a44f319225c8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\Event">
+      <UniqueIdentifier>{19bc11b5-9e9c-4a38-a8a3-c8e342edac70}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\Memory">
+      <UniqueIdentifier>{ef89fc8b-ea49-4ef0-9d72-ee7566d9883f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\Timming">
+      <UniqueIdentifier>{b6ccc812-e331-46de-89f8-b506d5eb11f8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Library\Storage">
+      <UniqueIdentifier>{2a78cf1e-a0b3-443c-82b4-3f050c4bab6f}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

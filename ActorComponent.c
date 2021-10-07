@@ -3,6 +3,7 @@
 #include "Actor.h"
 #include "Component.h"
 #include "ActionComponent.h"
+#include "EventManager.h"
 #include "LocationComponent.h"
 #include "Queue.h"
 #include "RenderComponent.h"
@@ -136,7 +137,7 @@ void CallBack_Actor_RenderEachActor(Actor* actor, RenderManager* render_manager)
     }
 }
 
-void CallBack_Actor_ProcessEachActorEvent(Actor* actor, EventStruct* event_struct)
+void CallBack_Actor_ProcessEachActorEvent(Actor* actor, const EventInfo* event_struct)
 {
     ActionComponent* action_component = Actor_Component_Cast(actor, Component_Action);
 
@@ -144,9 +145,5 @@ void CallBack_Actor_ProcessEachActorEvent(Actor* actor, EventStruct* event_struc
 
     Assert(cb_actor_respond != NULL, "");
 
-    EventStruct event_struct_new;
-    event_struct_new.m_event    = event_struct->m_event;
-    event_struct_new.m_sence    = event_struct->m_sence;
-    event_struct_new.m_actor    = actor;
-    cb_actor_respond(actor, &event_struct_new);
+    cb_actor_respond(actor, event_struct);
 }

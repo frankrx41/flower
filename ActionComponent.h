@@ -5,15 +5,10 @@ typedef struct ActionComponent ActionComponent;
 typedef struct Sence Sence;
 typedef struct Actor Actor;
 
-typedef struct EventStruct EventStruct;
-struct EventStruct
-{
-    Event   m_event;
-    Actor*  m_actor;
-    Sence*  m_sence;
-};
+typedef struct EventInfo EventInfo;
 
-typedef void (*CB_EventRespond)(Actor*, EventStruct*);
+
+typedef void (*CB_EventRespond)(Actor*, const EventInfo*);
 
 
 ActionComponent*    Component_Action_Create     (const tchar* local_name);

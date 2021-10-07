@@ -10,7 +10,9 @@ Add CONFIG_SHIPPING
 Add Fps profile
 Add Component_Storage
 
-Add Input
+Add EventManger
+Add SenceManager
+Add InputManager
 
 Update Timming (done)
 Rename callback function to CallBack_ (done)

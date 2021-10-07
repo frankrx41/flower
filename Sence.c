@@ -4,10 +4,9 @@
 #include "Queue.h"
 #include "String.h"
 #include "Sence.h"
-
-#include "ActionComponent.h"
 #include "Actor.h"
 #include "Event.h"
+#include "EventManager.h"
 
 
 struct Sence
@@ -65,14 +64,12 @@ void Sence_Actor_Destroy(Sence* sence, CB_FindData cb_find_actor, tptr ptr)
     }
 }
 
-void CallBack_Actor_ProcessEachActorEvent(Actor* actor, EventStruct* event_struct);
+void CallBack_Actor_ProcessEachActorEvent(Actor* actor, EventInfo* event_struct);
 
-void Sence_Actor_SendEvent(Sence* sence, Event event)
+void Sence_Actor_SendEvent(Sence* sence, EventInfo* event_info)
 {
-    EventStruct event_struct;
-    event_struct.m_event    = event;
-    event_struct.m_sence    = sence;
-    Queue_ForEach(sence->m_actor_event_queue_list[event], (CB_ProcessData)CallBack_Actor_ProcessEachActorEvent, &event_struct);
+    Event event = event_info->m_event;
+    Queue_ForEach(sence->m_actor_event_queue_list[event], (CB_ProcessData)CallBack_Actor_ProcessEachActorEvent, event_info);
 }
 
 void Sence_Actor_AddEventGroup(Sence* sence, Actor* actor, Event event)

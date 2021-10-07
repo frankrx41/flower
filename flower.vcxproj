@@ -88,7 +88,7 @@
     <ClCompile Include="Data32.c" />
     <ClCompile Include="Debug_Win32.c" />
     <ClCompile Include="Engine.c" />
-    <ClCompile Include="Event.c" />
+    <ClCompile Include="EventManager.c" />
     <ClCompile Include="Main.c" />
     <ClCompile Include="MemoryManager.c" />
     <ClCompile Include="Memory_Win32.c" />
@@ -114,6 +114,7 @@
     <ClInclude Include="Data32.h" />
     <ClInclude Include="Engine.h" />
     <ClInclude Include="Event.h" />
+    <ClInclude Include="EventManager.h" />
     <ClInclude Include="LocationComponent.h" />
     <ClInclude Include="MemoryManager.h" />
     <ClInclude Include="Platform.h" />

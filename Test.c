@@ -249,7 +249,7 @@ void Data32_Test0()
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-void CallBack_ActorOnEvent(Actor* actor, EventStruct* event_struct)
+void CallBack_ActorOnEvent(Actor* actor, const EventInfo* event_struct)
 {
     // StorageComponent* storage_component = Actor_Component_Cast(actor, Component_Storage);
     // float x = Actor_Component_Storage_ReadData32(actor, Str_CalcCrc("X", 0)).m_float;

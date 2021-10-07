@@ -66,6 +66,7 @@ bool TimmingManager_IslimitFrameRate(TimmingManager* timming_manager)
 void TimmingManager_TrimSpeed(TimmingManager* timming_manager)
 {
     timming_manager->m_prev_frame_delta_seconds = TimmingManager_TrimSpeed_Plat(timming_manager, timming_manager->m_platform_data);
+    // TODO: Add fps profile
     // Log(0, "%f\n", timming_manager->m_prev_frame_delta_seconds);
     // Assert(timming_manager->m_prev_frame_delta_seconds < 1.f, "Fps is too low!");
 }
