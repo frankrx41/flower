@@ -40,7 +40,7 @@ typedef tchar bool;
 #define int
 #define char
 
-#if CONFIG_DEBUG
+#if CONFIG_DEBUG || CONFIG_RELEASE
 
 // 0 info, 1 warn, 2 error
 void    Engine_Debug_Log        (int32 type, const tchar* format, ...);
