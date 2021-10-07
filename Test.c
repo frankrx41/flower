@@ -18,6 +18,7 @@
 #include "Event.h"
 #include "SenceManager.h"
 #include "Vec.h"
+#include "EventManager.h"
 
 
 static void Storage_Test0()
@@ -251,7 +252,74 @@ void Data32_Test0()
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-void CallBack_ActorOnEvent(Actor* actor, const EventInfo* event_struct)
+void CallBack_ActorOnEvent1(Actor* actor, const EventInfo* event_struct)
+{
+    float seconds = Actor_Component_Storage_ReadData32(actor, Str_CalcCrc("seconds", 0)).m_float;
+    seconds += event_struct->m_delta_seconds;
+    Actor_Component_Storage_StoreData32(actor, Str_CalcCrc("seconds", 0), Data32(float, seconds));
+
+    if( seconds > 2 )
+    {
+        Sence* sence = Actor_Component_Storage_ReadData32(actor, Str_CalcCrc("sence", 0)).m_pointer;
+        if( sence )
+        {
+            SenceManager_Sence_SetCurrent(sence);
+        }
+        else
+        {
+            Engine_Exit();
+        }
+
+    }
+}
+void Engine_Test1()
+{
+    Sence* sence1 = SenceManager_Sence_Create(__FUNCTION__);
+    Actor* actor1 = Sence_Actor_Create(__FUNCTION__, sence1);
+
+    Actor_Component_New(actor1, Component_Render);
+    Actor_Component_Render_ShaderText_Add(actor1, Vec3(5, 5, 0), "hello world" );
+
+    Actor_Component_New(actor1, Component_Action);
+    Actor_Component_Action_EventRespond_Add(actor1, Event_Tick, CallBack_ActorOnEvent1);
+
+    Actor_Component_New(actor1, Component_Storage);
+    Actor_Component_Storage_StoreData32(actor1, Str_CalcCrc("seconds", 0), Data32(float, 0));
+
+    Sence* sence2 = SenceManager_Sence_Create(__FUNCTION__);
+    Actor* actor2 = Sence_Actor_Create(__FUNCTION__, sence2);
+    Actor_Component_Storage_StoreData32(actor1, Str_CalcCrc("sence", 0), Data32(tptr, sence2));
+
+    Actor_Component_New(actor2, Component_Render);
+    Actor_Component_Render_ShaderText_Add(actor2, Vec3(1, 1, 0), "goodbbye world" );
+
+    Actor_Component_New(actor2, Component_Action);
+    Actor_Component_Action_EventRespond_Add(actor2, Event_Tick, CallBack_ActorOnEvent1);
+
+    Actor_Component_New(actor2, Component_Storage);
+    Actor_Component_Storage_StoreData32(actor2, Str_CalcCrc("seconds", 0), Data32(float, 0));
+    Actor_Component_Storage_StoreData32(actor2, Str_CalcCrc("sence", 0), Data32(tptr, NULL));
+
+
+
+    SenceManager_Sence_SetCurrent(sence1);
+
+    Engine_MainLoop();
+
+
+    Actor_Component_Del(actor1, Component_Render);
+    Actor_Component_Del(actor1, Component_Action);
+    Actor_Component_Del(actor1, Component_Storage);
+
+    Actor_Component_Del(actor2, Component_Render);
+
+    Sence_Actor_Destroy(sence1, NULL, actor1);
+    Sence_Actor_Destroy(sence2, NULL, actor2);
+    SenceManager_Sence_Destroy(sence1);
+    SenceManager_Sence_Destroy(sence2);
+}
+
+void CallBack_ActorOnEvent0(Actor* actor, const EventInfo* event_struct)
 {
     // StorageComponent* storage_component = Actor_Component_Cast(actor, Component_Storage);
     // float x = Actor_Component_Storage_ReadData32(actor, Str_CalcCrc("X", 0)).m_float;
@@ -278,8 +346,7 @@ void Engine_Test0()
     Actor_Component_New(actor, Component_Location);
 
     Actor_Component_Location_Set(actor, Vec3(0,0,0));
-    Actor_Component_Action_EventRespond_Add(actor, Event_Tick, CallBack_ActorOnEvent);
-
+    Actor_Component_Action_EventRespond_Add(actor, Event_Tick, CallBack_ActorOnEvent0);
 
     SenceManager_Sence_SetCurrent(sence);
 
@@ -317,7 +384,8 @@ void Engine_Debug_UnitTesting()
     Actor_Test1();
     Actor_Test0();
 
-    Engine_Test0();
+    // Engine_Test0();
+    Engine_Test1();
 
     Engine_Profile_Memory();
 }

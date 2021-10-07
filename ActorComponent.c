@@ -3,6 +3,7 @@
 #include "Actor.h"
 #include "Component.h"
 #include "ActionComponent.h"
+#include "Data32.h"
 #include "EventManager.h"
 #include "LocationComponent.h"
 #include "Queue.h"
@@ -10,6 +11,7 @@
 #include "Vec.h"
 #include "ShaderText.h"
 #include "Sence.h"
+#include "StorageComponent.h"
 
 // Location
 void Actor_Component_Location_Set(Actor* actor, vec3 vec)
@@ -99,8 +101,50 @@ void Actor_Component_Action_EventRespond_Clear(Actor* actor)
     }
 }
 
+// Component_Storage
+bool Actor_Component_Storage_IsExistVariable(Actor* actor, crc32 variable)
+{
+    StorageComponent* storage_component = Actor_Component_Cast(actor, Component_Storage);
+    if( storage_component )
+    {
+        return
+        Component_Storage_IsExistVariable(storage_component, variable);
+    }
+    return false;
+}
+
+void Actor_Component_Storage_StoreData32(Actor* actor, crc32 variable, data32 data)
+{
+    StorageComponent* storage_component = Actor_Component_Cast(actor, Component_Storage);
+    if( storage_component )
+    {
+        Component_Storage_StoreData32(storage_component, variable, data);
+    }
+}
+
+data32 Actor_Component_Storage_ReadData32(Actor* actor, crc32 variable)
+{
+    StorageComponent* storage_component = Actor_Component_Cast(actor, Component_Storage);
+    if( storage_component )
+    {
+        return
+        Component_Storage_ReadData32(storage_component, variable);
+    }
+    return data32_null;
+}
+
+void Actor_Component_Storage_DeleteVariable(Actor* actor, crc32 variable)
+{
+    StorageComponent* storage_component = Actor_Component_Cast(actor, Component_Storage);
+    if( storage_component )
+    {
+        Component_Storage_DeleteVariable(storage_component, variable);
+    }
+}
+
 
 // CallBack
+////////////////////////////////////////////////////////////////////////////////
 typedef struct RenderManager RenderManager;
 
 void Render_InBackBuffer_Plat(RenderManager* render_manager, int32 x, int32 y, const tchar* str);

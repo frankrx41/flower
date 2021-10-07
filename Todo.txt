@@ -11,9 +11,9 @@ Add Fps profile
 Add Component_Storage
 
 Add EventManger
-Add SenceManager
 Add InputManager
 
+Add SenceManager (done)
 Update Timming (done)
 Rename callback function to CallBack_ (done)
 Add Component_Action (done)
