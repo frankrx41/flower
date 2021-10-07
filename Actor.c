@@ -13,12 +13,12 @@
 #include "LocationComponent.h"
 #include "Queue.h"
 #include "RenderComponent.h"
+#include "ActionComponent.h"
+#include "StorageComponent.h"
+#include "LocationComponent.h"
 #include "Vec.h"
 
 
-#undef Actor_Component_Del
-#undef Actor_Component_New
-#undef Actor_Component_Cast
 
 struct Actor
 {
@@ -40,13 +40,27 @@ Actor* Actor_Create(const tchar* local_name, Sence* sence, uint32 id)
 
 void Actor_Destroy(Actor* actor)
 {
+    Assert(actor != NULL, "");
+
+    Actor_Component_Del(actor, Component_Render);
+    Actor_Component_Del(actor, Component_Action);
+    Actor_Component_Del(actor, Component_Storage);
+    Actor_Component_Del(actor, Component_Location);
+
     Storage_Destroy(actor->m_component);
     String_Del(actor->m_local_name);
     MemDel(actor);
 }
 
+////////////////////////////////////////////////////////////////////////////////
+
+#undef Actor_Component_Del
+#undef Actor_Component_New
+#undef Actor_Component_Cast
+
 void Actor_Component_New(Actor* actor, const tchar* component_name, Component component_enum, CB_ComponentCreate cb_component_create_func)
 {
+    Assert(actor != NULL, "");
     Assert(cb_component_create_func != NULL, "");
     tptr component = cb_component_create_func(Actor_GetLocalName(actor));
     Storage_StoreData32(actor->m_component, Str_CalcCrc(component_name, 0), Data32(tptr, component));
@@ -61,9 +75,14 @@ static tptr Actor_Component_CastByName(Actor* actor, const tchar* component_name
 
 void Actor_Component_Del(Actor* actor, const tchar* component_name, Component component_enum, CB_ComponentDestroy cb_component_destroy_func)
 {
+    Assert(actor != NULL, "");
     tptr component = Actor_Component_CastByName(actor, component_name);
-    cb_component_destroy_func(component);
-    Storage_DeleteVariable(actor->m_component,Str_CalcCrc(component_name, 0));
+    if( component )
+    {
+        cb_component_destroy_func(component);
+        Storage_DeleteVariable(actor->m_component,Str_CalcCrc(component_name, 0));
+    }
+    // Assert(false, "You try to delete a not exist component!");
 }
 
 tptr Actor_Component_Cast(Actor* actor, const tchar* component_name, Component component_enum)

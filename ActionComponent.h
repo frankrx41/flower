@@ -12,7 +12,7 @@ typedef void (*CB_EventRespond)(Actor*, const EventInfo*);
 
 
 ActionComponent*    Component_Action_Create     (const tchar* local_name);
-void                Component_Action_Destroy    (ActionComponent* event_respond_component);
+void                Component_Action_Destroy    (ActionComponent* action_component);
 
 void                Component_Action_EventRespond_Add   (ActionComponent* action_component, Event event, CB_EventRespond cb_event_respond);
 void                Component_Action_EventRespond_Del   (ActionComponent* action_component, Event event);

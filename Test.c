@@ -190,8 +190,6 @@ void Actor_Test2()
 
     RenderManager_RenderToScreen(RenderManager_GetInstance(engine));
 
-    Actor_Component_Del(actor, Component_Render);
-
     Sence_Actor_Destroy(sence, NULL, actor);
     SenceManager_Sence_Destroy(sence);
 }
@@ -291,7 +289,7 @@ void Engine_Test1()
     Actor_Component_Storage_StoreData32(actor1, Str_CalcCrc("sence", 0), Data32(tptr, sence2));
 
     Actor_Component_New(actor2, Component_Render);
-    Actor_Component_Render_ShaderText_Add(actor2, Vec3(1, 1, 0), "goodbbye world" );
+    Actor_Component_Render_ShaderText_Add(actor2, Vec3(1, 1, 0), "goodbye world" );
 
     Actor_Component_New(actor2, Component_Action);
     Actor_Component_Action_EventRespond_Add(actor2, Event_Tick, CallBack_ActorOnEvent1);

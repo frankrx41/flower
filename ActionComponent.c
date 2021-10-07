@@ -35,16 +35,18 @@ static void CallBack_EventRespond_Destroy(EventRespond* event_respond)
     MemDel(event_respond);
 }
 
-void Component_Action_Destroy(ActionComponent* event_respond_component)
+void Component_Action_Destroy(ActionComponent* action_component)
 {
-    Component_Action_EventRespond_Clear(event_respond_component);
-    Queue_Destroy(event_respond_component->m_event_respond_queue, CallBack_EventRespond_Destroy);
-    String_Del(event_respond_component->m_local_name);
-    MemDel(event_respond_component);
+    Assert(action_component != NULL, "");
+    Component_Action_EventRespond_Clear(action_component);
+    Queue_Destroy(action_component->m_event_respond_queue, CallBack_EventRespond_Destroy);
+    String_Del(action_component->m_local_name);
+    MemDel(action_component);
 }
 
 void Component_Action_EventRespond_Add(ActionComponent* action_component, Event event, CB_EventRespond cb_event_respond)
 {
+    Assert(action_component != NULL, "");
     EventRespond* event_respond = MemNew(String_CStr(action_component->m_local_name), EventRespond);
     event_respond->m_event              = event;
     event_respond->m_cb_actor_respond   = cb_event_respond;
@@ -58,17 +60,20 @@ static bool CallBack_EventRespond_FindEvent(EventRespond* event_respond, Event e
 
 void Component_Action_EventRespond_Del(ActionComponent* action_component, Event event)
 {
+    Assert(action_component != NULL, "");
     EventRespond* event_respond = Queue_RemoveFindFirst(EventRespond*)(action_component->m_event_respond_queue, (CB_FindData)CallBack_EventRespond_FindEvent, (tptr)event);
     MemSafeDel(event_respond);
 }
 
 void Component_Action_EventRespond_Clear(ActionComponent* action_component)
 {
+    Assert(action_component != NULL, "");
     Queue_Clear(action_component->m_event_respond_queue, CallBack_EventRespond_Destroy);
 }
 
 CB_EventRespond Component_Action_EventRespond_Get(ActionComponent* action_component, Event event)
 {
+    Assert(action_component != NULL, "");
     EventRespond* event_respond = Queue_Find(EventRespond*)(action_component->m_event_respond_queue, (CB_FindData)CallBack_EventRespond_FindEvent, (tptr)event);
     if( event_respond )
     {
