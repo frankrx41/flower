@@ -96,6 +96,7 @@
     <ClCompile Include="RenderManager.c" />
     <ClCompile Include="Render_Win32.c" />
     <ClCompile Include="Sence.c" />
+    <ClCompile Include="SenceManager.c" />
     <ClCompile Include="ShaderText.c" />
     <ClCompile Include="Storage.c" />
     <ClCompile Include="StorageComponent.c" />
@@ -122,6 +123,7 @@
     <ClInclude Include="RenderManager.h" />
     <ClInclude Include="RenderComponent.h" />
     <ClInclude Include="Sence.h" />
+    <ClInclude Include="SenceManager.h" />
     <ClInclude Include="ShaderText.h" />
     <ClInclude Include="Storage.h" />
     <ClInclude Include="StorageComponent.h" />

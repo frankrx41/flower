@@ -16,7 +16,7 @@ tptr    Memory_Zero         (tptr ptr);
 tsize   Memory_GetSize      (const tptr ptr);
 
 
-MemoryManager* MemoryManager_GetInstance(Engine* engine);
+MemoryManager* MemoryManager_GetInstance(const Engine* engine);
 
 
 #define MemNew(local_name, type)            (type*)MemoryManager_Alloc(MemoryManager_GetInstance(Engine_GetInstance()), local_name, sizeof(type))

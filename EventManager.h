@@ -11,12 +11,13 @@ struct EventInfo
     Event   m_event;
     Actor*  m_actor;
     Sence*  m_sence;
+    float   m_delta_seconds;
 };
 
 void EventManger_SendEvent_Tick(EventManager* event_manager, Event event, float delta_seconds);
 
 
-EventManager* EventManager_GetInstance(Engine* engine);
+EventManager* EventManager_GetInstance(const Engine* engine);
 
 
 #define EventManager_SendEvent(event, ...)   MACRO_CONNNECT(EventManger_Send, event)(EventManager_GetInstance(Engine_GetInstance()), event, __VA_ARGS__)

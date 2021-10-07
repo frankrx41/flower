@@ -69,6 +69,9 @@
     <ClCompile Include="EventManager.c">
       <Filter>Engine\Event</Filter>
     </ClCompile>
+    <ClCompile Include="SenceManager.c">
+      <Filter>Engine\Sence</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CoreMini.h" />
@@ -133,6 +136,9 @@
     <ClInclude Include="EventManager.h">
       <Filter>Engine\Event</Filter>
     </ClInclude>
+    <ClInclude Include="SenceManager.h">
+      <Filter>Engine\Sence</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Platform">
@@ -182,6 +188,9 @@
     </Filter>
     <Filter Include="Library\Storage">
       <UniqueIdentifier>{2a78cf1e-a0b3-443c-82b4-3f050c4bab6f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\Sence">
+      <UniqueIdentifier>{e1dc4c4c-5ac4-4bd8-baca-c73f811b00f4}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

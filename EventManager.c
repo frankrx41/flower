@@ -5,6 +5,7 @@
 #include "Sence.h"
 #include "Event.h"
 #include "Engine.h"
+#include "SenceManager.h"
 
 struct EventManager
 {
@@ -20,11 +21,12 @@ EventManager* EventManager_Create(const tchar* local_name)
 
 void EventManger_SendEvent_Tick(EventManager* event_manager, Event event, float delta_seconds)
 {
-    Sence* sence = Engine_Sence_GetCurrentSence(Engine_GetInstance());
+    Sence* sence = SenceManager_Sence_GetCurrent();
     EventInfo event_info;
-    event_info.m_event = event;
-    event_info.m_sence = sence;
-    event_info.m_actor = NULL;
+    event_info.m_event          = event;
+    event_info.m_sence          = sence;
+    event_info.m_actor          = NULL;
+    event_info.m_delta_seconds  = delta_seconds;
     Sence_Actor_SendEvent(sence, &event_info);
 }
 

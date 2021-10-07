@@ -4,25 +4,8 @@
 #include "Queue.h"
 #include "String.h"
 
-
-struct MemoryManager
-{
-    uint32  m_alloc_id;
-    tptr    m_local_name_queue;
-};
-
-
-tptr    Memory_Alloc_Plat   (tsize size);
-void    Memory_Free_Plat    (tptr ptr);
-tptr    Memory_Copy_Plat    (tptr dst_ptr, const tptr src_ptr, tsize size);
-tptr    Memory_Set_Plat     (tptr address, int32 val, tsize size);
-
 typedef struct MemoryBlock MemoryBlock;
 typedef struct MemoryProfileData MemoryProfileData;
-
-#define MAGIC_NUMBER_CHAR   'GPYM'
-#define MAGIC_NUMBER_STR    "GPYM"
-#define LOCAL_NAME          "GPYM"
 
 struct MemoryProfileData
 {
@@ -31,6 +14,26 @@ struct MemoryProfileData
     tsize   m_alloc_size;
     tsize   m_alloc_size_max;
 };
+
+struct MemoryManager
+{
+    uint32                      m_alloc_id;
+    MemoryProfileData           m_static_memory;
+    Queue(MemoryProfileData*)*  m_local_name_queue;
+};
+
+
+tptr    Memory_Alloc_Plat   (tsize size);
+void    Memory_Free_Plat    (tptr ptr);
+tptr    Memory_Copy_Plat    (tptr dst_ptr, const tptr src_ptr, tsize size);
+tptr    Memory_Set_Plat     (tptr address, int32 val, tsize size);
+
+
+
+#define MAGIC_NUMBER_CHAR   'GPYM'
+#define MAGIC_NUMBER_STR    "GPYM"
+#define LOCAL_NAME          "GPYM"
+
 
 //  +----+--------------+-------------------------
 //  |flag| id |crc |size|  Memory Data ...
@@ -66,6 +69,11 @@ MemoryManager* MemoryManager_Create(const tchar* local_name)
 {
     MemoryManager* memory_manager = MemNew(local_name, MemoryManager);
     memory_manager->m_alloc_id = 0;
+    memory_manager->m_static_memory.m_crc = 0;
+    memory_manager->m_static_memory.m_alloc_size = 0;
+    memory_manager->m_static_memory.m_alloc_size_max = 0;
+    memory_manager->m_static_memory.m_local_name = NULL;
+
     memory_manager->m_local_name_queue = Queue_Create(LOCAL_NAME, MemoryProfileData*);
     return memory_manager;
 }
@@ -107,6 +115,15 @@ tptr MemoryManager_Alloc(MemoryManager* memory_manager,const tchar* local_name, 
             Queue_Push(MemoryProfileData*, memory_profile_data_queue, memory_profile_data);
         }
     }
+    else
+    {
+        // MemoryProfileData* memory_profile_data = &memory_manager->m_static_memory;
+        // memory_profile_data->m_alloc_size += size;
+        // if( memory_profile_data->m_alloc_size > memory_profile_data->m_alloc_size_max )
+        // {
+        //     memory_profile_data->m_alloc_size_max = memory_profile_data->m_alloc_size;
+        // }
+    }
 
     return memory_block->m_byte;
 }
@@ -119,7 +136,7 @@ void MemoryManager_Free(MemoryManager* memory_manager, tptr ptr)
     MemoryBlock * memory_block;
     memory_block = CastToMemoryBlock(ptr);
 
-    Assert(memory_block->m_id != 0, "");
+    Assert(memory_block->m_id != 0, "You try to free a static memory!");
     bool is_profile = memory_block->m_id != 0 ? true : false;
     
     if( is_profile )

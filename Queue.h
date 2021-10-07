@@ -22,7 +22,7 @@ tptr    Queue_Dequeue       (Queue* queue);
 tptr    Queue_PeekFirst     (const Queue* queue);
 tptr    Queue_PeekTail      (const Queue* queue);
 
-tptr    Queue_RemoveFindFirst   (Queue* queue, CB_FindData cb_find_data, tptr ptr);
+tptr    Queue_RemoveFindFirst   (Queue* queue, CB_FindData cb_find_data, tptr ptr);     // If cb_find_data is NULL, it will find the ptr
 int32   Queue_RemoveFindAll     (Queue* queue, CB_FindData cb_find_data, tptr ptr);
 
 void    Queue_Clear         (Queue* queue, CB_DestroyData cb_destroy_data);

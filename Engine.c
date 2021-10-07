@@ -5,11 +5,12 @@
 #include "TimmingManager.h"
 #include "RenderManager.h"
 #include "EventManager.h"
-#include "Sence.h"
 #include "Event.h"
+#include "SenceManager.h"
 
 #define LOCAL_NAME          "GPYM"
 
+typedef struct SenceManager SenceManager;
 
 struct Engine
 {
@@ -21,15 +22,14 @@ struct Engine
     MemoryManager*  m_memory_manager;
     RenderManager*  m_render_manager;
     EventManager*   m_event_manager;
-
-    // TODO: Add SenceManager
-    Sence*          m_current_sence;
+    SenceManager*   m_sence_manager;
 };
 
 RenderManager*      RenderManager_Create    (const tchar* local_name);
 MemoryManager*      MemoryManager_Create    (const tchar* local_name);
 TimmingManager*     TimmingManager_Create   (const tchar* local_name);
 EventManager*       EventManager_Create     (const tchar* local_name);
+SenceManager*       SenceManager_Create     (const tchar* local_name);
 
 void                Engine_Memory_Check_Memory_Leak ();
 
@@ -41,6 +41,8 @@ void Engine_Initialize()
     engine->m_timming_manager   = TimmingManager_Create(LOCAL_NAME);
     engine->m_memory_manager    = MemoryManager_Create(LOCAL_NAME);
     engine->m_event_manager     = EventManager_Create(LOCAL_NAME);
+    engine->m_sence_manager     = SenceManager_Create(LOCAL_NAME);
+
     TimmingManager_SetFrameRate(engine->m_timming_manager, 60);
     
     engine->m_is_initialized    = true;
@@ -57,16 +59,18 @@ void Engine_MainLoop()
 {
     Assert(Engine_GetInstance()->m_is_initialized == true, "");
 
-    for(;!Engine_GetInstance()->m_is_exit;)
+    const Engine* engine = Engine_GetInstance();
+
+    for(;!engine->m_is_exit;)
     {
-        Sence* curent_sence = Engine_Sence_GetCurrentSence(Engine_GetInstance());
-        RenderManager_RenderSence(RenderManager_GetInstance(Engine_GetInstance()), curent_sence);
+        Sence* curent_sence = SenceManager_Sence_GetCurrent();
+        RenderManager_RenderSence(RenderManager_GetInstance(engine), curent_sence);
 
-        RenderManager_RenderToScreen(RenderManager_GetInstance(Engine_GetInstance()));
+        RenderManager_RenderToScreen(RenderManager_GetInstance(engine));
 
-        TimmingManager_TrimSpeed(TimmingManager_GetInstance(Engine_GetInstance()));
+        TimmingManager_TrimSpeed(TimmingManager_GetInstance(engine));
 
-        EventManager_SendEvent(Event_Tick, TimmingManager_GetPrevFrameDeltaSeconds(TimmingManager_GetInstance(Engine_GetInstance())));
+        EventManager_SendEvent(Event_Tick, TimmingManager_GetPrevFrameDeltaSeconds(TimmingManager_GetInstance(engine)));
     }
 }
 
@@ -80,37 +84,33 @@ void Engine_UnInitialize()
     Engine_Memory_Check_Memory_Leak();
 }
 
-Sence* Engine_Sence_GetCurrentSence(Engine* engine)
-{
-    return engine->m_current_sence;
-}
-
 // TimmingManager
-TimmingManager* TimmingManager_GetInstance(Engine* engine)
+TimmingManager* TimmingManager_GetInstance(const Engine* engine)
 {
     return engine->m_timming_manager;
 }
 
 // MemoryManager
-MemoryManager* MemoryManager_GetInstance(Engine* engine)
+MemoryManager* MemoryManager_GetInstance(const Engine* engine)
 {
     return engine->m_memory_manager;
 }
 
 // RenderManager
-RenderManager* RenderManager_GetInstance(Engine* engine)
+RenderManager* RenderManager_GetInstance(const Engine* engine)
 {
     return engine->m_render_manager;
 }
 
-// Sence
-void Engine_Sence_SetCurrentSence(Engine* engine, Sence* sence)
-{
-    engine->m_current_sence = sence;
-}
-
 // EventManager
-EventManager* EventManager_GetInstance(Engine* engine)
+EventManager* EventManager_GetInstance(const Engine* engine)
 {
     return engine->m_event_manager;
 }
+
+// SenceManager
+SenceManager* SenceManager_GetInstance(const Engine* engine)
+{
+    return engine->m_sence_manager;
+}
+
