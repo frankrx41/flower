@@ -5,14 +5,17 @@
 #include "String.h"
 #include "Sence.h"
 #include "Actor.h"
+#include "Data32.h"
 #include "Event.h"
 #include "EventManager.h"
+#include "Storage.h"
 
 
 struct Sence
 {
     uint32          m_alloc_actor_id;
     String*         m_local_name;
+    Storage*        m_storage;
     Queue(Actor*)*  m_actor_queue;
     Queue(Actor*)*  m_actor_event_queue_list[Event_Max];
 };
@@ -23,7 +26,7 @@ Sence* Sence_Create(const tchar* local_name)
     sence->m_actor_queue    = Queue_Create(local_name, Actor*);
     sence->m_alloc_actor_id = 0;
     sence->m_local_name     = String_New(local_name, local_name);
-
+    sence->m_storage        = Storage_Create(local_name);
     for(uint32 i=0; i<Event_Max; i++)
     {
         sence->m_actor_event_queue_list[i] = Queue_Create(local_name, Actor*);
@@ -40,6 +43,7 @@ void Sence_Destroy(Sence* sence)
         Queue_Destroy(sence->m_actor_event_queue_list[i], NULL);
     }
     String_Del(sence->m_local_name);
+    Storage_Destroy(sence->m_storage);
     MemDel(sence);
 }
 
@@ -76,6 +80,28 @@ void Sence_Actor_AddEventGroup(Sence* sence, Actor* actor, Event event)
 {
     Assert(event > Event_Null && event < Event_Max, "Invalid event!");
     Queue_Push(Actor*, NULL, sence->m_actor_event_queue_list[event], actor);
+}
+
+void Sence_Storage_StoreData32(Sence* sence, crc32 variable, data32 data)
+{
+    Storage_StoreData32(sence->m_storage, variable, data);
+}
+
+bool Sence_Storage_IsExistVariable(Sence* sence, crc32 variable)
+{
+    return
+    Storage_IsExistVariable(sence->m_storage, variable);
+}
+
+data32 Sence_Storage_ReadData32(Sence* sence, crc32 variable)
+{
+    return
+    Storage_ReadData32(sence->m_storage, variable);
+}
+
+void Sence_Storage_DeleteVariable(Sence* sence, crc32 variable)
+{
+    Storage_DeleteVariable(sence->m_storage, variable);
 }
 
 tptr Sence_GetActorQueue(Sence* sence)
