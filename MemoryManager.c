@@ -299,6 +299,9 @@ void Engine_Debug_Memory_Check_Leak()
     MemoryManager* memory_manager = MemoryManager_GetInstance();
     Queue(MemoryProfileData*)* memory_profile_data_queue = memory_manager->m_memory_profile_data_queue;
     Queue_ForEach( memory_profile_data_queue, CallBack_Memory_Check_Memory_Leak, NULL );
-    // TODO: Fix memory leak
-    // Assert(Engine_Debug_Memory_AllocSize_Get() == 0, "Memory leak!");
+}
+
+void Engine_Debug_Memory_Static_Check_Leak()
+{
+    Assert( static_alloc_memory_size == 0, "Memory leak!");
 }

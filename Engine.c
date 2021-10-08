@@ -46,7 +46,8 @@ void                SenceManager_Destroy    (SenceManager* sence_manager);
 InputManager*       InputManager_Create     (const tchar* local_name);
 void                InputManager_Destroy    (InputManager* input_manager);
 
-void                Engine_Debug_Memory_Check_Leak ();
+void                Engine_Debug_Memory_Check_Leak          ();
+void                Engine_Debug_Memory_Static_Check_Leak   ();
 
 static Engine* Engine_GetInstance()
 {
@@ -93,6 +94,8 @@ void Engine_MainLoop()
 
 void Engine_UnInitialize()
 {
+    Engine_SetExit(true);
+
     Engine_Debug_Memory_Check_Leak();
 
     Engine* engine = Engine_GetInstance();
@@ -104,6 +107,7 @@ void Engine_UnInitialize()
     SenceManager_Destroy(engine->m_sence_manager);
     InputManager_Destroy(engine->m_input_manager);
 
+    Engine_Debug_Memory_Static_Check_Leak();
 }
 
 void Engine_SetExit(bool is_exit)
