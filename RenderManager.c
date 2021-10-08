@@ -15,7 +15,7 @@ void    CallBack_Actor_RenderEachActor      (Actor* actor, RenderManager* render
 struct RenderManager
 {
     bool            m_is_initialized;
-    tptr            m_platform_data;
+    ptr32            m_platform_data;
 };
 
 
@@ -28,12 +28,12 @@ RenderManager* RenderManager_Create(const tchar* local_name)
     return render_manager;
 }
 
-void RenderManager_SetPlatformData(RenderManager* render_manager, tptr ptr)
+void RenderManager_SetPlatformData(RenderManager* render_manager, ptr32 ptr)
 {
     render_manager->m_platform_data = ptr;
 }
 
-tptr RenderManager_GetPlatformData(RenderManager* render_manager)
+ptr32 RenderManager_GetPlatformData(RenderManager* render_manager)
 {
     return render_manager->m_platform_data;
 }

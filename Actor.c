@@ -22,7 +22,7 @@ struct Actor
     CB_ActorDestroy         m_cb_actor_destroy;
 };
 
-Actor* Actor_Create(const tchar* local_name, Sence* sence, uint32 id, CB_ActorCreate cb_actor_create, tptr ptr)
+Actor* Actor_Create(const tchar* local_name, Sence* sence, uint32 id, CB_ActorCreate cb_actor_create, ptr32 ptr)
 {
     Actor* actor = MemNew(local_name, Actor);
     actor->m_id                 = id;
@@ -72,21 +72,21 @@ void Actor_Component_New(Actor* actor, const tchar* component_name, Component co
 {
     Assert(actor != NULL, "");
     Assert(cb_component_create_func != NULL, "");
-    tptr component = cb_component_create_func(Actor_GetLocalName(actor));
-    Storage_StoreData32(actor->m_component, Str_CalcCrc(component_name, 0), Data32(tptr, component));
+    ptr32 component = cb_component_create_func(Actor_GetLocalName(actor));
+    Storage_StoreData32(actor->m_component, Str_CalcCrc(component_name, 0), Data32(ptr32, component));
 }
 
-static tptr Actor_Component_CastByName(Actor* actor, const tchar* component_name)
+static ptr32 Actor_Component_CastByName(Actor* actor, const tchar* component_name)
 {
     Assert(actor != NULL, "");
-    tptr ptr = Storage_ReadData32(actor->m_component, Str_CalcCrc(component_name, 0)).m_pointer;
+    ptr32 ptr = Storage_ReadData32(actor->m_component, Str_CalcCrc(component_name, 0)).m_pointer;
     return ptr;
 }
 
 void Actor_Component_Del(Actor* actor, const tchar* component_name, Component component_enum, CB_ComponentDestroy cb_component_destroy_func)
 {
     Assert(actor != NULL, "");
-    tptr component = Actor_Component_CastByName(actor, component_name);
+    ptr32 component = Actor_Component_CastByName(actor, component_name);
     if( component )
     {
         cb_component_destroy_func(component);
@@ -95,7 +95,7 @@ void Actor_Component_Del(Actor* actor, const tchar* component_name, Component co
     // Assert(false, "You try to delete a not exist component!");
 }
 
-tptr Actor_Component_Cast(Actor* actor, const tchar* component_name, Component component_enum)
+ptr32 Actor_Component_Cast(Actor* actor, const tchar* component_name, Component component_enum)
 {
     return Actor_Component_CastByName(actor, component_name);
 }

@@ -28,7 +28,7 @@ typedef __int64         int64;
 typedef unsigned __int64 uint64;
 
 typedef signed char     tchar;
-typedef void *          tptr;
+typedef void *          ptr32;
 typedef uint32          tsize;
 typedef uint32          crc32;
 

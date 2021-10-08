@@ -49,14 +49,14 @@ void Sence_Destroy(Sence* sence)
     MemDel(sence);
 }
 
-Actor* Sence_Actor_Create(const tchar* local_name, Sence* sence, CB_ActorCreate cb_actor_create, tptr ptr)
+Actor* Sence_Actor_Create(const tchar* local_name, Sence* sence, CB_ActorCreate cb_actor_create, ptr32 ptr)
 {
     Actor* actor = Actor_Create(local_name, sence, sence->m_alloc_actor_id++, cb_actor_create, ptr);
     Queue_Push(Actor*, local_name, sence->m_actor_queue, actor);
     return actor;
 }
 
-void Sence_Actor_Destroy(Sence* sence, CB_FindData cb_find_actor, tptr ptr)
+void Sence_Actor_Destroy(Sence* sence, CB_FindData cb_find_actor, ptr32 ptr)
 {
     if( cb_find_actor == NULL )
     {
@@ -111,7 +111,7 @@ void Sence_Storage_DeleteVariable(Sence* sence, crc32 variable)
     Storage_DeleteVariable(sence->m_storage, variable);
 }
 
-tptr Sence_GetActorQueue(Sence* sence)
+ptr32 Sence_GetActorQueue(Sence* sence)
 {
     return sence->m_actor_queue;
 }

@@ -6,19 +6,19 @@
 #include <string.h>
 
 
-tptr Memory_Alloc_Plat(tsize size)
+ptr32 Memory_Alloc_Plat(tsize size)
 {
     return
     malloc(size);
 }
 
-tptr Memory_Copy_Plat(tptr dst, const tptr src, tsize size)
+ptr32 Memory_Copy_Plat(ptr32 dst, const ptr32 src, tsize size)
 {
     return
     memcpy(dst, src, size);
 }
 
-tptr Memory_Set_Plat(tptr dst, int32 val, tsize size)
+ptr32 Memory_Set_Plat(ptr32 dst, int32 val, tsize size)
 {
     return
     memset(dst, val, size);

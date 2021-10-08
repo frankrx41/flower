@@ -17,7 +17,7 @@ struct TimmingPlatformData
     int64   m_counts_in_one_frame;
 };
 
-tptr TimmingManager_PlatformData_Create(const tchar* local_name)
+ptr32 TimmingManager_PlatformData_Create(const tchar* local_name)
 {
     return MemNew(local_name, TimmingPlatformData);
 }

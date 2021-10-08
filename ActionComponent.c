@@ -61,7 +61,7 @@ static bool CallBack_EventRespond_FindEvent(EventRespond* event_respond, Event e
 void Component_Action_EventRespond_Del(ActionComponent* action_component, Event event)
 {
     Assert(action_component != NULL, "");
-    EventRespond* event_respond = Queue_RemoveFindFirst(EventRespond*)(action_component->m_event_respond_queue, (CB_FindData)CallBack_EventRespond_FindEvent, (tptr)event);
+    EventRespond* event_respond = Queue_RemoveFindFirst(EventRespond*)(action_component->m_event_respond_queue, (CB_FindData)CallBack_EventRespond_FindEvent, (ptr32)event);
     MemSafeDel(event_respond);
 }
 
@@ -74,7 +74,7 @@ void Component_Action_EventRespond_Clear(ActionComponent* action_component)
 CB_EventRespond Component_Action_EventRespond_Get(ActionComponent* action_component, Event event)
 {
     Assert(action_component != NULL, "");
-    EventRespond* event_respond = Queue_Find(EventRespond*)(action_component->m_event_respond_queue, (CB_FindData)CallBack_EventRespond_FindEvent, (tptr)event);
+    EventRespond* event_respond = Queue_Find(EventRespond*)(action_component->m_event_respond_queue, (CB_FindData)CallBack_EventRespond_FindEvent, (ptr32)event);
     if( event_respond )
     {
         return event_respond->m_cb_actor_respond;
