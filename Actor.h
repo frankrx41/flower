@@ -2,10 +2,7 @@
 
 typedef struct Actor Actor;
 typedef struct Sence Sence;
-typedef struct ShaderText ShaderText;
-typedef enum Event Event;
 typedef enum Component Component;
-typedef struct vec3 vec3;
 
 typedef void (*CB_ActorCreate)(Actor* actor, tptr ptr);
 typedef void (*CB_ActorDestroy)(Actor* actor);

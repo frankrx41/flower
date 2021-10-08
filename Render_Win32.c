@@ -2,17 +2,11 @@
 
 #include "MemoryManager.h"
 #include "RenderManager.h"
-#include "String.h"
-#include "Vec.h"
 
 #define PLATFORM_WIN32      1
 #include "Platform.h"
 #include <stdio.h>
 #include <windows.h>
-
-#include "RenderComponent.h"
-#include "ShaderText.h"
-
 
 typedef struct RenderManagerPlatformData RenderManagerPlatformData;
 typedef struct PixData PixData;

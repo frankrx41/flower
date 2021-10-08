@@ -1,7 +1,7 @@
 #include "CoreMini.h"
 
-#include "TimmingManager.h"
 #include "MemoryManager.h"
+#include "TimmingManager.h"
 
 
 typedef struct TimmingPlatformData TimmingPlatformData;

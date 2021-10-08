@@ -1,7 +1,8 @@
 #include "CoreMini.h"
 
-#include "String.h"
 #include "MemoryManager.h"
+
+#include "String.h"
 
 /*
 Code Style:

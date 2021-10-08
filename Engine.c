@@ -1,13 +1,15 @@
 #include "CoreMini.h"
 
 #include "Engine.h"
+
 #include "MemoryManager.h"
 #include "TimmingManager.h"
 #include "RenderManager.h"
 #include "EventManager.h"
-#include "Event.h"
 #include "InputManager.h"
 #include "SenceManager.h"
+
+#include "Event.h"
 
 #define LOCAL_NAME          "GPYM"
 #define LOCAL_NAME_EVENT    "Event"

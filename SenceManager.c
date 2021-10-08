@@ -1,10 +1,10 @@
 #include "CoreMini.h"
 
-#include "Sence.h"
-#include "Queue.h"
+#include "MemoryManager.h"
 #include "SenceManager.h"
 
-#include "MemoryManager.h"
+#include "Queue.h"
+
 
 struct SenceManager
 {

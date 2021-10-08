@@ -1,8 +1,9 @@
 #include "CoreMini.h"
 
+#include "MemoryManager.h"
+
 #include "Queue.h"
 #include "Storage.h"
-#include "MemoryManager.h"
 #include "String.h"
 #include "Data32.h"
 

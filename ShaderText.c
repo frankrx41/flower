@@ -1,7 +1,8 @@
 #include "CoreMini.h"
 
-#include "Actor.h"
 #include "MemoryManager.h"
+#include "ShaderText.h"
+
 #include "String.h"
 #include "Vec.h"
 

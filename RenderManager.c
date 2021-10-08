@@ -1,12 +1,10 @@
 #include "CoreMini.h"
 
-
-#include "Actor.h"
-#include "Queue.h"
-#include "Sence.h"
+#include "MemoryManager.h"
 #include "RenderManager.h"
 
-#include "MemoryManager.h"
+#include "Queue.h"
+#include "Sence.h"
 
 
 void    RenderManager_Initialize_Plat       (RenderManager* render_manager);

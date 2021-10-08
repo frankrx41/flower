@@ -1,13 +1,15 @@
 #include "CoreMini.h"
 
 #include "MemoryManager.h"
-#include "Queue.h"
-#include "String.h"
+#include "EventManager.h"
+
 #include "Sence.h"
 #include "Actor.h"
-#include "Data32.h"
 #include "Event.h"
-#include "EventManager.h"
+
+#include "Queue.h"
+#include "String.h"
+#include "Data32.h"
 #include "Storage.h"
 
 
