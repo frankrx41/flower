@@ -28,6 +28,8 @@ struct Engine
     InputManager*   m_input_manager;
 };
 
+static Engine global_engine;
+
 RenderManager*      RenderManager_Create    (const tchar* local_name);
 MemoryManager*      MemoryManager_Create    (const tchar* local_name);
 TimmingManager*     TimmingManager_Create   (const tchar* local_name);
@@ -37,8 +39,14 @@ InputManager*       InputManager_Create     (const tchar* local_name);
 
 void                Engine_Memory_Check_Memory_Leak ();
 
-void Engine_Initialize(Engine* engine)
+static Engine* Engine_GetInstance()
 {
+    return &global_engine;
+}
+
+void Engine_Initialize()
+{
+    Engine* engine = Engine_GetInstance();
     engine->m_render_manager    = RenderManager_Create(LOCAL_NAME);
     engine->m_timming_manager   = TimmingManager_Create(LOCAL_NAME);
     engine->m_memory_manager    = MemoryManager_Create(LOCAL_NAME);
@@ -52,77 +60,73 @@ void Engine_Initialize(Engine* engine)
     engine->m_is_exit           = false;
 }
 
-Engine* Engine_GetInstance()
-{
-    static Engine engine;
-    return &engine;
-}
 
-void Engine_MainLoop(Engine* engine)
+void Engine_MainLoop()
 {
-    Assert(Engine_GetInstance()->m_is_initialized == true, "");
+    Engine* engine = Engine_GetInstance();
+    Assert(engine->m_is_initialized == true, "");
 
-    float delta_second = TimmingManager_GetPrevFrameDeltaSeconds(TimmingManager_GetInstance(engine));
+    float delta_second = TimmingManager_GetPrevFrameDeltaSeconds(TimmingManager_GetInstance());
     for(;!engine->m_is_exit;)
     {
-        InputManager_Keys_UpdateState(InputManager_GetInstance(engine), delta_second);
-        InputManager_Event_Send(InputManager_GetInstance(engine), LOCAL_NAME_EVENT);
+        InputManager_Keys_UpdateState(InputManager_GetInstance(), delta_second);
+        InputManager_Event_Send(InputManager_GetInstance(), LOCAL_NAME_EVENT);
 
         Sence* curent_sence = SenceManager_Sence_GetCurrent();
-        RenderManager_RenderSence(RenderManager_GetInstance(engine), curent_sence);
+        RenderManager_RenderSence(RenderManager_GetInstance(), curent_sence);
 
-        RenderManager_RenderToScreen(RenderManager_GetInstance(engine));
+        RenderManager_RenderToScreen(RenderManager_GetInstance());
 
-        TimmingManager_TrimSpeed(TimmingManager_GetInstance(engine));
+        TimmingManager_TrimSpeed(TimmingManager_GetInstance());
 
-        delta_second = TimmingManager_GetPrevFrameDeltaSeconds(TimmingManager_GetInstance(engine));
+        delta_second = TimmingManager_GetPrevFrameDeltaSeconds(TimmingManager_GetInstance());
         EventManager_SendEvent(Event_Sence_Tick, LOCAL_NAME_EVENT, curent_sence, delta_second);
     }
 }
 
-void Engine_UnInitialize(Engine* engine)
+void Engine_UnInitialize()
 {
     Engine_Memory_Check_Memory_Leak();
 }
 
-void Engine_SetExit(Engine* engine, bool is_exit)
+void Engine_SetExit(bool is_exit)
 {
-    engine->m_is_exit = is_exit;
+    Engine_GetInstance()->m_is_exit = is_exit;
 }
 
 // TimmingManager
-TimmingManager* TimmingManager_GetInstance(const Engine* engine)
+TimmingManager* TimmingManager_GetInstance()
 {
-    return engine->m_timming_manager;
+    return Engine_GetInstance()->m_timming_manager;
 }
 
 // MemoryManager
-MemoryManager* MemoryManager_GetInstance(const Engine* engine)
+MemoryManager* MemoryManager_GetInstance()
 {
-    return engine->m_memory_manager;
+    return Engine_GetInstance()->m_memory_manager;
 }
 
 // RenderManager
-RenderManager* RenderManager_GetInstance(const Engine* engine)
+RenderManager* RenderManager_GetInstance()
 {
-    return engine->m_render_manager;
+    return Engine_GetInstance()->m_render_manager;
 }
 
 // EventManager
-EventManager* EventManager_GetInstance(const Engine* engine)
+EventManager* EventManager_GetInstance()
 {
-    return engine->m_event_manager;
+    return Engine_GetInstance()->m_event_manager;
 }
 
 // SenceManager
-SenceManager* SenceManager_GetInstance(const Engine* engine)
+SenceManager* SenceManager_GetInstance()
 {
-    return engine->m_sence_manager;
+    return Engine_GetInstance()->m_sence_manager;
 }
 
 // InputManager
-InputManager* InputManager_GetInstance(const Engine* engine)
+InputManager* InputManager_GetInstance()
 {
-    return engine->m_input_manager;
+    return Engine_GetInstance()->m_input_manager;
 }
 

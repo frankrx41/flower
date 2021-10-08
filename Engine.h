@@ -4,7 +4,7 @@ typedef struct Engine   Engine;
 typedef struct Sence    Sence;
 
 
-void    Engine_Initialize   (Engine* engine);
-void    Engine_MainLoop     (Engine* engine);
-void    Engine_UnInitialize (Engine* engine);
-void    Engine_SetExit      (Engine* engine, bool is_exit);
+void    Engine_Initialize   ();
+void    Engine_MainLoop     ();
+void    Engine_UnInitialize ();
+void    Engine_SetExit      (bool is_exit);

@@ -44,9 +44,6 @@ typedef tchar bool;
 #define int
 #define char
 
-typedef struct Engine Engine;
-Engine* Engine_GetInstance();
-
 #if CONFIG_DEBUG || CONFIG_RELEASE
 
 // 0 info, 1 warn, 2 error

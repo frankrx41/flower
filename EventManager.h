@@ -24,8 +24,8 @@ void    EventManager_SendEvent_Key_Any_Hold         (EventManager* event_manager
 void    EventManager_SendEvent_Key_Any_Toggle       (EventManager* event_manager, const tchar* local_name, Event event, KeyId key_id);
 
 
-EventManager* EventManager_GetInstance(const Engine* engine);
+EventManager* EventManager_GetInstance();
 
 
-#define EventManager_SendEvent(event, local_name, ...)   MACRO_CONNNECT(EventManager_Send, event)(EventManager_GetInstance(Engine_GetInstance()), local_name, event, __VA_ARGS__)
+#define EventManager_SendEvent(event, local_name, ...)   MACRO_CONNNECT(EventManager_Send, event)(EventManager_GetInstance(), local_name, event, __VA_ARGS__)
 
