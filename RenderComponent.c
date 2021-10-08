@@ -41,7 +41,7 @@ tptr Component_Render_ShaderText_GetQueue(RenderComponent* render_component)
 void Component_Render_ShaderText_Add(RenderComponent* render_component, ShaderText* shader_text)
 {
     Assert(render_component != NULL, "");
-    Queue_Push(ShaderText*, render_component->m_shader_text_queue, shader_text);
+    Queue_Push(ShaderText*, NULL, render_component->m_shader_text_queue, shader_text);
 }
 
 void Component_Render_ShaderText_ClearAll(RenderComponent* render_component)

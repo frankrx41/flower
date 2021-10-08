@@ -1,6 +1,5 @@
 #pragma once
 
-
 typedef struct Actor Actor;
 typedef struct Sence Sence;
 typedef struct ShaderText ShaderText;
@@ -8,22 +7,16 @@ typedef enum Event Event;
 typedef enum Component Component;
 typedef struct vec3 vec3;
 
-
+typedef void (*CB_ActorCreate)(Actor* actor, tptr ptr);
+typedef void (*CB_ActorDestroy)(Actor* actor);
 
 typedef tptr (*CB_ComponentCreate)(const tchar* local_name);
 typedef void (*CB_ComponentDestroy)(tptr component);
 
+Actor*  Actor_Create            (const tchar* local_name, Sence* sence, uint32 id, CB_ActorCreate cb_actor_create, tptr ptr);
+void    Actor_Set_CB_Destroy    (Actor *actor, CB_ActorDestroy cb_actor_destroy);
+void    Actor_Destroy           (Actor* actor);
 
-
-Actor*  Actor_Create        (const tchar* local_name, Sence* sence, uint32 id);
-void    Actor_Destroy       (Actor* actor);
-
-
-
-// void                Actor_Component_Location_Set                    (Actor* actor, vec3 vec);
-// void                Actor_Component_Location_Move                   (Actor* actor, vec3 offset_vec);
-// vec3                Actor_Component_Location_Get                    (Actor* actor);
-//
 
 void    Actor_Component_New     (Actor* actor, const tchar* component_name, Component component_enum, CB_ComponentCreate cb_component_create_func);
 void    Actor_Component_Del     (Actor* actor, const tchar* component_name, Component component_enum, CB_ComponentDestroy cb_component_destroy_func);
@@ -32,7 +25,9 @@ tptr    Actor_Component_Cast    (Actor* actor, const tchar* component_name, Comp
 const tchar*    Actor_GetLocalName  (Actor* actor);
 Sence*          Actor_GetSence      (Actor* actor);
 
-// #define Actor_Component_Add(actor, component)   Actor_Component_Add(actor, MACRO_TOSTR(component), MACRO_CONNNECT(MACRO_CONNNECT(Component_,component),_Create)(Actor_GetLocalName(actor)))
+/*
+Actor_Component_Del will be call when Actor_Destroy, you can not del it.
+*/
 
 #define Actor_Component_New(actor, component)   Actor_Component_New(actor, MACRO_TOSTR(component), component, MACRO_CONNNECT(component,_Create))
 #define Actor_Component_Del(actor, component)   Actor_Component_Del(actor, MACRO_TOSTR(component), component, MACRO_CONNNECT(component,_Destroy))

@@ -1,4 +1,3 @@
-Rename Engine_Memory_Copy -> Memory_Copy ?
 Add Storage_StoreTempVariable
 Update String_Copy, allow use negative number
 Add Str_Cat, join, IsSame ... function
@@ -8,24 +7,25 @@ Add ShaderText info
 Add Queue_Sort
 Add CONFIG_SHIPPING
 Add Fps profile
-Add Component_Storage
 
 Add Shader2D
 
 Add TaskManager
-Add Event_Sence_Tick
 Add Event_Actor_Destroy
-Add CB_ProcessActor in Actor_Destroy
 Add CB_ProcessSence in Sence_Destroy
 Add InputBank or named it controller ?
 Add InputBank in Actor_Create
 Add TaskManager in SendEvent
-Add Storage in Sence
 
-Add EventManger
-Add SenceManager
-Add InputManager
-
+Add Event_Sence_Tick (done)
+Add CB_ProcessActor in Actor_Destroy (done)
+Add Storage in Sence (done)
+Rename Engine_Memory_Check_Memory_Leak -> Engine_Debug... (done)
+Add EventManger (done)
+Add InputManager (done)
+Rename Engine_Memory_Copy -> Memory_Copy (done)
+Add Component_Storage (done)
+Add SenceManager (done)
 Update Timming (done)
 Rename callback function to CallBack_ (done)
 Add Component_Action (done)

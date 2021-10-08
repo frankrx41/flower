@@ -106,6 +106,15 @@ bool Str_IsEmpty(const tchar* str)
 
 bool Str_IsSame(const tchar* str1, const tchar* str2)
 {
+    if( str1 == NULL && str2 == NULL )
+    {
+        return true;
+    }
+    if( str1 == NULL || str2 == NULL )
+    {
+        return false;
+    }
+
     uint32 i = 0;
     for( ; ; i++ )
     {
@@ -113,7 +122,7 @@ bool Str_IsSame(const tchar* str1, const tchar* str2)
         {
             return false;
         }
-        if( str1[i] != NULL )
+        if( str1[i] == NULL )
         {
             break;
         }

@@ -12,7 +12,11 @@
 /*
 Code Style
 
-Start with _ means not want be call
+Start with '_' means not want be call
+
+Variable list:
+XXXManager* local_name Event/Sence/Actor/String... others
+
 */
 
 // New key word
