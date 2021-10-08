@@ -8,6 +8,8 @@ Add Queue_Sort
 Add CONFIG_SHIPPING
 Add Fps profile
 
+Add return and args type in callback function
+
 Add Shader2D
 
 Add TaskManager

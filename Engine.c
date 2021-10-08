@@ -23,8 +23,6 @@ struct Engine
     bool    m_is_initialized;
     bool    m_is_exit;
 
-    tsize   m_engine_alloc_memory_size;
-
     TimmingManager* m_timming_manager;
     MemoryManager*  m_memory_manager;
     RenderManager*  m_render_manager;
@@ -36,7 +34,10 @@ struct Engine
 static Engine global_engine;
 
 RenderManager*      RenderManager_Create    (const tchar* local_name);
+
 MemoryManager*      MemoryManager_Create    (const tchar* local_name);
+void                MemoryManager_Destroy   (MemoryManager* memory_manager);
+
 TimmingManager*     TimmingManager_Create   (const tchar* local_name);
 EventManager*       EventManager_Create     (const tchar* local_name);
 SenceManager*       SenceManager_Create     (const tchar* local_name);
@@ -63,8 +64,6 @@ void Engine_Initialize()
     
     engine->m_is_initialized    = true;
     engine->m_is_exit           = false;
-
-    engine->m_engine_alloc_memory_size = 0;
 }
 
 
@@ -104,16 +103,6 @@ void Engine_SetExit(bool is_exit)
 bool Engine_IsExit()
 {
     return Engine_GetInstance()->m_is_exit;
-}
-
-void Engine_Debug_Memory_AllocSize_Add(int32 size)
-{
-    Engine_GetInstance()->m_engine_alloc_memory_size += size;
-}
-
-tsize Engine_Debug_Memory_AllocSize_Get()
-{
-    return Engine_GetInstance()->m_engine_alloc_memory_size;
 }
 
 // TimmingManager

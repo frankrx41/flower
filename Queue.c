@@ -274,3 +274,8 @@ void Queue_Sort(Queue* queue, CB_CompareData cb_compare_data)
     // TODO:
     Assert(false, "");
 }
+
+static const tchar* Queue_GetLocalName(struct Queue* queue)
+{
+    return String_CStr(queue->m_local_name);
+}

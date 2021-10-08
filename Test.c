@@ -260,6 +260,8 @@ void CallBack_ActorOnEvent3(Actor* actor, const EventInfo* event_info)
     crc32 crc_tick_count = Str_CalcCrc("tick_count" ,0);
     int32 tick_count = Actor_Component_Storage_ReadData32(actor, crc_tick_count).m_int32;
 
+    static int32 update_count = 0;
+
     float delta_second = Actor_Component_Storage_ReadData32(actor, crc_delta_second).m_float;
     const float update_need_seconds = 1.f;
 
@@ -267,12 +269,10 @@ void CallBack_ActorOnEvent3(Actor* actor, const EventInfo* event_info)
     {
         delta_second += event_info->m_delta_seconds;
         tick_count++;
-
-        // Log(0, "%d %.2f %.2f\n", tick_count, delta_second, event_info->m_delta_seconds);
     }
     else
     {
-
+        update_count++;
         Actor_Component_Render_ShaderText_ClearAll(actor);
 
         String* string = String_New(Actor_GetLocalName(actor), NULL);
@@ -280,10 +280,14 @@ void CallBack_ActorOnEvent3(Actor* actor, const EventInfo* event_info)
         Actor_Component_Render_ShaderText_Add(actor, Vec3(0,0,0), String_CStr(string));
         String_Del(string);
 
-        delta_second = 0.f;
+        delta_second -= update_need_seconds;
         tick_count = 0;
-    }
 
+        if( update_count > 5 )
+        {
+            Engine_SetExit(true);
+        }
+    }
 
     Actor_Component_Storage_StoreData32(actor, crc_tick_count, Data32(int32, tick_count));
     Actor_Component_Storage_StoreData32(actor, crc_delta_second, Data32(float, delta_second));
