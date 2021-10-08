@@ -34,14 +34,17 @@ struct Engine
 static Engine global_engine;
 
 RenderManager*      RenderManager_Create    (const tchar* local_name);
-
+void                RenderManager_Destroy   (RenderManager* render_manager);
 MemoryManager*      MemoryManager_Create    (const tchar* local_name);
 void                MemoryManager_Destroy   (MemoryManager* memory_manager);
-
 TimmingManager*     TimmingManager_Create   (const tchar* local_name);
+void                TimmingManager_Destroy  (TimmingManager* timming_manager);
 EventManager*       EventManager_Create     (const tchar* local_name);
+void                EventManager_Destroy    (EventManager* event_manager);
 SenceManager*       SenceManager_Create     (const tchar* local_name);
+void                SenceManager_Destroy    (SenceManager* sence_manager);
 InputManager*       InputManager_Create     (const tchar* local_name);
+void                InputManager_Destroy    (InputManager* input_manager);
 
 void                Engine_Debug_Memory_Check_Leak ();
 
@@ -60,8 +63,6 @@ void Engine_Initialize()
     engine->m_sence_manager     = SenceManager_Create(LOCAL_NAME);
     engine->m_input_manager     = InputManager_Create(LOCAL_NAME);
 
-    TimmingManager_SetFrameRate(engine->m_timming_manager, 60);
-    
     engine->m_is_initialized    = true;
     engine->m_is_exit           = false;
 }
@@ -93,6 +94,16 @@ void Engine_MainLoop()
 void Engine_UnInitialize()
 {
     Engine_Debug_Memory_Check_Leak();
+
+    Engine* engine = Engine_GetInstance();
+
+    RenderManager_Destroy(engine->m_render_manager);
+    TimmingManager_Destroy(engine->m_timming_manager);
+    MemoryManager_Destroy(engine->m_memory_manager);
+    EventManager_Destroy(engine->m_event_manager);
+    SenceManager_Destroy(engine->m_sence_manager);
+    InputManager_Destroy(engine->m_input_manager);
+
 }
 
 void Engine_SetExit(bool is_exit)

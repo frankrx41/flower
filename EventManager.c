@@ -17,6 +17,11 @@ EventManager* EventManager_Create(const tchar* local_name)
     return event_manger;
 }
 
+void EventManager_Destroy(EventManager* event_manager)
+{
+    MemDel(event_manager);
+}
+
 EventInfo* EventInfo_Create(const tchar* local_name, Event event, Sence* sence, Actor* actor, KeyId key_id, float delta_second)
 {
     Assert(local_name != NULL, "");

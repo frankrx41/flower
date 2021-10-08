@@ -17,12 +17,18 @@ struct TimmingPlatformData
     int64   m_counts_in_one_frame;
 };
 
-ptr32 TimmingManager_PlatformData_Create(const tchar* local_name)
+ptr32 TimmingManager_PlatformData_Create(TimmingManager* timming_manager, const tchar* local_name)
 {
     return MemNew(local_name, TimmingPlatformData);
 }
 
-void TimmingManager_SetFrameRate_Plat(TimmingPlatformData* timming_platform_data, float rate)
+void TimmingManager_PlatformData_Destroy(TimmingManager* timming_manager, TimmingPlatformData* timming_platform_data)
+{
+    MemDel(timming_platform_data);
+}
+
+
+void TimmingManager_SetFrameRate_Plat(TimmingManager* timming_manager, TimmingPlatformData* timming_platform_data, float rate)
 {
     INT64 cpu_frequency;
     BOOL success;
@@ -49,7 +55,6 @@ void TimmingManager_SetFrameRate_Plat(TimmingPlatformData* timming_platform_data
 
 float TimmingManager_TrimSpeed_Plat(TimmingManager* timming_manager, TimmingPlatformData* timming_platform_data)
 {
-    int64 passed_frame_count = 0;
     int64 current_cpu_count;
     const int64 last_cpu_count = timming_platform_data->m_last_cpu_count;
     const int64 next_cpu_count = timming_platform_data->m_next_cpu_count;

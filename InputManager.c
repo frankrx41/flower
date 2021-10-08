@@ -49,6 +49,10 @@ InputManager* InputManager_Create(const tchar* local_name)
     return input_manager;
 }
 
+void InputManager_Destroy(InputManager* input_manager)
+{
+    MemDel(input_manager);
+}
 
 void InputManager_Event_Send(InputManager* input_manager, const tchar* local_name)
 {
