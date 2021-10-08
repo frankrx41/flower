@@ -12,7 +12,8 @@ typedef struct TimmingPlatformData TimmingPlatformData;
 
 struct TimmingPlatformData
 {
-    int64   m_current_cpu_count;
+    int64   m_last_cpu_count;
+    int64   m_next_cpu_count;
     int64   m_counts_in_one_frame;
 };
 
@@ -41,30 +42,35 @@ void TimmingManager_SetFrameRate_Plat(TimmingPlatformData* timming_platform_data
     success = QueryPerformanceCounter(&current_cpu_count);
     Assert( success == true, "" );
 
-    timming_platform_data->m_current_cpu_count          = current_cpu_count.QuadPart;
-    timming_platform_data->m_counts_in_one_frame        = frame_count;
+    timming_platform_data->m_last_cpu_count         = current_cpu_count.QuadPart;
+    timming_platform_data->m_counts_in_one_frame    = frame_count;
+    timming_platform_data->m_next_cpu_count         = timming_platform_data->m_last_cpu_count + frame_count;
 }
 
 float TimmingManager_TrimSpeed_Plat(TimmingManager* timming_manager, TimmingPlatformData* timming_platform_data)
 {
     int64 passed_frame_count = 0;
     int64 current_cpu_count;
-    int64 last_cpu_count = timming_platform_data->m_current_cpu_count;
+    const int64 last_cpu_count = timming_platform_data->m_last_cpu_count;
+    const int64 next_cpu_count = timming_platform_data->m_next_cpu_count;
 
-    do
+    for(;;)
     {
-        Sleep(1);
-
         LARGE_INTEGER current_cpu_count_large_int;
 
         QueryPerformanceCounter(&current_cpu_count_large_int);
         current_cpu_count = current_cpu_count_large_int.QuadPart;
-        passed_frame_count = current_cpu_count - timming_platform_data->m_current_cpu_count;
+        
+        if( current_cpu_count >= next_cpu_count )
+        {
+            break;
+        }
 
-    }while(passed_frame_count < timming_platform_data->m_counts_in_one_frame);
+        Sleep(1);
+    }
 
-
-    timming_platform_data->m_current_cpu_count += timming_platform_data->m_counts_in_one_frame;
+    timming_platform_data->m_next_cpu_count = timming_platform_data->m_next_cpu_count + timming_platform_data->m_counts_in_one_frame;
+    timming_platform_data->m_last_cpu_count = current_cpu_count;
 
     return (current_cpu_count - last_cpu_count) / (timming_platform_data->m_counts_in_one_frame * TimmingManager_GetFrameRate(timming_manager));
 }

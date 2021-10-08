@@ -16,19 +16,25 @@
 // Location
 void Actor_Component_Location_Set(Actor* actor, vec3 vec)
 {
+    Assert(actor != NULL, "");
     LocationComponent* location_component = Actor_Component_Cast(actor, Component_Location);
+    Assert(location_component != NULL, "");
     Component_Location_Set(location_component, vec);
 }
 
 void Actor_Component_Location_Move(Actor* actor, vec3 offset_vec)
 {
+    Assert(actor != NULL, "");
     LocationComponent* location_component = Actor_Component_Cast(actor, Component_Location);
+    Assert(location_component != NULL, "");
     Component_Location_Move(location_component, offset_vec);
 }
 
 vec3 Actor_Component_Location_Get(Actor* actor)
 {
+    Assert(actor != NULL, "");
     LocationComponent* location_component = Actor_Component_Cast(actor, Component_Location);
+    Assert(location_component != NULL, "");
     if( location_component )
     {
         return
@@ -43,6 +49,7 @@ ShaderText* Actor_Component_Render_ShaderText_Add(Actor* actor, vec3 vec, const 
 {
     Assert(actor != NULL, "");
     RenderComponent* render_component = Actor_Component_Cast(actor, Component_Render);
+    Assert(render_component != NULL, "");
     if( render_component )
     {
         ShaderText* shader_text = ShaderText_Create(Actor_GetLocalName(actor), vec, str);
@@ -62,6 +69,7 @@ void Actor_Component_Render_ShaderText_ClearAll(Actor* actor)
 {
     Assert(actor != NULL, "");
     RenderComponent* render_component = Actor_Component_Cast(actor, Component_Render);
+    Assert(render_component != NULL, "");
     if( render_component )
     {
         Component_Render_ShaderText_ClearAll(render_component);
@@ -74,6 +82,7 @@ void Actor_Component_Action_EventRespond_Add(Actor* actor, Event event, CB_Event
 {
     Assert(actor != NULL, "");
     ActionComponent* action_component = Actor_Component_Cast(actor, Component_Action);
+    Assert(action_component != NULL, "");
     if( action_component )
     {
         Component_Action_EventRespond_Add(action_component, event, cb_event_respond);
@@ -85,6 +94,7 @@ void Actor_Component_Action_EventRespond_Del(Actor* actor, Event event)
 {
     Assert(actor != NULL, "");
     ActionComponent* action_component = Actor_Component_Cast(actor, Component_Action);
+    Assert(action_component != NULL, "");
     if( action_component )
     {
         Component_Action_EventRespond_Del(action_component, event);
@@ -95,6 +105,7 @@ void Actor_Component_Action_EventRespond_Clear(Actor* actor)
 {
     Assert(actor != NULL, "");
     ActionComponent* action_component = Actor_Component_Cast(actor, Component_Action);
+    Assert(action_component != NULL, "");
     if( action_component )
     {
         Component_Action_EventRespond_Clear(action_component);
@@ -104,7 +115,9 @@ void Actor_Component_Action_EventRespond_Clear(Actor* actor)
 // Component_Storage
 bool Actor_Component_Storage_IsExistVariable(Actor* actor, crc32 variable)
 {
+    Assert(actor != NULL, "");
     StorageComponent* storage_component = Actor_Component_Cast(actor, Component_Storage);
+    Assert(storage_component != NULL, "");
     if( storage_component )
     {
         return
@@ -115,7 +128,9 @@ bool Actor_Component_Storage_IsExistVariable(Actor* actor, crc32 variable)
 
 void Actor_Component_Storage_StoreData32(Actor* actor, crc32 variable, data32 data)
 {
+    Assert(actor != NULL, "");
     StorageComponent* storage_component = Actor_Component_Cast(actor, Component_Storage);
+    Assert(storage_component != NULL, "");
     if( storage_component )
     {
         Component_Storage_StoreData32(storage_component, variable, data);
@@ -124,7 +139,9 @@ void Actor_Component_Storage_StoreData32(Actor* actor, crc32 variable, data32 da
 
 data32 Actor_Component_Storage_ReadData32(Actor* actor, crc32 variable)
 {
+    Assert(actor != NULL, "");
     StorageComponent* storage_component = Actor_Component_Cast(actor, Component_Storage);
+    Assert(storage_component != NULL, "");
     if( storage_component )
     {
         return
@@ -135,7 +152,9 @@ data32 Actor_Component_Storage_ReadData32(Actor* actor, crc32 variable)
 
 void Actor_Component_Storage_DeleteVariable(Actor* actor, crc32 variable)
 {
+    Assert(actor != NULL, "");
     StorageComponent* storage_component = Actor_Component_Cast(actor, Component_Storage);
+    Assert(storage_component != NULL, "");
     if( storage_component )
     {
         Component_Storage_DeleteVariable(storage_component, variable);
@@ -173,7 +192,11 @@ void CallBack_Actor_RenderEachActor(Actor* actor, RenderManager* render_manager)
     RenderComponent* render_component = Actor_Component_Cast(actor, Component_Render);
     if( render_component )
     {
-        vec3 vec = Actor_Component_Location_Get(actor);
+        vec3 vec = vec3_null;
+        if( Actor_Component_Cast(actor, Component_Location) )
+        {
+            vec = Actor_Component_Location_Get(actor);
+        }
         RenderManagerWithVec render_manager_with_vec;
         render_manager_with_vec.m_vec3              = vec;
         render_manager_with_vec.m_render_manager    = render_manager;

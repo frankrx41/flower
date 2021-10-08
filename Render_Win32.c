@@ -78,7 +78,7 @@ void RenderManager_RenderToScreen_Plat(RenderManager* render_manager)
             if( data->m_front_buffer[i].m_tchar != data->m_back_buffer[i].m_tchar )
             {
                 Render_PrintCharAtXY_Plat(render_manager, x, y, data->m_back_buffer[i].m_tchar);
-                Log(0, "%c", data->m_back_buffer[i].m_tchar);
+                // Log(0, "%c", data->m_back_buffer[i].m_tchar);
             }
         }
     }

@@ -203,6 +203,7 @@ void Actor_Test1()
     Actor* actor = Sence_Actor_Create(__FUNCTION__, sence, NULL, NULL);
 
     Actor_Component_New(actor, Component_Location);
+    Actor_Component_New(actor, Component_Render);
     Actor_Component_Render_ShaderText_Add(actor, Vec3(2, 2, 0), "hello world" );
 
     RenderManager_RenderSence(RenderManager_GetInstance(), sence);
@@ -253,11 +254,71 @@ void Data32_Test0()
 }
 
 ////////////////////////////////////////////////////////////////////////////////
+void CallBack_ActorOnEvent3(Actor* actor, const EventInfo* event_info)
+{
+    crc32 crc_delta_second = Str_CalcCrc("delta_seconds" ,0);
+    crc32 crc_tick_count = Str_CalcCrc("tick_count" ,0);
+    int32 tick_count = Actor_Component_Storage_ReadData32(actor, crc_tick_count).m_int32;
+
+    float delta_second = Actor_Component_Storage_ReadData32(actor, crc_delta_second).m_float;
+    const float update_need_seconds = 1.f;
+
+    if( delta_second < update_need_seconds )
+    {
+        delta_second += event_info->m_delta_seconds;
+        tick_count++;
+
+        // Log(0, "%d %.2f %.2f\n", tick_count, delta_second, event_info->m_delta_seconds);
+    }
+    else
+    {
+
+        Actor_Component_Render_ShaderText_ClearAll(actor);
+
+        String* string = String_New(Actor_GetLocalName(actor), NULL);
+        String_Format(string, "%d %.2f", tick_count, 1.f/event_info->m_delta_seconds);
+        Actor_Component_Render_ShaderText_Add(actor, Vec3(0,0,0), String_CStr(string));
+        String_Del(string);
+
+        delta_second = 0.f;
+        tick_count = 0;
+    }
+
+
+    Actor_Component_Storage_StoreData32(actor, crc_tick_count, Data32(int32, tick_count));
+    Actor_Component_Storage_StoreData32(actor, crc_delta_second, Data32(float, delta_second));
+}
+
+void CallBack_Actor_Create3(Actor* actor, tptr ptr)
+{
+    Actor_Component_New(actor, Component_Render);
+    Actor_Component_New(actor, Component_Action);
+    Actor_Component_New(actor, Component_Storage);
+
+    Actor_Component_Render_ShaderText_Add(actor, Vec3(1, 1, 0), ptr );
+    Actor_Component_Action_EventRespond_Add(actor, Event_Sence_Tick, CallBack_ActorOnEvent3);
+
+};
+void Engine_Test3()
+{
+    Sence* sence = SenceManager_Sence_Create(__FUNCTION__);
+    Actor* actor = Sence_Actor_Create(__FUNCTION__, sence, CallBack_Actor_Create3, __FUNCTION__);
+
+    SenceManager_Sence_SetCurrent(sence);
+
+    Engine_SetExit(false);
+    Engine_MainLoop();
+
+
+    Sence_Actor_Destroy(sence, NULL, actor);
+    SenceManager_Sence_Destroy(sence);
+}
+
 void CallBack_ActorOnEvent2(Actor* actor, const EventInfo* event_info)
 {
     crc32 crc_delta_second = Str_CalcCrc("delta_seconds" ,0);
     float delta_second = Actor_Component_Storage_ReadData32(actor, crc_delta_second).m_float;
-    const float update_need_seconds = 1.f;
+    const float update_need_seconds = 0.5f;
 
     if( delta_second < update_need_seconds )
     {
@@ -447,6 +508,7 @@ void Engine_Debug_UnitTesting()
     Actor_Test1();
     Actor_Test0();
 
+    Engine_Test3();
     Engine_Test2();
     Engine_Test1();
     Engine_Test0();
