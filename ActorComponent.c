@@ -1,17 +1,21 @@
 #include "CoreMini.h"
 
-#include "Actor.h"
+#include "EventManager.h"
+
 #include "Component.h"
 #include "ActionComponent.h"
-#include "Data32.h"
-#include "EventManager.h"
 #include "LocationComponent.h"
-#include "Queue.h"
 #include "RenderComponent.h"
-#include "Vec.h"
-#include "ShaderText.h"
-#include "Sence.h"
 #include "StorageComponent.h"
+#include "RenderManager.h"
+
+#include "ShaderText.h"
+
+#include "Data32.h"
+#include "Actor.h"
+#include "Queue.h"
+#include "Vec.h"
+#include "Sence.h"
 
 // Location
 void Actor_Component_Location_Set(Actor* actor, vec3 vec)
@@ -166,8 +170,6 @@ void Actor_Component_Storage_DeleteVariable(Actor* actor, crc32 variable)
 ////////////////////////////////////////////////////////////////////////////////
 typedef struct RenderManager RenderManager;
 
-void Render_InBackBuffer_Plat(RenderManager* render_manager, int32 x, int32 y, const tchar* str);
-
 typedef struct RenderManagerWithVec RenderManagerWithVec;
 struct RenderManagerWithVec
 {
@@ -184,7 +186,7 @@ void CallBack_Render_ShaderText_Plat(ShaderText* shader_text, RenderManagerWithV
 
     vec3 vec = Vec3_Add(ShaderText_GetVec3(shader_text), render_manager_with_vec->m_vec3);
 
-    Render_InBackBuffer_Plat(render_manager_with_vec->m_render_manager, (int32)vec.m_x, (int32)vec.m_y, ShaderText_GetStr(shader_text));
+    RenderManager_Render_InBackBuffer(render_manager_with_vec->m_render_manager, (int32)vec.m_x, (int32)vec.m_y, ShaderText_GetStr(shader_text));
 }
 
 void CallBack_Actor_RenderEachActor(Actor* actor, RenderManager* render_manager)

@@ -191,7 +191,7 @@ void Actor_Test2()
 
     RenderManager_RenderSence(RenderManager_GetInstance(), sence);
 
-    RenderManager_RenderToScreen(RenderManager_GetInstance());
+    RenderManager_Render_ToScreen(RenderManager_GetInstance());
 
     Sence_Actor_Destroy(sence, NULL, actor);
     SenceManager_Sence_Destroy(sence);
@@ -208,7 +208,7 @@ void Actor_Test1()
 
     RenderManager_RenderSence(RenderManager_GetInstance(), sence);
 
-    RenderManager_RenderToScreen(RenderManager_GetInstance());
+    RenderManager_Render_ToScreen(RenderManager_GetInstance());
 
     Actor_Component_Del(actor, Component_Location);
 
@@ -226,7 +226,7 @@ void Actor_Test0()
 
     RenderManager_RenderSence(RenderManager_GetInstance(), sence);
 
-    RenderManager_RenderToScreen(RenderManager_GetInstance());
+    RenderManager_Render_ToScreen(RenderManager_GetInstance());
 
     Actor_Component_Del(actor, Component_Render);
 

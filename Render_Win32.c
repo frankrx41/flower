@@ -11,9 +11,6 @@
 typedef struct RenderManagerPlatformData RenderManagerPlatformData;
 typedef struct PixData PixData;
 
-void    RenderManager_SetPlatformData   (RenderManager* render_manager, ptr32 ptr);
-ptr32   RenderManager_GetPlatformData   (RenderManager* render_manager);
-
 struct PixData
 {
     tchar   m_tchar;
@@ -32,92 +29,84 @@ struct RenderManagerPlatformData
     HANDLE      m_std_output;
 };
 
-void RenderManager_Initialize_Plat(RenderManager* render_manager, const tchar* local_name)
+
+RenderManagerPlatformData* RenderManager_PlatformData_Create_Plat(RenderManager* render_manager, const tchar* local_name)
 {
-    RenderManagerPlatformData* data = MemNew(local_name, RenderManagerPlatformData);
-    RenderManager_SetPlatformData(render_manager, data);
-    data->m_width       = 80;
-    data->m_height      = 25;
-    data->m_buffer[0]   = MemNewSize(local_name, data->m_width*data->m_height*sizeof(PixData) );
-    data->m_buffer[1]   = MemNewSize(local_name, data->m_width*data->m_height*sizeof(PixData) );
+    RenderManagerPlatformData* render_manager_platform_data = MemNew(local_name, RenderManagerPlatformData);
+    render_manager_platform_data->m_width       = 80;
+    render_manager_platform_data->m_height      = 25;
+    render_manager_platform_data->m_buffer[0]   = MemNewSize(local_name, render_manager_platform_data->m_width*render_manager_platform_data->m_height*sizeof(PixData) );
+    render_manager_platform_data->m_buffer[1]   = MemNewSize(local_name, render_manager_platform_data->m_width*render_manager_platform_data->m_height*sizeof(PixData) );
 
-    MemZero(data->m_buffer[0]);
-    MemZero(data->m_buffer[1]);
+    MemZero(render_manager_platform_data->m_buffer[0]);
+    MemZero(render_manager_platform_data->m_buffer[1]);
 
-    data->m_front_buffer = data->m_buffer[0];
-    data->m_back_buffer = data->m_buffer[1];
+    render_manager_platform_data->m_front_buffer = render_manager_platform_data->m_buffer[0];
+    render_manager_platform_data->m_back_buffer = render_manager_platform_data->m_buffer[1];
 
-    data->m_std_output  = GetStdHandle(STD_OUTPUT_HANDLE);
+    render_manager_platform_data->m_std_output  = GetStdHandle(STD_OUTPUT_HANDLE);
 
     CONSOLE_CURSOR_INFO cc_info;
     cc_info.bVisible    = 0;
     cc_info.dwSize      = 100;
-    SetConsoleCursorInfo(data->m_std_output, &cc_info);
+    SetConsoleCursorInfo(render_manager_platform_data->m_std_output, &cc_info);
+
+    return render_manager_platform_data;
 }
 
-void RenderManager_UnInitialize_Plat(RenderManager* render_manager)
+void RenderManager_PlatformData_Destroy_Plat(RenderManager* render_manager, RenderManagerPlatformData* render_manager_platform_data)
 {
-    RenderManagerPlatformData* render_manager_platform_data = RenderManager_GetPlatformData(render_manager);
     MemDel(render_manager_platform_data->m_buffer[0]);
     MemDel(render_manager_platform_data->m_buffer[1]);
     MemDel(render_manager_platform_data);
-
-    RenderManager_SetPlatformData(render_manager, NULL);
 }
 
-static void Render_PrintCharAtXY_Plat(RenderManager* render_manager, uint32 x, uint32 y, tchar ch)
+static void Render_PrintCharAtXY_Plat(RenderManagerPlatformData* render_manager_platform_data, uint32 x, uint32 y, tchar ch)
 {
-    RenderManagerPlatformData* data = RenderManager_GetPlatformData(render_manager);
     COORD coord_screen = { x, y };
-    SetConsoleCursorPosition(data->m_std_output, coord_screen);
+    SetConsoleCursorPosition(render_manager_platform_data->m_std_output, coord_screen);
     printf("%c", ch);
 }
 
-void RenderManager_RenderToScreen_Plat(RenderManager* render_manager)
+void RenderManager_RenderToScreen_Plat(RenderManager* render_manager, RenderManagerPlatformData* render_manager_platform_data)
 {
-    RenderManagerPlatformData* data = RenderManager_GetPlatformData(render_manager);
+    uint32 length = render_manager_platform_data->m_width * render_manager_platform_data->m_height;
 
-    uint32 length = data->m_width * data->m_height;
-
-    for( uint32 y=0; y<data->m_height; y++ )
+    for( uint32 y=0; y<render_manager_platform_data->m_height; y++ )
     {
-        for( uint32 x=0; x<data->m_width; x++ )
+        for( uint32 x=0; x<render_manager_platform_data->m_width; x++ )
         {
-            uint32 i = x + y*data->m_width;
-            if( data->m_front_buffer[i].m_tchar != data->m_back_buffer[i].m_tchar )
+            uint32 i = x + y*render_manager_platform_data->m_width;
+            if( render_manager_platform_data->m_front_buffer[i].m_tchar != render_manager_platform_data->m_back_buffer[i].m_tchar )
             {
-                Render_PrintCharAtXY_Plat(render_manager, x, y, data->m_back_buffer[i].m_tchar);
-                // Log(0, "%c", data->m_back_buffer[i].m_tchar);
+                Render_PrintCharAtXY_Plat(render_manager_platform_data, x, y, render_manager_platform_data->m_back_buffer[i].m_tchar);
             }
         }
     }
 }
 
-void RenderManager_SwapBuffer_Plat(RenderManager* render_manager)
+void RenderManager_SwapBuffer_Plat(RenderManager* render_manager, RenderManagerPlatformData* render_manager_platform_data)
 {
-    RenderManagerPlatformData* data = RenderManager_GetPlatformData(render_manager);
-    PixData* back_buffer = data->m_back_buffer;
-    data->m_back_buffer = data->m_front_buffer;
-    data->m_front_buffer = back_buffer;
+    PixData* back_buffer = render_manager_platform_data->m_back_buffer;
+    render_manager_platform_data->m_back_buffer = render_manager_platform_data->m_front_buffer;
+    render_manager_platform_data->m_front_buffer = back_buffer;
 
-    if( data->m_back_buffer == data->m_buffer[0] )
+    if( render_manager_platform_data->m_back_buffer == render_manager_platform_data->m_buffer[0] )
     {
-        MemZero(data->m_buffer[0]);
+        MemZero(render_manager_platform_data->m_buffer[0]);
     }
     else
     {
-        MemZero(data->m_buffer[1]);
+        MemZero(render_manager_platform_data->m_buffer[1]);
     }
 }
 
-void Render_InBackBuffer_Plat(RenderManager* render_manager, int32 x, int32 y, const tchar* str)
+void RenderManager_Render_InBackBuffer_Plat(RenderManager* render_manager, RenderManagerPlatformData* render_manager_platform_data, int32 x, int32 y, const tchar* str)
 {
-    RenderManagerPlatformData* data = RenderManager_GetPlatformData(render_manager);
-
-    uint32 index = data->m_width * y + x;
-    for( uint32 i=0; str[i] != NULL && index+i < data->m_width*data->m_height; i++ )
+    uint32 index = render_manager_platform_data->m_width * y + x;
+    for( uint32 i=0; str[i] != NULL && index+i < render_manager_platform_data->m_width*render_manager_platform_data->m_height; i++ )
     {
-        data->m_back_buffer[index+i].m_tchar = str[i];
+        render_manager_platform_data->m_back_buffer[index+i].m_tchar = str[i];
     }
 }
 

@@ -81,7 +81,7 @@ void Engine_MainLoop()
         Sence* curent_sence = SenceManager_Sence_GetCurrent();
         RenderManager_RenderSence(RenderManager_GetInstance(), curent_sence);
 
-        RenderManager_RenderToScreen(RenderManager_GetInstance());
+        RenderManager_Render_ToScreen(RenderManager_GetInstance());
 
         TimmingManager_TrimSpeed(TimmingManager_GetInstance());
 
