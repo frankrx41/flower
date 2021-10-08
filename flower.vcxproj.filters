@@ -72,6 +72,12 @@
     <ClCompile Include="SenceManager.c">
       <Filter>Engine\Sence</Filter>
     </ClCompile>
+    <ClCompile Include="InputManager.c">
+      <Filter>Engine\Input</Filter>
+    </ClCompile>
+    <ClCompile Include="Input_Win32.c">
+      <Filter>Platform\Win32</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CoreMini.h" />
@@ -99,7 +105,6 @@
     <ClInclude Include="Vec.h">
       <Filter>Library\Vec</Filter>
     </ClInclude>
-    <ClInclude Include="Platform.h" />
     <ClInclude Include="Component.h">
       <Filter>Sence\Actor</Filter>
     </ClInclude>
@@ -138,6 +143,15 @@
     </ClInclude>
     <ClInclude Include="SenceManager.h">
       <Filter>Engine\Sence</Filter>
+    </ClInclude>
+    <ClInclude Include="InputManager.h">
+      <Filter>Engine\Input</Filter>
+    </ClInclude>
+    <ClInclude Include="KeyId.h">
+      <Filter>Engine\Input</Filter>
+    </ClInclude>
+    <ClInclude Include="Platform.h">
+      <Filter>Platform</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -191,6 +205,9 @@
     </Filter>
     <Filter Include="Engine\Sence">
       <UniqueIdentifier>{e1dc4c4c-5ac4-4bd8-baca-c73f811b00f4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\Input">
+      <UniqueIdentifier>{3d5415b0-62d0-4a25-9b56-3598930723e0}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

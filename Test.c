@@ -279,7 +279,7 @@ void Engine_Test1()
     Actor_Component_Render_ShaderText_Add(actor1, Vec3(5, 5, 0), "hello world" );
 
     Actor_Component_New(actor1, Component_Action);
-    Actor_Component_Action_EventRespond_Add(actor1, Event_Tick, CallBack_ActorOnEvent1);
+    Actor_Component_Action_EventRespond_Add(actor1, Event_Sence_Tick, CallBack_ActorOnEvent1);
 
     Actor_Component_New(actor1, Component_Storage);
     Actor_Component_Storage_StoreData32(actor1, Str_CalcCrc("seconds", 0), Data32(float, 0));
@@ -292,7 +292,7 @@ void Engine_Test1()
     Actor_Component_Render_ShaderText_Add(actor2, Vec3(1, 1, 0), "goodbye world" );
 
     Actor_Component_New(actor2, Component_Action);
-    Actor_Component_Action_EventRespond_Add(actor2, Event_Tick, CallBack_ActorOnEvent1);
+    Actor_Component_Action_EventRespond_Add(actor2, Event_Sence_Tick, CallBack_ActorOnEvent1);
 
     Actor_Component_New(actor2, Component_Storage);
     Actor_Component_Storage_StoreData32(actor2, Str_CalcCrc("seconds", 0), Data32(float, 0));
@@ -343,7 +343,7 @@ void Engine_Test0()
     Actor_Component_New(actor, Component_Location);
 
     Actor_Component_Location_Set(actor, Vec3(0,0,0));
-    Actor_Component_Action_EventRespond_Add(actor, Event_Tick, CallBack_ActorOnEvent0);
+    Actor_Component_Action_EventRespond_Add(actor, Event_Sence_Tick, CallBack_ActorOnEvent0);
 
     SenceManager_Sence_SetCurrent(sence);
 

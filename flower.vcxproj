@@ -83,6 +83,8 @@
     <ClCompile Include="ActionComponent.c" />
     <ClCompile Include="Actor.c" />
     <ClCompile Include="ActorComponent.c" />
+    <ClCompile Include="InputManager.c" />
+    <ClCompile Include="Input_Win32.c" />
     <ClCompile Include="LocationComponent.c" />
     <ClCompile Include="RenderComponent.c" />
     <ClCompile Include="Data32.c" />
@@ -116,6 +118,8 @@
     <ClInclude Include="Engine.h" />
     <ClInclude Include="Event.h" />
     <ClInclude Include="EventManager.h" />
+    <ClInclude Include="InputManager.h" />
+    <ClInclude Include="KeyId.h" />
     <ClInclude Include="LocationComponent.h" />
     <ClInclude Include="MemoryManager.h" />
     <ClInclude Include="Platform.h" />
