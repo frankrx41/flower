@@ -212,5 +212,6 @@
   </ItemGroup>
   <ItemGroup>
     <Text Include="Todo.txt" />
+    <Text Include="Help.txt" />
   </ItemGroup>
 </Project>

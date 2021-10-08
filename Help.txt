@@ -1,0 +1,2 @@
+When push to git, if you meet Connection was reset, errno 10054
+Try git config --global http.sslVerify "false"
