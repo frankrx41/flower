@@ -13,6 +13,7 @@
 #define LOCAL_NAME_EVENT    "Event"
 
 typedef struct SenceManager SenceManager;
+typedef struct Engine   Engine;
 
 struct Engine
 {
@@ -37,7 +38,7 @@ EventManager*       EventManager_Create     (const tchar* local_name);
 SenceManager*       SenceManager_Create     (const tchar* local_name);
 InputManager*       InputManager_Create     (const tchar* local_name);
 
-void                Engine_Memory_Check_Memory_Leak ();
+void                Engine_Debug_Memory_Check_Leak ();
 
 static Engine* Engine_GetInstance()
 {
@@ -86,7 +87,7 @@ void Engine_MainLoop()
 
 void Engine_UnInitialize()
 {
-    Engine_Memory_Check_Memory_Leak();
+    Engine_Debug_Memory_Check_Leak();
 }
 
 void Engine_SetExit(bool is_exit)

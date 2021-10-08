@@ -8,11 +8,9 @@ Add Queue_Sort
 Add CONFIG_SHIPPING
 Add Fps profile
 
-Rename Engine_Memory_Check_Memory_Leak -> Engine_Debug...
-
-Add EventManger
-Add InputManager
-
+Rename Engine_Memory_Check_Memory_Leak -> Engine_Debug... (done)
+Add EventManger (done)
+Add InputManager (done)
 Rename Engine_Memory_Copy -> Memory_Copy (done)
 Add Component_Storage (done)
 Add SenceManager (done)

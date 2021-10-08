@@ -1,8 +1,5 @@
 #pragma once
 
-typedef struct Engine   Engine;
-typedef struct Sence    Sence;
-
 
 void    Engine_Initialize   ();
 void    Engine_MainLoop     ();

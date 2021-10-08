@@ -271,7 +271,7 @@ static void CallBack_Memory_Check_Memory_Leak(MemoryProfileData* memory_profile_
     Assert(memory_profile_data->m_alloc_size == 0, "There has a memory leak!");
 }
 
-void Engine_Memory_Check_Memory_Leak()
+void Engine_Debug_Memory_Check_Leak()
 {
     MemoryManager* memory_manager = MemoryManager_GetInstance();
     Queue(MemoryProfileData*)* memory_profile_data_queue = memory_manager->m_local_name_queue;
