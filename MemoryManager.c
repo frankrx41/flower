@@ -1,5 +1,7 @@
 #include "CoreMini.h"
 
+#include "Engine.h"
+
 #include "MemoryManager.h"
 
 #include "Queue.h"
@@ -118,12 +120,7 @@ tptr MemoryManager_Alloc(MemoryManager* memory_manager,const tchar* local_name, 
     }
     else
     {
-        // MemoryProfileData* memory_profile_data = &memory_manager->m_static_memory;
-        // memory_profile_data->m_alloc_size += size;
-        // if( memory_profile_data->m_alloc_size > memory_profile_data->m_alloc_size_max )
-        // {
-        //     memory_profile_data->m_alloc_size_max = memory_profile_data->m_alloc_size;
-        // }
+        Engine_Debug_Memory_AllocSize_Add(size);
     }
 
     return memory_block->m_byte;
@@ -137,7 +134,10 @@ void MemoryManager_Free(MemoryManager* memory_manager, tptr ptr)
     MemoryBlock * memory_block;
     memory_block = CastToMemoryBlock(ptr);
 
-    Assert(memory_block->m_id != 0, "You try to free a static memory!");
+    if( !Engine_IsExit() )
+    {
+        Assert( memory_block->m_id != 0, "You try to free a static memory!");
+    }
     bool is_profile = memory_block->m_id != 0 ? true : false;
     
     if( is_profile )
@@ -148,6 +148,10 @@ void MemoryManager_Free(MemoryManager* memory_manager, tptr ptr)
         {
             memory_profile_data->m_alloc_size -= memory_block->m_alloc_size;
         }
+    }
+    else
+    {
+        Engine_Debug_Memory_AllocSize_Add(-memory_block->m_alloc_size);
     }
 
     Memory_Free_Plat(memory_block);
@@ -264,6 +268,7 @@ void Engine_Profile_Memory()
     Log(0, "Memory Profile\n");
     Log(0, "=====================================================\n");
     Queue_ForEach( memory_profile_data_queue, CallBack_Memory_ProfileLog, NULL );
+    Log(0, "%-20s: %d\n", "Engine", Engine_Debug_Memory_AllocSize_Get());
     Log(0, "=====================================================\n");
 }
 
@@ -277,4 +282,6 @@ void Engine_Debug_Memory_Check_Leak()
     MemoryManager* memory_manager = MemoryManager_GetInstance();
     Queue(MemoryProfileData*)* memory_profile_data_queue = memory_manager->m_local_name_queue;
     Queue_ForEach( memory_profile_data_queue, CallBack_Memory_Check_Memory_Leak, NULL );
+    // TODO: Fix memory leak
+    // Assert(Engine_Debug_Memory_AllocSize_Get() == 0, "Memory leak!");
 }

@@ -33,6 +33,12 @@ SenceManager* SenceManager_Create(const tchar* local_name)
     return sence_manager;
 }
 
+void SenceManager_Destroy(SenceManager* sence_manager)
+{
+    Queue_Destroy(sence_manager->m_sence_queue, Sence_Destroy);
+    MemDel(sence_manager);
+}
+
 Sence* SenceManager_Sence_Create(SenceManager* sence_manager, const tchar* local_name)
 {
     Sence* sence = Sence_Create(local_name);

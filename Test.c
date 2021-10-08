@@ -1,24 +1,28 @@
 #include "CoreMini.h"
 
+#include "Engine.h"
+
+#include "MemoryManager.h"
+#include "RenderManager.h"
+#include "SenceManager.h"
+#include "EventManager.h"
+
+#include "Component.h"
+
 #include "ActorComponent.h"
 #include "ActionComponent.h"
 #include "LocationComponent.h"
 #include "RenderComponent.h"
 #include "StorageComponent.h"
+
 #include "String.h"
-#include "MemoryManager.h"
 #include "Queue.h"
 #include "Storage.h"
 #include "Actor.h"
-#include "Component.h"
-#include "RenderManager.h"
 #include "Sence.h"
 #include "Data32.h"
-#include "Engine.h"
 #include "Event.h"
-#include "SenceManager.h"
 #include "Vec.h"
-#include "EventManager.h"
 
 
 static void Storage_Test0()
@@ -249,6 +253,67 @@ void Data32_Test0()
 }
 
 ////////////////////////////////////////////////////////////////////////////////
+void CallBack_ActorOnEvent2(Actor* actor, const EventInfo* event_info)
+{
+    crc32 crc_delta_second = Str_CalcCrc("delta_seconds" ,0);
+    float delta_second = Actor_Component_Storage_ReadData32(actor, crc_delta_second).m_float;
+    const float update_need_seconds = 1.f;
+
+    if( delta_second < update_need_seconds )
+    {
+        delta_second += event_info->m_delta_seconds;
+    }
+    else
+    {
+        delta_second -= update_need_seconds;
+
+        Actor_Component_Render_ShaderText_ClearAll(actor);
+
+        crc32 crc_update_tick = Str_CalcCrc("update_tick" ,0);
+        int32 update_tick = Actor_Component_Storage_ReadData32(actor, crc_update_tick).m_int32;
+        update_tick += 1;
+
+        if( update_tick >= 5 )
+        {
+            Engine_SetExit(true);
+        }
+
+        String* string = String_New(Actor_GetLocalName(actor), NULL);
+        String_Format(string, "%d", update_tick);
+        Actor_Component_Render_ShaderText_Add(actor, Vec3(0,0,0), String_CStr(string));
+        String_Del(string);
+
+        Actor_Component_Storage_StoreData32(actor, crc_update_tick, Data32(int32, update_tick));
+
+    }
+    Actor_Component_Storage_StoreData32(actor, crc_delta_second, Data32(float, delta_second));
+}
+
+void CallBack_Actor_Create2(Actor* actor, tptr ptr)
+{
+    Actor_Component_New(actor, Component_Render);
+    Actor_Component_New(actor, Component_Action);
+    Actor_Component_New(actor, Component_Storage);
+
+    Actor_Component_Render_ShaderText_Add(actor, Vec3(1, 1, 0), ptr );
+    Actor_Component_Action_EventRespond_Add(actor, Event_Sence_Tick, CallBack_ActorOnEvent2);
+
+};
+void Engine_Test2()
+{
+    Sence* sence = SenceManager_Sence_Create(__FUNCTION__);
+    Actor* actor = Sence_Actor_Create(__FUNCTION__, sence, CallBack_Actor_Create2, __FUNCTION__);
+
+    SenceManager_Sence_SetCurrent(sence);
+
+    Engine_SetExit(false);
+    Engine_MainLoop();
+
+
+    Sence_Actor_Destroy(sence, NULL, actor);
+    SenceManager_Sence_Destroy(sence);
+}
+
 void CallBack_ActorOnEvent1(Actor* actor, const EventInfo* event_struct)
 {
     float seconds = Actor_Component_Storage_ReadData32(actor, Str_CalcCrc("seconds", 0)).m_float;
@@ -275,7 +340,7 @@ void Engine_Test1()
     Actor* actor1 = Sence_Actor_Create(__FUNCTION__, sence1, NULL, NULL);
 
     Actor_Component_New(actor1, Component_Render);
-    Actor_Component_Render_ShaderText_Add(actor1, Vec3(5, 5, 0), "hello world" );
+    Actor_Component_Render_ShaderText_Add(actor1, Vec3(1, 1, 0), "hello world" );
 
     Actor_Component_New(actor1, Component_Action);
     Actor_Component_Action_EventRespond_Add(actor1, Event_Sence_Tick, CallBack_ActorOnEvent1);
@@ -301,6 +366,7 @@ void Engine_Test1()
 
     SenceManager_Sence_SetCurrent(sence1);
 
+    Engine_SetExit(false);
     Engine_MainLoop();
 
 
@@ -321,7 +387,7 @@ void CallBack_ActorOnEvent0(Actor* actor, const EventInfo* event_struct)
     // float x = Actor_Component_Storage_ReadData32(actor, Str_CalcCrc("X", 0)).m_float;
     // float y = Actor_Component_Storage_ReadData32(actor, Str_CalcCrc("Y", 0)).m_float;
 
-    Actor_Component_Location_Move(actor, Vec3(0.2f, 0.05f, 0));
+    Actor_Component_Location_Move(actor, Vec3(0.1f, 0.05f, 0));
 
     vec3 vec = Actor_Component_Location_Get(actor);
     if( vec.m_y > 7 )
@@ -336,7 +402,7 @@ void Engine_Test0()
     Actor* actor = Sence_Actor_Create(__FUNCTION__, sence, NULL, NULL);
 
     Actor_Component_New(actor, Component_Render);
-    Actor_Component_Render_ShaderText_Add(actor, Vec3(5, 5, 0), "hello world" );
+    Actor_Component_Render_ShaderText_Add(actor, Vec3(1, 1, 0), "hello world" );
 
     Actor_Component_New(actor, Component_Action);
     Actor_Component_New(actor, Component_Location);
@@ -346,6 +412,7 @@ void Engine_Test0()
 
     SenceManager_Sence_SetCurrent(sence);
 
+    Engine_SetExit(false);
     Engine_MainLoop();
 
 
@@ -380,8 +447,9 @@ void Engine_Debug_UnitTesting()
     Actor_Test1();
     Actor_Test0();
 
-    // Engine_Test0();
+    Engine_Test2();
     Engine_Test1();
+    Engine_Test0();
 
     Engine_Profile_Memory();
 }

@@ -70,6 +70,11 @@ void Sence_Actor_Destroy(Sence* sence, CB_FindData cb_find_actor, tptr ptr)
     }
 }
 
+void Sence_Actor_Destroy_All(Sence* sence)
+{
+    Queue_Destroy(sence->m_actor_queue, Actor_Destroy);
+}
+
 void CallBack_Actor_ProcessEachActorEvent(Actor* actor, EventInfo* event_struct);
 
 void Sence_Actor_SendEvent(Sence* sence, EventInfo* event_info)

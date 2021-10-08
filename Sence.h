@@ -11,6 +11,7 @@ typedef void (*CB_ActorCreate)(Actor* actor, tptr ptr);
 
 Actor*  Sence_Actor_Create          (const tchar* local_name, Sence* sence, CB_ActorCreate cb_actor_create, tptr ptr);
 void    Sence_Actor_Destroy         (Sence* sence, CB_FindData cb_find_actor, tptr ptr);
+void    Sence_Actor_Destroy_All     (Sence* sence);
 void    Sence_Actor_SendEvent       (Sence* sence, EventInfo* event_info);
 void    Sence_Actor_AddEventGroup   (Sence* sence, Actor* actor, Event event);
 
