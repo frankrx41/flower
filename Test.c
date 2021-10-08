@@ -179,7 +179,7 @@ static void String_Test0()
 void Actor_Test2()
 {
     Sence* sence = SenceManager_Sence_Create(__FUNCTION__);
-    Actor* actor = Sence_Actor_Create(__FUNCTION__, sence);
+    Actor* actor = Sence_Actor_Create(__FUNCTION__, sence, NULL, NULL);
 
     Actor_Component_New(actor, Component_Render);
     Actor_Component_Render_ShaderText_Add(actor, Vec3(0, 10, 0), "hello world" );
@@ -196,7 +196,7 @@ void Actor_Test2()
 void Actor_Test1()
 {
     Sence* sence = SenceManager_Sence_Create(__FUNCTION__);
-    Actor* actor = Sence_Actor_Create(__FUNCTION__, sence);
+    Actor* actor = Sence_Actor_Create(__FUNCTION__, sence, NULL, NULL);
 
     Actor_Component_New(actor, Component_Location);
     Actor_Component_Render_ShaderText_Add(actor, Vec3(2, 2, 0), "hello world" );
@@ -214,7 +214,7 @@ void Actor_Test1()
 void Actor_Test0()
 {
     Sence* sence = SenceManager_Sence_Create(__FUNCTION__);
-    Actor* actor = Sence_Actor_Create(__FUNCTION__, sence);
+    Actor* actor = Sence_Actor_Create(__FUNCTION__, sence, NULL, NULL);
 
     Actor_Component_New(actor, Component_Render);
     Actor_Component_Render_ShaderText_Add(actor, Vec3(0, 10, 0), "hello world" );
@@ -272,7 +272,7 @@ void CallBack_ActorOnEvent1(Actor* actor, const EventInfo* event_struct)
 void Engine_Test1()
 {
     Sence* sence1 = SenceManager_Sence_Create(__FUNCTION__);
-    Actor* actor1 = Sence_Actor_Create(__FUNCTION__, sence1);
+    Actor* actor1 = Sence_Actor_Create(__FUNCTION__, sence1, NULL, NULL);
 
     Actor_Component_New(actor1, Component_Render);
     Actor_Component_Render_ShaderText_Add(actor1, Vec3(5, 5, 0), "hello world" );
@@ -284,7 +284,7 @@ void Engine_Test1()
     Actor_Component_Storage_StoreData32(actor1, Str_CalcCrc("seconds", 0), Data32(float, 0));
 
     Sence* sence2 = SenceManager_Sence_Create(__FUNCTION__);
-    Actor* actor2 = Sence_Actor_Create(__FUNCTION__, sence2);
+    Actor* actor2 = Sence_Actor_Create(__FUNCTION__, sence2, NULL, NULL);
     Actor_Component_Storage_StoreData32(actor1, Str_CalcCrc("sence", 0), Data32(tptr, sence2));
 
     Actor_Component_New(actor2, Component_Render);
@@ -333,7 +333,7 @@ void CallBack_ActorOnEvent0(Actor* actor, const EventInfo* event_struct)
 void Engine_Test0()
 {
     Sence* sence = SenceManager_Sence_Create(__FUNCTION__);
-    Actor* actor = Sence_Actor_Create(__FUNCTION__, sence);
+    Actor* actor = Sence_Actor_Create(__FUNCTION__, sence, NULL, NULL);
 
     Actor_Component_New(actor, Component_Render);
     Actor_Component_Render_ShaderText_Add(actor, Vec3(5, 5, 0), "hello world" );

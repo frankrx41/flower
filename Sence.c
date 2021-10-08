@@ -43,9 +43,9 @@ void Sence_Destroy(Sence* sence)
     MemDel(sence);
 }
 
-Actor* Sence_Actor_Create(const tchar* local_name, Sence* sence)
+Actor* Sence_Actor_Create(const tchar* local_name, Sence* sence, CB_ActorCreate cb_actor_create, tptr ptr)
 {
-    Actor* actor = Actor_Create(local_name, sence, sence->m_alloc_actor_id++);
+    Actor* actor = Actor_Create(local_name, sence, sence->m_alloc_actor_id++, cb_actor_create, ptr);
     Queue_Push(Actor*, local_name, sence->m_actor_queue, actor);
     return actor;
 }

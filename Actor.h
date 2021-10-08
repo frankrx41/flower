@@ -7,11 +7,15 @@ typedef enum Event Event;
 typedef enum Component Component;
 typedef struct vec3 vec3;
 
+typedef void (*CB_ActorCreate)(Actor* actor, tptr ptr);
+typedef void (*CB_ActorDestroy)(Actor* actor);
+
 typedef tptr (*CB_ComponentCreate)(const tchar* local_name);
 typedef void (*CB_ComponentDestroy)(tptr component);
 
-Actor*  Actor_Create        (const tchar* local_name, Sence* sence, uint32 id);
-void    Actor_Destroy       (Actor* actor);
+Actor*  Actor_Create            (const tchar* local_name, Sence* sence, uint32 id, CB_ActorCreate cb_actor_create, tptr ptr);
+void    Actor_Set_CB_Destroy    (Actor *actor, CB_ActorDestroy cb_actor_destroy);
+void    Actor_Destroy           (Actor* actor);
 
 
 void    Actor_Component_New     (Actor* actor, const tchar* component_name, Component component_enum, CB_ComponentCreate cb_component_create_func);

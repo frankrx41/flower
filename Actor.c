@@ -26,21 +26,38 @@ struct Actor
     String*                 m_local_name;
     Storage*                m_component;
     Sence*                  m_sence;
+    CB_ActorDestroy         m_cb_actor_destroy;
 };
 
-Actor* Actor_Create(const tchar* local_name, Sence* sence, uint32 id)
+Actor* Actor_Create(const tchar* local_name, Sence* sence, uint32 id, CB_ActorCreate cb_actor_create, tptr ptr)
 {
     Actor* actor = MemNew(local_name, Actor);
-    actor->m_id         = id;
-    actor->m_local_name = String_New(local_name, local_name);
-    actor->m_component  = Storage_Create(local_name);
-    actor->m_sence      = sence;
+    actor->m_id                 = id;
+    actor->m_local_name         = String_New(local_name, local_name);
+    actor->m_component          = Storage_Create(local_name);
+    actor->m_sence              = sence;
+    actor->m_cb_actor_destroy   = NULL;
+    if( cb_actor_create )
+    {
+        cb_actor_create(actor, ptr);
+    }
+
     return actor;
+}
+
+void Actor_Set_CB_Destroy(Actor* actor, CB_ActorDestroy cb_actor_destroy)
+{
+    actor->m_cb_actor_destroy = cb_actor_destroy;
 }
 
 void Actor_Destroy(Actor* actor)
 {
     Assert(actor != NULL, "");
+
+    if( actor->m_cb_actor_destroy )
+    {
+        actor->m_cb_actor_destroy(actor);
+    }
 
     Actor_Component_Del(actor, Component_Render);
     Actor_Component_Del(actor, Component_Action);
