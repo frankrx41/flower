@@ -1,2 +1,6 @@
 When push to git, if you meet Connection was reset, errno 10054
 Try git config --global http.sslVerify "false"
+
+git config --global https.proxy http://127.0.0.1:1080
+git config --global --unset http.proxy
+git config --global --unset https.proxy
