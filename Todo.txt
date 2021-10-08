@@ -7,6 +7,7 @@ Add Queue_Sort
 Add CONFIG_SHIPPING
 Add Fps profile
 
+Remove RenderManager_SetPlatformData RenderManager_GetPlatformData
 Add return and args type in callback function
 
 Add Shader2D

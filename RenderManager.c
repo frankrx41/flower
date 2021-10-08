@@ -7,15 +7,16 @@
 #include "Sence.h"
 
 
-void    RenderManager_Initialize_Plat       (RenderManager* render_manager);
+void    RenderManager_Initialize_Plat       (RenderManager* render_manager, const tchar* local_name);
+void    RenderManager_UnInitialize_Plat     (RenderManager* render_manager);
 void    RenderManager_RenderToScreen_Plat   (RenderManager* render_manager);
 void    RenderManager_SwapBuffer_Plat       (RenderManager* render_manager);
 void    CallBack_Actor_RenderEachActor      (Actor* actor, RenderManager* render_manager);
 
 struct RenderManager
 {
-    bool            m_is_initialized;
-    ptr32            m_platform_data;
+    bool    m_is_initialized;
+    ptr32   m_platform_data;
 };
 
 
@@ -23,10 +24,17 @@ struct RenderManager
 RenderManager* RenderManager_Create(const tchar* local_name)
 {
     RenderManager* render_manager = MemNew(local_name, RenderManager);
-    RenderManager_Initialize_Plat(render_manager);
+    RenderManager_Initialize_Plat(render_manager, local_name);
     render_manager->m_is_initialized = true;
     return render_manager;
 }
+
+void RenderManager_Destroy(RenderManager* render_manager)
+{
+    RenderManager_UnInitialize_Plat(render_manager);
+    MemDel(render_manager);
+}
+
 
 void RenderManager_SetPlatformData(RenderManager* render_manager, ptr32 ptr)
 {

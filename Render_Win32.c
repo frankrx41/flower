@@ -11,9 +11,8 @@
 typedef struct RenderManagerPlatformData RenderManagerPlatformData;
 typedef struct PixData PixData;
 
-
-#define LOCAL_NAME  "GPYM"
-
+void    RenderManager_SetPlatformData   (RenderManager* render_manager, ptr32 ptr);
+ptr32   RenderManager_GetPlatformData   (RenderManager* render_manager);
 
 struct PixData
 {
@@ -33,14 +32,14 @@ struct RenderManagerPlatformData
     HANDLE      m_std_output;
 };
 
-void RenderManager_Initialize_Plat(RenderManager* render_manager)
+void RenderManager_Initialize_Plat(RenderManager* render_manager, const tchar* local_name)
 {
-    RenderManagerPlatformData* data = MemNew(LOCAL_NAME, RenderManagerPlatformData);
+    RenderManagerPlatformData* data = MemNew(local_name, RenderManagerPlatformData);
     RenderManager_SetPlatformData(render_manager, data);
     data->m_width       = 80;
     data->m_height      = 25;
-    data->m_buffer[0]   = MemNewSize(LOCAL_NAME, data->m_width*data->m_height*sizeof(PixData) );
-    data->m_buffer[1]   = MemNewSize(LOCAL_NAME, data->m_width*data->m_height*sizeof(PixData) );
+    data->m_buffer[0]   = MemNewSize(local_name, data->m_width*data->m_height*sizeof(PixData) );
+    data->m_buffer[1]   = MemNewSize(local_name, data->m_width*data->m_height*sizeof(PixData) );
 
     MemZero(data->m_buffer[0]);
     MemZero(data->m_buffer[1]);
@@ -54,6 +53,16 @@ void RenderManager_Initialize_Plat(RenderManager* render_manager)
     cc_info.bVisible    = 0;
     cc_info.dwSize      = 100;
     SetConsoleCursorInfo(data->m_std_output, &cc_info);
+}
+
+void RenderManager_UnInitialize_Plat(RenderManager* render_manager)
+{
+    RenderManagerPlatformData* render_manager_platform_data = RenderManager_GetPlatformData(render_manager);
+    MemDel(render_manager_platform_data->m_buffer[0]);
+    MemDel(render_manager_platform_data->m_buffer[1]);
+    MemDel(render_manager_platform_data);
+
+    RenderManager_SetPlatformData(render_manager, NULL);
 }
 
 static void Render_PrintCharAtXY_Plat(RenderManager* render_manager, uint32 x, uint32 y, tchar ch)
