@@ -237,15 +237,15 @@ void Actor_Test0()
 ////////////////////////////////////////////////////////////////////////////////
 void Data32_Test0()
 {
-    data32 d1 = Data32(int32, 32);
-    data32 d2 = Data32(float, 3.2f);
-    data32 d3 = Data32(ptr32, &d1);
-    data32 d4 = Data32(uint32, 123);
+    const data32 d1 = Data32(int32, 32);
+    const data32 d2 = Data32(float, 3.2f);
+    const data32 d3 = Data32(ptr32, &d1);
+    const data32 d4 = Data32(uint32, 123);
 
-    int32 i = Data32_Cast(int32, d1);
-    float f = Data32_Cast(float, d2);
-    ptr32 p = Data32_Cast(ptr32, d3);
-    int32 u = Data32_Cast(uint32, d4);
+    const int32 i = d1.m_int32;
+    const float f = d2.m_float;
+    const ptr32 p = d3.m_ptr32;
+    const uint32 u = d4.m_uint32;
 
     Assert(i == 32, "");
     Assert(f == 3.2f, "");
@@ -387,7 +387,7 @@ void CallBack_ActorOnEvent1(Actor* actor, const EventInfo* event_struct)
 
     if( seconds > 2 )
     {
-        Sence* sence = Actor_Component_Storage_ReadData32(actor, Str_CalcCrc("sence", 0)).m_pointer;
+        Sence* sence = Actor_Component_Storage_ReadData32(actor, Str_CalcCrc("sence", 0)).m_ptr32;
         if( sence )
         {
             SenceManager_Sence_SetCurrent(sence);

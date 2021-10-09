@@ -32,6 +32,7 @@ typedef void *          ptr32;
 typedef uint32          tsize;
 typedef uint32          crc32;
 
+#undef NULL
 #define NULL            ( 0 )
 
 // boolean
@@ -73,7 +74,8 @@ void    Engine_Profile_Memory   ();
 
 #define INT32_MAX       2147483647i32
 #define UINT32_MAX      0xffffffffui32
-#define offsetof(s, m)  (tsize)&(((s *)0)->m)
+
+#define OFFSET_OF(s, m) (tsize)&(((s *)0)->m)
 
 #define MAX(a, b)       ((a) > (b) ? (a) : (b))
 #define MIN(a, b)       ((a) < (b) ? (a) : (b))

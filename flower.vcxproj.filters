@@ -78,6 +78,9 @@
     <ClCompile Include="Input_Win32.c">
       <Filter>Platform\Win32</Filter>
     </ClCompile>
+    <ClCompile Include="String_Win32.c">
+      <Filter>Platform\Win32</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CoreMini.h" />

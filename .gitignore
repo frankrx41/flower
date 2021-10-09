@@ -4,3 +4,4 @@
 *.user
 *.tss
 **/_ReSharper.Caches/**
+/.vs/*

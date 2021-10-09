@@ -69,7 +69,7 @@ static uint32 MemoryManager_IncreaseAllocID(MemoryManager* memory_manager)
 static MemoryBlock* CastToMemoryBlock(ptr32 ptr)
 {
     MemoryBlock* memory_block;
-    memory_block = (MemoryBlock*)((tchar*)ptr - offsetof(MemoryBlock, m_byte));
+    memory_block = (MemoryBlock*)((tchar*)ptr - OFFSET_OF(MemoryBlock, m_byte));
     Assert(memory_block->m_flag == MAGIC_NUMBER, "");
     return memory_block;
 };

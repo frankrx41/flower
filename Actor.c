@@ -79,7 +79,7 @@ void Actor_Component_New(Actor* actor, const tchar* component_name, Component co
 static ptr32 Actor_Component_CastByName(Actor* actor, const tchar* component_name)
 {
     Assert(actor != NULL, "");
-    ptr32 ptr = Storage_ReadData32(actor->m_component, Str_CalcCrc(component_name, 0)).m_pointer;
+    ptr32 ptr = Storage_ReadData32(actor->m_component, Str_CalcCrc(component_name, 0)).m_ptr32;
     return ptr;
 }
 

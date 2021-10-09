@@ -178,15 +178,6 @@ void String_Format(String* string, const tchar* format, ...)
     va_end(ap);
 }
 
-void String_FormatArgs(String* string, const tchar* format, va_list args)
-{
-    tchar buffer[4996];
-    int32 vsprintf(tchar*, const tchar*, va_list);
-    vsprintf(buffer, format, args);
-
-    String_Copy(string, buffer, 0);
-}
-
 void String_Copy(String* string, const tchar* str, uint32 length)
 {
     // length == 0 means copy full str
