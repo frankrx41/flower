@@ -1,10 +1,11 @@
 #include "CoreMini.h"
 
-#include "Actor.h"
 #include "MemoryManager.h"
+#include "ActionComponent.h"
+
+#include "Event.h"
 #include "Queue.h"
 #include "String.h"
-#include "ActionComponent.h"
 
 typedef struct EventRespond EventRespond;
 typedef struct ActorEvent ActorEvent;

@@ -6,9 +6,9 @@ enum Event
 {
     Event_Null,
 
-    Event_Sence_Min,
-    Event_Sence_Tick = Event_Sence_Min,
-    Event_Sence_Max,
+    Event_Scene_Min,
+    Event_Scene_Tick = Event_Scene_Min,
+    Event_Scene_Max,
 
     Event_Key_Min,
     Event_Key_Any_Down = Event_Key_Min,

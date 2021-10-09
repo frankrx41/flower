@@ -4,7 +4,7 @@
 #include "RenderManager.h"
 
 #include "Queue.h"
-#include "Sence.h"
+#include "Scene.h"
 
 
 ptr32   RenderManager_PlatformData_Create_Plat  (RenderManager* render_manager, const tchar* local_name);
@@ -38,9 +38,9 @@ void RenderManager_Destroy(RenderManager* render_manager)
     MemDel(render_manager);
 }
 
-void RenderManager_RenderSence(RenderManager* render_manager, Sence* sence)
+void RenderManager_RenderScene(RenderManager* render_manager, Scene* scene)
 {
-    Queue_ForEach(Sence_GetActorQueue(sence), CallBack_Actor_RenderEachActor, render_manager);
+    Queue_ForEach(Scene_GetActorQueue(scene), CallBack_Actor_RenderEachActor, render_manager);
 }
 
 void RenderManager_Render_ToScreen(RenderManager* render_manager)

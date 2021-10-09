@@ -15,17 +15,17 @@ Code Style
 Start with '_' means not want be call
 
 Variable list:
-XXXManager* local_name Event/Sence/Actor/String... others
+XXXManager* local_name Event/Scene/Actor/String... others
 
 */
 
 // New key word
-typedef int             int32;
-typedef unsigned int    uint32;
-typedef unsigned char   byte;
-typedef char*           va_list;
-typedef __int64         int64;
-typedef unsigned __int64 uint64;
+typedef int                 int32;
+typedef unsigned int        uint32;
+typedef unsigned char       byte;
+typedef char*               va_list;
+typedef long long           int64;
+typedef unsigned long long  uint64;
 
 typedef signed char     tchar;
 typedef void *          ptr32;

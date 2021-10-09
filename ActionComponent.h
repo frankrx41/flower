@@ -2,7 +2,7 @@
 
 typedef enum Event Event;
 typedef struct ActionComponent ActionComponent;
-typedef struct Sence Sence;
+typedef struct Scene Scene;
 typedef struct Actor Actor;
 
 typedef struct EventInfo EventInfo;

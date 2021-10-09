@@ -1,7 +1,7 @@
 #pragma once
 
 typedef struct Actor Actor;
-typedef struct Sence Sence;
+typedef struct Scene Scene;
 typedef enum Component Component;
 
 typedef void (*CB_ActorCreate)(Actor* actor, ptr32 ptr);
@@ -10,17 +10,17 @@ typedef void (*CB_ActorDestroy)(Actor* actor);
 typedef ptr32 (*CB_ComponentCreate)(const tchar* local_name);
 typedef void (*CB_ComponentDestroy)(ptr32 component);
 
-Actor*  Actor_Create            (const tchar* local_name, Sence* sence, uint32 id, CB_ActorCreate cb_actor_create, ptr32 ptr);
+Actor*  Actor_Create            (const tchar* local_name, Scene* scene, uint32 id, CB_ActorCreate cb_actor_create, ptr32 ptr);
 void    Actor_Set_CB_Destroy    (Actor *actor, CB_ActorDestroy cb_actor_destroy);
 void    Actor_Destroy           (Actor* actor);
 
 
 void    Actor_Component_New     (Actor* actor, const tchar* component_name, Component component_enum, CB_ComponentCreate cb_component_create_func);
 void    Actor_Component_Del     (Actor* actor, const tchar* component_name, Component component_enum, CB_ComponentDestroy cb_component_destroy_func);
-ptr32    Actor_Component_Cast    (Actor* actor, const tchar* component_name, Component component_enum);
+ptr32   Actor_Component_Cast    (Actor* actor, const tchar* component_name, Component component_enum);
 
 const tchar*    Actor_GetLocalName  (Actor* actor);
-Sence*          Actor_GetSence      (Actor* actor);
+Scene*          Actor_GetScene      (Actor* actor);
 
 /*
 Actor_Component_Del will be call when Actor_Destroy, you can not del it.

@@ -18,17 +18,17 @@ struct Actor
     uint32                  m_id;
     String*                 m_local_name;
     Storage*                m_component;
-    Sence*                  m_sence;
+    Scene*                  m_scene;
     CB_ActorDestroy         m_cb_actor_destroy;
 };
 
-Actor* Actor_Create(const tchar* local_name, Sence* sence, uint32 id, CB_ActorCreate cb_actor_create, ptr32 ptr)
+Actor* Actor_Create(const tchar* local_name, Scene* scene, uint32 id, CB_ActorCreate cb_actor_create, ptr32 ptr)
 {
     Actor* actor = MemNew(local_name, Actor);
     actor->m_id                 = id;
     actor->m_local_name         = String_New(local_name, local_name);
     actor->m_component          = Storage_Create(local_name);
-    actor->m_sence              = sence;
+    actor->m_scene              = scene;
     actor->m_cb_actor_destroy   = NULL;
     if( cb_actor_create )
     {
@@ -105,8 +105,8 @@ const tchar* Actor_GetLocalName(Actor* actor)
     return String_CStr(actor->m_local_name);
 }
 
-Sence* Actor_GetSence(Actor* actor)
+Scene* Actor_GetScene(Actor* actor)
 {
-    return actor->m_sence;
+    return actor->m_scene;
 }
 

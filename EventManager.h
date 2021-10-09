@@ -1,7 +1,7 @@
 #pragma once
 
 typedef struct EventManager EventManager;
-typedef struct Sence Sence;
+typedef struct Scene Scene;
 typedef enum Event Event;
 typedef struct EventInfo EventInfo;
 typedef struct Actor Actor;
@@ -11,12 +11,12 @@ struct EventInfo
 {
     Event   m_event;
     Actor*  m_actor;
-    Sence*  m_sence;
+    Scene*  m_scene;
     KeyId   m_key_id;
     float   m_delta_seconds;
 };
 
-void    EventManager_SendEvent_Sence_Tick           (EventManager* event_manager, const tchar* local_name, Event event, Sence* sence, float delta_seconds);
+void    EventManager_SendEvent_Scene_Tick           (EventManager* event_manager, const tchar* local_name, Event event, Scene* scene, float delta_seconds);
 void    EventManager_SendEvent_Key_Any_Down         (EventManager* event_manager, const tchar* local_name, Event event, KeyId key_id);
 void    EventManager_SendEvent_Key_Any_Down_Once    (EventManager* event_manager, const tchar* local_name, Event event, KeyId key_id);
 void    EventManager_SendEvent_Key_Any_Up_Once      (EventManager* event_manager, const tchar* local_name, Event event, KeyId key_id);

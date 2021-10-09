@@ -4,7 +4,7 @@
 
 #include "MemoryManager.h"
 #include "RenderManager.h"
-#include "SenceManager.h"
+#include "SceneManager.h"
 #include "EventManager.h"
 
 #include "Component.h"
@@ -19,7 +19,7 @@
 #include "Queue.h"
 #include "Storage.h"
 #include "Actor.h"
-#include "Sence.h"
+#include "Scene.h"
 #include "Data32.h"
 #include "Event.h"
 #include "Vec.h"
@@ -182,56 +182,56 @@ static void String_Test0()
 ////////////////////////////////////////////////////////////////////////////////
 void Actor_Test2()
 {
-    Sence* sence = SenceManager_Sence_Create(__FUNCTION__);
-    Actor* actor = Sence_Actor_Create(__FUNCTION__, sence, NULL, NULL);
+    Scene* scene = SceneManager_Scene_Create(__FUNCTION__);
+    Actor* actor = Scene_Actor_Create(__FUNCTION__, scene, NULL, NULL);
 
     Actor_Component_New(actor, Component_Render);
     Actor_Component_Render_ShaderText_Add(actor, Vec3(0, 10, 0), "hello world" );
     Actor_Component_Render_ShaderText_Add(actor, Vec3(1, 2, 0), "goodbye world" );
 
-    RenderManager_RenderSence(RenderManager_GetInstance(), sence);
+    RenderManager_RenderScene(RenderManager_GetInstance(), scene);
 
     RenderManager_Render_ToScreen(RenderManager_GetInstance());
 
-    Sence_Actor_Destroy(sence, NULL, actor);
-    SenceManager_Sence_Destroy(sence);
+    Scene_Actor_Destroy(scene, NULL, actor);
+    SceneManager_Scene_Destroy(scene);
 }
 
 void Actor_Test1()
 {
-    Sence* sence = SenceManager_Sence_Create(__FUNCTION__);
-    Actor* actor = Sence_Actor_Create(__FUNCTION__, sence, NULL, NULL);
+    Scene* scene = SceneManager_Scene_Create(__FUNCTION__);
+    Actor* actor = Scene_Actor_Create(__FUNCTION__, scene, NULL, NULL);
 
     Actor_Component_New(actor, Component_Location);
     Actor_Component_New(actor, Component_Render);
     Actor_Component_Render_ShaderText_Add(actor, Vec3(2, 2, 0), "hello world" );
 
-    RenderManager_RenderSence(RenderManager_GetInstance(), sence);
+    RenderManager_RenderScene(RenderManager_GetInstance(), scene);
 
     RenderManager_Render_ToScreen(RenderManager_GetInstance());
 
     Actor_Component_Del(actor, Component_Location);
 
-    Sence_Actor_Destroy(sence, NULL, actor);
-    SenceManager_Sence_Destroy(sence);
+    Scene_Actor_Destroy(scene, NULL, actor);
+    SceneManager_Scene_Destroy(scene);
 }
 
 void Actor_Test0()
 {
-    Sence* sence = SenceManager_Sence_Create(__FUNCTION__);
-    Actor* actor = Sence_Actor_Create(__FUNCTION__, sence, NULL, NULL);
+    Scene* scene = SceneManager_Scene_Create(__FUNCTION__);
+    Actor* actor = Scene_Actor_Create(__FUNCTION__, scene, NULL, NULL);
 
     Actor_Component_New(actor, Component_Render);
     Actor_Component_Render_ShaderText_Add(actor, Vec3(0, 10, 0), "hello world" );
 
-    RenderManager_RenderSence(RenderManager_GetInstance(), sence);
+    RenderManager_RenderScene(RenderManager_GetInstance(), scene);
 
     RenderManager_Render_ToScreen(RenderManager_GetInstance());
 
     Actor_Component_Del(actor, Component_Render);
 
-    Sence_Actor_Destroy(sence, NULL, actor);
-    SenceManager_Sence_Destroy(sence);
+    Scene_Actor_Destroy(scene, NULL, actor);
+    SceneManager_Scene_Destroy(scene);
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -300,27 +300,27 @@ void CallBack_Actor_Create3(Actor* actor, ptr32 ptr)
     Actor_Component_New(actor, Component_Storage);
 
     Actor_Component_Render_ShaderText_Add(actor, Vec3(1, 1, 0), ptr );
-    Actor_Component_Action_EventRespond_Add(actor, Event_Sence_Tick, CallBack_ActorOnEvent3);
+    Actor_Component_Action_EventRespond_Add(actor, Event_Scene_Tick, CallBack_ActorOnEvent3);
 
 };
 void Engine_Test3()
 {
-    Sence* sence = SenceManager_Sence_Create(__FUNCTION__);
-    Actor* actor = Sence_Actor_Create(__FUNCTION__, sence, CallBack_Actor_Create3, __FUNCTION__);
+    Scene* scene = SceneManager_Scene_Create(__FUNCTION__);
+    Actor* actor = Scene_Actor_Create(__FUNCTION__, scene, CallBack_Actor_Create3, __FUNCTION__);
 
-    SenceManager_Sence_SetCurrent(sence);
+    SceneManager_Scene_SetCurrent(scene);
 
     Engine_SetExit(false);
     Engine_MainLoop();
 
 
-    Sence_Actor_Destroy(sence, NULL, actor);
-    SenceManager_Sence_Destroy(sence);
+    Scene_Actor_Destroy(scene, NULL, actor);
+    SceneManager_Scene_Destroy(scene);
 }
 
 void CallBack_ActorOnEvent2(Actor* actor, const EventInfo* event_info)
 {
-    crc32 crc_delta_second = Str_CalcCrc("delta_seconds" ,0);
+    const crc32 crc_delta_second = Str_CalcCrc("delta_seconds" ,0);
     float delta_second = Actor_Component_Storage_ReadData32(actor, crc_delta_second).m_float;
     const float update_need_seconds = 0.5f;
 
@@ -334,7 +334,7 @@ void CallBack_ActorOnEvent2(Actor* actor, const EventInfo* event_info)
 
         Actor_Component_Render_ShaderText_ClearAll(actor);
 
-        crc32 crc_update_tick = Str_CalcCrc("update_tick" ,0);
+        const crc32 crc_update_tick = Str_CalcCrc("update_tick" ,0);
         int32 update_tick = Actor_Component_Storage_ReadData32(actor, crc_update_tick).m_int32;
         update_tick += 1;
 
@@ -361,22 +361,22 @@ void CallBack_Actor_Create2(Actor* actor, ptr32 ptr)
     Actor_Component_New(actor, Component_Storage);
 
     Actor_Component_Render_ShaderText_Add(actor, Vec3(1, 1, 0), ptr );
-    Actor_Component_Action_EventRespond_Add(actor, Event_Sence_Tick, CallBack_ActorOnEvent2);
+    Actor_Component_Action_EventRespond_Add(actor, Event_Scene_Tick, CallBack_ActorOnEvent2);
 
 };
 void Engine_Test2()
 {
-    Sence* sence = SenceManager_Sence_Create(__FUNCTION__);
-    Actor* actor = Sence_Actor_Create(__FUNCTION__, sence, CallBack_Actor_Create2, __FUNCTION__);
+    Scene* scene = SceneManager_Scene_Create(__FUNCTION__);
+    Actor* actor = Scene_Actor_Create(__FUNCTION__, scene, CallBack_Actor_Create2, __FUNCTION__);
 
-    SenceManager_Sence_SetCurrent(sence);
+    SceneManager_Scene_SetCurrent(scene);
 
     Engine_SetExit(false);
     Engine_MainLoop();
 
 
-    Sence_Actor_Destroy(sence, NULL, actor);
-    SenceManager_Sence_Destroy(sence);
+    Scene_Actor_Destroy(scene, NULL, actor);
+    SceneManager_Scene_Destroy(scene);
 }
 
 void CallBack_ActorOnEvent1(Actor* actor, const EventInfo* event_struct)
@@ -387,10 +387,10 @@ void CallBack_ActorOnEvent1(Actor* actor, const EventInfo* event_struct)
 
     if( seconds > 2 )
     {
-        Sence* sence = Actor_Component_Storage_ReadData32(actor, Str_CalcCrc("sence", 0)).m_ptr32;
-        if( sence )
+        Scene* scene = Actor_Component_Storage_ReadData32(actor, Str_CalcCrc("scene", 0)).m_ptr32;
+        if( scene )
         {
-            SenceManager_Sence_SetCurrent(sence);
+            SceneManager_Scene_SetCurrent(scene);
         }
         else
         {
@@ -401,57 +401,46 @@ void CallBack_ActorOnEvent1(Actor* actor, const EventInfo* event_struct)
 }
 void Engine_Test1()
 {
-    Sence* sence1 = SenceManager_Sence_Create(__FUNCTION__);
-    Actor* actor1 = Sence_Actor_Create(__FUNCTION__, sence1, NULL, NULL);
+    Scene* scene1 = SceneManager_Scene_Create(__FUNCTION__);
+    Actor* actor1 = Scene_Actor_Create(__FUNCTION__, scene1, NULL, NULL);
 
     Actor_Component_New(actor1, Component_Render);
     Actor_Component_Render_ShaderText_Add(actor1, Vec3(1, 1, 0), "hello world" );
 
     Actor_Component_New(actor1, Component_Action);
-    Actor_Component_Action_EventRespond_Add(actor1, Event_Sence_Tick, CallBack_ActorOnEvent1);
+    Actor_Component_Action_EventRespond_Add(actor1, Event_Scene_Tick, CallBack_ActorOnEvent1);
 
     Actor_Component_New(actor1, Component_Storage);
     Actor_Component_Storage_StoreData32(actor1, Str_CalcCrc("seconds", 0), Data32(float, 0));
 
-    Sence* sence2 = SenceManager_Sence_Create(__FUNCTION__);
-    Actor* actor2 = Sence_Actor_Create(__FUNCTION__, sence2, NULL, NULL);
-    Actor_Component_Storage_StoreData32(actor1, Str_CalcCrc("sence", 0), Data32(ptr32, sence2));
+    Scene* scene2 = SceneManager_Scene_Create(__FUNCTION__);
+    Actor* actor2 = Scene_Actor_Create(__FUNCTION__, scene2, NULL, NULL);
+    Actor_Component_Storage_StoreData32(actor1, Str_CalcCrc("scene", 0), Data32(ptr32, scene2));
 
     Actor_Component_New(actor2, Component_Render);
     Actor_Component_Render_ShaderText_Add(actor2, Vec3(1, 1, 0), "goodbye world" );
 
     Actor_Component_New(actor2, Component_Action);
-    Actor_Component_Action_EventRespond_Add(actor2, Event_Sence_Tick, CallBack_ActorOnEvent1);
+    Actor_Component_Action_EventRespond_Add(actor2, Event_Scene_Tick, CallBack_ActorOnEvent1);
 
     Actor_Component_New(actor2, Component_Storage);
     Actor_Component_Storage_StoreData32(actor2, Str_CalcCrc("seconds", 0), Data32(float, 0));
-    Actor_Component_Storage_StoreData32(actor2, Str_CalcCrc("sence", 0), Data32(ptr32, NULL));
+    Actor_Component_Storage_StoreData32(actor2, Str_CalcCrc("scene", 0), Data32(ptr32, NULL));
 
 
 
-    SenceManager_Sence_SetCurrent(sence1);
+    SceneManager_Scene_SetCurrent(scene1);
 
     Engine_SetExit(false);
     Engine_MainLoop();
 
-
-    // Actor_Component_Del(actor1, Component_Render);
-    // Actor_Component_Del(actor1, Component_Action);
-    // Actor_Component_Del(actor1, Component_Storage);
-    // Actor_Component_Del(actor2, Component_Render);
-
-    Sence_Actor_Destroy(sence1, NULL, actor1);
-    // Sence_Actor_Destroy(sence2, NULL, actor2);
-    SenceManager_Sence_Destroy(sence1);
-    SenceManager_Sence_Destroy(sence2);
+    Scene_Actor_Destroy(scene1, NULL, actor1);
+    SceneManager_Scene_Destroy(scene1);
+    SceneManager_Scene_Destroy(scene2);
 }
 
 void CallBack_ActorOnEvent0(Actor* actor, const EventInfo* event_struct)
 {
-    // StorageComponent* storage_component = Actor_Component_Cast(actor, Component_Storage);
-    // float x = Actor_Component_Storage_ReadData32(actor, Str_CalcCrc("X", 0)).m_float;
-    // float y = Actor_Component_Storage_ReadData32(actor, Str_CalcCrc("Y", 0)).m_float;
-
     Actor_Component_Location_Move(actor, Vec3(0.1f, 0.05f, 0));
 
     vec3 vec = Actor_Component_Location_Get(actor);
@@ -463,8 +452,8 @@ void CallBack_ActorOnEvent0(Actor* actor, const EventInfo* event_struct)
 
 void Engine_Test0()
 {
-    Sence* sence = SenceManager_Sence_Create(__FUNCTION__);
-    Actor* actor = Sence_Actor_Create(__FUNCTION__, sence, NULL, NULL);
+    Scene* scene = SceneManager_Scene_Create(__FUNCTION__);
+    Actor* actor = Scene_Actor_Create(__FUNCTION__, scene, NULL, NULL);
 
     Actor_Component_New(actor, Component_Render);
     Actor_Component_Render_ShaderText_Add(actor, Vec3(1, 1, 0), "hello world" );
@@ -473,9 +462,9 @@ void Engine_Test0()
     Actor_Component_New(actor, Component_Location);
 
     Actor_Component_Location_Set(actor, Vec3(0,0,0));
-    Actor_Component_Action_EventRespond_Add(actor, Event_Sence_Tick, CallBack_ActorOnEvent0);
+    Actor_Component_Action_EventRespond_Add(actor, Event_Scene_Tick, CallBack_ActorOnEvent0);
 
-    SenceManager_Sence_SetCurrent(sence);
+    SceneManager_Scene_SetCurrent(scene);
 
     Engine_SetExit(false);
     Engine_MainLoop();
@@ -485,8 +474,8 @@ void Engine_Test0()
     Actor_Component_Del(actor, Component_Action);
     Actor_Component_Del(actor, Component_Location);
 
-    Sence_Actor_Destroy(sence, NULL, actor);
-    SenceManager_Sence_Destroy(sence);
+    Scene_Actor_Destroy(scene, NULL, actor);
+    SceneManager_Scene_Destroy(scene);
 }
 
 ////////////////////////////////////////////////////////////////////////////////
