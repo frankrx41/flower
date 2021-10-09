@@ -33,10 +33,10 @@ struct MemoryManager
 };
 
 
-ptr32    Memory_Alloc_Plat   (tsize size);
-void    Memory_Free_Plat    (ptr32 ptr);
-ptr32    Memory_Copy_Plat    (ptr32 dst_ptr, const ptr32 src_ptr, tsize size);
-ptr32    Memory_Set_Plat     (ptr32 address, int32 val, tsize size);
+ptr32   Memory_Alloc_Plat   (tsize size);
+void    Memory_Free_Plat    (void* ptr);
+ptr32   Memory_Copy_Plat    (ptr32 dst_ptr, const ptr32 src_ptr, tsize size);
+ptr32   Memory_Set_Plat     (ptr32 address, int32 val, tsize size);
 
 static tsize static_alloc_memory_size = 0;
 
@@ -104,7 +104,7 @@ static bool CallBack_Memory_Profile_FindData(MemoryProfileData* memory_profile_d
 
 ptr32 MemoryManager_Alloc(MemoryManager* memory_manager,const tchar* local_name, tsize size)
 {
-    bool is_dynamic = !Str_IsSame(local_name, STATIC_LOCAL_NAME);
+    const bool is_dynamic = !Str_IsSame(local_name, STATIC_LOCAL_NAME);
     MemoryBlock * memory_block  = Memory_Alloc_Plat(sizeof(MemoryBlock) + size);
     Assert(memory_block != NULL, "");
     memory_block->m_flag        = MAGIC_NUMBER;
@@ -148,14 +148,13 @@ void MemoryManager_Free(MemoryManager* memory_manager, ptr32 ptr)
     Assert(ptr != NULL, "");
 
 
-    MemoryBlock * memory_block;
-    memory_block = CastToMemoryBlock(ptr);
+    MemoryBlock * memory_block = CastToMemoryBlock(ptr);
 
     if( !Engine_IsExit() )
     {
         Assert( memory_block->m_id != 0, "You try to free a static memory!");
     }
-    bool is_dynamic = memory_block->m_id != 0 ? true : false;
+    const bool is_dynamic = memory_block->m_id != 0 ? true : false;
     
     if( is_dynamic )
     {
@@ -178,22 +177,18 @@ ptr32 MemoryManager_AllocPtrSize(MemoryManager* memory_manager, const tchar* loc
 {
     Assert(ptr != NULL, "");
 
-    MemoryBlock * src_block;
-    src_block = CastToMemoryBlock(ptr);
+    MemoryBlock* src_block = CastToMemoryBlock(ptr);
 
-    ptr32 new_ptr;
-    new_ptr = MemoryManager_Alloc(memory_manager, local_name, src_block->m_alloc_size);
+    const ptr32 new_ptr = MemoryManager_Alloc(memory_manager, local_name, src_block->m_alloc_size);
     return new_ptr;
 }
 
 ptr32 MemoryManager_Clone(MemoryManager* memory_manager, const tchar* local_name, const ptr32 ptr)
 {
     Assert(ptr != NULL, "");
-    MemoryBlock * src_block;
-    src_block = CastToMemoryBlock(ptr);
+    MemoryBlock* src_block = CastToMemoryBlock(ptr);
 
-    ptr32 new_ptr;
-    new_ptr = MemoryManager_AllocPtrSize(memory_manager, local_name, ptr);
+    const ptr32 new_ptr = MemoryManager_AllocPtrSize(memory_manager, local_name, ptr);
     Memory_Copy(new_ptr, ptr, src_block->m_alloc_size);
 
     return new_ptr;
@@ -215,10 +210,8 @@ ptr32 Memory_Copy(ptr32 dst_ptr, const ptr32 src_ptr, tsize size)
     Assert(dst_ptr != NULL, "");
     Assert(src_ptr != NULL, "");
 
-    MemoryBlock* dst_block;
-    MemoryBlock* src_block;
-    dst_block = CastToMemoryBlock(dst_ptr);
-    src_block = CastToMemoryBlock(src_ptr);
+    MemoryBlock* dst_block = CastToMemoryBlock(dst_ptr);
+    MemoryBlock* src_block = CastToMemoryBlock(src_ptr);
 
     Assert( dst_block->m_alloc_size >= size, "");
     Assert( src_block->m_alloc_size >= size, "");
@@ -231,9 +224,8 @@ ptr32 Memory_Set(ptr32 ptr, int32 val, tsize size)
 {
     Assert(ptr != NULL, "");
 
-    MemoryBlock * dst_block;
-    dst_block = CastToMemoryBlock(ptr);
-    Assert( dst_block->m_alloc_size >= size, "");
+    MemoryBlock* memory_block = CastToMemoryBlock(ptr);
+    Assert( memory_block->m_alloc_size >= size, "");
 
     return
     Memory_Set_Plat(ptr, val, size);
@@ -243,30 +235,27 @@ ptr32 Memory_FullFill(ptr32 ptr, int32 val)
 {
     Assert(ptr != NULL, "");
 
-    MemoryBlock * dst_block;
-    dst_block = CastToMemoryBlock(ptr);
+    MemoryBlock* memory_block = CastToMemoryBlock(ptr);
 
     return
-    Memory_Set_Plat(ptr, val, dst_block->m_alloc_size);
+    Memory_Set_Plat(ptr, val, memory_block->m_alloc_size);
 }
 
 ptr32 Memory_Zero(ptr32 ptr)
 {
     Assert(ptr != NULL, "");
 
-    MemoryBlock * dst_block;
-    dst_block = CastToMemoryBlock(ptr);
+    MemoryBlock* memory_block = CastToMemoryBlock(ptr);
 
     return
-    Memory_Set_Plat(ptr, 0, dst_block->m_alloc_size);
+    Memory_Set_Plat(ptr, 0, memory_block->m_alloc_size);
 }
 
 tsize Memory_GetSize(const ptr32 ptr)
 {
     Assert(ptr != NULL, "");
 
-    MemoryBlock * memory_block;
-    memory_block = CastToMemoryBlock(ptr);
+    MemoryBlock* memory_block = CastToMemoryBlock(ptr);
     return memory_block->m_alloc_size;
 }
 

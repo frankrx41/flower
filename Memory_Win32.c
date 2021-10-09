@@ -24,7 +24,7 @@ ptr32 Memory_Set_Plat(ptr32 dst, int32 val, tsize size)
     memset(dst, val, size);
 }
 
-void Memory_Free_Plat(void * memory)
+void Memory_Free_Plat(void* memory)
 {
     free(memory);
 }
