@@ -1,11 +1,13 @@
 #include "CoreMini.h"
 
+#include "Event.h"
+#include "KeyId.h"
+
 #include "MemoryManager.h"
 #include "EventManager.h"
 
 #include "Scene.h"
 #include "Actor.h"
-#include "Event.h"
 
 #include "Queue.h"
 #include "String.h"
@@ -49,14 +51,14 @@ void Scene_Destroy(Scene* scene)
     MemDel(scene);
 }
 
-Actor* Scene_Actor_Create(const tchar* local_name, Scene* scene, CB_ActorCreate cb_actor_create, ptr32 ptr)
+Actor* Scene_Actor_Create(const tchar* local_name, Scene* scene, CB_ActorCreate_Void_Actor_Ptr32 cb_actor_create, ptr32 ptr)
 {
     Actor* actor = Actor_Create(local_name, scene, scene->m_alloc_actor_id++, cb_actor_create, ptr);
     Queue_Push(Actor*, local_name, scene->m_actor_queue, actor);
     return actor;
 }
 
-void Scene_Actor_Destroy(Scene* scene, CB_FindData cb_find_actor, ptr32 ptr)
+void Scene_Actor_Destroy(Scene* scene, CB_FindData_Bool_Ptr32_Ptr32 cb_find_actor, ptr32 ptr)
 {
     if( cb_find_actor == NULL )
     {
@@ -80,7 +82,7 @@ void CallBack_Actor_ProcessEachActorEvent(Actor* actor, EventInfo* event_struct)
 void Scene_Actor_SendEvent(Scene* scene, EventInfo* event_info)
 {
     Event event = event_info->m_event;
-    Queue_ForEach(scene->m_actor_event_queue_list[event], (CB_ProcessData)CallBack_Actor_ProcessEachActorEvent, event_info);
+    Queue_ForEach(scene->m_actor_event_queue_list[event], (CB_ProcessData_Void_Ptr32_Ptr32)CallBack_Actor_ProcessEachActorEvent, event_info);
 }
 
 void Scene_Actor_AddEventGroup(Scene* scene, Actor* actor, Event event)

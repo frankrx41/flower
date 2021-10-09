@@ -1,11 +1,12 @@
 #include "CoreMini.h"
 
+#include "KeyId.h"
+#include "Event.h"
+
 #include "MemoryManager.h"
 #include "InputManager.h"
 #include "EventManager.h"
 
-#include "KeyId.h"
-#include "Event.h"
 
 typedef struct KeyState KeyState;
 

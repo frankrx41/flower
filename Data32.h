@@ -12,7 +12,7 @@ union data32
     ptr32   m_ptr32; 
 };
 
-StaticAssert(sizeof(data32) == sizeof(float), "");
+COMPILE_TIME_ASSERT(sizeof(data32) >= sizeof(float), "");
 
 data32  Data32(const tchar* type, ...);
 

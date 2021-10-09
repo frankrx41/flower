@@ -115,7 +115,7 @@ ptr32 MemoryManager_Alloc(MemoryManager* memory_manager,const tchar* local_name,
     if( is_dynamic )
     {
         Queue(MemoryProfileData*)* memory_profile_data_queue = memory_manager->m_memory_profile_data_queue;
-        MemoryProfileData* memory_profile_data = Queue_Find(MemoryProfileData*)( memory_profile_data_queue, (CB_FindData)CallBack_Memory_Profile_FindData, (ptr32)memory_block->m_crc );
+        MemoryProfileData* memory_profile_data = Queue_Find(MemoryProfileData*)( memory_profile_data_queue, (CB_FindData_Bool_Ptr32_Ptr32)CallBack_Memory_Profile_FindData, (ptr32)memory_block->m_crc );
         if( memory_profile_data )
         {
             memory_profile_data->m_alloc_size += size;
@@ -159,7 +159,7 @@ void MemoryManager_Free(MemoryManager* memory_manager, ptr32 ptr)
     if( is_dynamic )
     {
         Queue(MemoryProfileData*)* memory_profile_data_queue = memory_manager->m_memory_profile_data_queue;
-        MemoryProfileData* memory_profile_data = Queue_Find(MemoryProfileData*)( memory_profile_data_queue, (CB_FindData)CallBack_Memory_Profile_FindData, (ptr32)memory_block->m_crc );
+        MemoryProfileData* memory_profile_data = Queue_Find(MemoryProfileData*)( memory_profile_data_queue, (CB_FindData_Bool_Ptr32_Ptr32)CallBack_Memory_Profile_FindData, (ptr32)memory_block->m_crc );
         if( memory_profile_data )
         {
             memory_profile_data->m_alloc_size -= memory_block->m_alloc_size;

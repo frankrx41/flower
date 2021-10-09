@@ -2,14 +2,15 @@
 
 #include "Engine.h"
 
+#include "KeyId.h"
+#include "Event.h"
+
 #include "MemoryManager.h"
 #include "TimmingManager.h"
 #include "RenderManager.h"
 #include "EventManager.h"
 #include "InputManager.h"
 #include "SceneManager.h"
-
-#include "Event.h"
 
 #define LOCAL_NAME          "GPYM"
 #define LOCAL_NAME_EVENT    "Event"

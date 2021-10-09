@@ -28,7 +28,7 @@ typedef long long           int64;
 typedef unsigned long long  uint64;
 
 typedef signed char     tchar;
-typedef void *          ptr32;
+typedef void*           ptr32;
 typedef uint32          tsize;
 typedef uint32          crc32;
 
@@ -61,12 +61,10 @@ void    Engine_Profile_Memory   ();
         Engine_Debug_Break(); \
     } \
 }while(0)
-#define StaticAssert(must_be_true_condition, msg)   typedef char static_assertion[(must_be_true_condition) ? 1 : -1]
 #else
 
 #define Log(...)
 #define Assert(must_be_true_condition, msg)
-#define StaticAssert(must_be_true_condition, msg)
 #define Engine_Profile_Memory()
 
 #endif
@@ -90,3 +88,10 @@ void    Engine_Profile_Memory   ();
 #define ADDRESS_OF(v)       (&(v))
 #define INT32_SIZEOF(n)     ((sizeof(n) + sizeof(int32) - 1) & ~(sizeof(int32) - 1))
 
+#if NO_COMPILE_TIME_CHECK
+#define COMPILE_TIME_ASSERT(...)
+#define COMPILE_TIME_REQUIRE(...)
+#else
+#define COMPILE_TIME_ASSERT(must_be_true_condition, msg)    typedef int32 static_assertion[(must_be_true_condition) ? 1 : -1]
+#define COMPILE_TIME_REQUIRE(defined_header_file)           COMPILE_TIME_ASSERT(MACRO_CONNNECT(defined_header_file, _IS_DEFINED), "")
+#endif

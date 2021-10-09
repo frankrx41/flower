@@ -1,9 +1,10 @@
 #include "CoreMini.h"
 
+#include "Event.h"
+
 #include "MemoryManager.h"
 #include "ActionComponent.h"
 
-#include "Event.h"
 #include "Queue.h"
 #include "String.h"
 
@@ -13,7 +14,7 @@ typedef struct ActorEvent ActorEvent;
 struct EventRespond
 {
     Event           m_event;
-    CB_EventRespond m_cb_actor_respond;
+    CB_EventRespond_Void_Actor_EventInfo m_cb_actor_respond;
 };
 
 struct ActionComponent
@@ -45,7 +46,7 @@ void Component_Action_Destroy(ActionComponent* action_component)
     MemDel(action_component);
 }
 
-void Component_Action_EventRespond_Add(ActionComponent* action_component, Event event, CB_EventRespond cb_event_respond)
+void Component_Action_EventRespond_Add(ActionComponent* action_component, Event event, CB_EventRespond_Void_Actor_EventInfo cb_event_respond)
 {
     Assert(action_component != NULL, "");
     EventRespond* event_respond = MemNew(String_CStr(action_component->m_local_name), EventRespond);
@@ -62,7 +63,7 @@ static bool CallBack_EventRespond_FindEvent(EventRespond* event_respond, Event e
 void Component_Action_EventRespond_Del(ActionComponent* action_component, Event event)
 {
     Assert(action_component != NULL, "");
-    EventRespond* event_respond = Queue_RemoveFindFirst(EventRespond*)(action_component->m_event_respond_queue, (CB_FindData)CallBack_EventRespond_FindEvent, (ptr32)event);
+    EventRespond* event_respond = Queue_RemoveFindFirst(EventRespond*)(action_component->m_event_respond_queue, (CB_FindData_Bool_Ptr32_Ptr32)CallBack_EventRespond_FindEvent, (ptr32)event);
     MemSafeDel(event_respond);
 }
 
@@ -72,10 +73,10 @@ void Component_Action_EventRespond_Clear(ActionComponent* action_component)
     Queue_Clear(action_component->m_event_respond_queue, CallBack_EventRespond_Destroy);
 }
 
-CB_EventRespond Component_Action_EventRespond_Get(ActionComponent* action_component, Event event)
+CB_EventRespond_Void_Actor_EventInfo Component_Action_EventRespond_Get(ActionComponent* action_component, Event event)
 {
     Assert(action_component != NULL, "");
-    EventRespond* event_respond = Queue_Find(EventRespond*)(action_component->m_event_respond_queue, (CB_FindData)CallBack_EventRespond_FindEvent, (ptr32)event);
+    EventRespond* event_respond = Queue_Find(EventRespond*)(action_component->m_event_respond_queue, (CB_FindData_Bool_Ptr32_Ptr32)CallBack_EventRespond_FindEvent, (ptr32)event);
     if( event_respond )
     {
         return event_respond->m_cb_actor_respond;

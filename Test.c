@@ -2,6 +2,9 @@
 
 #include "Engine.h"
 
+#include "Event.h"
+#include "KeyId.h"
+
 #include "MemoryManager.h"
 #include "RenderManager.h"
 #include "SceneManager.h"
@@ -21,7 +24,6 @@
 #include "Actor.h"
 #include "Scene.h"
 #include "Data32.h"
-#include "Event.h"
 #include "Vec.h"
 
 

@@ -29,3 +29,7 @@ EventManager* EventManager_GetInstance();
 
 #define EventManager_SendEvent(event, local_name, ...)   MACRO_CONNNECT(EventManager_Send, event)(EventManager_GetInstance(), local_name, event, __VA_ARGS__)
 
+// gcc requires that enum must be fully declaration, but clang and msbuild do not have this requirement.
+// We force these enumerations to be quoted to make sure our code can be compiled correctly by gcc.
+COMPILE_TIME_REQUIRE(EVENT);
+COMPILE_TIME_REQUIRE(KEYID);

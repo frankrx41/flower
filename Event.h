@@ -27,3 +27,5 @@ enum Event
 
     Event_Max
 };
+
+#define EVENT_IS_DEFINED 1

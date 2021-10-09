@@ -1,11 +1,13 @@
 #include "CoreMini.h"
 
+#include "Event.h"
+#include "KeyId.h"
+
 #include "EventManager.h"
 #include "MemoryManager.h"
 
 #include "Scene.h"
-#include "Event.h"
-#include "KeyId.h"
+
 
 struct EventManager
 {

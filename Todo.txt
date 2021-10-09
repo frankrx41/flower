@@ -7,7 +7,6 @@ Add Queue_Sort
 Add CONFIG_SHIPPING
 Add Fps profile
 
-Add return and args type in callback function
 
 Add Shader2D
 
@@ -18,6 +17,7 @@ Add InputBank or named it controller ?
 Add InputBank in Actor_Create
 Add TaskManager in SendEvent
 
+Add return and args type in callback function (done)
 Remove RenderManager_SetPlatformData RenderManager_GetPlatformData (done)
 Rename tptr -> ptr32 (done)
 Add Event_Sence_Tick (done)

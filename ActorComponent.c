@@ -1,5 +1,8 @@
 #include "CoreMini.h"
 
+#include "Event.h"
+#include "KeyId.h"
+
 #include "EventManager.h"
 
 #include "Component.h"
@@ -10,7 +13,6 @@
 #include "RenderManager.h"
 
 #include "ShaderText.h"
-#include "Event.h"
 
 #include "Data32.h"
 #include "Actor.h"

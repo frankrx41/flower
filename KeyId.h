@@ -15,3 +15,5 @@ enum KeyId
 
     KeyId_Max
 };
+
+#define KEYID_IS_DEFINED 1
