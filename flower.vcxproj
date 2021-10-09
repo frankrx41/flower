@@ -105,8 +105,8 @@
     <ClCompile Include="String.c" />
     <ClCompile Include="String_Win32.c" />
     <ClCompile Include="Test.c" />
-    <ClCompile Include="TimmingManager.c" />
-    <ClCompile Include="Timming_Win32.c" />
+    <ClCompile Include="TimingManager.c" />
+    <ClCompile Include="Timing_Win32.c" />
     <ClCompile Include="Vec.c" />
   </ItemGroup>
   <ItemGroup>
@@ -133,7 +133,7 @@
     <ClInclude Include="Storage.h" />
     <ClInclude Include="StorageComponent.h" />
     <ClInclude Include="String.h" />
-    <ClInclude Include="TimmingManager.h" />
+    <ClInclude Include="TimingManager.h" />
     <ClInclude Include="Vec.h" />
   </ItemGroup>
   <ItemGroup>

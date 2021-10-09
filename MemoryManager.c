@@ -33,10 +33,10 @@ struct MemoryManager
 };
 
 
-ptr32   Memory_Alloc_Plat   (tsize size);
+tptr   Memory_Alloc_Plat   (tsize size);
 void    Memory_Free_Plat    (void* ptr);
-ptr32   Memory_Copy_Plat    (ptr32 dst_ptr, const ptr32 src_ptr, tsize size);
-ptr32   Memory_Set_Plat     (ptr32 address, int32 val, tsize size);
+tptr   Memory_Copy_Plat    (tptr dst_ptr, const tptr src_ptr, tsize size);
+tptr   Memory_Set_Plat     (tptr address, int32 val, tsize size);
 
 static tsize static_alloc_memory_size = 0;
 
@@ -66,7 +66,7 @@ static uint32 MemoryManager_IncreaseAllocID(MemoryManager* memory_manager)
     return ++memory_manager->m_alloc_id;
 }
 
-static MemoryBlock* CastToMemoryBlock(ptr32 ptr)
+static MemoryBlock* CastToMemoryBlock(tptr ptr)
 {
     MemoryBlock* memory_block;
     memory_block = (MemoryBlock*)((tchar*)ptr - OFFSET_OF(MemoryBlock, m_byte));
@@ -102,7 +102,7 @@ static bool CallBack_Memory_Profile_FindData(MemoryProfileData* memory_profile_d
     return memory_profile_data->m_crc == crc;
 }
 
-ptr32 MemoryManager_Alloc(MemoryManager* memory_manager,const tchar* local_name, tsize size)
+tptr MemoryManager_Alloc(MemoryManager* memory_manager,const tchar* local_name, tsize size)
 {
     const bool is_dynamic = !Str_IsSame(local_name, STATIC_LOCAL_NAME);
     MemoryBlock * memory_block  = Memory_Alloc_Plat(sizeof(MemoryBlock) + size);
@@ -115,7 +115,7 @@ ptr32 MemoryManager_Alloc(MemoryManager* memory_manager,const tchar* local_name,
     if( is_dynamic )
     {
         Queue(MemoryProfileData*)* memory_profile_data_queue = memory_manager->m_memory_profile_data_queue;
-        MemoryProfileData* memory_profile_data = Queue_Find(MemoryProfileData*)( memory_profile_data_queue, (CB_FindData_Bool_Ptr32_Ptr32)CallBack_Memory_Profile_FindData, (ptr32)memory_block->m_crc );
+        MemoryProfileData* memory_profile_data = Queue_Find(MemoryProfileData*)( memory_profile_data_queue, (CB_FindData_Bool_tPtr_tPtr)CallBack_Memory_Profile_FindData, (tptr)memory_block->m_crc );
         if( memory_profile_data )
         {
             memory_profile_data->m_alloc_size += size;
@@ -143,7 +143,7 @@ ptr32 MemoryManager_Alloc(MemoryManager* memory_manager,const tchar* local_name,
     return memory_block->m_byte;
 }
 
-void MemoryManager_Free(MemoryManager* memory_manager, ptr32 ptr)
+void MemoryManager_Free(MemoryManager* memory_manager, tptr ptr)
 {
     Assert(ptr != NULL, "");
 
@@ -159,7 +159,7 @@ void MemoryManager_Free(MemoryManager* memory_manager, ptr32 ptr)
     if( is_dynamic )
     {
         Queue(MemoryProfileData*)* memory_profile_data_queue = memory_manager->m_memory_profile_data_queue;
-        MemoryProfileData* memory_profile_data = Queue_Find(MemoryProfileData*)( memory_profile_data_queue, (CB_FindData_Bool_Ptr32_Ptr32)CallBack_Memory_Profile_FindData, (ptr32)memory_block->m_crc );
+        MemoryProfileData* memory_profile_data = Queue_Find(MemoryProfileData*)( memory_profile_data_queue, (CB_FindData_Bool_tPtr_tPtr)CallBack_Memory_Profile_FindData, (tptr)memory_block->m_crc );
         if( memory_profile_data )
         {
             memory_profile_data->m_alloc_size -= memory_block->m_alloc_size;
@@ -173,28 +173,28 @@ void MemoryManager_Free(MemoryManager* memory_manager, ptr32 ptr)
     Memory_Free_Plat(memory_block);
 }
 
-ptr32 MemoryManager_AllocPtrSize(MemoryManager* memory_manager, const tchar* local_name, const ptr32 ptr)
+tptr MemoryManager_AllocPtrSize(MemoryManager* memory_manager, const tchar* local_name, const tptr ptr)
 {
     Assert(ptr != NULL, "");
 
     MemoryBlock* src_block = CastToMemoryBlock(ptr);
 
-    const ptr32 new_ptr = MemoryManager_Alloc(memory_manager, local_name, src_block->m_alloc_size);
+    const tptr new_ptr = MemoryManager_Alloc(memory_manager, local_name, src_block->m_alloc_size);
     return new_ptr;
 }
 
-ptr32 MemoryManager_Clone(MemoryManager* memory_manager, const tchar* local_name, const ptr32 ptr)
+tptr MemoryManager_Clone(MemoryManager* memory_manager, const tchar* local_name, const tptr ptr)
 {
     Assert(ptr != NULL, "");
     MemoryBlock* src_block = CastToMemoryBlock(ptr);
 
-    const ptr32 new_ptr = MemoryManager_AllocPtrSize(memory_manager, local_name, ptr);
+    const tptr new_ptr = MemoryManager_AllocPtrSize(memory_manager, local_name, ptr);
     Memory_Copy(new_ptr, ptr, src_block->m_alloc_size);
 
     return new_ptr;
 }
 
-ptr32 MemoryManager_SafeClone(MemoryManager* memory_manager, const tchar* local_name, const ptr32 ptr)
+tptr MemoryManager_SafeClone(MemoryManager* memory_manager, const tchar* local_name, const tptr ptr)
 {
     if( !ptr )
     {
@@ -205,7 +205,7 @@ ptr32 MemoryManager_SafeClone(MemoryManager* memory_manager, const tchar* local_
     MemoryManager_Clone(memory_manager, local_name, ptr);
 }
 
-ptr32 Memory_Copy(ptr32 dst_ptr, const ptr32 src_ptr, tsize size)
+tptr Memory_Copy(tptr dst_ptr, const tptr src_ptr, tsize size)
 {
     Assert(dst_ptr != NULL, "");
     Assert(src_ptr != NULL, "");
@@ -220,7 +220,7 @@ ptr32 Memory_Copy(ptr32 dst_ptr, const ptr32 src_ptr, tsize size)
     Memory_Copy_Plat(dst_ptr, src_ptr, size);
 }
 
-ptr32 Memory_Set(ptr32 ptr, int32 val, tsize size)
+tptr Memory_Set(tptr ptr, int32 val, tsize size)
 {
     Assert(ptr != NULL, "");
 
@@ -231,7 +231,7 @@ ptr32 Memory_Set(ptr32 ptr, int32 val, tsize size)
     Memory_Set_Plat(ptr, val, size);
 }
 
-ptr32 Memory_FullFill(ptr32 ptr, int32 val)
+tptr Memory_FullFill(tptr ptr, int32 val)
 {
     Assert(ptr != NULL, "");
 
@@ -241,7 +241,7 @@ ptr32 Memory_FullFill(ptr32 ptr, int32 val)
     Memory_Set_Plat(ptr, val, memory_block->m_alloc_size);
 }
 
-ptr32 Memory_Zero(ptr32 ptr)
+tptr Memory_Zero(tptr ptr)
 {
     Assert(ptr != NULL, "");
 
@@ -251,7 +251,7 @@ ptr32 Memory_Zero(ptr32 ptr)
     Memory_Set_Plat(ptr, 0, memory_block->m_alloc_size);
 }
 
-tsize Memory_GetSize(const ptr32 ptr)
+tsize Memory_GetSize(const tptr ptr)
 {
     Assert(ptr != NULL, "");
 
@@ -261,7 +261,7 @@ tsize Memory_GetSize(const ptr32 ptr)
 
 ////////////////////////////////////////////////////////////////////////////////
 
-static void CallBack_Memory_ProfileLog(MemoryProfileData* memory_profile_data, ptr32 ptr)
+static void CallBack_Memory_ProfileLog(MemoryProfileData* memory_profile_data, tptr ptr)
 {
     Log(0, "%-20s: %d / %d \n", String_CStr(memory_profile_data->m_local_name), memory_profile_data->m_alloc_size, memory_profile_data->m_alloc_size_max);
 }
@@ -278,7 +278,7 @@ void Engine_Profile_Memory()
     Log(0, "=====================================================\n");
 }
 
-static void CallBack_Memory_Check_Memory_Leak(MemoryProfileData* memory_profile_data, ptr32 ptr)
+static void CallBack_Memory_Check_Memory_Leak(MemoryProfileData* memory_profile_data, tptr ptr)
 {
     Assert(memory_profile_data->m_alloc_size == 0, "There has a memory leak!");
 }

@@ -28,7 +28,7 @@ typedef long long           int64;
 typedef unsigned long long  uint64;
 
 typedef signed char     tchar;
-typedef void*           ptr32;
+typedef void*           tptr;
 typedef uint32          tsize;
 typedef uint32          crc32;
 

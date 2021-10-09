@@ -205,7 +205,7 @@ void CallBack_Actor_RenderEachActor(Actor* actor, RenderManager* render_manager)
         RenderManagerWithVec render_manager_with_vec;
         render_manager_with_vec.m_vec3              = vec;
         render_manager_with_vec.m_render_manager    = render_manager;
-        Queue_ForEach(Component_Render_ShaderText_GetQueue(render_component), (CB_ProcessData_Void_Ptr32_Ptr32)CallBack_Render_ShaderText_Plat, &render_manager_with_vec);
+        Queue_ForEach(Component_Render_ShaderText_GetQueue(render_component), (CB_ProcessData_Void_tPtr_tPtr)CallBack_Render_ShaderText_Plat, &render_manager_with_vec);
     }
 }
 

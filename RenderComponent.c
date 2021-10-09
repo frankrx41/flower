@@ -1,14 +1,11 @@
 #include "CoreMini.h"
 
-#include "Component.h"
-#include "Actor.h"
+
 #include "MemoryManager.h"
-#include "Queue.h"
-#include "RenderManager.h"
 #include "RenderComponent.h"
 #include "ShaderText.h"
-#include "ActorComponent.h"
-#include "Vec.h"
+
+#include "Queue.h"
 
 
 struct RenderComponent
@@ -32,7 +29,7 @@ void Component_Render_Destroy(RenderComponent* render_component)
     MemDel(render_component);
 }
 
-ptr32 Component_Render_ShaderText_GetQueue(RenderComponent* render_component)
+tptr Component_Render_ShaderText_GetQueue(RenderComponent* render_component)
 {
     Assert(render_component != NULL, "");
     return render_component->m_shader_text_queue;

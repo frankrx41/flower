@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <ClCompile Include="Timming_Win32.c">
+    <ClCompile Include="Timing_Win32.c">
       <Filter>Platform\Win32</Filter>
     </ClCompile>
     <ClCompile Include="Engine.c">
@@ -60,8 +60,8 @@
     <ClCompile Include="MemoryManager.c">
       <Filter>Engine\Memory</Filter>
     </ClCompile>
-    <ClCompile Include="TimmingManager.c">
-      <Filter>Engine\Timming</Filter>
+    <ClCompile Include="TimingManager.c">
+      <Filter>Engine\Timing</Filter>
     </ClCompile>
     <ClCompile Include="Storage.c">
       <Filter>Library\Storage</Filter>
@@ -135,8 +135,8 @@
     <ClInclude Include="MemoryManager.h">
       <Filter>Engine\Memory</Filter>
     </ClInclude>
-    <ClInclude Include="TimmingManager.h">
-      <Filter>Engine\Timming</Filter>
+    <ClInclude Include="TimingManager.h">
+      <Filter>Engine\Timing</Filter>
     </ClInclude>
     <ClInclude Include="Storage.h">
       <Filter>Library\Storage</Filter>
@@ -191,9 +191,6 @@
     <Filter Include="Engine\Memory">
       <UniqueIdentifier>{ef89fc8b-ea49-4ef0-9d72-ee7566d9883f}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Engine\Timming">
-      <UniqueIdentifier>{b6ccc812-e331-46de-89f8-b506d5eb11f8}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Library\Storage">
       <UniqueIdentifier>{2a78cf1e-a0b3-443c-82b4-3f050c4bab6f}</UniqueIdentifier>
     </Filter>
@@ -211,6 +208,9 @@
     </Filter>
     <Filter Include="Scene\Actor\Component">
       <UniqueIdentifier>{3f1c0d80-9c00-4d49-b5ba-a44f319225c8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\Timing">
+      <UniqueIdentifier>{b6ccc812-e331-46de-89f8-b506d5eb11f8}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

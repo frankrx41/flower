@@ -51,14 +51,14 @@ void Scene_Destroy(Scene* scene)
     MemDel(scene);
 }
 
-Actor* Scene_Actor_Create(const tchar* local_name, Scene* scene, CB_ActorCreate_Void_Actor_Ptr32 cb_actor_create, ptr32 ptr)
+Actor* Scene_Actor_Create(const tchar* local_name, Scene* scene, CB_ActorCreate_Void_Actor_tPtr cb_actor_create, tptr ptr)
 {
     Actor* actor = Actor_Create(local_name, scene, scene->m_alloc_actor_id++, cb_actor_create, ptr);
     Queue_Push(Actor*, local_name, scene->m_actor_queue, actor);
     return actor;
 }
 
-void Scene_Actor_Destroy(Scene* scene, CB_FindData_Bool_Ptr32_Ptr32 cb_find_actor, ptr32 ptr)
+void Scene_Actor_Destroy(Scene* scene, CB_FindData_Bool_tPtr_tPtr cb_find_actor, tptr ptr)
 {
     if( cb_find_actor == NULL )
     {
@@ -82,7 +82,7 @@ void CallBack_Actor_ProcessEachActorEvent(Actor* actor, EventInfo* event_struct)
 void Scene_Actor_SendEvent(Scene* scene, EventInfo* event_info)
 {
     Event event = event_info->m_event;
-    Queue_ForEach(scene->m_actor_event_queue_list[event], (CB_ProcessData_Void_Ptr32_Ptr32)CallBack_Actor_ProcessEachActorEvent, event_info);
+    Queue_ForEach(scene->m_actor_event_queue_list[event], (CB_ProcessData_Void_tPtr_tPtr)CallBack_Actor_ProcessEachActorEvent, event_info);
 }
 
 void Scene_Actor_AddEventGroup(Scene* scene, Actor* actor, Event event)
@@ -113,7 +113,7 @@ void Scene_Storage_DeleteVariable(Scene* scene, crc32 variable)
     Storage_DeleteVariable(scene->m_storage, variable);
 }
 
-ptr32 Scene_GetActorQueue(Scene* scene)
+tptr Scene_GetActorQueue(Scene* scene)
 {
     return scene->m_actor_queue;
 }

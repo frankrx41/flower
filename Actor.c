@@ -22,7 +22,7 @@ struct Actor
     CB_ActorDestroy_Void_Actor         m_cb_actor_destroy;
 };
 
-Actor* Actor_Create(const tchar* local_name, Scene* scene, uint32 id, CB_ActorCreate_Void_Actor_Ptr32 cb_actor_create, ptr32 ptr)
+Actor* Actor_Create(const tchar* local_name, Scene* scene, uint32 id, CB_ActorCreate_Void_Actor_tPtr cb_actor_create, tptr ptr)
 {
     Actor* actor = MemNew(local_name, Actor);
     actor->m_id                 = id;
@@ -68,25 +68,25 @@ void Actor_Destroy(Actor* actor)
 #undef Actor_Component_New
 #undef Actor_Component_Cast
 
-void Actor_Component_New(Actor* actor, const tchar* component_name, Component component_enum, CB_ComponentCreate_Ptr32_TChar cb_component_create)
+void Actor_Component_New(Actor* actor, const tchar* component_name, Component component_enum, CB_ComponentCreate_tPtr_tChar cb_component_create)
 {
     Assert(actor != NULL, "");
     Assert(cb_component_create != NULL, "");
-    const ptr32 component = cb_component_create(Actor_GetLocalName(actor));
-    Storage_StoreData32(actor->m_component, Str_CalcCrc(component_name, 0), Data32(ptr32, component));
+    const tptr component = cb_component_create(Actor_GetLocalName(actor));
+    Storage_StoreData32(actor->m_component, Str_CalcCrc(component_name, 0), Data32(tptr, component));
 }
 
-static ptr32 Actor_Component_CastByName(Actor* actor, const tchar* component_name)
+static tptr Actor_Component_CastByName(Actor* actor, const tchar* component_name)
 {
     Assert(actor != NULL, "");
-    const ptr32 ptr = Storage_ReadData32(actor->m_component, Str_CalcCrc(component_name, 0)).m_ptr32;
+    const tptr ptr = Storage_ReadData32(actor->m_component, Str_CalcCrc(component_name, 0)).m_tptr;
     return ptr;
 }
 
-void Actor_Component_Del(Actor* actor, const tchar* component_name, Component component_enum, CB_ComponentDestroy_Void_Ptr32 cb_component_destroy)
+void Actor_Component_Del(Actor* actor, const tchar* component_name, Component component_enum, CB_ComponentDestroy_Void_tPtr cb_component_destroy)
 {
     Assert(actor != NULL, "");
-    const ptr32 component = Actor_Component_CastByName(actor, component_name);
+    const tptr component = Actor_Component_CastByName(actor, component_name);
     if( component )
     {
         cb_component_destroy(component);
@@ -95,7 +95,7 @@ void Actor_Component_Del(Actor* actor, const tchar* component_name, Component co
     // Assert(false, "You try to delete a not exist component!");
 }
 
-ptr32 Actor_Component_Cast(Actor* actor, const tchar* component_name, Component component_enum)
+tptr Actor_Component_Cast(Actor* actor, const tchar* component_name, Component component_enum)
 {
     return Actor_Component_CastByName(actor, component_name);
 }

@@ -13,7 +13,7 @@ struct Node
 {
     Node*   m_node_prev;
     Node*   m_node_next;
-    ptr32    m_reference_data;
+    tptr    m_reference_data;
 };
 
 struct Queue
@@ -53,7 +53,7 @@ Queue*  Queue_Create(const tchar* local_name, const tchar* type_str)
     return queue;
 }
 
-void Queue_Destroy(Queue* queue, CB_DestroyData_Void_Ptr32 cb_destroy_data)
+void Queue_Destroy(Queue* queue, CB_DestroyData_Void_tPtr cb_destroy_data)
 {
     Queue_Clear(queue, cb_destroy_data);
     String_Del(queue->m_local_name);
@@ -66,7 +66,7 @@ bool Queue_IsEmpty(const Queue* queue)
     return Queue_GetLength(queue) == 0;
 }
 
-void Queue_ForEach(const Queue* queue, CB_ProcessData_Void_Ptr32_Ptr32 cb_process_data, ptr32 ptr)
+void Queue_ForEach(const Queue* queue, CB_ProcessData_Void_tPtr_tPtr cb_process_data, tptr ptr)
 {
     Node* node = queue->m_head->m_node_next;
     for(; !Queue_IsHead(queue, node); node = node->m_node_next)
@@ -75,7 +75,7 @@ void Queue_ForEach(const Queue* queue, CB_ProcessData_Void_Ptr32_Ptr32 cb_proces
     }
 }
 
-ptr32 Queue_Find(const Queue* queue, CB_FindData_Bool_Ptr32_Ptr32 cb_find_data, ptr32 ptr)
+tptr Queue_Find(const Queue* queue, CB_FindData_Bool_tPtr_tPtr cb_find_data, tptr ptr)
 {
     Assert(queue != NULL, "");
     Node* node = queue->m_head->m_node_next;
@@ -93,7 +93,7 @@ uint32 Queue_GetLength(const Queue* queue)
     return queue->m_length;
 }
 
-void Queue_Push(const tchar* local_name, Queue* queue, ptr32 reference_data, const tchar* type_str)
+void Queue_Push(const tchar* local_name, Queue* queue, tptr reference_data, const tchar* type_str)
 {
     Assert(Str_CalcCrc(type_str, 0) == queue->m_type_crc32, "Push type is different from create type, do you forget the star(*) ?");
 
@@ -116,7 +116,7 @@ void Queue_Push(const tchar* local_name, Queue* queue, ptr32 reference_data, con
     queue->m_length++;
 }
 
-ptr32 Queue_Pop(Queue* queue)
+tptr Queue_Pop(Queue* queue)
 {
     Assert(!Queue_IsEmpty(queue), "");
     if( Queue_IsEmpty(queue) )
@@ -125,7 +125,7 @@ ptr32 Queue_Pop(Queue* queue)
     }
 
     Node* last_node = queue->m_head->m_node_prev;
-    ptr32 reference_data = last_node->m_reference_data;
+    tptr reference_data = last_node->m_reference_data;
 
     Node* last_node_prev = last_node->m_node_prev;
     Node* last_node_next = last_node->m_node_next;
@@ -136,7 +136,7 @@ ptr32 Queue_Pop(Queue* queue)
     return reference_data;
 }
 
-ptr32 Queue_Dequeue(Queue* queue)
+tptr Queue_Dequeue(Queue* queue)
 {
     Assert(!Queue_IsEmpty(queue), "");
     if( Queue_IsEmpty(queue) )
@@ -145,7 +145,7 @@ ptr32 Queue_Dequeue(Queue* queue)
     }
 
     Node* first_node = queue->m_head->m_node_next;
-    ptr32 reference_data = first_node->m_reference_data;
+    tptr reference_data = first_node->m_reference_data;
 
     Node* first_node_prev = first_node->m_node_prev;
     Node* first_node_next = first_node->m_node_next;
@@ -156,7 +156,7 @@ ptr32 Queue_Dequeue(Queue* queue)
     return reference_data;
 }
 
-ptr32 Queue_PeekFirst(const Queue* queue)
+tptr Queue_PeekFirst(const Queue* queue)
 {
     Assert(!Queue_IsEmpty(queue), "");
     if( Queue_IsEmpty(queue) )
@@ -167,7 +167,7 @@ ptr32 Queue_PeekFirst(const Queue* queue)
     return queue->m_head->m_node_next->m_reference_data;
 }
 
-ptr32 Queue_PeekTail(const Queue* queue)
+tptr Queue_PeekTail(const Queue* queue)
 {
     Assert(!Queue_IsEmpty(queue), "");
     if( Queue_IsEmpty(queue) )
@@ -178,7 +178,7 @@ ptr32 Queue_PeekTail(const Queue* queue)
     return queue->m_head->m_node_prev->m_reference_data;
 }
 
-static ptr32 Queue_RemoveNode(Queue* queue, Node* node)
+static tptr Queue_RemoveNode(Queue* queue, Node* node)
 {
     Assert(!Queue_IsHead(queue, node), "");
 
@@ -188,7 +188,7 @@ static ptr32 Queue_RemoveNode(Queue* queue, Node* node)
     next_node->m_node_prev = prev_node;
     prev_node->m_node_next = next_node;
 
-    ptr32 reference_data = node->m_reference_data;
+    tptr reference_data = node->m_reference_data;
     MemDel(node);
 
     queue->m_length --;
@@ -196,7 +196,7 @@ static ptr32 Queue_RemoveNode(Queue* queue, Node* node)
     return reference_data;
 }
 
-static ptr32 Queue_RemoveByPointer(struct Queue* queue, ptr32 ptr)
+static tptr Queue_RemoveByPointer(struct Queue* queue, tptr ptr)
 {
     Assert(ptr != NULL, "");
 
@@ -212,7 +212,7 @@ static ptr32 Queue_RemoveByPointer(struct Queue* queue, ptr32 ptr)
     return NULL;
 }
 
-ptr32 Queue_RemoveFindFirst(Queue* queue, CB_FindData_Bool_Ptr32_Ptr32 cb_find_data, ptr32 ptr)
+tptr Queue_RemoveFindFirst(Queue* queue, CB_FindData_Bool_tPtr_tPtr cb_find_data, tptr ptr)
 {
     if( cb_find_data == NULL )
     {
@@ -234,7 +234,7 @@ ptr32 Queue_RemoveFindFirst(Queue* queue, CB_FindData_Bool_Ptr32_Ptr32 cb_find_d
     return NULL;
 }
 
-int32 Queue_RemoveFindAll(Queue* queue, CB_FindData_Bool_Ptr32_Ptr32 cb_find_data, ptr32 ptr)
+int32 Queue_RemoveFindAll(Queue* queue, CB_FindData_Bool_tPtr_tPtr cb_find_data, tptr ptr)
 {
     Assert(cb_find_data != NULL, "");
     int32 remove_cnt = 0;
@@ -253,7 +253,7 @@ int32 Queue_RemoveFindAll(Queue* queue, CB_FindData_Bool_Ptr32_Ptr32 cb_find_dat
 }
 
 
-void Queue_Clear(Queue* queue, CB_DestroyData_Void_Ptr32 cb_destroy_data)
+void Queue_Clear(Queue* queue, CB_DestroyData_Void_tPtr cb_destroy_data)
 {
     Node* node = queue->m_head->m_node_next;
     Node* node_next;
@@ -269,7 +269,7 @@ void Queue_Clear(Queue* queue, CB_DestroyData_Void_Ptr32 cb_destroy_data)
     Assert(Queue_GetLength(queue) == 0, "");
 }
 
-void Queue_Sort(Queue* queue, CB_CompareData_Bool_Ptr32_Ptr32 cb_compare_data)
+void Queue_Sort(Queue* queue, CB_CompareData_Bool_tPtr_tPtr cb_compare_data)
 {
     // TODO:
     Assert(false, "");

@@ -30,17 +30,17 @@
 static void Storage_Test0()
 {
     Storage* storage = Storage_Create(__FUNCTION__);
-    
+
     Storage_StoreData32(storage, Str_CalcCrc("a",0), Data32(int32, 123));
 
-    bool is_exist_a = Storage_IsExistVariable(storage, Str_CalcCrc("a", 0));
-    bool is_exist_b = Storage_IsExistVariable(storage, Str_CalcCrc("b", 0));
+    const bool is_exist_a = Storage_IsExistVariable(storage, Str_CalcCrc("a", 0));
+    const bool is_exist_b = Storage_IsExistVariable(storage, Str_CalcCrc("b", 0));
 
     Assert(is_exist_a == true, "");
     Assert(is_exist_b == false, "");
 
-    int32 data1 = Storage_ReadData32(storage, Str_CalcCrc("a",0)).m_int32;
-    int32 data2 = Storage_ReadData32(storage, Str_CalcCrc("b",0)).m_int32;
+    const int32 data1 = Storage_ReadData32(storage, Str_CalcCrc("a",0)).m_int32;
+    const int32 data2 = Storage_ReadData32(storage, Str_CalcCrc("b",0)).m_int32;
 
     Assert(data1 == 123, "");
     Assert(data2 == 0, "");
@@ -57,7 +57,7 @@ struct Data
     int32 m_a;
 };
 
-static void CallBack_Queue_Test_Print_Data1(Data* a, ptr32 ptr)
+static void CallBack_Queue_Test_Print_Data1(Data* a, tptr ptr)
 {
     Assert((int32)ptr == 2, "");
     static int32 call_count = 0;
@@ -66,7 +66,7 @@ static void CallBack_Queue_Test_Print_Data1(Data* a, ptr32 ptr)
     call_count++;
 }
 
-static void Queue_Test_Print_Data2(Data* a, ptr32 ptr)
+static void Queue_Test_Print_Data2(Data* a, tptr ptr)
 {
     Assert((int32)ptr == 7, "");
     static int32 call_count = 0;
@@ -92,13 +92,13 @@ static void Queue_Test0()
     Queue_Push(Data*, __FUNCTION__, queue, &y);
     Queue_Push(Data*, __FUNCTION__, queue, &z);
 
-    Queue_ForEach(queue, CallBack_Queue_Test_Print_Data1, (ptr32)2);
+    Queue_ForEach(queue, CallBack_Queue_Test_Print_Data1, (tptr)2);
 
-    Queue_RemoveFindFirst(Data*)(queue, (CB_FindData_Bool_Ptr32_Ptr32)CallBack_Queue_Test_Find, (ptr32)2);
+    Queue_RemoveFindFirst(Data*)(queue, (CB_FindData_Bool_tPtr_tPtr)CallBack_Queue_Test_Find, (tptr)2);
 
-    Queue_ForEach(queue, Queue_Test_Print_Data2, (ptr32)7);
+    Queue_ForEach(queue, Queue_Test_Print_Data2, (tptr)7);
 
-    Queue_RemoveFindFirst(Data*)(queue, (CB_FindData_Bool_Ptr32_Ptr32)CallBack_Queue_Test_Find, (ptr32)1);
+    Queue_RemoveFindFirst(Data*)(queue, (CB_FindData_Bool_tPtr_tPtr)CallBack_Queue_Test_Find, (tptr)1);
 
     Queue_Destroy(queue, NULL);
 }
@@ -114,7 +114,7 @@ static void Log_Test0()
 ////////////////////////////////////////////////////////////////////////////////
 static void Memory_Test0()
 {
-    ptr32 ptr = MemNewSize(__FUNCTION__, 256);
+    tptr ptr = MemNewSize(__FUNCTION__, 256);
     MemDel(ptr);
 };
 
@@ -241,12 +241,12 @@ void Data32_Test0()
 {
     const data32 d1 = Data32(int32, 32);
     const data32 d2 = Data32(float, 3.2f);
-    const data32 d3 = Data32(ptr32, &d1);
+    const data32 d3 = Data32(tptr, &d1);
     const data32 d4 = Data32(uint32, 123);
 
     const int32 i = d1.m_int32;
     const float f = d2.m_float;
-    const ptr32 p = d3.m_ptr32;
+    const tptr p = d3.m_tptr;
     const uint32 u = d4.m_uint32;
 
     Assert(i == 32, "");
@@ -295,7 +295,7 @@ void CallBack_ActorOnEvent3(Actor* actor, const EventInfo* event_info)
     Actor_Component_Storage_StoreData32(actor, crc_delta_second, Data32(float, delta_second));
 }
 
-void CallBack_Actor_Create3(Actor* actor, ptr32 ptr)
+void CallBack_Actor_Create3(Actor* actor, tptr ptr)
 {
     Actor_Component_New(actor, Component_Render);
     Actor_Component_New(actor, Component_Action);
@@ -356,7 +356,7 @@ void CallBack_ActorOnEvent2(Actor* actor, const EventInfo* event_info)
     Actor_Component_Storage_StoreData32(actor, crc_delta_second, Data32(float, delta_second));
 }
 
-void CallBack_Actor_Create2(Actor* actor, ptr32 ptr)
+void CallBack_Actor_Create2(Actor* actor, tptr ptr)
 {
     Actor_Component_New(actor, Component_Render);
     Actor_Component_New(actor, Component_Action);
@@ -389,7 +389,7 @@ void CallBack_ActorOnEvent1(Actor* actor, const EventInfo* event_struct)
 
     if( seconds > 2 )
     {
-        Scene* scene = Actor_Component_Storage_ReadData32(actor, Str_CalcCrc("scene", 0)).m_ptr32;
+        Scene* scene = Actor_Component_Storage_ReadData32(actor, Str_CalcCrc("scene", 0)).m_tptr;
         if( scene )
         {
             SceneManager_Scene_SetCurrent(scene);
@@ -417,7 +417,7 @@ void Engine_Test1()
 
     Scene* scene2 = SceneManager_Scene_Create(__FUNCTION__);
     Actor* actor2 = Scene_Actor_Create(__FUNCTION__, scene2, NULL, NULL);
-    Actor_Component_Storage_StoreData32(actor1, Str_CalcCrc("scene", 0), Data32(ptr32, scene2));
+    Actor_Component_Storage_StoreData32(actor1, Str_CalcCrc("scene", 0), Data32(tptr, scene2));
 
     Actor_Component_New(actor2, Component_Render);
     Actor_Component_Render_ShaderText_Add(actor2, Vec3(1, 1, 0), "goodbye world" );
@@ -427,7 +427,7 @@ void Engine_Test1()
 
     Actor_Component_New(actor2, Component_Storage);
     Actor_Component_Storage_StoreData32(actor2, Str_CalcCrc("seconds", 0), Data32(float, 0));
-    Actor_Component_Storage_StoreData32(actor2, Str_CalcCrc("scene", 0), Data32(ptr32, NULL));
+    Actor_Component_Storage_StoreData32(actor2, Str_CalcCrc("scene", 0), Data32(tptr, NULL));
 
 
 

@@ -6,7 +6,7 @@
 #include "Event.h"
 
 #include "MemoryManager.h"
-#include "TimmingManager.h"
+#include "TimingManager.h"
 #include "RenderManager.h"
 #include "EventManager.h"
 #include "InputManager.h"
@@ -24,7 +24,7 @@ struct Engine
     bool    m_is_initialized;
     bool    m_is_exit;
 
-    TimmingManager* m_timming_manager;
+    TimingManager*  m_timing_manager;
     MemoryManager*  m_memory_manager;
     RenderManager*  m_render_manager;
     EventManager*   m_event_manager;
@@ -38,8 +38,8 @@ RenderManager*      RenderManager_Create    (const tchar* local_name);
 void                RenderManager_Destroy   (RenderManager* render_manager);
 MemoryManager*      MemoryManager_Create    (const tchar* local_name);
 void                MemoryManager_Destroy   (MemoryManager* memory_manager);
-TimmingManager*     TimmingManager_Create   (const tchar* local_name);
-void                TimmingManager_Destroy  (TimmingManager* timming_manager);
+TimingManager*      TimingManager_Create    (const tchar* local_name);
+void                TimingManager_Destroy   (TimingManager* timing_manager);
 EventManager*       EventManager_Create     (const tchar* local_name);
 void                EventManager_Destroy    (EventManager* event_manager);
 SceneManager*       SceneManager_Create     (const tchar* local_name);
@@ -59,7 +59,7 @@ void Engine_Initialize()
 {
     Engine* engine = Engine_GetInstance();
     engine->m_render_manager    = RenderManager_Create(LOCAL_NAME);
-    engine->m_timming_manager   = TimmingManager_Create(LOCAL_NAME);
+    engine->m_timing_manager    = TimingManager_Create(LOCAL_NAME);
     engine->m_memory_manager    = MemoryManager_Create(LOCAL_NAME);
     engine->m_event_manager     = EventManager_Create(LOCAL_NAME);
     engine->m_scene_manager     = SceneManager_Create(LOCAL_NAME);
@@ -75,7 +75,7 @@ void Engine_MainLoop()
     Engine* engine = Engine_GetInstance();
     Assert(engine->m_is_initialized == true, "");
 
-    float delta_second = TimmingManager_GetPrevFrameDeltaSeconds(TimmingManager_GetInstance());
+    float delta_second = TimingManager_GetPrevFrameDeltaSeconds(TimingManager_GetInstance());
     for(;!engine->m_is_exit;)
     {
         InputManager_Keys_UpdateState(InputManager_GetInstance(), delta_second);
@@ -86,9 +86,9 @@ void Engine_MainLoop()
 
         RenderManager_Render_ToScreen(RenderManager_GetInstance());
 
-        TimmingManager_TrimSpeed(TimmingManager_GetInstance());
+        TimingManager_TrimSpeed(TimingManager_GetInstance());
 
-        delta_second = TimmingManager_GetPrevFrameDeltaSeconds(TimmingManager_GetInstance());
+        delta_second = TimingManager_GetPrevFrameDeltaSeconds(TimingManager_GetInstance());
         EventManager_SendEvent(Event_Scene_Tick, LOCAL_NAME_EVENT, current_scene, delta_second);
     }
 }
@@ -102,7 +102,7 @@ void Engine_UnInitialize()
     Engine* engine = Engine_GetInstance();
 
     RenderManager_Destroy(engine->m_render_manager);
-    TimmingManager_Destroy(engine->m_timming_manager);
+    TimingManager_Destroy(engine->m_timing_manager);
     MemoryManager_Destroy(engine->m_memory_manager);
     EventManager_Destroy(engine->m_event_manager);
     SceneManager_Destroy(engine->m_scene_manager);
@@ -121,10 +121,10 @@ bool Engine_IsExit()
     return Engine_GetInstance()->m_is_exit;
 }
 
-// TimmingManager
-TimmingManager* TimmingManager_GetInstance()
+// TimingManager
+TimingManager* TimingManager_GetInstance()
 {
-    return Engine_GetInstance()->m_timming_manager;
+    return Engine_GetInstance()->m_timing_manager;
 }
 
 // MemoryManager

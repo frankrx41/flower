@@ -4,20 +4,20 @@ typedef struct Actor Actor;
 typedef struct Scene Scene;
 typedef enum Component Component;
 
-typedef void (*CB_ActorCreate_Void_Actor_Ptr32) (Actor* actor, ptr32 ptr);
+typedef void (*CB_ActorCreate_Void_Actor_tPtr)  (Actor* actor, tptr ptr);
 typedef void (*CB_ActorDestroy_Void_Actor)      (Actor* actor);
 
-typedef ptr32 (*CB_ComponentCreate_Ptr32_TChar) (const tchar* local_name);
-typedef void (*CB_ComponentDestroy_Void_Ptr32)  (ptr32 component);
+typedef tptr (*CB_ComponentCreate_tPtr_tChar)   (const tchar* local_name);
+typedef void (*CB_ComponentDestroy_Void_tPtr)   (tptr component);
 
-Actor*  Actor_Create            (const tchar* local_name, Scene* scene, uint32 id, CB_ActorCreate_Void_Actor_Ptr32 cb_actor_create, ptr32 ptr);
+Actor*  Actor_Create            (const tchar* local_name, Scene* scene, uint32 id, CB_ActorCreate_Void_Actor_tPtr cb_actor_create, tptr ptr);
 void    Actor_Set_CB_Destroy    (Actor *actor, CB_ActorDestroy_Void_Actor cb_actor_destroy);
 void    Actor_Destroy           (Actor* actor);
 
 
-void    Actor_Component_New     (Actor* actor, const tchar* component_name, Component component_enum, CB_ComponentCreate_Ptr32_TChar cb_component_create);
-void    Actor_Component_Del     (Actor* actor, const tchar* component_name, Component component_enum, CB_ComponentDestroy_Void_Ptr32 cb_component_destroy);
-ptr32   Actor_Component_Cast    (Actor* actor, const tchar* component_name, Component component_enum);
+void    Actor_Component_New     (Actor* actor, const tchar* component_name, Component component_enum, CB_ComponentCreate_tPtr_tChar cb_component_create);
+void    Actor_Component_Del     (Actor* actor, const tchar* component_name, Component component_enum, CB_ComponentDestroy_Void_tPtr cb_component_destroy);
+tptr    Actor_Component_Cast    (Actor* actor, const tchar* component_name, Component component_enum);
 
 const tchar*    Actor_GetLocalName  (Actor* actor);
 Scene*          Actor_GetScene      (Actor* actor);
@@ -28,5 +28,5 @@ Actor_Component_Del will be call when Actor_Destroy, you can not del it.
 
 #define Actor_Component_New(actor, component)   Actor_Component_New(actor, MACRO_TOSTR(component), component, MACRO_CONNNECT(component,_Create))
 #define Actor_Component_Del(actor, component)   Actor_Component_Del(actor, MACRO_TOSTR(component), component, MACRO_CONNNECT(component,_Destroy))
-#define Actor_Component_Cast(actor, component)  (ptr32)Actor_Component_Cast(actor, MACRO_TOSTR(component), component)
+#define Actor_Component_Cast(actor, component)  (tptr)Actor_Component_Cast(actor, MACRO_TOSTR(component), component)
 

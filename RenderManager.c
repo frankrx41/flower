@@ -7,18 +7,18 @@
 #include "Scene.h"
 
 
-ptr32   RenderManager_PlatformData_Create_Plat  (RenderManager* render_manager, const tchar* local_name);
-void    RenderManager_PlatformData_Destroy_Plat (RenderManager* render_manager, ptr32 ptr);
-void    RenderManager_RenderToScreen_Plat       (RenderManager* render_manager, ptr32 ptr);
-void    RenderManager_SwapBuffer_Plat           (RenderManager* render_manager, ptr32 ptr);
-void    RenderManager_Render_InBackBuffer_Plat  (RenderManager* render_manager, ptr32 ptr, int32 x, int32 y, const tchar* str);
+tptr   RenderManager_PlatformData_Create_Plat  (RenderManager* render_manager, const tchar* local_name);
+void    RenderManager_PlatformData_Destroy_Plat (RenderManager* render_manager, tptr ptr);
+void    RenderManager_RenderToScreen_Plat       (RenderManager* render_manager, tptr ptr);
+void    RenderManager_SwapBuffer_Plat           (RenderManager* render_manager, tptr ptr);
+void    RenderManager_Render_InBackBuffer_Plat  (RenderManager* render_manager, tptr ptr, int32 x, int32 y, const tchar* str);
 
 void    CallBack_Actor_RenderEachActor          (Actor* actor, RenderManager* render_manager);
 
 struct RenderManager
 {
     bool    m_is_initialized;
-    ptr32   m_platform_data;
+    tptr   m_platform_data;
 };
 
 
