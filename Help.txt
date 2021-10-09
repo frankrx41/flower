@@ -4,3 +4,6 @@ Try git config --global http.sslVerify "false"
 git config --global https.proxy http://127.0.0.1:1080
 git config --global --unset http.proxy
 git config --global --unset https.proxy
+
+cmake-converter -s flower.sln
+cmake -S "" -B "build" -G "Visual Studio 16 2019" -A Win32
