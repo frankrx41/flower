@@ -83,7 +83,7 @@ void Actor_Component_Render_ShaderText_ClearAll(Actor* actor)
 
 
 // Component_Action
-void Actor_Component_Action_EventRespond_Add(Actor* actor, Event event, CB_EventRespond cb_event_respond)
+void Actor_Component_Action_EventRespond_Add(Actor* actor, Event event, CB_EventRespond_Void_Actor_EventInfo cb_event_respond)
 {
     Assert(actor != NULL, "");
     ActionComponent* action_component = Actor_Component_Cast(actor, Component_Action);
@@ -203,7 +203,7 @@ void CallBack_Actor_RenderEachActor(Actor* actor, RenderManager* render_manager)
         RenderManagerWithVec render_manager_with_vec;
         render_manager_with_vec.m_vec3              = vec;
         render_manager_with_vec.m_render_manager    = render_manager;
-        Queue_ForEach(Component_Render_ShaderText_GetQueue(render_component), (CB_ProcessData)CallBack_Render_ShaderText_Plat, &render_manager_with_vec);
+        Queue_ForEach(Component_Render_ShaderText_GetQueue(render_component), (CB_ProcessData_Void_Ptr32_Ptr32)CallBack_Render_ShaderText_Plat, &render_manager_with_vec);
     }
 }
 
@@ -211,7 +211,7 @@ void CallBack_Actor_ProcessEachActorEvent(Actor* actor, const EventInfo* event_s
 {
     ActionComponent* action_component = Actor_Component_Cast(actor, Component_Action);
 
-    CB_EventRespond cb_actor_respond = Component_Action_EventRespond_Get(action_component, event_struct->m_event);
+    const CB_EventRespond_Void_Actor_EventInfo cb_actor_respond = Component_Action_EventRespond_Get(action_component, event_struct->m_event);
 
     Assert(cb_actor_respond != NULL, "");
 

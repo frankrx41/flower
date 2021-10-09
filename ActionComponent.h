@@ -8,13 +8,14 @@ typedef struct Actor Actor;
 typedef struct EventInfo EventInfo;
 
 
-typedef void (*CB_EventRespond)(Actor*, const EventInfo*);
+typedef void (*CB_EventRespond_Void_Actor_EventInfo)(Actor*, const EventInfo*);
 
 
 ActionComponent*    Component_Action_Create     (const tchar* local_name);
 void                Component_Action_Destroy    (ActionComponent* action_component);
 
-void                Component_Action_EventRespond_Add   (ActionComponent* action_component, Event event, CB_EventRespond cb_event_respond);
+void                Component_Action_EventRespond_Add   (ActionComponent* action_component, Event event, CB_EventRespond_Void_Actor_EventInfo cb_event_respond);
 void                Component_Action_EventRespond_Del   (ActionComponent* action_component, Event event);
 void                Component_Action_EventRespond_Clear (ActionComponent* action_component);
-CB_EventRespond     Component_Action_EventRespond_Get   (ActionComponent* action_component, Event event);
+
+CB_EventRespond_Void_Actor_EventInfo    Component_Action_EventRespond_Get   (ActionComponent* action_component, Event event);

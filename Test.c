@@ -92,11 +92,11 @@ static void Queue_Test0()
 
     Queue_ForEach(queue, CallBack_Queue_Test_Print_Data1, (ptr32)2);
 
-    Queue_RemoveFindFirst(Data*)(queue, (CB_FindData)CallBack_Queue_Test_Find, (ptr32)2);
+    Queue_RemoveFindFirst(Data*)(queue, (CB_FindData_Bool_Ptr32_Ptr32)CallBack_Queue_Test_Find, (ptr32)2);
 
     Queue_ForEach(queue, Queue_Test_Print_Data2, (ptr32)7);
 
-    Queue_RemoveFindFirst(Data*)(queue, (CB_FindData)CallBack_Queue_Test_Find, (ptr32)1);
+    Queue_RemoveFindFirst(Data*)(queue, (CB_FindData_Bool_Ptr32_Ptr32)CallBack_Queue_Test_Find, (ptr32)1);
 
     Queue_Destroy(queue, NULL);
 }

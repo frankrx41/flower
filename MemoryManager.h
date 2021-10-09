@@ -3,16 +3,16 @@
 typedef struct MemoryManager MemoryManager;
 
 
-ptr32    MemoryManager_Alloc         (MemoryManager* memory_manager, const tchar* local_name, tsize size);
+ptr32   MemoryManager_Alloc         (MemoryManager* memory_manager, const tchar* local_name, tsize size);
 void    MemoryManager_Free          (MemoryManager* memory_manager, ptr32 ptr);
-ptr32    MemoryManager_AllocPtrSize  (MemoryManager* memory_manager, const tchar* local_name, const ptr32 ptr);
-ptr32    MemoryManager_Clone         (MemoryManager* memory_manager, const tchar* local_name, const ptr32 ptr);
-ptr32    MemoryManager_SafeClone     (MemoryManager* memory_manager, const tchar* local_name, const ptr32 ptr);
+ptr32   MemoryManager_AllocPtrSize  (MemoryManager* memory_manager, const tchar* local_name, const ptr32 ptr);
+ptr32   MemoryManager_Clone         (MemoryManager* memory_manager, const tchar* local_name, const ptr32 ptr);
+ptr32   MemoryManager_SafeClone     (MemoryManager* memory_manager, const tchar* local_name, const ptr32 ptr);
 
-ptr32    Memory_Copy         (ptr32 dst_ptr, const ptr32 src_ptr, tsize size);
-ptr32    Memory_Set          (ptr32 ptr, int32 val, tsize size);
-ptr32    Memory_FullFill     (ptr32 ptr, int32 val);
-ptr32    Memory_Zero         (ptr32 ptr);
+ptr32   Memory_Copy         (ptr32 dst_ptr, const ptr32 src_ptr, tsize size);
+ptr32   Memory_Set          (ptr32 ptr, int32 val, tsize size);
+ptr32   Memory_FullFill     (ptr32 ptr, int32 val);
+ptr32   Memory_Zero         (ptr32 ptr);
 tsize   Memory_GetSize      (const ptr32 ptr);
 
 
