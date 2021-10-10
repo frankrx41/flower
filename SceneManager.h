@@ -12,6 +12,8 @@ Scene*  SceneManager_Scene_Destroy          (SceneManager* scene_manager, Scene*
 void    SceneManager_Scene_SetCurrent       (SceneManager* scene_manager, Scene* scene);
 Scene*  SceneManager_Scene_GetCurrent       (SceneManager* scene_manager);
 
+tptr    SceneManager_GetSceneQueue          (SceneManager* scene_manager);
+
 SceneManager* SceneManager_GetInstance  ();
 
 #define SceneManager_Scene_Create(local_name)   SceneManager_Scene_Create(SceneManager_GetInstance(), local_name)

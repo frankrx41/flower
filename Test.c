@@ -191,9 +191,9 @@ void Actor_Test2()
     Actor_Component_Render_ShaderText_Add(actor, Vec3(0, 10, 0), "hello world" );
     Actor_Component_Render_ShaderText_Add(actor, Vec3(1, 2, 0), "goodbye world" );
 
-    RenderManager_RenderScene(RenderManager_GetInstance(), scene);
+    RenderManager_RenderAllScene(RenderManager_GetInstance(), SceneManager_GetInstance());
 
-    RenderManager_Render_ToScreen(RenderManager_GetInstance());
+    RenderManager_Render_BufferToScreen(RenderManager_GetInstance());
 
     Scene_Actor_Destroy(scene, NULL, actor);
     SceneManager_Scene_Destroy(scene);
@@ -208,9 +208,9 @@ void Actor_Test1()
     Actor_Component_New(actor, Component_Render);
     Actor_Component_Render_ShaderText_Add(actor, Vec3(2, 2, 0), "hello world" );
 
-    RenderManager_RenderScene(RenderManager_GetInstance(), scene);
+    RenderManager_RenderAllScene(RenderManager_GetInstance(), SceneManager_GetInstance());
 
-    RenderManager_Render_ToScreen(RenderManager_GetInstance());
+    RenderManager_Render_BufferToScreen(RenderManager_GetInstance());
 
     Actor_Component_Del(actor, Component_Location);
 
@@ -226,9 +226,9 @@ void Actor_Test0()
     Actor_Component_New(actor, Component_Render);
     Actor_Component_Render_ShaderText_Add(actor, Vec3(0, 10, 0), "hello world" );
 
-    RenderManager_RenderScene(RenderManager_GetInstance(), scene);
+    RenderManager_RenderAllScene(RenderManager_GetInstance(), SceneManager_GetInstance());
 
-    RenderManager_Render_ToScreen(RenderManager_GetInstance());
+    RenderManager_Render_BufferToScreen(RenderManager_GetInstance());
 
     Actor_Component_Del(actor, Component_Render);
 
@@ -481,32 +481,44 @@ void Engine_Test0()
 }
 
 ////////////////////////////////////////////////////////////////////////////////
+typedef void (*CB_Test_Void)();
+void Test(uint32 index, CB_Test_Void cb_test_void)
+{
+    Log(0, "Test %d\n", index);
+    cb_test_void();
+    Engine_Profile_Memory();
+}
+
 void Engine_Debug_UnitTesting()
 {
+    CB_Test_Void cb_test_void_array[] = 
+    {
+        tData_Test0,
+        Storage_Test0,
+        Queue_Test0,
+        Log_Test0,
+        Memory_Test0,
+
+        String_Test0,
+        String_Test1,
+        String_Test2,
+
+        Actor_Test2,
+        Actor_Test1,
+        Actor_Test0,
+
+        Engine_Test3,
+        Engine_Test2,
+        Engine_Test1,
+        Engine_Test0,
+    };
+
+    Log(0, "Test Start\n");
     Engine_Profile_Memory();
 
-    tData_Test0();
+    for(uint32 i=0, max_i = ARRAY_SIZE(cb_test_void_array); i<max_i; i++)
+    {
+        Test(i, cb_test_void_array[i]);
+    }
 
-    Storage_Test0();
-
-    Queue_Test0();
-
-    Log_Test0();
-
-    Memory_Test0();
-
-    String_Test0();
-    String_Test1();
-    String_Test2();
-
-    Actor_Test2();
-    Actor_Test1();
-    Actor_Test0();
-
-    Engine_Test3();
-    Engine_Test2();
-    Engine_Test1();
-    Engine_Test0();
-
-    Engine_Profile_Memory();
 }

@@ -87,7 +87,9 @@ void Actor_Component_Render_ShaderText_ClearAll(Actor* actor)
 // Component_Action
 void Actor_Component_Action_EventRespond_Add(Actor* actor, Event event, CB_EventRespond_Void_Actor_EventInfo cb_event_respond)
 {
+    Assert(IN_RANGE(event, Event_Scene_Min, Event_Scene_Max) || IN_RANGE(event, Event_Actor_Min, Event_Actor_Max), "");
     Assert(actor != NULL, "");
+
     ActionComponent* action_component = Actor_Component_Cast(actor, Component_Action);
     Assert(action_component != NULL, "");
     if( action_component )

@@ -6,6 +6,8 @@ enum Event
 {
     Event_Null,
 
+    Event_Tick,
+
     Event_Scene_Min,
     Event_Scene_Tick = Event_Scene_Min,
     Event_Scene_Max,

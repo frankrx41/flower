@@ -16,9 +16,9 @@ tchar   - str
 
 struct String
 {
-    uint32  m_length;
     bool    m_is_const;
     crc32   m_crc;
+    tsize   m_length;
     tchar*  m_char;
     tchar   m_str_local_name[MAX_STRING_LOCAL_NAME+1];
 };
@@ -27,24 +27,37 @@ struct String
 #define LOCAL_NAME_CHAR     "Char"
 
 
-static void String_ReAllocSize(String* string, uint32 length)
+static void String_ReAllocSize(String* string, const tsize length, bool keep_data)
 {
     Assert( string != NULL, "" );
 
     // make length is a litter big
-    length = (((length>>4) +1) << 4) + 4;
+    const tsize size = (((length>>4) +1) << 4) + 4;
 
-    if( string->m_char != NULL && Memory_GetSize(string->m_char) >= length )
+    if( string->m_char != NULL && Memory_GetSize(string->m_char) >= size )
     {
         return;
     }
 
-    MemSafeDel(string->m_char);
+    tsize origin_length = String_GetLength(string);
+    tchar* origin_str   = string->m_char;
     string->m_char = MemNewSize(Str_IsEmpty(string->m_str_local_name) ? LOCAL_NAME_CHAR : string->m_str_local_name, length);
+
+    if( keep_data )
+    {
+        Assert(origin_str != NULL && origin_length != 0, "You try to keep a empty data!");
+        Str_Copy(string->m_char, origin_str, origin_length);
+        string->m_length = origin_length;
+    }
+    else
+    {
+        string->m_length = 0;
+    }
+    MemSafeDel(origin_str);
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-uint32 Str_CalcLength(const tchar* str)
+tsize Str_CalcLength(const tchar* str)
 {
     if( str == NULL )
     {
@@ -60,7 +73,7 @@ uint32 Str_CalcLength(const tchar* str)
 }
 
 // Copy: https://rosettacode.org/wiki/CRC-32#C
-crc32 Str_CalcCrc(const tchar* str, uint32 length)
+crc32 Str_CalcCrc(const tchar* str, tsize length)
 {
     crc32 crc = 0;
     if(length == 0)
@@ -132,26 +145,32 @@ bool Str_IsSame(const tchar* str1, const tchar* str2)
     return true;
 }
 
-void Str_Copy(tchar* dest, const tchar* from, uint32 length)
+tsize Str_Copy(tchar* dest, const tchar* from, tsize length)
 {
     uint32 i=0;
+    tsize from_str_length = Str_CalcLength(from);
     if( length == 0 )
     {
-        length = Str_CalcLength(from);
+        length = from_str_length;
     }
     else
     {
-        length = MIN( length, Str_CalcLength(from) );
+        length = MIN( length, from_str_length );
     }
+
+    Assert(length > 0, "");
+
     for(i=0; i<length; i++)
     {
         dest[i] = from[i];
     }
     dest[i] = '\0';
+
+    return length;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-uint32 String_GetLength(const String* string)
+tsize String_GetLength(const String* string)
 {
     return string->m_length;
 }
@@ -191,31 +210,40 @@ void String_Format(String* string, const tchar* format, ...)
     va_end(ap);
 }
 
-void String_Copy(String* string, const tchar* str, uint32 length)
+void String_Concatenate(String* string, const tchar* str, const tsize str_length)
+{
+    Assert(string->m_is_const != true, "");
+
+    const tsize string_length   = String_GetLength(string);
+    tsize str_copy_length = str_length;
+    if( str_length == 0 )
+    {
+        str_copy_length = Str_CalcLength(str);
+    }
+    const tsize total_length    = string_length + str_copy_length;
+    String_ReAllocSize(string, total_length, true);
+
+    Str_Copy(string->m_char+string_length, str, str_copy_length);
+    string->m_length = total_length;
+}
+
+void String_Copy(String* string, const tchar* str, const tsize length)
 {
     Assert(string->m_is_const != true, "You try to modify a const string!");
+    Assert( length >= 0 , "");
 
+    tsize size = length;
     // length == 0 means copy full str
     if( length == 0 )
     {
-        length = Str_CalcLength(str);
-    }
-
-    if( length < 0 )
-    {
-        Assert( false, "We hope negative number means copy from right side, but we have no impl it" );
+        size = Str_CalcLength(str);
     }
 
     {
-        String_ReAllocSize(string, length);
+        String_ReAllocSize(string, size, false);
 
-        uint32 i = 0;
-        for(; str[i] != NULL && i < length; i++)
-        {
-            string->m_char[i] = str[i];
-        }
-        string->m_char[i] = '\0';
-        string->m_length = i;
+        const tsize string_length = Str_Copy(string->m_char, str, length);
+        string->m_length = string_length;
     }
 }
 
@@ -243,6 +271,7 @@ String* String_New(const tchar* local_name, const tchar* str, bool is_const)
     string->m_is_const      = is_const;
     if( string->m_is_const )
     {
+        Assert(str != NULL, "You can not create a const NULL string!");
         string->m_crc = Str_CalcCrc(string->m_char, string->m_length);
     }
 

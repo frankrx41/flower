@@ -1,14 +1,21 @@
 #include "CoreMini.h"
 
+#include "Event.h"
+#include "KeyId.h"
+
 #include "MemoryManager.h"
 #include "TimingManager.h"
+#include "EventManager.h"
+
+#include "String.h"
 
 
 struct TimingManager
 {
     bool    m_is_initialized;
     bool    m_is_limit_frame_rate;
-    tptr   m_platform_data;
+    tptr    m_platform_data;
+    String* m_local_name;
 
     float   m_prev_frame_delta_seconds;
     float   m_frame_rate;
@@ -27,6 +34,7 @@ TimingManager* TimingManager_Create(const tchar* local_name)
     timing_manager->m_is_limit_frame_rate   = false;
     timing_manager->m_platform_data         = TimingManager_PlatformData_Create(timing_manager, local_name);
     timing_manager->m_is_initialized        = true;
+    timing_manager->m_local_name            = String_New(local_name, local_name, true);
 
     TimingManager_SetFrameRate(timing_manager, 60);
 
@@ -37,6 +45,7 @@ void TimingManager_Destroy(TimingManager* timing_manager)
 {
     TimingManager_PlatformData_Destroy(timing_manager, timing_manager->m_platform_data);
 
+    String_Del(timing_manager->m_local_name);
     MemDel(timing_manager);
 }
 
@@ -74,6 +83,9 @@ bool TimingManager_IsLimitFrameRate(TimingManager* timing_manager)
 void TimingManager_TrimSpeed(TimingManager* timing_manager)
 {
     timing_manager->m_prev_frame_delta_seconds = TimingManager_TrimSpeed_Plat(timing_manager, timing_manager->m_platform_data);
+
+    // EventManager_SendEvent(Event_Tick, String_CStr(timing_manager->m_local_name), timing_manager->m_prev_frame_delta_seconds);
+    EventManager_SendEvent(Event_Tick, timing_manager->m_prev_frame_delta_seconds);
     // TODO: Add fps profile
     // Log(0, "%f\n", timing_manager->m_prev_frame_delta_seconds);
     // Assert(timing_manager->m_prev_frame_delta_seconds < 1.f, "Fps is too low!");

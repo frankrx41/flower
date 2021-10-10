@@ -21,7 +21,7 @@ struct Scene
     String*         m_local_name;
     Storage*        m_storage;
     Queue(Actor*)*  m_actor_queue;
-    Queue(Actor*)*  m_actor_event_queue_list[Event_Max];
+    Queue(Actor*)*  m_actor_event_queue_list[Event_Scene_Max-Event_Scene_Min];
 };
 
 Scene* Scene_Create(const tchar* local_name)
@@ -31,7 +31,9 @@ Scene* Scene_Create(const tchar* local_name)
     scene->m_alloc_actor_id = 0;
     scene->m_local_name     = String_New(local_name, local_name, true);
     scene->m_storage        = Storage_Create(local_name);
-    for(uint32 i=0; i<Event_Max; i++)
+
+    Assert(ARRAY_SIZE(scene->m_actor_event_queue_list) == Event_Scene_Max-Event_Scene_Min, "");
+    for(uint32 i=0, max_i = ARRAY_SIZE(scene->m_actor_event_queue_list); i<max_i; i++)
     {
         scene->m_actor_event_queue_list[i] = Queue_Create(local_name, Actor*);
     }
@@ -42,13 +44,18 @@ Scene* Scene_Create(const tchar* local_name)
 void Scene_Destroy(Scene* scene)
 {
     Queue_Destroy(scene->m_actor_queue, Actor_Destroy);
-    for(uint32 i=0; i<Event_Max; i++)
+    for(uint32 i=0, max_i=ARRAY_SIZE(scene->m_actor_event_queue_list); i<max_i; i++)
     {
         Queue_Destroy(scene->m_actor_event_queue_list[i], NULL);
     }
     String_Del(scene->m_local_name);
     Storage_Destroy(scene->m_storage);
     MemDel(scene);
+}
+
+static Queue(Actor*)* Scene_EventQueue_Get(Scene* scene, Event event)
+{
+    return scene->m_actor_event_queue_list[event-Event_Scene_Min];
 }
 
 Actor* Scene_Actor_Create(const tchar* local_name, Scene* scene, CB_ActorCreate_Void_Actor_tPtr cb_actor_create, tptr ptr)
@@ -82,13 +89,13 @@ void CallBack_Actor_ProcessEachActorEvent(Actor* actor, EventInfo* event_struct)
 void Scene_Actor_SendEvent(Scene* scene, EventInfo* event_info)
 {
     Event event = event_info->m_event;
-    Queue_ForEach(scene->m_actor_event_queue_list[event], (CB_ProcessData_Void_tPtr_tPtr)CallBack_Actor_ProcessEachActorEvent, event_info);
+    Queue_ForEach(Scene_EventQueue_Get(scene, event), (CB_ProcessData_Void_tPtr_tPtr)CallBack_Actor_ProcessEachActorEvent, event_info);
 }
 
 void Scene_Actor_AddEventGroup(Scene* scene, Actor* actor, Event event)
 {
     Assert(event > Event_Null && event < Event_Max, "Invalid event!");
-    Queue_Push(Actor*, NULL, scene->m_actor_event_queue_list[event], actor);
+    Queue_Push(Actor*, NULL, Scene_EventQueue_Get(scene, event), actor);
 }
 
 void Scene_Storage_StoreData(Scene* scene, crc32 variable, tdata data)

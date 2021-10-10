@@ -58,12 +58,14 @@ static Engine* Engine_GetInstance()
 void Engine_Initialize()
 {
     Engine* engine = Engine_GetInstance();
-    engine->m_render_manager    = RenderManager_Create(LOCAL_NAME);
-    engine->m_timing_manager    = TimingManager_Create(LOCAL_NAME);
+
     engine->m_memory_manager    = MemoryManager_Create(LOCAL_NAME);
-    engine->m_event_manager     = EventManager_Create(LOCAL_NAME);
-    engine->m_scene_manager     = SceneManager_Create(LOCAL_NAME);
-    engine->m_input_manager     = InputManager_Create(LOCAL_NAME);
+
+    engine->m_render_manager    = RenderManager_Create("RenderManager");
+    engine->m_timing_manager    = TimingManager_Create("TimingManager");
+    engine->m_event_manager     = EventManager_Create("EventManager");
+    engine->m_scene_manager     = SceneManager_Create("SceneManager");
+    engine->m_input_manager     = InputManager_Create("InputManager");
 
     engine->m_is_initialized    = true;
     engine->m_is_exit           = false;
@@ -76,20 +78,17 @@ void Engine_MainLoop()
     Assert(engine->m_is_initialized == true, "");
 
     float delta_second = TimingManager_GetPrevFrameDeltaSeconds(TimingManager_GetInstance());
+
     for(;!engine->m_is_exit;)
     {
         InputManager_Keys_UpdateState(InputManager_GetInstance(), delta_second);
         InputManager_Event_Send(InputManager_GetInstance(), LOCAL_NAME_EVENT);
 
-        Scene* current_scene = SceneManager_Scene_GetCurrent();
-        RenderManager_RenderScene(RenderManager_GetInstance(), current_scene);
-
-        RenderManager_Render_ToScreen(RenderManager_GetInstance());
+        RenderManager_RenderAllScene(RenderManager_GetInstance(), SceneManager_GetInstance());
+        RenderManager_Render_BufferToScreen(RenderManager_GetInstance());
 
         TimingManager_TrimSpeed(TimingManager_GetInstance());
-
         delta_second = TimingManager_GetPrevFrameDeltaSeconds(TimingManager_GetInstance());
-        EventManager_SendEvent(Event_Scene_Tick, LOCAL_NAME_EVENT, current_scene, delta_second);
     }
 }
 
@@ -97,17 +96,18 @@ void Engine_UnInitialize()
 {
     Engine_SetExit(true);
 
-    Engine_Debug_Memory_Check_Leak();
-
     Engine* engine = Engine_GetInstance();
 
     RenderManager_Destroy(engine->m_render_manager);
     TimingManager_Destroy(engine->m_timing_manager);
-    MemoryManager_Destroy(engine->m_memory_manager);
     EventManager_Destroy(engine->m_event_manager);
     SceneManager_Destroy(engine->m_scene_manager);
     InputManager_Destroy(engine->m_input_manager);
 
+    Engine_Profile_Memory();
+    Engine_Debug_Memory_Check_Leak();
+
+    MemoryManager_Destroy(engine->m_memory_manager);
     Engine_Debug_Memory_Static_Check_Leak();
 }
 

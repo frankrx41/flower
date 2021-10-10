@@ -63,23 +63,23 @@ void InputManager_Event_Send(InputManager* input_manager, const tchar* local_nam
 
         if( key_state->m_is_hold )
         {
-            EventManager_SendEvent(Event_Key_Any_Hold, local_name, key_state->m_key_id, key_state->m_down_seconds);
+            EventManager_SendEvent(Event_Key_Any_Hold, key_state->m_key_id, key_state->m_down_seconds);
         }
         if( key_state->m_is_down )
         {
-            EventManager_SendEvent(Event_Key_Any_Down, local_name, key_state->m_key_id);
+            EventManager_SendEvent(Event_Key_Any_Down, key_state->m_key_id);
         }
         if( key_state->m_is_down_once )
         {
-            EventManager_SendEvent(Event_Key_Any_Down_Once, local_name, key_state->m_key_id);
+            EventManager_SendEvent(Event_Key_Any_Down_Once, key_state->m_key_id);
         }
         if( key_state->m_is_toggle )
         {
-            EventManager_SendEvent(Event_Key_Any_Toggle, local_name, key_state->m_key_id);
+            EventManager_SendEvent(Event_Key_Any_Toggle, key_state->m_key_id);
         }
         if( key_state->m_is_up_once )
         {
-            EventManager_SendEvent(Event_Key_Any_Up_Once, local_name, key_state->m_key_id);
+            EventManager_SendEvent(Event_Key_Any_Up_Once, key_state->m_key_id);
         }
     }
 }

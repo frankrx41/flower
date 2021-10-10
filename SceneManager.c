@@ -64,3 +64,8 @@ Scene* SceneManager_Scene_GetCurrent(SceneManager* scene_manager)
     return scene_manager->m_current_scene;
 }
 
+tptr SceneManager_GetSceneQueue(SceneManager* scene_manager)
+{
+    return scene_manager->m_scene_queue;
+}
+

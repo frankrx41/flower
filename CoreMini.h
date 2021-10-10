@@ -116,6 +116,9 @@ void    Engine_Profile_Memory   ();
 
 #define ADDRESS_OF(v)       (&(v))
 #define INT32_SIZEOF(n)     ((sizeof(n) + sizeof(int32) - 1) & ~(sizeof(int32) - 1))
+#define ARRAY_SIZE(a)       (sizeof(a)/sizeof(a[0]))
+
+#define IN_RANGE(x,a,b)     ((x)>=(a) && (x)<(b))
 
 #if NO_COMPILE_TIME_CHECK
 #define COMPILE_TIME_ASSERT(...)

@@ -63,6 +63,7 @@ struct MemoryBlock
 
 static uint32 MemoryManager_IncreaseAllocID(MemoryManager* memory_manager)
 {
+    Assert(memory_manager != NULL, "You need to create MemoryManager first!");
     return ++memory_manager->m_alloc_id;
 }
 
@@ -286,6 +287,7 @@ static void CallBack_Memory_Check_Memory_Leak(MemoryProfileData* memory_profile_
 void Engine_Debug_Memory_Check_Leak()
 {
     MemoryManager* memory_manager = MemoryManager_GetInstance();
+    Assert(memory_manager != NULL, "You had free MemoryManager? If you want to check static memory, use Engine_Debug_Memory_Static_Check_Leak.");
     Queue(MemoryProfileData*)* memory_profile_data_queue = memory_manager->m_memory_profile_data_queue;
     Queue_ForEach( memory_profile_data_queue, CallBack_Memory_Check_Memory_Leak, NULL );
 }

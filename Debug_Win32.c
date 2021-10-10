@@ -14,14 +14,13 @@ void Engine_Debug_Break()
 
 void Engine_Debug_Log(int32 type, const tchar* format, ...)
 {
-    String* string = String_New(LOCAL_NAME, "", false);
+    tchar buffer[4996];
     va_list ap;
     va_start(ap, format);
-    String_FormatArgs(string, format, ap);
+    Str_FormatArgs(buffer, 4996, format, ap);
     va_end(ap);
 
-    OutputDebugStringA(String_CStr(string));
-    String_Del(string);
+    OutputDebugStringA(buffer);
 }
 
 #endif
