@@ -2,10 +2,13 @@
 
 #define NO_COMPILE_TIME_CHECK   0
 #define KEEP_LEGACY_TYPE        0
+#define X_64                    0
+#define X_32                    0
 
 #if PLATFORM_WIN32
 #undef  KEEP_LEGACY_TYPE
-#define KEEP_LEGACY_TYPE 1
+#define KEEP_LEGACY_TYPE        1
+#define X_32                    1
 #endif
 
 #include <stdarg.h>
@@ -37,8 +40,19 @@ typedef unsigned long long  uint64;
 
 typedef signed char     tchar;
 typedef void*           tptr;
-typedef uint32          tsize;
 typedef uint32          crc32;
+
+#if X_64
+typedef uint64          tsize;
+
+#elif X_32
+typedef uint32          tsize;
+
+#else
+#error "Unknow platfrom!"
+
+#endif
+
 
 #undef NULL
 #define NULL            ( 0 )
