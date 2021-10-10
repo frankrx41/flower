@@ -5,7 +5,7 @@
 #include "Queue.h"
 #include "Storage.h"
 #include "String.h"
-#include "Data32.h"
+#include "tData.h"
 
 
 typedef enum StoreType StoreType;
@@ -22,7 +22,7 @@ typedef struct StoreContent StoreContent;
 struct StoreContent
 {
     crc32       m_crc;
-    data32      m_data32;
+    tdata      m_data32;
 };
 
 struct Storage
@@ -72,7 +72,7 @@ static StoreContent* Storage_FindStoreContent(const Storage* storage, crc32 vari
     return store_content;
 }
 
-void Storage_StoreData32(Storage* storage, crc32 variable, data32 data)
+void Storage_StoreData32(Storage* storage, crc32 variable, tdata data)
 {
     if( Storage_IsExistVariable(storage, variable) )
     {
@@ -100,7 +100,7 @@ bool Storage_IsExistVariable(Storage* storage, crc32 variable)
     return false;
 }
 
-data32 Storage_ReadData32(const Storage* storage, crc32 variable)
+tdata Storage_ReadData32(const Storage* storage, crc32 variable)
 {
     StoreContent* store_content = Storage_FindStoreContent(storage, variable);
     return store_content ? store_content->m_data32 : data32_null;

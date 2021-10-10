@@ -1,16 +1,16 @@
 #include "CoreMini.h"
 
-#include "Data32.h"
+#include "tData.h"
 
 
-#undef Data32_Cast
-#undef Data32
+#undef tData_Cast
+#undef tData
 
-const data32 data32_null = {0};
+const tdata data32_null = {0};
 
-data32 Data32(const tchar* type, ...)
+tdata tData(const tchar* type, ...)
 {
-    data32 data32;
+    tdata data32;
 
     va_list ap;
     va_start(ap, type);

@@ -10,7 +10,7 @@
 
 #include "Storage.h"
 #include "String.h"
-#include "Data32.h"
+#include "tData.h"
 
 
 struct Actor
@@ -73,7 +73,7 @@ void Actor_Component_New(Actor* actor, const tchar* component_name, Component co
     Assert(actor != NULL, "");
     Assert(cb_component_create != NULL, "");
     const tptr component = cb_component_create(Actor_GetLocalName(actor));
-    Storage_StoreData32(actor->m_component, Str_CalcCrc(component_name, 0), Data32(tptr, component));
+    Storage_StoreData32(actor->m_component, Str_CalcCrc(component_name, 0), tData(tptr, component));
 }
 
 static tptr Actor_Component_CastByName(Actor* actor, const tchar* component_name)

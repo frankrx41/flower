@@ -23,7 +23,7 @@
 #include "Storage.h"
 #include "Actor.h"
 #include "Scene.h"
-#include "Data32.h"
+#include "tData.h"
 #include "Vec.h"
 
 
@@ -31,7 +31,7 @@ static void Storage_Test0()
 {
     Storage* storage = Storage_Create(__FUNCTION__);
 
-    Storage_StoreData32(storage, Str_CalcCrc("a",0), Data32(int32, 123));
+    Storage_StoreData32(storage, Str_CalcCrc("a",0), tData(int32, 123));
 
     const bool is_exist_a = Storage_IsExistVariable(storage, Str_CalcCrc("a", 0));
     const bool is_exist_b = Storage_IsExistVariable(storage, Str_CalcCrc("b", 0));
@@ -239,10 +239,10 @@ void Actor_Test0()
 ////////////////////////////////////////////////////////////////////////////////
 void Data32_Test0()
 {
-    const data32 d1 = Data32(int32, 32);
-    const data32 d2 = Data32(float, 3.2f);
-    const data32 d3 = Data32(tptr, &d1);
-    const data32 d4 = Data32(uint32, 123);
+    const tdata d1 = tData(int32, 32);
+    const tdata d2 = tData(float, 3.2f);
+    const tdata d3 = tData(tptr, &d1);
+    const tdata d4 = tData(uint32, 123);
 
     const int32 i = d1.m_int32;
     const float f = d2.m_float;
@@ -291,8 +291,8 @@ void CallBack_ActorOnEvent3(Actor* actor, const EventInfo* event_info)
         }
     }
 
-    Actor_Component_Storage_StoreData32(actor, crc_tick_count, Data32(int32, tick_count));
-    Actor_Component_Storage_StoreData32(actor, crc_delta_second, Data32(float, delta_second));
+    Actor_Component_Storage_StoreData32(actor, crc_tick_count, tData(int32, tick_count));
+    Actor_Component_Storage_StoreData32(actor, crc_delta_second, tData(float, delta_second));
 }
 
 void CallBack_Actor_Create3(Actor* actor, tptr ptr)
@@ -350,10 +350,10 @@ void CallBack_ActorOnEvent2(Actor* actor, const EventInfo* event_info)
         Actor_Component_Render_ShaderText_Add(actor, Vec3(0,0,0), String_CStr(string));
         String_Del(string);
 
-        Actor_Component_Storage_StoreData32(actor, crc_update_tick, Data32(int32, update_tick));
+        Actor_Component_Storage_StoreData32(actor, crc_update_tick, tData(int32, update_tick));
 
     }
-    Actor_Component_Storage_StoreData32(actor, crc_delta_second, Data32(float, delta_second));
+    Actor_Component_Storage_StoreData32(actor, crc_delta_second, tData(float, delta_second));
 }
 
 void CallBack_Actor_Create2(Actor* actor, tptr ptr)
@@ -385,7 +385,7 @@ void CallBack_ActorOnEvent1(Actor* actor, const EventInfo* event_struct)
 {
     float seconds = Actor_Component_Storage_ReadData32(actor, Str_CalcCrc("seconds", 0)).m_float;
     seconds += event_struct->m_delta_seconds;
-    Actor_Component_Storage_StoreData32(actor, Str_CalcCrc("seconds", 0), Data32(float, seconds));
+    Actor_Component_Storage_StoreData32(actor, Str_CalcCrc("seconds", 0), tData(float, seconds));
 
     if( seconds > 2 )
     {
@@ -413,11 +413,11 @@ void Engine_Test1()
     Actor_Component_Action_EventRespond_Add(actor1, Event_Scene_Tick, CallBack_ActorOnEvent1);
 
     Actor_Component_New(actor1, Component_Storage);
-    Actor_Component_Storage_StoreData32(actor1, Str_CalcCrc("seconds", 0), Data32(float, 0));
+    Actor_Component_Storage_StoreData32(actor1, Str_CalcCrc("seconds", 0), tData(float, 0));
 
     Scene* scene2 = SceneManager_Scene_Create(__FUNCTION__);
     Actor* actor2 = Scene_Actor_Create(__FUNCTION__, scene2, NULL, NULL);
-    Actor_Component_Storage_StoreData32(actor1, Str_CalcCrc("scene", 0), Data32(tptr, scene2));
+    Actor_Component_Storage_StoreData32(actor1, Str_CalcCrc("scene", 0), tData(tptr, scene2));
 
     Actor_Component_New(actor2, Component_Render);
     Actor_Component_Render_ShaderText_Add(actor2, Vec3(1, 1, 0), "goodbye world" );
@@ -426,8 +426,8 @@ void Engine_Test1()
     Actor_Component_Action_EventRespond_Add(actor2, Event_Scene_Tick, CallBack_ActorOnEvent1);
 
     Actor_Component_New(actor2, Component_Storage);
-    Actor_Component_Storage_StoreData32(actor2, Str_CalcCrc("seconds", 0), Data32(float, 0));
-    Actor_Component_Storage_StoreData32(actor2, Str_CalcCrc("scene", 0), Data32(tptr, NULL));
+    Actor_Component_Storage_StoreData32(actor2, Str_CalcCrc("seconds", 0), tData(float, 0));
+    Actor_Component_Storage_StoreData32(actor2, Str_CalcCrc("scene", 0), tData(tptr, NULL));
 
 
 

@@ -14,7 +14,7 @@
 
 #include "ShaderText.h"
 
-#include "Data32.h"
+#include "tData.h"
 #include "Actor.h"
 #include "Queue.h"
 #include "Vec.h"
@@ -133,7 +133,7 @@ bool Actor_Component_Storage_IsExistVariable(Actor* actor, crc32 variable)
     return false;
 }
 
-void Actor_Component_Storage_StoreData32(Actor* actor, crc32 variable, data32 data)
+void Actor_Component_Storage_StoreData32(Actor* actor, crc32 variable, tdata data)
 {
     Assert(actor != NULL, "");
     StorageComponent* storage_component = Actor_Component_Cast(actor, Component_Storage);
@@ -144,7 +144,7 @@ void Actor_Component_Storage_StoreData32(Actor* actor, crc32 variable, data32 da
     }
 }
 
-data32 Actor_Component_Storage_ReadData32(Actor* actor, crc32 variable)
+tdata Actor_Component_Storage_ReadData32(Actor* actor, crc32 variable)
 {
     Assert(actor != NULL, "");
     StorageComponent* storage_component = Actor_Component_Cast(actor, Component_Storage);

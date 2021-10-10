@@ -30,9 +30,6 @@
     <ClCompile Include="Actor.c">
       <Filter>Scene\Actor</Filter>
     </ClCompile>
-    <ClCompile Include="Data32.c">
-      <Filter>Library\Data32</Filter>
-    </ClCompile>
     <ClCompile Include="Vec.c">
       <Filter>Library\Vec</Filter>
     </ClCompile>
@@ -81,6 +78,9 @@
     <ClCompile Include="String_Win32.c">
       <Filter>Platform\Win32</Filter>
     </ClCompile>
+    <ClCompile Include="tData.c">
+      <Filter>Library\Data32</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CoreMini.h" />
@@ -101,9 +101,6 @@
     </ClInclude>
     <ClInclude Include="Actor.h">
       <Filter>Scene\Actor</Filter>
-    </ClInclude>
-    <ClInclude Include="Data32.h">
-      <Filter>Library\Data32</Filter>
     </ClInclude>
     <ClInclude Include="Vec.h">
       <Filter>Library\Vec</Filter>
@@ -155,6 +152,9 @@
     </ClInclude>
     <ClInclude Include="Platform.h">
       <Filter>Platform</Filter>
+    </ClInclude>
+    <ClInclude Include="tData.h">
+      <Filter>Library\Data32</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

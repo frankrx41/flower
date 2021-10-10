@@ -11,7 +11,7 @@
 
 #include "Queue.h"
 #include "String.h"
-#include "Data32.h"
+#include "tData.h"
 #include "Storage.h"
 
 
@@ -91,7 +91,7 @@ void Scene_Actor_AddEventGroup(Scene* scene, Actor* actor, Event event)
     Queue_Push(Actor*, NULL, scene->m_actor_event_queue_list[event], actor);
 }
 
-void Scene_Storage_StoreData32(Scene* scene, crc32 variable, data32 data)
+void Scene_Storage_StoreData32(Scene* scene, crc32 variable, tdata data)
 {
     Storage_StoreData32(scene->m_storage, variable, data);
 }
@@ -102,7 +102,7 @@ bool Scene_Storage_IsExistVariable(Scene* scene, crc32 variable)
     Storage_IsExistVariable(scene->m_storage, variable);
 }
 
-data32 Scene_Storage_ReadData32(Scene* scene, crc32 variable)
+tdata Scene_Storage_ReadData32(Scene* scene, crc32 variable)
 {
     return
     Storage_ReadData32(scene->m_storage, variable);

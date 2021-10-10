@@ -1,7 +1,7 @@
 #include "CoreMini.h"
 
 #include "Queue.h"
-#include "Data32.h"
+#include "tData.h"
 #include "StorageComponent.h"
 
 #include "MemoryManager.h"
@@ -34,13 +34,13 @@ bool Component_Storage_IsExistVariable(StorageComponent* storage_component, crc3
     Storage_IsExistVariable(storage_component->m_storage, variable);
 }
 
-void Component_Storage_StoreData32(StorageComponent* storage_component, crc32 variable, data32 data)
+void Component_Storage_StoreData32(StorageComponent* storage_component, crc32 variable, tdata data)
 {
     Assert(storage_component, "");
     Storage_StoreData32(storage_component->m_storage, variable, data);
 }
 
-data32 Component_Storage_ReadData32(StorageComponent* storage_component, crc32 variable)
+tdata Component_Storage_ReadData32(StorageComponent* storage_component, crc32 variable)
 {
     Assert(storage_component, "");
     return
