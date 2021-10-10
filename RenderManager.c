@@ -52,6 +52,10 @@ void RenderManager_Render_InBackBuffer(RenderManager* render_manager, int32 x, i
 
 static void CallBack_Render_Scene(Scene* scene, RenderManager* render_manager)
 {
+    if( Scene_IsPause(scene) )
+    {
+        return;
+    }
     Queue_ForEach(Scene_GetActorQueue(scene), CallBack_Actor_RenderEachActor, render_manager);
 }
 

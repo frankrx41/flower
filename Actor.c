@@ -19,6 +19,7 @@ struct Actor
     String*                 m_local_name;
     Storage*                m_component;
     Scene*                  m_scene;
+    bool                    m_is_pause;
     CB_ActorDestroy_Void_Actor         m_cb_actor_destroy;
 };
 
@@ -30,6 +31,8 @@ Actor* Actor_Create(const tchar* local_name, Scene* scene, uint32 id, CB_ActorCr
     actor->m_component          = Storage_Create(local_name);
     actor->m_scene              = scene;
     actor->m_cb_actor_destroy   = NULL;
+    actor->m_is_pause           = false;
+
     if( cb_actor_create )
     {
         cb_actor_create(actor, ptr);
@@ -60,6 +63,16 @@ void Actor_Destroy(Actor* actor)
     Storage_Destroy(actor->m_component);
     String_Del(actor->m_local_name);
     MemDel(actor);
+}
+
+bool Actor_IsPause(Actor* actor)
+{
+    return actor->m_is_pause;
+}
+
+void Actor_SetIsPause(Actor* actor, bool is_pause)
+{
+    actor->m_is_pause = is_pause;
 }
 
 ////////////////////////////////////////////////////////////////////////////////

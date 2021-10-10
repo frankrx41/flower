@@ -85,7 +85,7 @@ void Actor_Component_Render_ShaderText_ClearAll(Actor* actor)
 
 
 // Component_Action
-void Actor_Component_Action_EventRespond_Add(Actor* actor, Event event, CB_EventRespond_Void_Actor_EventInfo cb_event_respond)
+void Actor_Component_Action_EventRespond_Add(Actor* actor, Event event, CB_RespondCondition_Void_Actor_EventInfo cb_respond_condition_void_actor_event_info, CB_EventRespond_Void_Actor_EventInfo cb_event_respond)
 {
     Assert(IN_RANGE(event, Event_Scene_Min, Event_Scene_Max) || IN_RANGE(event, Event_Actor_Min, Event_Actor_Max), "");
     Assert(actor != NULL, "");
@@ -94,7 +94,7 @@ void Actor_Component_Action_EventRespond_Add(Actor* actor, Event event, CB_Event
     Assert(action_component != NULL, "");
     if( action_component )
     {
-        Component_Action_EventRespond_Add(action_component, event, cb_event_respond);
+        Component_Action_EventRespond_Add(action_component, event, cb_respond_condition_void_actor_event_info, cb_event_respond);
         Scene_Actor_AddEventGroup(Actor_GetScene(actor), actor, event);
     }
 }
@@ -196,6 +196,10 @@ void CallBack_Render_ShaderText_Plat(ShaderText* shader_text, RenderManagerWithV
 
 void CallBack_Actor_RenderEachActor(Actor* actor, RenderManager* render_manager)
 {
+    if( Actor_IsPause(actor) )
+    {
+        return;
+    }
     RenderComponent* render_component = Actor_Component_Cast(actor, Component_Render);
     if( render_component )
     {
@@ -209,15 +213,4 @@ void CallBack_Actor_RenderEachActor(Actor* actor, RenderManager* render_manager)
         render_manager_with_vec.m_render_manager    = render_manager;
         Queue_ForEach(Component_Render_ShaderText_GetQueue(render_component), (CB_ProcessData_Void_tPtr_tPtr)CallBack_Render_ShaderText_Plat, &render_manager_with_vec);
     }
-}
-
-void CallBack_Actor_ProcessEachActorEvent(Actor* actor, const EventInfo* event_struct)
-{
-    ActionComponent* action_component = Actor_Component_Cast(actor, Component_Action);
-
-    const CB_EventRespond_Void_Actor_EventInfo cb_actor_respond = Component_Action_EventRespond_Get(action_component, event_struct->m_event);
-
-    Assert(cb_actor_respond != NULL, "");
-
-    cb_actor_respond(actor, event_struct);
 }

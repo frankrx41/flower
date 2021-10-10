@@ -14,6 +14,8 @@ Actor*  Actor_Create            (const tchar* local_name, Scene* scene, uint32 i
 void    Actor_Set_CB_Destroy    (Actor *actor, CB_ActorDestroy_Void_Actor cb_actor_destroy);
 void    Actor_Destroy           (Actor* actor);
 
+bool    Actor_IsPause           (Actor* actor);
+void    Actor_SetIsPause        (Actor* actor, bool is_pause);
 
 void    Actor_Component_New     (Actor* actor, const tchar* component_name, Component component_enum, CB_ComponentCreate_tPtr_tChar cb_component_create);
 void    Actor_Component_Del     (Actor* actor, const tchar* component_name, Component component_enum, CB_ComponentDestroy_Void_tPtr cb_component_destroy);

@@ -20,6 +20,7 @@ struct Scene
     uint32          m_alloc_actor_id;
     String*         m_local_name;
     Storage*        m_storage;
+    bool            m_is_pause;
     Queue(Actor*)*  m_actor_queue;
     Queue(Actor*)*  m_actor_event_queue_list[Event_Scene_Max-Event_Scene_Min];
 };
@@ -31,6 +32,7 @@ Scene* Scene_Create(const tchar* local_name)
     scene->m_alloc_actor_id = 0;
     scene->m_local_name     = String_New(local_name, local_name, true);
     scene->m_storage        = Storage_Create(local_name);
+    scene->m_is_pause       = false;
 
     Assert(ARRAY_SIZE(scene->m_actor_event_queue_list) == Event_Scene_Max-Event_Scene_Min, "");
     for(uint32 i=0, max_i = ARRAY_SIZE(scene->m_actor_event_queue_list); i<max_i; i++)
@@ -56,6 +58,16 @@ void Scene_Destroy(Scene* scene)
 static Queue(Actor*)* Scene_EventQueue_Get(Scene* scene, Event event)
 {
     return scene->m_actor_event_queue_list[event-Event_Scene_Min];
+}
+
+bool Scene_IsPause(Scene* scene)
+{
+    return scene->m_is_pause;
+}
+
+void Scene_SetIsPause(Scene* scene, bool is_pause)
+{
+    scene->m_is_pause = is_pause;
 }
 
 Actor* Scene_Actor_Create(const tchar* local_name, Scene* scene, CB_ActorCreate_Void_Actor_tPtr cb_actor_create, tptr ptr)
@@ -84,7 +96,7 @@ void Scene_Actor_Destroy_All(Scene* scene)
     Queue_Destroy(scene->m_actor_queue, Actor_Destroy);
 }
 
-void CallBack_Actor_ProcessEachActorEvent(Actor* actor, EventInfo* event_struct);
+void CallBack_Actor_ProcessEachActorEvent(Actor* actor, EventInfo* event_info);
 
 void Scene_Actor_SendEvent(Scene* scene, EventInfo* event_info)
 {

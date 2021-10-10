@@ -5,6 +5,7 @@ typedef struct Actor Actor;
 typedef struct ShaderText ShaderText;
 typedef struct EventInfo EventInfo;
 typedef void (*CB_EventRespond_Void_Actor_EventInfo)(Actor*, const EventInfo*);
+typedef bool (*CB_RespondCondition_Void_Actor_EventInfo)(Actor*, const EventInfo*);
 typedef enum Event Event;
 typedef union tdata tdata;
 
@@ -19,7 +20,7 @@ void        Actor_Component_Render_ShaderText_Del       (Actor* actor, ShaderTex
 void        Actor_Component_Render_ShaderText_ClearAll  (Actor* actor);
 
 
-void    Actor_Component_Action_EventRespond_Add     (Actor* actor, Event event, CB_EventRespond_Void_Actor_EventInfo cb_event_respond);
+void    Actor_Component_Action_EventRespond_Add     (Actor* actor, Event event, CB_RespondCondition_Void_Actor_EventInfo cb_respond_condition_void_actor_event_info, CB_EventRespond_Void_Actor_EventInfo cb_event_respond);
 void    Actor_Component_Action_EventRespond_Del     (Actor* actor, Event event);
 void    Actor_Component_Action_EventRespond_Clear   (Actor* actor);
 

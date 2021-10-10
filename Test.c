@@ -302,7 +302,7 @@ void CallBack_Actor_Create3(Actor* actor, tptr ptr)
     Actor_Component_New(actor, Component_Storage);
 
     Actor_Component_Render_ShaderText_Add(actor, Vec3(1, 1, 0), ptr );
-    Actor_Component_Action_EventRespond_Add(actor, Event_Scene_Tick, CallBack_ActorOnEvent3);
+    Actor_Component_Action_EventRespond_Add(actor, Event_Scene_Tick, NULL, CallBack_ActorOnEvent3);
 
 };
 void Engine_Test3()
@@ -363,7 +363,7 @@ void CallBack_Actor_Create2(Actor* actor, tptr ptr)
     Actor_Component_New(actor, Component_Storage);
 
     Actor_Component_Render_ShaderText_Add(actor, Vec3(1, 1, 0), ptr );
-    Actor_Component_Action_EventRespond_Add(actor, Event_Scene_Tick, CallBack_ActorOnEvent2);
+    Actor_Component_Action_EventRespond_Add(actor, Event_Scene_Tick, NULL, CallBack_ActorOnEvent2);
 
 };
 void Engine_Test2()
@@ -381,10 +381,10 @@ void Engine_Test2()
     SceneManager_Scene_Destroy(scene);
 }
 
-void CallBack_ActorOnEvent1(Actor* actor, const EventInfo* event_struct)
+void CallBack_ActorOnEvent1(Actor* actor, const EventInfo* event_info)
 {
     float seconds = Actor_Component_Storage_ReadData(actor, Str_CalcCrc("seconds", 0)).m_float;
-    seconds += event_struct->m_delta_seconds;
+    seconds += event_info->m_delta_seconds;
     Actor_Component_Storage_StoreData(actor, Str_CalcCrc("seconds", 0), tData(float, seconds));
 
     if( seconds > 2 )
@@ -393,6 +393,7 @@ void CallBack_ActorOnEvent1(Actor* actor, const EventInfo* event_struct)
         if( scene )
         {
             SceneManager_Scene_SetCurrent(scene);
+            Scene_SetIsPause(event_info->m_scene, true);
         }
         else
         {
@@ -410,7 +411,7 @@ void Engine_Test1()
     Actor_Component_Render_ShaderText_Add(actor1, Vec3(1, 1, 0), "hello world" );
 
     Actor_Component_New(actor1, Component_Action);
-    Actor_Component_Action_EventRespond_Add(actor1, Event_Scene_Tick, CallBack_ActorOnEvent1);
+    Actor_Component_Action_EventRespond_Add(actor1, Event_Scene_Tick, NULL, CallBack_ActorOnEvent1);
 
     Actor_Component_New(actor1, Component_Storage);
     Actor_Component_Storage_StoreData(actor1, Str_CalcCrc("seconds", 0), tData(float, 0));
@@ -423,7 +424,7 @@ void Engine_Test1()
     Actor_Component_Render_ShaderText_Add(actor2, Vec3(1, 1, 0), "goodbye world" );
 
     Actor_Component_New(actor2, Component_Action);
-    Actor_Component_Action_EventRespond_Add(actor2, Event_Scene_Tick, CallBack_ActorOnEvent1);
+    Actor_Component_Action_EventRespond_Add(actor2, Event_Scene_Tick, NULL, CallBack_ActorOnEvent1);
 
     Actor_Component_New(actor2, Component_Storage);
     Actor_Component_Storage_StoreData(actor2, Str_CalcCrc("seconds", 0), tData(float, 0));
@@ -441,7 +442,7 @@ void Engine_Test1()
     SceneManager_Scene_Destroy(scene2);
 }
 
-void CallBack_ActorOnEvent0(Actor* actor, const EventInfo* event_struct)
+void CallBack_ActorOnEvent0(Actor* actor, const EventInfo* event_info)
 {
     Actor_Component_Location_Move(actor, Vec3(0.1f, 0.05f, 0));
 
@@ -464,7 +465,7 @@ void Engine_Test0()
     Actor_Component_New(actor, Component_Location);
 
     Actor_Component_Location_Set(actor, Vec3(0,0,0));
-    Actor_Component_Action_EventRespond_Add(actor, Event_Scene_Tick, CallBack_ActorOnEvent0);
+    Actor_Component_Action_EventRespond_Add(actor, Event_Scene_Tick, NULL, CallBack_ActorOnEvent0);
 
     SceneManager_Scene_SetCurrent(scene);
 
