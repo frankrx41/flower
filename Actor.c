@@ -8,16 +8,16 @@
 #include "ActionComponent.h"
 #include "StorageComponent.h"
 
-#include "Storage.h"
 #include "String.h"
-#include "tData.h"
 
 
 struct Actor
 {
     uint32                      m_id;
     String*                     m_local_name;
-    Storage*                    m_component;
+
+    tptr                        m_components[Component_Max - Component_Min];
+
     Scene*                      m_scene;
     bool                        m_is_pause;
     CB_ActorDestroy_Void_Actor  m_cb_actor_destroy_void_actor;
@@ -28,7 +28,12 @@ Actor* Actor_Create(const tchar* local_name, Scene* scene, uint32 id, CB_ActorCr
     Actor* actor = MemNew(local_name, Actor);
     actor->m_id                             = id;
     actor->m_local_name                     = String_New(local_name, local_name, true);
-    actor->m_component                      = Storage_Create(local_name);
+
+    for( uint32 i=0, max_i = ARRAY_SIZE(actor->m_components); i<max_i; i++ )
+    {
+        actor->m_components[i]              = NULL;
+    }
+
     actor->m_scene                          = scene;
     actor->m_is_pause                       = false;
     actor->m_cb_actor_destroy_void_actor    = NULL;
@@ -55,12 +60,23 @@ void Actor_Destroy(Actor* actor)
         actor->m_cb_actor_destroy_void_actor(actor);
     }
 
-    Actor_Component_Del(actor, Component_Render);
-    Actor_Component_Del(actor, Component_Action);
-    Actor_Component_Del(actor, Component_Storage);
-    Actor_Component_Del(actor, Component_Location);
+    if( Actor_Component_Cast(actor, Component_Render) )
+    {
+        Actor_Component_Del(actor, Component_Render);
+    }
+    if( Actor_Component_Cast(actor, Component_Action) )
+    {
+        Actor_Component_Del(actor, Component_Action);
+    }
+    if( Actor_Component_Cast(actor, Component_Storage) )
+    {
+        Actor_Component_Del(actor, Component_Storage);
+    }
+    if( Actor_Component_Cast(actor, Component_Location) )
+    {
+        Actor_Component_Del(actor, Component_Location);
+    }
 
-    Storage_Destroy(actor->m_component);
     String_Del(actor->m_local_name);
     MemDel(actor);
 }
@@ -79,38 +95,44 @@ void Actor_SetIsPause(Actor* actor, bool is_pause)
 
 #undef Actor_Component_Del
 #undef Actor_Component_New
-#undef Actor_Component_Cast
 
-void Actor_Component_New(Actor* actor, const tchar* component_name, Component component_enum, CB_ComponentCreate_tPtr_tChar cb_component_create_tptr_tchar)
+static void Actor_Component_Set(Actor* actor, Component component_enum, tptr component)
+{
+    Assert(IN_RANGE(component_enum, Component_Min, Component_Max), "");
+    actor->m_components[component_enum - Component_Min] = component;
+}
+
+void Actor_Component_New(Actor* actor, Component component_enum, CB_ComponentCreate_tPtr_tChar cb_component_create_tptr_tchar)
 {
     Assert(actor != NULL, "");
     Assert(cb_component_create_tptr_tchar != NULL, "");
+    Assert(IN_RANGE(component_enum, Component_Min, Component_Max), "");
+
     const tptr component = cb_component_create_tptr_tchar(Actor_GetLocalName(actor));
-    Storage_StoreData(actor->m_component, Str_CalcCrc(component_name, 0), tData(tptr, component));
+    Actor_Component_Set(actor, component_enum, component);
 }
 
-static tptr Actor_Component_CastByName(Actor* actor, const tchar* component_name)
+void Actor_Component_Del(Actor* actor, Component component_enum, CB_ComponentDestroy_Void_tPtr cb_component_destroy_void_tptr)
 {
     Assert(actor != NULL, "");
-    const tptr ptr = Storage_ReadData(actor->m_component, Str_CalcCrc(component_name, 0)).m_tptr;
-    return ptr;
-}
+    Assert(IN_RANGE(component_enum, Component_Min, Component_Max), "");
 
-void Actor_Component_Del(Actor* actor, const tchar* component_name, Component component_enum, CB_ComponentDestroy_Void_tPtr cb_component_destroy_void_tptr)
-{
-    Assert(actor != NULL, "");
-    const tptr component = Actor_Component_CastByName(actor, component_name);
+    const tptr component = Actor_Component_Cast(actor, component_enum);
     if( component )
     {
         cb_component_destroy_void_tptr(component);
-        Storage_DeleteVariable(actor->m_component,Str_CalcCrc(component_name, 0));
+        Actor_Component_Set(actor, component_enum, NULL);
     }
-    // Assert(false, "You try to delete a not exist component!");
+    else
+    {
+        Assert(false, "You try to delete a not exist component!");
+    }
 }
 
-tptr Actor_Component_Cast(Actor* actor, const tchar* component_name, Component component_enum)
+tptr Actor_Component_Cast(Actor* actor, Component component_enum)
 {
-    return Actor_Component_CastByName(actor, component_name);
+    Assert(IN_RANGE(component_enum, Component_Min, Component_Max), "");
+    return actor->m_components[component_enum - Component_Min];
 }
 
 const tchar* Actor_GetLocalName(Actor* actor)

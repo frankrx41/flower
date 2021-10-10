@@ -17,9 +17,9 @@ void    Actor_Destroy           (Actor* actor);
 bool    Actor_IsPause           (Actor* actor);
 void    Actor_SetIsPause        (Actor* actor, bool is_pause);
 
-void    Actor_Component_New     (Actor* actor, const tchar* component_name, Component component_enum, CB_ComponentCreate_tPtr_tChar cb_component_create_tptr_tchar);
-void    Actor_Component_Del     (Actor* actor, const tchar* component_name, Component component_enum, CB_ComponentDestroy_Void_tPtr cb_component_destroy_void_tptr);
-tptr    Actor_Component_Cast    (Actor* actor, const tchar* component_name, Component component_enum);
+void    Actor_Component_New     (Actor* actor, Component component_enum, CB_ComponentCreate_tPtr_tChar cb_component_create_tptr_tchar);
+void    Actor_Component_Del     (Actor* actor, Component component_enum, CB_ComponentDestroy_Void_tPtr cb_component_destroy_void_tptr);
+tptr    Actor_Component_Cast    (Actor* actor, Component component_enum);
 
 const tchar*    Actor_GetLocalName  (Actor* actor);
 Scene*          Actor_GetScene      (Actor* actor);
@@ -28,7 +28,6 @@ Scene*          Actor_GetScene      (Actor* actor);
 Actor_Component_Del will be call when Actor_Destroy, you can not del it.
 */
 
-#define Actor_Component_New(actor, component)   Actor_Component_New(actor, MACRO_TOSTR(component), component, MACRO_CONNNECT(component,_Create))
-#define Actor_Component_Del(actor, component)   Actor_Component_Del(actor, MACRO_TOSTR(component), component, MACRO_CONNNECT(component,_Destroy))
-#define Actor_Component_Cast(actor, component)  (tptr)Actor_Component_Cast(actor, MACRO_TOSTR(component), component)
+#define Actor_Component_New(actor, component)   Actor_Component_New(actor, component, MACRO_CONNNECT(component,_Create))
+#define Actor_Component_Del(actor, component)   Actor_Component_Del(actor, component, MACRO_CONNNECT(component,_Destroy))
 
