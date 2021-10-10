@@ -275,18 +275,34 @@ void tData_Test0()
 ////////////////////////////////////////////////////////////////////////////////
 void CallBack_ActorOnEvent5(Actor* actor, const EventInfo* event_info)
 {
-    Assert(event_info->m_event == Event_Actor_Action_Cancel, "");
-    Engine_SetExit(true);
+    switch(event_info->m_event)
+    {
+    case Event_Actor_Action_Cancel: Engine_SetExit(true);   break;
+    case Event_Actor_Action_MoveUp: Actor_Component_Physics_MoveLocation(actor, Vec3(0, -0.1f, 0)); break;
+    case Event_Actor_Action_MoveDown: Actor_Component_Physics_MoveLocation(actor, Vec3(0, +0.1f, 0)); break;
+    default:
+        Assert(false, "");
+    }
+
+    vec3 vec = Actor_Component_Physics_GetLocation(actor);
+    Actor_Component_Render_ShaderText_ClearAll(actor);
+    String* string = String_New(Actor_GetLocalName(actor), NULL, false);
+    String_Format(string, "(%.2f) %s", vec.m_y, event_info->m_event == Event_Actor_Action_MoveUp ? "Up" : "Down");
+    Actor_Component_Render_ShaderText_Add(actor, Vec3(2,2,0), String_CStr(string));
+    String_Del(string);
 }
 
 void CallBack_Actor_Create5(Actor* actor, tptr ptr)
 {
     Actor_Component_New(actor, Component_Render);
     Actor_Component_New(actor, Component_Action);
+    Actor_Component_New(actor, Component_Physics);
 
-    Actor_Component_Render_ShaderText_Add(actor, Vec3(0,0,0), "Press Esc to exit");
-    
+    Actor_Component_Render_ShaderText_Add(actor, Vec3(2,2,0), "Press Esc to exit");
+    Actor_Component_Physics_SetLocation(actor, Vec3(6, 0, 0));
     Actor_Component_Action_EventRespond_Add(actor, Event_Actor_Action_Cancel, NULL, CallBack_ActorOnEvent5);
+    Actor_Component_Action_EventRespond_Add(actor, Event_Actor_Action_MoveUp, NULL, CallBack_ActorOnEvent5);
+    Actor_Component_Action_EventRespond_Add(actor, Event_Actor_Action_MoveDown, NULL, CallBack_ActorOnEvent5);
 };
 void Engine_Test5()
 {
@@ -294,6 +310,8 @@ void Engine_Test5()
     Actor* actor = Scene_Actor_Create(__FUNCTION__, scene, CallBack_Actor_Create5, __FUNCTION__);
 
     InputManager_InputActionEvent_Add(InputManager_GetInstance(), KeyId_Escape, KeyState_Down, Event_Actor_Action_Cancel);
+    InputManager_InputActionEvent_Add(InputManager_GetInstance(), KeyId_Up, KeyState_Down, Event_Actor_Action_MoveUp);
+    InputManager_InputActionEvent_Add(InputManager_GetInstance(), KeyId_Down, KeyState_Down, Event_Actor_Action_MoveDown);
 
     SceneManager_Scene_SetCurrent(scene);
 

@@ -98,7 +98,8 @@ bool InputManager_Key_IsPhysicsDown_Plat(KeyId key_id)
     }
     else
     {
-        return GetAsyncKeyState(KeyId_To_WinVK(key_id)) & 0x01;
+        int32 key_state = GetKeyState(KeyId_To_WinVK(key_id));
+        return key_state & 0x80;
     }
 }
 

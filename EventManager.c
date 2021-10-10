@@ -46,7 +46,7 @@ void EventInfo_Destroy(EventInfo* event_info)
     MemDel(event_info);
 }
 
-#define EventInfo_Create(event, ...)    EventInfo_Create(MACRO_TOSTR(event), event, __VA_ARGS__)
+#define EventInfo_Create(event, ...)    EventInfo_Create("EventManager", event, __VA_ARGS__)
 
 static void CallBack_SendEvent_Scene_Tick(Scene* scene, EventInfo* event_info)
 {
