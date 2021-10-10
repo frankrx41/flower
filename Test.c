@@ -258,14 +258,37 @@ void tData_Test0()
 ////////////////////////////////////////////////////////////////////////////////
 void CallBack_ActorOnEvent3(Actor* actor, const EventInfo* event_info)
 {
-    crc32 crc_delta_second = Str_CalcCrc("delta_seconds" ,0);
     crc32 crc_tick_count = Str_CalcCrc("tick_count" ,0);
     int32 tick_count = Actor_Component_Storage_ReadData(actor, crc_tick_count).m_int32;
 
     static int32 update_count = 0;
+    update_count++;
+    if( update_count > 5 )
+    {
+        Engine_SetExit(true);
+    }
 
+    Actor_Component_Render_ShaderText_ClearAll(actor);
+
+    String* string = String_New(Actor_GetLocalName(actor), NULL, false);
+    String_Format(string, "%d %.2f", tick_count, 1.f/event_info->m_delta_seconds);
+    Actor_Component_Render_ShaderText_Add(actor, Vec3(0,0,0), String_CStr(string));
+    String_Del(string);
+
+    tick_count = 0;
+
+    Actor_Component_Storage_StoreData(actor, crc_tick_count, tData(int32, tick_count));
+}
+
+bool CallBack_ActorOnEventCondition3(Actor* actor, const EventInfo* event_info)
+{
+    crc32 crc_delta_second = Str_CalcCrc("delta_seconds" ,0);
     float delta_second = Actor_Component_Storage_ReadData(actor, crc_delta_second).m_float;
     const float update_need_seconds = 1.f;
+    crc32 crc_tick_count = Str_CalcCrc("tick_count" ,0);
+    int32 tick_count = Actor_Component_Storage_ReadData(actor, crc_tick_count).m_int32;
+
+    bool need_update = false;
 
     if( delta_second < update_need_seconds )
     {
@@ -274,25 +297,14 @@ void CallBack_ActorOnEvent3(Actor* actor, const EventInfo* event_info)
     }
     else
     {
-        update_count++;
-        Actor_Component_Render_ShaderText_ClearAll(actor);
-
-        String* string = String_New(Actor_GetLocalName(actor), NULL, false);
-        String_Format(string, "%d %.2f", tick_count, 1.f/event_info->m_delta_seconds);
-        Actor_Component_Render_ShaderText_Add(actor, Vec3(0,0,0), String_CStr(string));
-        String_Del(string);
-
         delta_second -= update_need_seconds;
-        tick_count = 0;
-
-        if( update_count > 5 )
-        {
-            Engine_SetExit(true);
-        }
+        need_update = true;
     }
 
-    Actor_Component_Storage_StoreData(actor, crc_tick_count, tData(int32, tick_count));
     Actor_Component_Storage_StoreData(actor, crc_delta_second, tData(float, delta_second));
+    Actor_Component_Storage_StoreData(actor, crc_tick_count, tData(int32, tick_count));
+
+    return need_update;
 }
 
 void CallBack_Actor_Create3(Actor* actor, tptr ptr)
@@ -302,7 +314,7 @@ void CallBack_Actor_Create3(Actor* actor, tptr ptr)
     Actor_Component_New(actor, Component_Storage);
 
     Actor_Component_Render_ShaderText_Add(actor, Vec3(1, 1, 0), ptr );
-    Actor_Component_Action_EventRespond_Add(actor, Event_Scene_Tick, NULL, CallBack_ActorOnEvent3);
+    Actor_Component_Action_EventRespond_Add(actor, Event_Scene_Tick, CallBack_ActorOnEventCondition3, CallBack_ActorOnEvent3);
 
 };
 void Engine_Test3()
