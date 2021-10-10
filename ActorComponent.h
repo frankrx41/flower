@@ -10,9 +10,9 @@ typedef enum Event Event;
 typedef union tdata tdata;
 
 
-void    Actor_Component_Location_Set    (Actor* actor, vec3 vec);
-void    Actor_Component_Location_Move   (Actor* actor, vec3 offset_vec);
-vec3    Actor_Component_Location_Get    (Actor* actor);
+void    Actor_Component_Physics_SetLocation     (Actor* actor, vec3 vec);
+void    Actor_Component_Physics_MoveLocation    (Actor* actor, vec3 offset_vec);
+vec3    Actor_Component_Physics_GetLocation     (Actor* actor);
 
 
 ShaderText* Actor_Component_Render_ShaderText_Add       (Actor* actor, vec3 vec, const tchar* str);

@@ -21,7 +21,7 @@
 #include "Scene.h"
 
 // Location
-void Actor_Component_Location_Set(Actor* actor, vec3 vec)
+void Actor_Component_Physics_SetLocation(Actor* actor, vec3 vec)
 {
     Assert(actor != NULL, "");
     PhysicsComponent* physics_component = Actor_Component_Cast(actor, Component_Physics);
@@ -29,7 +29,7 @@ void Actor_Component_Location_Set(Actor* actor, vec3 vec)
     Component_Physics_SetLocation(physics_component, vec);
 }
 
-void Actor_Component_Location_Move(Actor* actor, vec3 offset_vec)
+void Actor_Component_Physics_MoveLocation(Actor* actor, vec3 offset_vec)
 {
     Assert(actor != NULL, "");
     PhysicsComponent* physics_component = Actor_Component_Cast(actor, Component_Physics);
@@ -37,7 +37,7 @@ void Actor_Component_Location_Move(Actor* actor, vec3 offset_vec)
     Component_Physics_MoveLocation(physics_component, offset_vec);
 }
 
-vec3 Actor_Component_Location_Get(Actor* actor)
+vec3 Actor_Component_Physics_GetLocation(Actor* actor)
 {
     Assert(actor != NULL, "");
     PhysicsComponent* physics_component = Actor_Component_Cast(actor, Component_Physics);
@@ -206,7 +206,7 @@ void CallBack_Actor_RenderEachActor(Actor* actor, RenderManager* render_manager)
         vec3 vec = vec3_null;
         if( Actor_Component_Cast(actor, Component_Physics) )
         {
-            vec = Actor_Component_Location_Get(actor);
+            vec = Actor_Component_Physics_GetLocation(actor);
         }
         RenderManagerWithVec render_manager_with_vec;
         render_manager_with_vec.m_vec3              = vec;

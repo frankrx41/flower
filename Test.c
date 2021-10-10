@@ -472,9 +472,9 @@ void Engine_Test1()
 
 void CallBack_ActorOnEvent0(Actor* actor, const EventInfo* event_info)
 {
-    Actor_Component_Location_Move(actor, Vec3(0.1f, 0.05f, 0));
+    Actor_Component_Physics_MoveLocation(actor, Vec3(0.1f, 0.05f, 0));
 
-    vec3 vec = Actor_Component_Location_Get(actor);
+    vec3 vec = Actor_Component_Physics_GetLocation(actor);
     if( vec.m_y > 7 )
     {
         Engine_SetExit(true);
@@ -492,7 +492,7 @@ void Engine_Test0()
     Actor_Component_New(actor, Component_Action);
     Actor_Component_New(actor, Component_Physics);
 
-    Actor_Component_Location_Set(actor, Vec3(0,0,0));
+    Actor_Component_Physics_SetLocation(actor, Vec3(0,0,0));
     Actor_Component_Action_EventRespond_Add(actor, Event_Scene_Tick, NULL, CallBack_ActorOnEvent0);
 
     SceneManager_Scene_SetCurrent(scene);
