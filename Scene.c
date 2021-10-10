@@ -96,7 +96,7 @@ void Scene_Actor_Destroy_All(Scene* scene)
     Queue_Destroy(scene->m_actor_queue, Actor_Destroy);
 }
 
-void CallBack_Actor_ProcessEachActorEvent(Actor* actor, EventInfo* event_info);
+void CallBack_Actor_ProcessEachActorEvent(Actor* actor, const EventInfo* event_info);
 
 void Scene_Actor_SendEvent(Scene* scene, EventInfo* event_info)
 {

@@ -18,6 +18,7 @@ struct EventInfo
 };
 
 void    EventManager_SendEvent_Tick                 (EventManager* event_manager, const tchar* local_name, Event event, float delta_seconds);
+void    EventManager_SendEvent_Scene_Physics_Update (EventManager* event_manager, const tchar* local_name, Event event, Scene* scene, float delta_seconds);
 void    EventManager_SendEvent_Scene_Tick           (EventManager* event_manager, const tchar* local_name, Event event, Scene* scene, float delta_seconds);
 void    EventManager_SendEvent_Key_Any_Down         (EventManager* event_manager, const tchar* local_name, Event event, KeyId key_id);
 void    EventManager_SendEvent_Key_Any_Down_Once    (EventManager* event_manager, const tchar* local_name, Event event, KeyId key_id);

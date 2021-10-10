@@ -10,6 +10,7 @@ enum Event
 
     Event_Scene_Min,
     Event_Scene_Tick = Event_Scene_Min,
+    Event_Scene_Physics_Update,
     Event_Scene_Max,
 
     Event_Key_Min,

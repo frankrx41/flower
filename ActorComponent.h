@@ -10,9 +10,10 @@ typedef enum Event Event;
 typedef union tdata tdata;
 
 
-void    Actor_Component_Physics_SetLocation     (Actor* actor, vec3 vec);
-void    Actor_Component_Physics_MoveLocation    (Actor* actor, vec3 offset_vec);
-vec3    Actor_Component_Physics_GetLocation     (Actor* actor);
+void    Actor_Component_Physics_SetLocation         (Actor* actor, vec3 vec);
+void    Actor_Component_Physics_MoveLocation        (Actor* actor, vec3 offset_vec);
+vec3    Actor_Component_Physics_GetLocation         (Actor* actor);
+void    Actor_Component_Physics_SetEnableSimulate   (Actor* actor, bool is_enable_simulater);
 
 
 ShaderText* Actor_Component_Render_ShaderText_Add       (Actor* actor, vec3 vec, const tchar* str);

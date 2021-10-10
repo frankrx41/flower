@@ -11,6 +11,7 @@
 #include "RenderComponent.h"
 #include "StorageComponent.h"
 #include "RenderManager.h"
+#include "ActorComponent.h"
 
 #include "ShaderText.h"
 
@@ -42,12 +43,36 @@ vec3 Actor_Component_Physics_GetLocation(Actor* actor)
     Assert(actor != NULL, "");
     PhysicsComponent* physics_component = Actor_Component_Cast(actor, Component_Physics);
     Assert(physics_component != NULL, "");
-    if( physics_component )
+
+    return
+    Component_Physics_GetLocation(physics_component);
+}
+
+void CallBack_Event_Scene_Physics_Update(Actor* actor, const EventInfo* event_info)
+{
+    PhysicsComponent* physics_component = Actor_Component_Cast(actor, Component_Physics);
+    Assert(physics_component != NULL, "");
+    Component_Physics_Simulate(physics_component, event_info->m_delta_seconds);
+}
+
+void Actor_Component_Physics_SetEnableSimulate(Actor* actor, bool is_enable_simulater)
+{
+    Assert(actor != NULL, "");
+    PhysicsComponent* physics_component = Actor_Component_Cast(actor, Component_Physics);
+    Assert(physics_component != NULL, "");
+
+    Component_Physics_SetEnableSimulate(physics_component, is_enable_simulater);
+
+    ActionComponent* action_component = Actor_Component_Cast(actor, Component_Action);
+    Assert(action_component != NULL, "You need ActionComponent to do physics simulate");
+    if( is_enable_simulater )
     {
-        return
-        Component_Physics_GetLocation(physics_component);
+        Actor_Component_Action_EventRespond_Add(actor, Event_Scene_Physics_Update, NULL, CallBack_Event_Scene_Physics_Update);
     }
-    return vec3_null;
+    else
+    {
+        Actor_Component_Action_EventRespond_Del(actor, Event_Scene_Physics_Update);
+    }
 }
 
 

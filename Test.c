@@ -272,6 +272,52 @@ void tData_Test0()
 }
 
 ////////////////////////////////////////////////////////////////////////////////
+void CallBack_ActorOnEvent4(Actor* actor, const EventInfo* event_info)
+{
+    static int32 update_count = 0;
+    update_count++;
+    if( update_count > 300 )
+    {
+        Engine_SetExit(true);
+    }
+
+    Actor_Component_Render_ShaderText_ClearAll(actor);
+
+    vec3 displacement = Actor_Component_Physics_GetLocation(actor);
+    String* string = String_New(Actor_GetLocalName(actor), NULL, false);
+    String_Format(string, "(%.2f, %.2f, %.2f) %.2f", displacement.m_x, displacement.m_y, displacement.m_z, 0.f);
+    Actor_Component_Render_ShaderText_Add(actor, Vec3(0,0,0), String_CStr(string));
+    String_Del(string);
+}
+
+void CallBack_Actor_Create4(Actor* actor, tptr ptr)
+{
+    Actor_Component_New(actor, Component_Render);
+    Actor_Component_New(actor, Component_Action);
+    Actor_Component_New(actor, Component_Physics);
+
+    Actor_Component_Physics_SetLocation(actor, Vec3(1.f, 1.f, 0.f));
+    Actor_Component_Physics_SetLocation(actor, Vec3(1.f, 1.f, 0.f));
+    Actor_Component_Physics_SetEnableSimulate(actor, true);
+
+    Actor_Component_Action_EventRespond_Add(actor, Event_Scene_Tick, NULL, CallBack_ActorOnEvent4);
+
+};
+void Engine_Test4()
+{
+    Scene* scene = SceneManager_Scene_Create(__FUNCTION__);
+    Actor* actor = Scene_Actor_Create(__FUNCTION__, scene, CallBack_Actor_Create4, __FUNCTION__);
+
+    SceneManager_Scene_SetCurrent(scene);
+
+    Engine_SetExit(false);
+    Engine_MainLoop();
+
+
+    Scene_Actor_Destroy(scene, NULL, actor);
+    SceneManager_Scene_Destroy(scene);
+}
+
 void CallBack_ActorOnEvent3(Actor* actor, const EventInfo* event_info)
 {
     crc32 crc_tick_count = Str_CalcCrc("tick_count" ,0);
@@ -537,6 +583,7 @@ void Engine_Debug_UnitTesting()
         Actor_Test1,
         Actor_Test0,
 
+        Engine_Test4,
         Engine_Test3,
         Engine_Test2,
         Engine_Test1,

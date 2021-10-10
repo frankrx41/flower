@@ -29,6 +29,11 @@ vec2 Vec2(float x, float y)
     return vec;
 }
 
+vec3 Vec3_Multiply(vec3 v, float k)
+{
+    return Vec3(v.m_x*k, v.m_y*k, v.m_z*k);
+}
+
 aabb AABB(vec3 v1, vec3 v2)
 {
     aabb aabb;
