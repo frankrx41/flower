@@ -73,13 +73,13 @@ void Actor_Component_New(Actor* actor, const tchar* component_name, Component co
     Assert(actor != NULL, "");
     Assert(cb_component_create != NULL, "");
     const tptr component = cb_component_create(Actor_GetLocalName(actor));
-    Storage_StoreData32(actor->m_component, Str_CalcCrc(component_name, 0), tData(tptr, component));
+    Storage_StoreData(actor->m_component, Str_CalcCrc(component_name, 0), tData(tptr, component));
 }
 
 static tptr Actor_Component_CastByName(Actor* actor, const tchar* component_name)
 {
     Assert(actor != NULL, "");
-    const tptr ptr = Storage_ReadData32(actor->m_component, Str_CalcCrc(component_name, 0)).m_tptr;
+    const tptr ptr = Storage_ReadData(actor->m_component, Str_CalcCrc(component_name, 0)).m_tptr;
     return ptr;
 }
 

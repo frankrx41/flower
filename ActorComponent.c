@@ -133,18 +133,18 @@ bool Actor_Component_Storage_IsExistVariable(Actor* actor, crc32 variable)
     return false;
 }
 
-void Actor_Component_Storage_StoreData32(Actor* actor, crc32 variable, tdata data)
+void Actor_Component_Storage_StoreData(Actor* actor, crc32 variable, tdata data)
 {
     Assert(actor != NULL, "");
     StorageComponent* storage_component = Actor_Component_Cast(actor, Component_Storage);
     Assert(storage_component != NULL, "");
     if( storage_component )
     {
-        Component_Storage_StoreData32(storage_component, variable, data);
+        Component_Storage_StoreData(storage_component, variable, data);
     }
 }
 
-tdata Actor_Component_Storage_ReadData32(Actor* actor, crc32 variable)
+tdata Actor_Component_Storage_ReadData(Actor* actor, crc32 variable)
 {
     Assert(actor != NULL, "");
     StorageComponent* storage_component = Actor_Component_Cast(actor, Component_Storage);
@@ -152,9 +152,9 @@ tdata Actor_Component_Storage_ReadData32(Actor* actor, crc32 variable)
     if( storage_component )
     {
         return
-        Component_Storage_ReadData32(storage_component, variable);
+        Component_Storage_ReadData(storage_component, variable);
     }
-    return data32_null;
+    return tdata_null;
 }
 
 void Actor_Component_Storage_DeleteVariable(Actor* actor, crc32 variable)

@@ -15,9 +15,9 @@ void    Scene_Actor_Destroy_All     (Scene* scene);
 void    Scene_Actor_SendEvent       (Scene* scene, EventInfo* event_info);
 void    Scene_Actor_AddEventGroup   (Scene* scene, Actor* actor, Event event);
 
-void    Scene_Storage_StoreData32       (Scene* scene, crc32 variable, tdata data);
+void    Scene_Storage_StoreData         (Scene* scene, crc32 variable, tdata data);
 bool    Scene_Storage_IsExistVariable   (Scene* scene, crc32 variable);
-tdata  Scene_Storage_ReadData32        (Scene* scene, crc32 variable);
+tdata   Scene_Storage_ReadData          (Scene* scene, crc32 variable);
 void    Scene_Storage_DeleteVariable    (Scene* scene, crc32 variable);
 
 tptr    Scene_GetActorQueue         (Scene* scene);

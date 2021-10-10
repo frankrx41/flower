@@ -22,7 +22,7 @@ typedef struct StoreContent StoreContent;
 struct StoreContent
 {
     crc32       m_crc;
-    tdata      m_data32;
+    tdata       m_data;
 };
 
 struct Storage
@@ -72,19 +72,19 @@ static StoreContent* Storage_FindStoreContent(const Storage* storage, crc32 vari
     return store_content;
 }
 
-void Storage_StoreData32(Storage* storage, crc32 variable, tdata data)
+void Storage_StoreData(Storage* storage, crc32 variable, tdata data)
 {
     if( Storage_IsExistVariable(storage, variable) )
     {
         // Assert(false, "You try to add a exist variable!");
         StoreContent* store_content = Storage_FindStoreContent(storage, variable);
-        store_content->m_data32 = data;
+        store_content->m_data = data;
     }
     else
     {
         StoreContent* store_content = MemNew(String_CStr(storage->m_local_name), StoreContent);
         store_content->m_crc        = variable;
-        store_content->m_data32     = data;
+        store_content->m_data       = data;
         Queue_Push(StoreContent*, NULL, storage->m_store_queue, store_content);
     }
 }
@@ -100,10 +100,10 @@ bool Storage_IsExistVariable(Storage* storage, crc32 variable)
     return false;
 }
 
-tdata Storage_ReadData32(const Storage* storage, crc32 variable)
+tdata Storage_ReadData(const Storage* storage, crc32 variable)
 {
     StoreContent* store_content = Storage_FindStoreContent(storage, variable);
-    return store_content ? store_content->m_data32 : data32_null;
+    return store_content ? store_content->m_data : tdata_null;
 }
 
 void Storage_DeleteVariable(Storage* storage, crc32 variable)

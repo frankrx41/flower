@@ -25,6 +25,6 @@ void    Actor_Component_Action_EventRespond_Clear   (Actor* actor);
 
 
 bool    Actor_Component_Storage_IsExistVariable (Actor* actor, crc32 variable);
-void    Actor_Component_Storage_StoreData32     (Actor* actor, crc32 variable, tdata data);
-tdata  Actor_Component_Storage_ReadData32      (Actor* actor, crc32 variable);
+void    Actor_Component_Storage_StoreData       (Actor* actor, crc32 variable, tdata data);
+tdata   Actor_Component_Storage_ReadData        (Actor* actor, crc32 variable);
 void    Actor_Component_Storage_DeleteVariable  (Actor* actor, crc32 variable);

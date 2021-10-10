@@ -2,7 +2,7 @@
 
 typedef union tdata tdata;
 
-extern const tdata data32_null;
+extern const tdata tdata_null;
 
 union tdata
 {

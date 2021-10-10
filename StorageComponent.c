@@ -34,17 +34,17 @@ bool Component_Storage_IsExistVariable(StorageComponent* storage_component, crc3
     Storage_IsExistVariable(storage_component->m_storage, variable);
 }
 
-void Component_Storage_StoreData32(StorageComponent* storage_component, crc32 variable, tdata data)
+void Component_Storage_StoreData(StorageComponent* storage_component, crc32 variable, tdata data)
 {
     Assert(storage_component, "");
-    Storage_StoreData32(storage_component->m_storage, variable, data);
+    Storage_StoreData(storage_component->m_storage, variable, data);
 }
 
-tdata Component_Storage_ReadData32(StorageComponent* storage_component, crc32 variable)
+tdata Component_Storage_ReadData(StorageComponent* storage_component, crc32 variable)
 {
     Assert(storage_component, "");
     return
-    Storage_ReadData32(storage_component->m_storage, variable);
+    Storage_ReadData(storage_component->m_storage, variable);
 }
 
 void Component_Storage_DeleteVariable(StorageComponent* storage_component, crc32 variable)

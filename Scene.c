@@ -91,9 +91,9 @@ void Scene_Actor_AddEventGroup(Scene* scene, Actor* actor, Event event)
     Queue_Push(Actor*, NULL, scene->m_actor_event_queue_list[event], actor);
 }
 
-void Scene_Storage_StoreData32(Scene* scene, crc32 variable, tdata data)
+void Scene_Storage_StoreData(Scene* scene, crc32 variable, tdata data)
 {
-    Storage_StoreData32(scene->m_storage, variable, data);
+    Storage_StoreData(scene->m_storage, variable, data);
 }
 
 bool Scene_Storage_IsExistVariable(Scene* scene, crc32 variable)
@@ -102,10 +102,10 @@ bool Scene_Storage_IsExistVariable(Scene* scene, crc32 variable)
     Storage_IsExistVariable(scene->m_storage, variable);
 }
 
-tdata Scene_Storage_ReadData32(Scene* scene, crc32 variable)
+tdata Scene_Storage_ReadData(Scene* scene, crc32 variable)
 {
     return
-    Storage_ReadData32(scene->m_storage, variable);
+    Storage_ReadData(scene->m_storage, variable);
 }
 
 void Scene_Storage_DeleteVariable(Scene* scene, crc32 variable)
