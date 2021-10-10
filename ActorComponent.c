@@ -7,7 +7,7 @@
 
 #include "Component.h"
 #include "ActionComponent.h"
-#include "LocationComponent.h"
+#include "PhysicsComponent.h"
 #include "RenderComponent.h"
 #include "StorageComponent.h"
 #include "RenderManager.h"
@@ -24,28 +24,28 @@
 void Actor_Component_Location_Set(Actor* actor, vec3 vec)
 {
     Assert(actor != NULL, "");
-    LocationComponent* location_component = Actor_Component_Cast(actor, Component_Location);
-    Assert(location_component != NULL, "");
-    Component_Location_Set(location_component, vec);
+    PhysicsComponent* physics_component = Actor_Component_Cast(actor, Component_Physics);
+    Assert(physics_component != NULL, "");
+    Component_Physics_SetLocation(physics_component, vec);
 }
 
 void Actor_Component_Location_Move(Actor* actor, vec3 offset_vec)
 {
     Assert(actor != NULL, "");
-    LocationComponent* location_component = Actor_Component_Cast(actor, Component_Location);
-    Assert(location_component != NULL, "");
-    Component_Location_Move(location_component, offset_vec);
+    PhysicsComponent* physics_component = Actor_Component_Cast(actor, Component_Physics);
+    Assert(physics_component != NULL, "");
+    Component_Physics_MoveLocation(physics_component, offset_vec);
 }
 
 vec3 Actor_Component_Location_Get(Actor* actor)
 {
     Assert(actor != NULL, "");
-    LocationComponent* location_component = Actor_Component_Cast(actor, Component_Location);
-    Assert(location_component != NULL, "");
-    if( location_component )
+    PhysicsComponent* physics_component = Actor_Component_Cast(actor, Component_Physics);
+    Assert(physics_component != NULL, "");
+    if( physics_component )
     {
         return
-        Component_Location_Get(location_component);
+        Component_Physics_GetLocation(physics_component);
     }
     return vec3_null;
 }
@@ -204,7 +204,7 @@ void CallBack_Actor_RenderEachActor(Actor* actor, RenderManager* render_manager)
     if( render_component )
     {
         vec3 vec = vec3_null;
-        if( Actor_Component_Cast(actor, Component_Location) )
+        if( Actor_Component_Cast(actor, Component_Physics) )
         {
             vec = Actor_Component_Location_Get(actor);
         }

@@ -3,7 +3,7 @@
 #include "MemoryManager.h"
 #include "Actor.h"
 #include "Component.h"
-#include "LocationComponent.h"
+#include "PhysicsComponent.h"
 #include "RenderComponent.h"
 #include "ActionComponent.h"
 #include "StorageComponent.h"
@@ -72,9 +72,9 @@ void Actor_Destroy(Actor* actor)
     {
         Actor_Component_Del(actor, Component_Storage);
     }
-    if( Actor_Component_Cast(actor, Component_Location) )
+    if( Actor_Component_Cast(actor, Component_Physics) )
     {
-        Actor_Component_Del(actor, Component_Location);
+        Actor_Component_Del(actor, Component_Physics);
     }
 
     String_Del(actor->m_local_name);

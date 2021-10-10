@@ -14,7 +14,7 @@
 
 #include "ActorComponent.h"
 #include "ActionComponent.h"
-#include "LocationComponent.h"
+#include "PhysicsComponent.h"
 #include "RenderComponent.h"
 #include "StorageComponent.h"
 
@@ -220,7 +220,7 @@ void Actor_Test1()
     Scene* scene = SceneManager_Scene_Create(__FUNCTION__);
     Actor* actor = Scene_Actor_Create(__FUNCTION__, scene, NULL, NULL);
 
-    Actor_Component_New(actor, Component_Location);
+    Actor_Component_New(actor, Component_Physics);
     Actor_Component_New(actor, Component_Render);
     Actor_Component_Render_ShaderText_Add(actor, Vec3(2, 2, 0), "hello world" );
 
@@ -228,7 +228,7 @@ void Actor_Test1()
 
     RenderManager_Render_BufferToScreen(RenderManager_GetInstance());
 
-    Actor_Component_Del(actor, Component_Location);
+    Actor_Component_Del(actor, Component_Physics);
 
     Scene_Actor_Destroy(scene, NULL, actor);
     SceneManager_Scene_Destroy(scene);
@@ -490,7 +490,7 @@ void Engine_Test0()
     Actor_Component_Render_ShaderText_Add(actor, Vec3(1, 1, 0), "hello world" );
 
     Actor_Component_New(actor, Component_Action);
-    Actor_Component_New(actor, Component_Location);
+    Actor_Component_New(actor, Component_Physics);
 
     Actor_Component_Location_Set(actor, Vec3(0,0,0));
     Actor_Component_Action_EventRespond_Add(actor, Event_Scene_Tick, NULL, CallBack_ActorOnEvent0);
@@ -503,7 +503,7 @@ void Engine_Test0()
 
     Actor_Component_Del(actor, Component_Render);
     Actor_Component_Del(actor, Component_Action);
-    Actor_Component_Del(actor, Component_Location);
+    Actor_Component_Del(actor, Component_Physics);
 
     Scene_Actor_Destroy(scene, NULL, actor);
     SceneManager_Scene_Destroy(scene);

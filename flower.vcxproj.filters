@@ -33,9 +33,6 @@
     <ClCompile Include="Vec.c">
       <Filter>Library\Vec</Filter>
     </ClCompile>
-    <ClCompile Include="LocationComponent.c">
-      <Filter>Scene\Actor\Component</Filter>
-    </ClCompile>
     <ClCompile Include="RenderComponent.c">
       <Filter>Scene\Actor\Component</Filter>
     </ClCompile>
@@ -81,6 +78,9 @@
     <ClCompile Include="tData.c">
       <Filter>Library\Data</Filter>
     </ClCompile>
+    <ClCompile Include="PhysicsComponent.c">
+      <Filter>Scene\Actor\Component</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CoreMini.h" />
@@ -109,9 +109,6 @@
       <Filter>Scene\Actor</Filter>
     </ClInclude>
     <ClInclude Include="RenderComponent.h">
-      <Filter>Scene\Actor\Component</Filter>
-    </ClInclude>
-    <ClInclude Include="LocationComponent.h">
       <Filter>Scene\Actor\Component</Filter>
     </ClInclude>
     <ClInclude Include="ActorComponent.h">
@@ -152,6 +149,9 @@
     </ClInclude>
     <ClInclude Include="tData.h">
       <Filter>Library\Data</Filter>
+    </ClInclude>
+    <ClInclude Include="PhysicsComponent.h">
+      <Filter>Scene\Actor\Component</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
