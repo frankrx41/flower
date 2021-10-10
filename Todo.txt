@@ -1,14 +1,14 @@
+Rename const tchar* local_name -> ?
+
+Add CONFIG_SHIPPING
+Add PLATFROM_WIN64
+
 Add Storage_StoreTempVariable
 Update String_Copy, allow use negative number
 Add Str_Cat, join, IsSame ... function
-Rename const tchar* local_name -> ?
 Add ShaderText info
 Add Queue_Sort
-Add CONFIG_SHIPPING
 Add Fps profile
-
-Rename ptr32 back to tptr
-
 Add Shader2D
 
 Add TaskManager
@@ -20,8 +20,9 @@ Add TaskManager in SendEvent
 Add ARRAY_BOUNDS_CHECK
 Add offsetXY in RenderManager
 Add condition in Action
-Rename timming -> timing
 
+Rename ptr32 back to tptr (done)
+Rename timming -> timing (done)
 Add return and args type in callback function (done)
 Remove RenderManager_SetPlatformData RenderManager_GetPlatformData (done)
 Rename tptr -> ptr32 (done)
