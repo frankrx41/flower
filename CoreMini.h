@@ -8,6 +8,7 @@
 #if PLATFORM_WIN32
 #undef  KEEP_LEGACY_TYPE
 #define KEEP_LEGACY_TYPE        1
+#undef  X_32
 #define X_32                    1
 #endif
 
