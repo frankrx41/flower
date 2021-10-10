@@ -10,6 +10,7 @@ union tdata
     float   m_float;
     uint32  m_uint32;
     tptr    m_tptr; 
+    tsize   m_tsize; 
 };
 
 tdata  tData(const tchar* type, ...);
