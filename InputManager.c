@@ -120,27 +120,27 @@ void InputManager_Event_Send(InputManager* input_manager, const tchar* local_nam
 {
     for(KeyId key_id=0; key_id<KeyId_Max; key_id++)
     {
-        KeyInfo* key_state = &input_manager->m_key_info[key_id];
+        KeyInfo* key_info = &input_manager->m_key_info[key_id];
 
-        if( key_state->m_is_hold )
+        if( key_info->m_is_hold )
         {
-            EventManager_SendEvent(Event_Key_Any_Hold, key_state->m_key_id, key_state->m_down_seconds);
+            EventManager_SendEvent(Event_Key_Any_Hold, key_info->m_key_id, key_info->m_down_seconds);
         }
-        if( key_state->m_is_down )
+        if( key_info->m_is_down )
         {
-            EventManager_SendEvent(Event_Key_Any_Down, key_state->m_key_id);
+            EventManager_SendEvent(Event_Key_Any_Down, key_info->m_key_id);
         }
-        if( key_state->m_is_down_once )
+        if( key_info->m_is_down_once )
         {
-            EventManager_SendEvent(Event_Key_Any_Down_Once, key_state->m_key_id);
+            EventManager_SendEvent(Event_Key_Any_Down_Once, key_info->m_key_id);
         }
-        if( key_state->m_is_toggle )
+        if( key_info->m_is_toggle )
         {
-            EventManager_SendEvent(Event_Key_Any_Toggle, key_state->m_key_id);
+            EventManager_SendEvent(Event_Key_Any_Toggle, key_info->m_key_id);
         }
-        if( key_state->m_is_up_once )
+        if( key_info->m_is_up_once )
         {
-            EventManager_SendEvent(Event_Key_Any_Up_Once, key_state->m_key_id);
+            EventManager_SendEvent(Event_Key_Any_Up_Once, key_info->m_key_id);
         }
     }
 }
