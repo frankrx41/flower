@@ -210,7 +210,7 @@ void Actor_Test2()
 
     RenderManager_RenderAllScene(RenderManager_GetInstance(), SceneManager_GetInstance());
 
-    RenderManager_Render_BufferToScreen(RenderManager_GetInstance());
+    RenderManager_Render_ToScreen(RenderManager_GetInstance());
 
     Scene_Actor_Destroy(scene, NULL, actor);
     SceneManager_Scene_Destroy(scene);
@@ -227,7 +227,7 @@ void Actor_Test1()
 
     RenderManager_RenderAllScene(RenderManager_GetInstance(), SceneManager_GetInstance());
 
-    RenderManager_Render_BufferToScreen(RenderManager_GetInstance());
+    RenderManager_Render_ToScreen(RenderManager_GetInstance());
 
     Actor_Component_Del(actor, Component_Physics);
 
@@ -245,7 +245,7 @@ void Actor_Test0()
 
     RenderManager_RenderAllScene(RenderManager_GetInstance(), SceneManager_GetInstance());
 
-    RenderManager_Render_BufferToScreen(RenderManager_GetInstance());
+    RenderManager_Render_ToScreen(RenderManager_GetInstance());
 
     Actor_Component_Del(actor, Component_Render);
 

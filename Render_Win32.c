@@ -1,8 +1,14 @@
 #include "CoreMini.h"
+
 #if PLATFORM_WIN32
 
 #include "MemoryManager.h"
 #include "RenderManager.h"
+
+#include "ShaderText.h"
+
+#include "Vec.h"
+#include "tData.h"
 
 #include <stdio.h>
 #include <windows.h>
@@ -67,7 +73,7 @@ static void Render_PrintCharAtXY_Plat(RenderManagerPlatformData* render_manager_
     printf("%c", ch);
 }
 
-void RenderManager_RenderToScreen_Plat(RenderManager* render_manager, RenderManagerPlatformData* render_manager_platform_data)
+void RenderManager_ToScreen_Plat(RenderManager* render_manager, RenderManagerPlatformData* render_manager_platform_data)
 {
     uint32 length = render_manager_platform_data->m_width * render_manager_platform_data->m_height;
 
@@ -100,9 +106,14 @@ void RenderManager_SwapBuffer_Plat(RenderManager* render_manager, RenderManagerP
     }
 }
 
-void RenderManager_Render_InBackBuffer_Plat(RenderManager* render_manager, RenderManagerPlatformData* render_manager_platform_data, int32 x, int32 y, const tchar* str)
+void RenderManager_Render_ToBackBuffer_Plat(RenderManager* render_manager, RenderManagerPlatformData* render_manager_platform_data, vec3 vec, ShaderText* shader_text)
 {
-    const uint32 index = render_manager_platform_data->m_width * y + x;
+    const vec3 location = Vec3_Add(ShaderText_GetVec3(shader_text), vec);
+    const float x = location.m_x;
+    const float y = location.m_y;
+    const tchar* str = ShaderText_GetStr(shader_text);
+
+    const uint32 index = render_manager_platform_data->m_width * uInt32(y) + uInt32(x);
 
     for( uint32 i=0; str[i] != NULL; i++ )
     {

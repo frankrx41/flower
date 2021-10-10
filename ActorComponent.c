@@ -250,9 +250,7 @@ void CallBack_Render_ShaderText_Plat(ShaderText* shader_text, RenderManagerWithV
         return;
     }
 
-    vec3 vec = Vec3_Add(ShaderText_GetVec3(shader_text), render_manager_with_vec->m_vec3);
-
-    RenderManager_Render_InBackBuffer(render_manager_with_vec->m_render_manager, (int32)vec.m_x, (int32)vec.m_y, ShaderText_GetStr(shader_text));
+    RenderManager_Render_ToBackBuffer(render_manager_with_vec->m_render_manager, render_manager_with_vec->m_vec3, shader_text);
 }
 
 void CallBack_Actor_RenderEachActor(Actor* actor, RenderManager* render_manager)

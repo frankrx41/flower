@@ -85,7 +85,7 @@ void Engine_MainLoop()
         InputManager_Event_Send(InputManager_GetInstance());
 
         RenderManager_RenderAllScene(RenderManager_GetInstance(), SceneManager_GetInstance());
-        RenderManager_Render_BufferToScreen(RenderManager_GetInstance());
+        RenderManager_Render_ToScreen(RenderManager_GetInstance());
 
         TimingManager_TrimSpeed(TimingManager_GetInstance());
         delta_second = TimingManager_GetPrevFrameDeltaSeconds(TimingManager_GetInstance());

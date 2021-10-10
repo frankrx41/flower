@@ -6,20 +6,22 @@
 
 #include "Queue.h"
 #include "Scene.h"
+#include "Vec.h"
 
 
 tptr    RenderManager_PlatformData_Create_Plat  (RenderManager* render_manager, const tchar* local_name);
 void    RenderManager_PlatformData_Destroy_Plat (RenderManager* render_manager, tptr platform_data);
-void    RenderManager_RenderToScreen_Plat       (RenderManager* render_manager, tptr platform_data);
+void    RenderManager_ToScreen_Plat             (RenderManager* render_manager, tptr platform_data);
 void    RenderManager_SwapBuffer_Plat           (RenderManager* render_manager, tptr platform_data);
-void    RenderManager_Render_InBackBuffer_Plat  (RenderManager* render_manager, tptr platform_data, int32 x, int32 y, const tchar* str);
+void    RenderManager_Render_ToBackBuffer_Plat  (RenderManager* render_manager, tptr platform_data, vec3 vec, ShaderText* shader_text);
 
 void    CallBack_Actor_RenderEachActor          (Actor* actor, RenderManager* render_manager);
 
 struct RenderManager
 {
-    bool    m_is_initialized;
-    tptr    m_platform_data;
+    bool        m_is_initialized;
+    RenderMode  m_render_mode;
+    tptr        m_platform_data;
 };
 
 
@@ -39,15 +41,15 @@ void RenderManager_Destroy(RenderManager* render_manager)
     MemDel(render_manager);
 }
 
-void RenderManager_Render_BufferToScreen(RenderManager* render_manager)
+void RenderManager_Render_ToScreen(RenderManager* render_manager)
 {
-    RenderManager_RenderToScreen_Plat(render_manager, render_manager->m_platform_data);
+    RenderManager_ToScreen_Plat(render_manager, render_manager->m_platform_data);
     RenderManager_SwapBuffer_Plat(render_manager, render_manager->m_platform_data);
 }
 
-void RenderManager_Render_InBackBuffer(RenderManager* render_manager, int32 x, int32 y, const tchar* str)
+void RenderManager_Render_ToBackBuffer(RenderManager* render_manager, vec3 vec, ShaderText* shader_text)
 {
-    RenderManager_Render_InBackBuffer_Plat(render_manager, render_manager->m_platform_data, x, y, str);
+    RenderManager_Render_ToBackBuffer_Plat(render_manager, render_manager->m_platform_data, vec, shader_text);
 }
 
 static void CallBack_Render_Scene(Scene* scene, RenderManager* render_manager)
