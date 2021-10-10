@@ -85,7 +85,7 @@ void Actor_Component_Render_ShaderText_ClearAll(Actor* actor)
 
 
 // Component_Action
-void Actor_Component_Action_EventRespond_Add(Actor* actor, Event event, CB_RespondCondition_Void_Actor_EventInfo cb_respond_condition_void_actor_event_info, CB_EventRespond_Void_Actor_EventInfo cb_event_respond)
+void Actor_Component_Action_EventRespond_Add(Actor* actor, Event event, CB_RespondCondition_Bool_Actor_EventInfo cb_respond_condition_void_actor_eventinfo, CB_RespondAction_Void_Actor_EventInfo cb_respond_action_void_actor_eventinfo)
 {
     Assert(IN_RANGE(event, Event_Scene_Min, Event_Scene_Max) || IN_RANGE(event, Event_Actor_Min, Event_Actor_Max), "");
     Assert(actor != NULL, "");
@@ -94,7 +94,7 @@ void Actor_Component_Action_EventRespond_Add(Actor* actor, Event event, CB_Respo
     Assert(action_component != NULL, "");
     if( action_component )
     {
-        Component_Action_EventRespond_Add(action_component, event, cb_respond_condition_void_actor_event_info, cb_event_respond);
+        Component_Action_EventRespond_Add(action_component, event, cb_respond_condition_void_actor_eventinfo, cb_respond_action_void_actor_eventinfo);
         Scene_Actor_AddEventGroup(Actor_GetScene(actor), actor, event);
     }
 }

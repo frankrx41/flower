@@ -70,23 +70,23 @@ void Scene_SetIsPause(Scene* scene, bool is_pause)
     scene->m_is_pause = is_pause;
 }
 
-Actor* Scene_Actor_Create(const tchar* local_name, Scene* scene, CB_ActorCreate_Void_Actor_tPtr cb_actor_create, tptr ptr)
+Actor* Scene_Actor_Create(const tchar* local_name, Scene* scene, CB_ActorCreate_Void_Actor_tPtr cb_actor_create_void_actor_tptr, tptr ptr)
 {
-    Actor* actor = Actor_Create(local_name, scene, scene->m_alloc_actor_id++, cb_actor_create, ptr);
+    Actor* actor = Actor_Create(local_name, scene, scene->m_alloc_actor_id++, cb_actor_create_void_actor_tptr, ptr);
     Queue_Push(Actor*, local_name, scene->m_actor_queue, actor);
     return actor;
 }
 
-void Scene_Actor_Destroy(Scene* scene, CB_FindData_Bool_tPtr_tPtr cb_find_actor, tptr ptr)
+void Scene_Actor_Destroy(Scene* scene, CB_FindData_Bool_tPtr_tPtr cb_find_actor_bool_tptr_tptr, tptr ptr)
 {
-    if( cb_find_actor == NULL )
+    if( cb_find_actor_bool_tptr_tptr == NULL )
     {
         Queue_RemoveFindFirst(Actor*)(scene->m_actor_queue, NULL, ptr);
         Actor_Destroy(ptr);
     }
     else
     {
-        Actor* actor = Queue_RemoveFindFirst(Actor*)(scene->m_actor_queue, cb_find_actor, ptr);
+        Actor* actor = Queue_RemoveFindFirst(Actor*)(scene->m_actor_queue, cb_find_actor_bool_tptr_tptr, ptr);
         Actor_Destroy(actor);
     }
 }

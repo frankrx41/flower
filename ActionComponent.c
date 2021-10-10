@@ -20,8 +20,8 @@ typedef struct ActorEvent ActorEvent;
 struct EventRespond
 {
     Event           m_event;
-    CB_RespondCondition_Void_Actor_EventInfo    m_cb_respond_condition_void_actor_event_info;
-    CB_EventRespond_Void_Actor_EventInfo        m_cb_actor_respond;
+    CB_RespondCondition_Bool_Actor_EventInfo    m_cb_respond_condition_bool_actor_eventinfo;
+    CB_RespondAction_Void_Actor_EventInfo       m_cb_respond_action_void_actor_eventinfo;
 };
 
 struct ActionComponent
@@ -53,13 +53,13 @@ void Component_Action_Destroy(ActionComponent* action_component)
     MemDel(action_component);
 }
 
-void Component_Action_EventRespond_Add(ActionComponent* action_component, Event event, CB_RespondCondition_Void_Actor_EventInfo cb_respond_condition_void_actor_event_info, CB_EventRespond_Void_Actor_EventInfo cb_event_respond)
+void Component_Action_EventRespond_Add(ActionComponent* action_component, Event event, CB_RespondCondition_Bool_Actor_EventInfo cb_respond_condition_bool_actor_eventinfo, CB_RespondAction_Void_Actor_EventInfo cb_respond_action_void_actor_eventinfo)
 {
     Assert(action_component != NULL, "");
     EventRespond* event_respond = MemNew(String_CStr(action_component->m_local_name), EventRespond);
     event_respond->m_event              = event;
-    event_respond->m_cb_actor_respond   = cb_event_respond;
-    event_respond->m_cb_respond_condition_void_actor_event_info = cb_respond_condition_void_actor_event_info;
+    event_respond->m_cb_respond_action_void_actor_eventinfo      = cb_respond_action_void_actor_eventinfo;
+    event_respond->m_cb_respond_condition_bool_actor_eventinfo  = cb_respond_condition_bool_actor_eventinfo;
     Queue_Push(EventRespond*, NULL, action_component->m_event_respond_queue, event_respond);
 }
 
@@ -90,17 +90,17 @@ void CallBack_Actor_ProcessEachActorEvent(Actor* actor, const EventInfo* event_i
     EventRespond* event_respond = Queue_Find(EventRespond*)(action_component->m_event_respond_queue, (CB_FindData_Bool_tPtr_tPtr)CallBack_EventRespond_FindEvent, (tptr)event_info->m_event);
     
     Assert(event_respond != NULL, "");
-    Assert(event_respond->m_cb_actor_respond != NULL, "");
+    Assert(event_respond->m_cb_respond_action_void_actor_eventinfo != NULL, "");
 
-    if( event_respond->m_cb_respond_condition_void_actor_event_info )
+    if( event_respond->m_cb_respond_condition_bool_actor_eventinfo )
     {
-        if( event_respond->m_cb_respond_condition_void_actor_event_info(actor, event_info) )
+        if( event_respond->m_cb_respond_condition_bool_actor_eventinfo(actor, event_info) )
         {
-            event_respond->m_cb_actor_respond(actor, event_info);
+            event_respond->m_cb_respond_action_void_actor_eventinfo(actor, event_info);
         }
     }
     else
     {
-        event_respond->m_cb_actor_respond(actor, event_info);
+        event_respond->m_cb_respond_action_void_actor_eventinfo(actor, event_info);
     }
 }

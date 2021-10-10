@@ -8,12 +8,12 @@ typedef bool (*CB_CompareData_Bool_tPtr_tPtr)   (const tptr dat1, const tptr dat
 typedef void (*CB_DestroyData_Void_tPtr)        (tptr data);
 
 Queue*  Queue_Create        (const tchar* local_name, const tchar* type_str);
-void    Queue_Destroy       (Queue* queue, CB_DestroyData_Void_tPtr cb_destroy_data);
+void    Queue_Destroy       (Queue* queue, CB_DestroyData_Void_tPtr cb_destroy_data_void_tptr);
 
 bool    Queue_IsEmpty       (const Queue* queue);
-tptr    Queue_Find          (const Queue* queue, CB_FindData_Bool_tPtr_tPtr cb_find_data, tptr ptr);
+tptr    Queue_Find          (const Queue* queue, CB_FindData_Bool_tPtr_tPtr cb_find_data_bool_tptr_tptr, tptr ptr);
 uint32  Queue_GetLength     (const Queue* queue);
-void    Queue_ForEach       (const Queue* queue, CB_ProcessData_Void_tPtr_tPtr cb_process_data, tptr ptr);
+void    Queue_ForEach       (const Queue* queue, CB_ProcessData_Void_tPtr_tPtr cb_process_data_void_tptr_tptr, tptr ptr);
 
 void    Queue_Push          (const tchar* local_name, Queue* queue, tptr reference_data, const tchar* type_str);
 
@@ -22,11 +22,11 @@ tptr    Queue_Dequeue       (Queue* queue);
 tptr    Queue_PeekFirst     (const Queue* queue);
 tptr    Queue_PeekTail      (const Queue* queue);
 
-tptr    Queue_RemoveFindFirst   (Queue* queue, CB_FindData_Bool_tPtr_tPtr cb_find_data, tptr ptr);     // If cb_find_data is NULL, it will find the ptr
-int32   Queue_RemoveFindAll     (Queue* queue, CB_FindData_Bool_tPtr_tPtr cb_find_data, tptr ptr);
+tptr    Queue_RemoveFindFirst   (Queue* queue, CB_FindData_Bool_tPtr_tPtr cb_find_data_bool_tptr_tptr, tptr ptr);     // If cb_find_data_bool_tptr_tptr is NULL, it will find the ptr
+int32   Queue_RemoveFindAll     (Queue* queue, CB_FindData_Bool_tPtr_tPtr cb_find_data_bool_tptr_tptr, tptr ptr);
 
-void    Queue_Clear         (Queue* queue, CB_DestroyData_Void_tPtr cb_destroy_data);
-void    Queue_Sort          (Queue* queue, CB_CompareData_Bool_tPtr_tPtr cb_compare_data);
+void    Queue_Clear         (Queue* queue, CB_DestroyData_Void_tPtr cb_destroy_data_void_tptr);
+void    Queue_Sort          (Queue* queue, CB_CompareData_Bool_tPtr_tPtr cb_compare_data_bool_tptr_tptr);
 
 #undef Queue
 #define Queue(type)                             struct Queue
