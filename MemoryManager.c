@@ -261,10 +261,10 @@ tsize Memory_GetSize(const tptr ptr)
     return memory_block->m_alloc_size;
 }
 
-bool Memory_IsInBounds(tptr first_ptr, tptr check_ptr)
+bool Memory_IsInBounds(tptr head_ptr, tptr check_ptr)
 {
-    MemoryBlock* memory_block = CastToMemoryBlock(first_ptr);
-    tsize size_offset = tSize(check_ptr) - tSize(first_ptr);
+    MemoryBlock* memory_block = CastToMemoryBlock(head_ptr);
+    tsize size_offset = tSize(check_ptr) - tSize(head_ptr);
     return size_offset < memory_block->m_alloc_size;
 }
 
