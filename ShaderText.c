@@ -20,7 +20,7 @@ ShaderText* ShaderText_Create(const tchar* local_name, vec3 vec, const tchar* st
 {
     ShaderText* shader_text = MemNew(local_name, ShaderText);
     shader_text->m_vec3    = vec;
-    shader_text->m_string  = String_New(local_name, str);
+    shader_text->m_string  = String_New(local_name, str, false);
     shader_text->m_is_disable = false;
     shader_text->m_info    = 0;
 

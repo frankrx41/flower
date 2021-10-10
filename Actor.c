@@ -26,7 +26,7 @@ Actor* Actor_Create(const tchar* local_name, Scene* scene, uint32 id, CB_ActorCr
 {
     Actor* actor = MemNew(local_name, Actor);
     actor->m_id                 = id;
-    actor->m_local_name         = String_New(local_name, local_name);
+    actor->m_local_name         = String_New(local_name, local_name, true);
     actor->m_component          = Storage_Create(local_name);
     actor->m_scene              = scene;
     actor->m_cb_actor_destroy   = NULL;

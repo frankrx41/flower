@@ -83,7 +83,7 @@ MemoryManager* MemoryManager_Create(const tchar* local_name)
     memory_manager->m_static_memory.m_alloc_size = 0;
     memory_manager->m_static_memory.m_alloc_size_max = 0;
     memory_manager->m_static_memory.m_local_name = NULL;
-    memory_manager->m_local_name = String_New(local_name, local_name);
+    memory_manager->m_local_name = String_New(local_name, local_name, true);
 
     memory_manager->m_memory_profile_data_queue = Queue_Create(local_name, MemoryProfileData*);
     return memory_manager;
@@ -129,7 +129,7 @@ tptr MemoryManager_Alloc(MemoryManager* memory_manager,const tchar* local_name, 
             const tchar* memory_manager_local_name = String_CStr(memory_manager->m_local_name);
             memory_profile_data = MemNew(memory_manager_local_name, MemoryProfileData);
             memory_profile_data->m_crc = memory_block->m_crc;
-            memory_profile_data->m_local_name = String_New(memory_manager_local_name, local_name);
+            memory_profile_data->m_local_name = String_New(memory_manager_local_name, local_name, true);
             memory_profile_data->m_alloc_size = size;
             memory_profile_data->m_alloc_size_max = size;
             Queue_Push(MemoryProfileData*, NULL, memory_profile_data_queue, memory_profile_data);

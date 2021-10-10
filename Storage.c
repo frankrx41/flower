@@ -36,7 +36,7 @@ Storage* Storage_Create(const tchar* local_name)
 {
     Storage* storage = MemNew(local_name, Storage);
     storage->m_store_queue  = Queue_Create(local_name, StoreContent*);
-    storage->m_local_name   = String_New(local_name, local_name);
+    storage->m_local_name   = String_New(local_name, local_name, true);
     storage->m_cache_store_content = NULL;
     return storage;
 }

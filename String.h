@@ -17,7 +17,7 @@ void    String_Format       (String* string, const tchar* format, ...);
 void    String_FormatArgs   (String* string, const tchar* format, va_list args);
 void    String_Copy         (String* string, const tchar* str, uint32 length);
 
-String* String_New          (const tchar* local_name, const tchar* str);
+String* String_New          (const tchar* local_name, const tchar* str, bool is_const);
 String* String_Clone        (const tchar* local_name, String* string);
 void    String_Del          (String* string);
 

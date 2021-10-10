@@ -29,7 +29,7 @@ Scene* Scene_Create(const tchar* local_name)
     Scene* scene = MemNew(local_name, Scene);
     scene->m_actor_queue    = Queue_Create(local_name, Actor*);
     scene->m_alloc_actor_id = 0;
-    scene->m_local_name     = String_New(local_name, local_name);
+    scene->m_local_name     = String_New(local_name, local_name, true);
     scene->m_storage        = Storage_Create(local_name);
     for(uint32 i=0; i<Event_Max; i++)
     {

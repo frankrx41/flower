@@ -139,7 +139,7 @@ static void String_Test2()
 
 static void String_Test1()
 {
-    String* a = String_New(__FUNCTION__, NULL);
+    String* a = String_New(__FUNCTION__, NULL, false);
 
     String_Copy(a, "say hi\n", 0);
 
@@ -155,8 +155,8 @@ static void String_Test1()
 static void String_Test0()
 {
 
-    String* string1 = String_New(__FUNCTION__, "hello world");
-    String* string2 = String_New(__FUNCTION__, "goodbye world");
+    String* string1 = String_New(__FUNCTION__, "hello world", true);
+    String* string2 = String_New(__FUNCTION__, "goodbye world", true);
     
     Assert(Str_IsSame(String_CStr(string1), "hello world"), "");
     Assert(!Str_IsSame(String_CStr(string1), "goodbye world"), "");
@@ -277,7 +277,7 @@ void CallBack_ActorOnEvent3(Actor* actor, const EventInfo* event_info)
         update_count++;
         Actor_Component_Render_ShaderText_ClearAll(actor);
 
-        String* string = String_New(Actor_GetLocalName(actor), NULL);
+        String* string = String_New(Actor_GetLocalName(actor), NULL, false);
         String_Format(string, "%d %.2f", tick_count, 1.f/event_info->m_delta_seconds);
         Actor_Component_Render_ShaderText_Add(actor, Vec3(0,0,0), String_CStr(string));
         String_Del(string);
@@ -345,7 +345,7 @@ void CallBack_ActorOnEvent2(Actor* actor, const EventInfo* event_info)
             Engine_SetExit(true);
         }
 
-        String* string = String_New(Actor_GetLocalName(actor), NULL);
+        String* string = String_New(Actor_GetLocalName(actor), NULL, false);
         String_Format(string, "%d", update_tick);
         Actor_Component_Render_ShaderText_Add(actor, Vec3(0,0,0), String_CStr(string));
         String_Del(string);

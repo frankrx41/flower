@@ -44,12 +44,12 @@ Queue*  Queue_Create(const tchar* local_name, const tchar* type_str)
 {
     Queue* queue    = MemNew(local_name, Queue);
     queue->m_type_crc32  = Str_CalcCrc(type_str, 0);
-    queue->m_length = 0;
-    queue->m_head   = MemNew(local_name, Node);
-    queue->m_head->m_node_next   = queue->m_head;
-    queue->m_head->m_node_prev   = queue->m_head;
+    queue->m_length                 = 0;
+    queue->m_head                   = MemNew(local_name, Node);
+    queue->m_head->m_node_next      = queue->m_head;
+    queue->m_head->m_node_prev      = queue->m_head;
     queue->m_head->m_reference_data = queue;
-    queue->m_local_name = String_New(local_name, local_name);
+    queue->m_local_name             = String_New(local_name, local_name, true);
     return queue;
 }
 

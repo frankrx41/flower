@@ -17,6 +17,7 @@ tchar   - str
 struct String
 {
     uint32  m_length;
+    bool    m_is_const;
     crc32   m_crc;
     tchar*  m_char;
     tchar   m_str_local_name[MAX_STRING_LOCAL_NAME+1];
@@ -149,6 +150,7 @@ void Str_Copy(tchar* dest, const tchar* from, uint32 length)
     dest[i] = '\0';
 }
 
+////////////////////////////////////////////////////////////////////////////////
 uint32 String_GetLength(const String* string)
 {
     return string->m_length;
@@ -156,6 +158,8 @@ uint32 String_GetLength(const String* string)
 
 crc32 String_GetCrc(const String* string)
 {
+    Assert(string->m_is_const == true, "Only const string has crc! Please use Str_CalcCrc instead.");
+    Assert(string->m_crc != 0, "");
     return string->m_crc;
 }
 
@@ -166,11 +170,20 @@ tchar* String_CStr(const String* string)
 
 bool String_IsSame(const String* str1, const String* str2)
 {
-    return String_GetCrc(str1) == String_GetCrc(str2);
+    if( str1->m_is_const && str2->m_is_const )
+    {
+        return String_GetCrc(str1) == String_GetCrc(str2);
+    }
+    else
+    {
+        return Str_IsSame(String_CStr(str1), String_CStr(str2));
+    }
 }
 
 void String_Format(String* string, const tchar* format, ...)
 {
+    Assert(string->m_is_const != true, "You try to modify a const string!");
+
     va_list ap;
     va_start(ap, format);
 
@@ -180,6 +193,8 @@ void String_Format(String* string, const tchar* format, ...)
 
 void String_Copy(String* string, const tchar* str, uint32 length)
 {
+    Assert(string->m_is_const != true, "You try to modify a const string!");
+
     // length == 0 means copy full str
     if( length == 0 )
     {
@@ -202,14 +217,9 @@ void String_Copy(String* string, const tchar* str, uint32 length)
         string->m_char[i] = '\0';
         string->m_length = i;
     }
-
-    {
-        string->m_crc = Str_CalcCrc(string->m_char, string->m_length);
-    }
-
 }
 
-String* String_New(const tchar* local_name, const tchar* str)
+String* String_New(const tchar* local_name, const tchar* str, bool is_const)
 {
     String* string = MemNew(local_name ? local_name : LOCAL_NAME, String);
 
@@ -217,6 +227,7 @@ String* String_New(const tchar* local_name, const tchar* str)
     string->m_char          = NULL;
     string->m_length        = 0;
     string->m_crc           = 0;
+    string->m_is_const      = false;
 
     if( local_name )
     {
@@ -227,6 +238,12 @@ String* String_New(const tchar* local_name, const tchar* str)
     {
         int32 str_length = Str_CalcLength(str);
         String_Copy(string, str, str_length);
+    }
+
+    string->m_is_const      = is_const;
+    if( string->m_is_const )
+    {
+        string->m_crc = Str_CalcCrc(string->m_char, string->m_length);
     }
 
     return string;
