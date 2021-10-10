@@ -2,16 +2,16 @@
 
 typedef struct InputManager InputManager;
 typedef enum KeyId KeyId;
-typedef enum KeyActivateState KeyActivateState;
+typedef enum KeyState KeyActivateState;
 
-enum KeyActivateState
+enum KeyState
 {
-    KeyActivateState_Hold,
-    KeyActivateState_Down,
-    KeyActivateState_Up,
-    KeyActivateState_UpOnce,
-    KeyActivateState_DownOnce,
-    KeyActivateState_Toggle,
+    KeyState_Hold,
+    KeyState_Down,
+    KeyState_Up,
+    KeyState_UpOnce,
+    KeyState_DownOnce,
+    KeyState_Toggle,
 };
 
 void    InputManager_Keys_UpdateState   (InputManager* input_manager, float delta_second);

@@ -293,7 +293,7 @@ void Engine_Test5()
     Scene* scene = SceneManager_Scene_Create(__FUNCTION__);
     Actor* actor = Scene_Actor_Create(__FUNCTION__, scene, CallBack_Actor_Create5, __FUNCTION__);
 
-    InputManager_InputActionEvent_Add(InputManager_GetInstance(), KeyId_Escape, KeyActivateState_Down, Event_Actor_Action_Cancel);
+    InputManager_InputActionEvent_Add(InputManager_GetInstance(), KeyId_Escape, KeyState_Down, Event_Actor_Action_Cancel);
 
     SceneManager_Scene_SetCurrent(scene);
 
