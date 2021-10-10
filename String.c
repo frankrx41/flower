@@ -12,20 +12,14 @@ tchar   - str
 
 */
 
-#define MAX_STRING_LOCAL_NAME (32)-1
-
 struct String
 {
     bool    m_is_const;
     crc32   m_crc;
     tsize   m_length;
     tchar*  m_char;
-    tchar   m_str_local_name[MAX_STRING_LOCAL_NAME+1];
+    tchar*  m_str_local_name;
 };
-
-#define LOCAL_NAME          "String"
-#define LOCAL_NAME_CHAR     "Char"
-
 
 static void String_ReAllocSize(String* string, const tsize length, bool keep_data)
 {
@@ -41,7 +35,7 @@ static void String_ReAllocSize(String* string, const tsize length, bool keep_dat
 
     tsize origin_length = String_GetLength(string);
     tchar* origin_str   = string->m_char;
-    string->m_char = MemNewSize(Str_IsEmpty(string->m_str_local_name) ? LOCAL_NAME_CHAR : string->m_str_local_name, length);
+    string->m_char = MemNewSize(string->m_str_local_name, length);
 
     if( keep_data )
     {
@@ -249,17 +243,20 @@ void String_Copy(String* string, const tchar* str, const tsize length)
 
 String* String_New(const tchar* local_name, const tchar* str, bool is_const)
 {
-    String* string = MemNew(local_name ? local_name : LOCAL_NAME, String);
+    Assert(local_name != NULL, "");
 
-    string->m_str_local_name[0] = '\0';
+    String* string = MemNew(local_name, String);
+
+    string->m_str_local_name = NULL;
     string->m_char          = NULL;
     string->m_length        = 0;
     string->m_crc           = 0;
     string->m_is_const      = false;
 
-    if( local_name )
     {
-        Str_Copy(string->m_str_local_name, local_name, MAX_STRING_LOCAL_NAME);
+        tsize local_name_length = Str_CalcLength(local_name);
+        string->m_str_local_name = MemNewSize(local_name, local_name_length+1);
+        Str_Copy(string->m_str_local_name, local_name, local_name_length);
     }
 
     if( !Str_IsEmpty(str) )
@@ -280,6 +277,7 @@ String* String_New(const tchar* local_name, const tchar* str, bool is_const)
 
 void String_Del(String* string)
 {
+    MemDel(string->m_str_local_name);
     MemSafeDel(string->m_char);
     MemDel(string);
 }
