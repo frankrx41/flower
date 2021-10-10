@@ -22,7 +22,8 @@ struct Scene
     Storage*        m_storage;
     bool            m_is_pause;
     Queue(Actor*)*  m_actor_queue;
-    Queue(Actor*)*  m_actor_event_queue_list[Event_Scene_Max-Event_Scene_Min];
+    Queue(Actor*)*  m_actor_scene_event_queue_list[Event_Scene_Max-Event_Scene_Min];
+    Queue(Actor*)*  m_actor_action_event_queue_list[Event_Actor_Action_Max-Event_Actor_Action_Min];
 };
 
 Scene* Scene_Create(const tchar* local_name)
@@ -34,10 +35,16 @@ Scene* Scene_Create(const tchar* local_name)
     scene->m_storage        = Storage_Create(local_name);
     scene->m_is_pause       = false;
 
-    Assert(ARRAY_SIZE(scene->m_actor_event_queue_list) == Event_Scene_Max-Event_Scene_Min, "");
-    for(uint32 i=0, max_i = ARRAY_SIZE(scene->m_actor_event_queue_list); i<max_i; i++)
+    Assert(ARRAY_SIZE(scene->m_actor_scene_event_queue_list) == Event_Scene_Max-Event_Scene_Min, "");
+    for(uint32 i=0, max_i = ARRAY_SIZE(scene->m_actor_scene_event_queue_list); i<max_i; i++)
     {
-        scene->m_actor_event_queue_list[i] = Queue_Create(local_name, Actor*);
+        scene->m_actor_scene_event_queue_list[i] = Queue_Create(local_name, Actor*);
+    }
+
+    Assert(ARRAY_SIZE(scene->m_actor_action_event_queue_list) == Event_Actor_Action_Max-Event_Actor_Action_Min, "");
+    for(uint32 i=0, max_i = ARRAY_SIZE(scene->m_actor_action_event_queue_list); i<max_i; i++)
+    {
+        scene->m_actor_action_event_queue_list[i] = Queue_Create(local_name, Actor*);
     }
 
     return scene;
@@ -46,10 +53,16 @@ Scene* Scene_Create(const tchar* local_name)
 void Scene_Destroy(Scene* scene)
 {
     Queue_Destroy(scene->m_actor_queue, Actor_Destroy);
-    for(uint32 i=0, max_i=ARRAY_SIZE(scene->m_actor_event_queue_list); i<max_i; i++)
+    for(uint32 i=0, max_i=ARRAY_SIZE(scene->m_actor_scene_event_queue_list); i<max_i; i++)
     {
-        Queue_Destroy(scene->m_actor_event_queue_list[i], NULL);
+        Queue_Destroy(scene->m_actor_scene_event_queue_list[i], NULL);
     }
+
+    for(uint32 i=0, max_i=ARRAY_SIZE(scene->m_actor_action_event_queue_list); i<max_i; i++)
+    {
+        Queue_Destroy(scene->m_actor_action_event_queue_list[i], NULL);
+    }
+
     String_Del(scene->m_local_name);
     Storage_Destroy(scene->m_storage);
     MemDel(scene);
@@ -57,7 +70,15 @@ void Scene_Destroy(Scene* scene)
 
 static Queue(Actor*)* Scene_EventQueue_Get(Scene* scene, Event event)
 {
-    return scene->m_actor_event_queue_list[event-Event_Scene_Min];
+    if( IN_RANGE(event, Event_Scene_Min, Event_Scene_Max) )
+    {
+        return scene->m_actor_scene_event_queue_list[event-Event_Scene_Min];
+    }
+    if( IN_RANGE(event, Event_Actor_Action_Min, Event_Actor_Action_Max) )
+    {
+        return scene->m_actor_action_event_queue_list[event-Event_Actor_Action_Min];
+    }
+    Assert( false , "");
 }
 
 bool Scene_IsPause(Scene* scene)

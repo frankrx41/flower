@@ -9,6 +9,7 @@
 #include "RenderManager.h"
 #include "SceneManager.h"
 #include "EventManager.h"
+#include "InputManager.h"
 
 #include "Component.h"
 
@@ -272,6 +273,38 @@ void tData_Test0()
 }
 
 ////////////////////////////////////////////////////////////////////////////////
+void CallBack_ActorOnEvent5(Actor* actor, const EventInfo* event_info)
+{
+    Assert(event_info->m_event == Event_Actor_Action_Cancel, "");
+    Engine_SetExit(true);
+}
+
+void CallBack_Actor_Create5(Actor* actor, tptr ptr)
+{
+    Actor_Component_New(actor, Component_Render);
+    Actor_Component_New(actor, Component_Action);
+
+    Actor_Component_Render_ShaderText_Add(actor, Vec3(0,0,0), "Press Esc to exit");
+    
+    Actor_Component_Action_EventRespond_Add(actor, Event_Actor_Action_Cancel, NULL, CallBack_ActorOnEvent5);
+};
+void Engine_Test5()
+{
+    Scene* scene = SceneManager_Scene_Create(__FUNCTION__);
+    Actor* actor = Scene_Actor_Create(__FUNCTION__, scene, CallBack_Actor_Create5, __FUNCTION__);
+
+    InputManager_InputActionEvent_Add(InputManager_GetInstance(), KeyId_Escape, KeyActivateState_Down, Event_Actor_Action_Cancel);
+
+    SceneManager_Scene_SetCurrent(scene);
+
+    Engine_SetExit(false);
+    Engine_MainLoop();
+
+
+    Scene_Actor_Destroy(scene, NULL, actor);
+    SceneManager_Scene_Destroy(scene);
+}
+
 void CallBack_ActorOnEvent4(Actor* actor, const EventInfo* event_info)
 {
     static int32 update_count = 0;
@@ -583,6 +616,7 @@ void Engine_Debug_UnitTesting()
         Actor_Test1,
         Actor_Test0,
 
+        Engine_Test5,
         Engine_Test4,
         Engine_Test3,
         Engine_Test2,
