@@ -1,9 +1,8 @@
 #include "CoreMini.h"
+#if PLATFORM_WIN32
 
 #include "KeyId.h"
 
-#define PLATFORM_WIN32 1
-#include "Platform.h"
 #include <Windows.h>
 
 static int32 KeyID_To_WinVK(KeyId key_id)
@@ -31,3 +30,5 @@ bool InputManager_Key_IsPhysicsDown_Plat(KeyId key_id)
         return GetAsyncKeyState(KeyID_To_WinVK(key_id)) & 0x8000;
     }
 }
+
+#endif

@@ -150,9 +150,6 @@
     <ClInclude Include="KeyId.h">
       <Filter>Engine\Input</Filter>
     </ClInclude>
-    <ClInclude Include="Platform.h">
-      <Filter>Platform</Filter>
-    </ClInclude>
     <ClInclude Include="tData.h">
       <Filter>Library\Data32</Filter>
     </ClInclude>

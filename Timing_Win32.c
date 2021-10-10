@@ -1,11 +1,9 @@
-// #define PLATFORM_WIN32      1
 #include "CoreMini.h"
+#if PLATFORM_WIN32
 
 #include "TimingManager.h"
 #include "MemoryManager.h"
 
-#define PLATFORM_WIN32      1
-#include "Platform.h"
 #include <Windows.h>
 
 typedef struct TimingPlatformData TimingPlatformData;
@@ -80,5 +78,4 @@ float TimingManager_TrimSpeed_Plat(TimingManager* timing_manager, TimingPlatform
     return (current_cpu_count - last_cpu_count) / (platform_data->m_counts_in_one_frame * TimingManager_GetFrameRate(timing_manager));
 }
 
-
-
+#endif

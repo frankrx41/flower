@@ -1,10 +1,9 @@
 #include "CoreMini.h"
+#if PLATFORM_WIN32
 
 #include "MemoryManager.h"
 #include "RenderManager.h"
 
-#define PLATFORM_WIN32      1
-#include "Platform.h"
 #include <stdio.h>
 #include <windows.h>
 
@@ -110,3 +109,4 @@ void RenderManager_Render_InBackBuffer_Plat(RenderManager* render_manager, Rende
     }
 }
 
+#endif

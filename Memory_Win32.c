@@ -1,7 +1,6 @@
 #include "CoreMini.h"
+#if PLATFORM_WIN32
 
-#define PLATFORM_WIN32 1
-#include "Platform.h"
 #include <stdlib.h>
 #include <string.h>
 
@@ -29,3 +28,4 @@ void Memory_Free_Plat(void* memory)
     free(memory);
 }
 
+#endif

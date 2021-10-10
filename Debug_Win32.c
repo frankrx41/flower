@@ -1,9 +1,8 @@
 #include "CoreMini.h"
+#if PLATFORM_WIN32
 
 #include "String.h"
 
-#define PLATFORM_WIN32      1
-#include "Platform.h"
 #include <Windows.h>
 
 #define LOCAL_NAME  "Debug"
@@ -24,3 +23,5 @@ void Engine_Debug_Log(int32 type, const tchar* format, ...)
     OutputDebugStringA(String_CStr(string));
     String_Del(string);
 }
+
+#endif

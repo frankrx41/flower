@@ -1,5 +1,13 @@
 #pragma once
 
+#define NO_COMPILE_TIME_CHECK   0
+#define KEEP_LEGACY_TYPE        0
+
+#if PLATFORM_WIN32
+#undef  KEEP_LEGACY_TYPE
+#define KEEP_LEGACY_TYPE 1
+#endif
+
 #include <stdarg.h>
 
 #undef va_arg
@@ -40,10 +48,16 @@ typedef tchar bool;
 #define true    ( 1 )
 #define false   ( 0 )
 
+#if KEEP_LEGACY_TYPE
+#undef int
+#undef char
+#else
 // Do not use those key word
 // For multi-platform
 #define int
 #define char
+#endif
+
 
 #if CONFIG_DEBUG || CONFIG_RELEASE
 
