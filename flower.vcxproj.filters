@@ -79,7 +79,7 @@
       <Filter>Platform\Win32</Filter>
     </ClCompile>
     <ClCompile Include="tData.c">
-      <Filter>Library\Data32</Filter>
+      <Filter>Library\Data</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -151,7 +151,7 @@
       <Filter>Engine\Input</Filter>
     </ClInclude>
     <ClInclude Include="tData.h">
-      <Filter>Library\Data32</Filter>
+      <Filter>Library\Data</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -175,9 +175,6 @@
     </Filter>
     <Filter Include="Render">
       <UniqueIdentifier>{d5adcd47-4bd5-46ef-9e1d-cfbd285f50cb}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Library\Data32">
-      <UniqueIdentifier>{3271d12d-2253-4b03-aeb7-559e9c26077d}</UniqueIdentifier>
     </Filter>
     <Filter Include="Library\Vec">
       <UniqueIdentifier>{7fb445ef-924a-4d46-b6e4-d7515349f480}</UniqueIdentifier>
@@ -208,6 +205,9 @@
     </Filter>
     <Filter Include="Engine\Timing">
       <UniqueIdentifier>{b6ccc812-e331-46de-89f8-b506d5eb11f8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Library\Data">
+      <UniqueIdentifier>{3271d12d-2253-4b03-aeb7-559e9c26077d}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

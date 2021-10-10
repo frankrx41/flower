@@ -20,5 +20,6 @@ tdata  tData(const tchar* type, ...);
 #define tPtr(x)     ((tptr)(x))
 #define tChar(x)    ((tchar)(x))
 #define uInt32(x)   ((uint32)(x))
+#define tSize(x)    ((tsize)(x))
 
 #define tData(type, x)          (*(tdata*)((type*)0), tData(#type, x))

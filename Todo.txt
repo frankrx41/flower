@@ -17,9 +17,9 @@ Add CB_ProcessSence in Sence_Destroy
 Add InputBank or named it controller ?
 Add InputBank in Actor_Create
 Add TaskManager in SendEvent
-Add ARRAY_BOUNDS_CHECK
 Add offsetXY in RenderManager
 
+Add ARRAY_BOUNDS_CHECK (done)
 Add condition in Action (done)
 Rename ptr32 back to tptr (done)
 Rename timming -> timing (done)

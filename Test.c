@@ -112,6 +112,22 @@ static void Log_Test0()
 };
 
 ////////////////////////////////////////////////////////////////////////////////
+static void Memory_Test1()
+{
+    tchar* ptr = MemNewSize(__FUNCTION__, 256);
+    tptr ptr2 = ptr + 1;
+    tptr ptr3 = ptr - 1;
+    tptr ptr4 = ptr + 255;
+    tptr ptr5 = ptr + 256;
+    tptr ptr6 = ptr + 111;
+    Assert(Memory_IsInBounds(ptr, ptr2), "");
+    Assert(Memory_IsInBounds(ptr, ptr3) == false, "");
+    Assert(Memory_IsInBounds(ptr, ptr4), "");
+    Assert(Memory_IsInBounds(ptr, ptr5) == false, "");
+    Assert(Memory_IsInBounds(ptr, ptr6), "");
+    MemDel(ptr);
+};
+
 static void Memory_Test0()
 {
     tptr ptr = MemNewSize(__FUNCTION__, 256);
@@ -510,6 +526,7 @@ void Engine_Debug_UnitTesting()
         Storage_Test0,
         Queue_Test0,
         Log_Test0,
+        Memory_Test1,
         Memory_Test0,
 
         String_Test0,

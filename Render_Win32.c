@@ -40,7 +40,7 @@ RenderManagerPlatformData* RenderManager_PlatformData_Create_Plat(RenderManager*
     MemZero(render_manager_platform_data->m_buffer[0]);
     MemZero(render_manager_platform_data->m_buffer[1]);
 
-    render_manager_platform_data->m_front_buffer = render_manager_platform_data->m_buffer[0];
+    render_manager_platform_data->m_front_buffer= render_manager_platform_data->m_buffer[0];
     render_manager_platform_data->m_back_buffer = render_manager_platform_data->m_buffer[1];
 
     render_manager_platform_data->m_std_output  = GetStdHandle(STD_OUTPUT_HANDLE);
@@ -102,10 +102,19 @@ void RenderManager_SwapBuffer_Plat(RenderManager* render_manager, RenderManagerP
 
 void RenderManager_Render_InBackBuffer_Plat(RenderManager* render_manager, RenderManagerPlatformData* render_manager_platform_data, int32 x, int32 y, const tchar* str)
 {
-    uint32 index = render_manager_platform_data->m_width * y + x;
-    for( uint32 i=0; str[i] != NULL && index+i < render_manager_platform_data->m_width*render_manager_platform_data->m_height; i++ )
+    const uint32 index = render_manager_platform_data->m_width * y + x;
+
+    for( uint32 i=0; str[i] != NULL; i++ )
     {
-        render_manager_platform_data->m_back_buffer[index+i].m_tchar = str[i];
+        PixData* pix_data = &render_manager_platform_data->m_back_buffer[index+i];
+        if(Memory_IsInBounds(render_manager_platform_data->m_back_buffer, pix_data))
+        {
+            pix_data->m_tchar = str[i];
+        }
+        else
+        {
+            Assert(false, "");
+        }
     }
 }
 

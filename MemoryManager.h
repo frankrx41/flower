@@ -15,6 +15,7 @@ tptr    Memory_FullFill     (tptr ptr, int32 val);
 tptr    Memory_Zero         (tptr ptr);
 tsize   Memory_GetSize      (const tptr ptr);
 
+bool    Memory_IsInBounds   (tptr first_ptr, tptr check_ptr);
 
 MemoryManager* MemoryManager_GetInstance();
 

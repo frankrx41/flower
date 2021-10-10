@@ -6,6 +6,7 @@
 
 #include "Queue.h"
 #include "String.h"
+#include "tData.h"
 
 typedef struct MemoryBlock MemoryBlock;
 typedef struct MemoryProfileData MemoryProfileData;
@@ -258,6 +259,13 @@ tsize Memory_GetSize(const tptr ptr)
 
     MemoryBlock* memory_block = CastToMemoryBlock(ptr);
     return memory_block->m_alloc_size;
+}
+
+bool Memory_IsInBounds(tptr first_ptr, tptr check_ptr)
+{
+    MemoryBlock* memory_block = CastToMemoryBlock(first_ptr);
+    tsize size_offset = tSize(check_ptr) - tSize(first_ptr);
+    return size_offset < memory_block->m_alloc_size;
 }
 
 ////////////////////////////////////////////////////////////////////////////////

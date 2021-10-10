@@ -35,7 +35,7 @@ static void String_ReAllocSize(String* string, const tsize length, bool keep_dat
 
     tsize origin_length = String_GetLength(string);
     tchar* origin_str   = string->m_char;
-    string->m_char = MemNewSize(string->m_str_local_name, length);
+    string->m_char = MemNewSize(string->m_str_local_name, size);
 
     if( keep_data )
     {
@@ -153,6 +153,7 @@ tsize Str_Copy(tchar* dest, const tchar* from, tsize length)
     }
 
     Assert(length > 0, "");
+    Assert(Memory_IsInBounds(dest, dest+length), "");
 
     for(i=0; i<length; i++)
     {
