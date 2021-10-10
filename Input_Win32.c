@@ -5,7 +5,7 @@
 
 #include <Windows.h>
 
-static int32 KeyID_To_WinVK(KeyId key_id)
+static int32 KeyId_To_WinVK(KeyId key_id)
 {
     Assert( key_id != KeyId_Null, "");
     Assert( key_id != KeyId_Max, "");
@@ -98,7 +98,7 @@ bool InputManager_Key_IsPhysicsDown_Plat(KeyId key_id)
     }
     else
     {
-        return GetAsyncKeyState(KeyID_To_WinVK(key_id)) & 0x8000;
+        return GetAsyncKeyState(KeyId_To_WinVK(key_id)) & 0x01;
     }
 }
 

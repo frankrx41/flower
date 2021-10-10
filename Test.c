@@ -616,7 +616,7 @@ void Engine_Debug_UnitTesting()
         Actor_Test1,
         Actor_Test0,
 
-        // Engine_Test5,
+        Engine_Test5,
         Engine_Test4,
         Engine_Test3,
         Engine_Test2,

@@ -9,7 +9,7 @@ enum Event
     Event_Tick,
 
     Event_Key_Min,
-    Event_Key_Any_Down = Event_Key_Min,
+    Event_Key_Any_Down          = Event_Key_Min,
     Event_Key_Any_Down_Once,
     Event_Key_Any_Up_Once,
     Event_Key_Any_Hold,
@@ -17,7 +17,7 @@ enum Event
     Event_Key_Max,
 
     Event_Scene_Min,
-    Event_Scene_Tick = Event_Scene_Min,
+    Event_Scene_Tick            = Event_Scene_Min,
     Event_Scene_Physics_Update,
     Event_Scene_Max,
 
@@ -25,9 +25,8 @@ enum Event
 
     Event_Actor_Min,
     
-    Event_Actor_Action_Min = Event_Actor_Min,
-    
-    Event_Actor_Action_MoveUp = Event_Actor_Action_Min,
+    Event_Actor_Action_Min      = Event_Actor_Min,
+    Event_Actor_Action_MoveUp   = Event_Actor_Action_Min,
     Event_Actor_Action_MoveDown,
     Event_Actor_Action_MoveLeft,
     Event_Actor_Action_MoveRight,

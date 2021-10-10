@@ -59,7 +59,7 @@ typedef uint32          tsize;
 #define NULL            ( 0 )
 
 // boolean
-typedef tchar bool;
+typedef byte bool;
 #define true    ( 1 )
 #define false   ( 0 )
 

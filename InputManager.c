@@ -133,38 +133,13 @@ void CallBack_ProcessInputActionEvent(InputActionEvent* input_action_event, Inpu
     }
     if( is_active )
     {
-        // EventManager_SendEvent();
+        SendEvent_Actor_Action(input_action_event->m_event);
     }
 }
 
 void InputManager_Event_Send(InputManager* input_manager)
 {
     Queue_ForEach(input_manager->m_input_action_event_queue, CallBack_ProcessInputActionEvent, input_manager);
-    for(KeyId key_id=0; key_id<KeyId_Max; key_id++)
-    {
-        KeyInfo* key_info = &input_manager->m_key_info[key_id];
-
-        if( key_info->m_is_hold )
-        {
-            EventManager_SendEvent(Event_Key_Any_Hold, key_info->m_key_id, key_info->m_down_seconds);
-        }
-        if( key_info->m_is_down )
-        {
-            EventManager_SendEvent(Event_Key_Any_Down, key_info->m_key_id);
-        }
-        if( key_info->m_is_down_once )
-        {
-            EventManager_SendEvent(Event_Key_Any_Down_Once, key_info->m_key_id);
-        }
-        if( key_info->m_is_toggle )
-        {
-            EventManager_SendEvent(Event_Key_Any_Toggle, key_info->m_key_id);
-        }
-        if( key_info->m_is_up_once )
-        {
-            EventManager_SendEvent(Event_Key_Any_Up_Once, key_info->m_key_id);
-        }
-    }
 }
 
 
