@@ -5,6 +5,7 @@ typedef struct SceneManager SceneManager;
 typedef struct ShaderText ShaderText;
 typedef struct Scene Scene;
 typedef struct vec3 vec3;
+typedef struct vec2 vec2;
 typedef enum RenderMode RenderMode;
 
 enum RenderMode
@@ -19,7 +20,8 @@ void    RenderManager_Render_ToBackBuffer   (RenderManager* render_manager, vec3
 
 void    RenderManager_RenderAllScene        (RenderManager* render_manager, SceneManager* scene_manager);
 
-void    RenderManager_RenderMode_Set        (RenderManager* render_manager, RenderMode );
-
+void    RenderManager_RenderMode_Set        (RenderManager* render_manager, RenderMode render_mode);
+void    RenderManager_OffsetVec_Set         (RenderManager* render_manager, vec2 offset_vec);
+vec2    RenderManager_OffsetVec_Get         (RenderManager* render_manager);
 
 RenderManager* RenderManager_GetInstance();
