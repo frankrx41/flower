@@ -86,13 +86,10 @@ bool Component_Physics_IsEnableSimulate(PhysicsComponent* physics_component)
 
 void Component_Physics_Simulate(PhysicsComponent* physics_component, float delta_seconds)
 {
-    if( physics_component->m_is_enable_simulate == false )
-    {
-        return;
-    }
-    // v = at
-    physics_component->m_velocity = Vec3_Multiply(physics_component->m_acceleration, delta_seconds);
+    Assert( physics_component->m_is_enable_simulate != false, "" );
+    // v = v + at
+    physics_component->m_velocity = Vec3_Add(physics_component->m_velocity, Vec3_Multiply(physics_component->m_acceleration, delta_seconds));
 
-    // s = vt
-    physics_component->m_displacement = Vec3_Multiply(physics_component->m_velocity, delta_seconds);
+    // s = s + vt
+    physics_component->m_displacement = Vec3_Add(physics_component->m_displacement, Vec3_Multiply(physics_component->m_velocity, delta_seconds));
 }

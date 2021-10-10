@@ -10,9 +10,13 @@ typedef enum Event Event;
 typedef union tdata tdata;
 
 
+vec3    Actor_Component_Physics_GetLocation         (Actor* actor);
 void    Actor_Component_Physics_SetLocation         (Actor* actor, vec3 vec);
 void    Actor_Component_Physics_MoveLocation        (Actor* actor, vec3 offset_vec);
-vec3    Actor_Component_Physics_GetLocation         (Actor* actor);
+vec3    Actor_Component_Physics_GetVelocity         (Actor* actor);
+void    Actor_Component_Physics_SetVelocity         (Actor* actor, vec3 velocity);
+vec3    Actor_Component_Physics_GetAcceleration     (Actor* actor);
+void    Actor_Component_Physics_SetAcceleration     (Actor* actor, vec3 acceleration);
 void    Actor_Component_Physics_SetEnableSimulate   (Actor* actor, bool is_enable_simulater);
 
 

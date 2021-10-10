@@ -297,9 +297,9 @@ void CallBack_Actor_Create4(Actor* actor, tptr ptr)
     Actor_Component_New(actor, Component_Physics);
 
     Actor_Component_Physics_SetLocation(actor, Vec3(1.f, 1.f, 0.f));
-    Actor_Component_Physics_SetLocation(actor, Vec3(1.f, 1.f, 0.f));
-    Actor_Component_Physics_SetEnableSimulate(actor, true);
+    Actor_Component_Physics_SetVelocity(actor, Vec3(1.f, 0, 2.f));
 
+    Actor_Component_Physics_SetEnableSimulate(actor, true);
     Actor_Component_Action_EventRespond_Add(actor, Event_Scene_Tick, NULL, CallBack_ActorOnEvent4);
 
 };

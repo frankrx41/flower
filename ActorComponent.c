@@ -22,6 +22,16 @@
 #include "Scene.h"
 
 // Location
+vec3 Actor_Component_Physics_GetLocation(Actor* actor)
+{
+    Assert(actor != NULL, "");
+    PhysicsComponent* physics_component = Actor_Component_Cast(actor, Component_Physics);
+    Assert(physics_component != NULL, "");
+
+    return
+    Component_Physics_GetLocation(physics_component);
+}
+
 void Actor_Component_Physics_SetLocation(Actor* actor, vec3 vec)
 {
     Assert(actor != NULL, "");
@@ -38,14 +48,40 @@ void Actor_Component_Physics_MoveLocation(Actor* actor, vec3 offset_vec)
     Component_Physics_MoveLocation(physics_component, offset_vec);
 }
 
-vec3 Actor_Component_Physics_GetLocation(Actor* actor)
+vec3 Actor_Component_Physics_GetVelocity(Actor* actor)
 {
     Assert(actor != NULL, "");
     PhysicsComponent* physics_component = Actor_Component_Cast(actor, Component_Physics);
     Assert(physics_component != NULL, "");
 
     return
-    Component_Physics_GetLocation(physics_component);
+    Component_Physics_GetVelocity(physics_component);
+}
+
+void Actor_Component_Physics_SetVelocity(Actor* actor, vec3 velocity)
+{
+    Assert(actor != NULL, "");
+    PhysicsComponent* physics_component = Actor_Component_Cast(actor, Component_Physics);
+    Assert(physics_component != NULL, "");
+    Component_Physics_SetVelocity(physics_component, velocity);
+}
+
+vec3 Actor_Component_Physics_GetAcceleration(Actor* actor)
+{
+    Assert(actor != NULL, "");
+    PhysicsComponent* physics_component = Actor_Component_Cast(actor, Component_Physics);
+    Assert(physics_component != NULL, "");
+
+    return
+    Component_Physics_GetAcceleration(physics_component);
+}
+
+void Actor_Component_Physics_SetAcceleration(Actor* actor, vec3 acceleration)
+{
+    Assert(actor != NULL, "");
+    PhysicsComponent* physics_component = Actor_Component_Cast(actor, Component_Physics);
+    Assert(physics_component != NULL, "");
+    Component_Physics_SetAcceleration(physics_component, acceleration);
 }
 
 void CallBack_Event_Scene_Physics_Update(Actor* actor, const EventInfo* event_info)
