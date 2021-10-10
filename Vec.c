@@ -28,3 +28,11 @@ vec2 Vec2(float x, float y)
     vec.m_y = y;
     return vec;
 }
+
+aabb AABB(vec3 v1, vec3 v2)
+{
+    aabb aabb;
+    aabb.m_v1 = v1;
+    aabb.m_v2 = v2;
+    return aabb;
+}
