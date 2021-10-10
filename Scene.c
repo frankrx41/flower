@@ -79,6 +79,7 @@ static Queue(Actor*)* Scene_EventQueue_Get(Scene* scene, Event event)
         return scene->m_actor_action_event_queue_list[event-Event_Actor_Action_Min];
     }
     Assert( false , "");
+    return NULL;
 }
 
 bool Scene_IsPause(Scene* scene)

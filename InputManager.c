@@ -29,21 +29,21 @@ struct KeyInfo
 struct InputActionEvent
 {
     KeyId               m_key_id;
-    KeyActivateState    m_key_activate_state;
+    KeyState            m_key_state;
     Event               m_event;
 };
 
-InputActionEvent* InputActionEvent_Create(const tchar* local_name, KeyId key_id, KeyActivateState key_activate_state, Event event)
+static InputActionEvent* InputActionEvent_Create(const tchar* local_name, KeyId key_id, KeyState key_state, Event event)
 {
     InputActionEvent* input_action_event = MemNew(local_name, InputActionEvent);
-    input_action_event->m_key_id                = key_id;
-    input_action_event->m_key_activate_state    = key_activate_state;
-    input_action_event->m_event                 = event;
+    input_action_event->m_key_id    = key_id;
+    input_action_event->m_key_state = key_state;
+    input_action_event->m_event     = event;
 
     return input_action_event;
 }
 
-void InputActionEvent_Destroy(InputActionEvent* input_action_event)
+static void InputActionEvent_Destroy(InputActionEvent* input_action_event)
 {
     MemDel(input_action_event);
 }
@@ -91,10 +91,11 @@ void InputManager_Destroy(InputManager* input_manager)
     MemDel(input_manager);
 }
 
-void InputManager_InputActionEvent_Add(InputManager* input_manager, KeyId key_id, KeyActivateState key_activate_state, Event event)
+void InputManager_InputActionEvent_Add(InputManager* input_manager, KeyId key_id, KeyState key_state, Event event)
 {
     Assert(IN_RANGE(event, Event_Actor_Action_Min, Event_Actor_Action_Max), "");
-    InputActionEvent* input_action_event = InputActionEvent_Create(String_CStr(input_manager->m_local_name), key_id, key_activate_state, event);
+    Assert( key_state != KeyState_Up, "Not support KeyState_Up");
+    InputActionEvent* input_action_event = InputActionEvent_Create(String_CStr(input_manager->m_local_name), key_id, key_state, event);
 
     Queue_Push(InputActionEvent*, String_CStr(input_manager->m_local_name), input_manager->m_input_action_event_queue, input_action_event);
 }
@@ -107,7 +108,7 @@ static bool CallBack_Find_InputActionEvent(InputActionEvent* input_action_event,
 void InputManager_InputActionEvent_Del(InputManager* input_manager, Event event)
 {
     Assert(IN_RANGE(event, Event_Actor_Action_Min, Event_Actor_Action_Max), "");
-    InputActionEvent* input_action_event = Queue_RemoveFindFirst(InputActionEvent*)(input_manager->m_input_action_event_queue, CallBack_Find_InputActionEvent, (const tptr)event);
+    InputActionEvent* input_action_event = Queue_RemoveFindFirst(InputActionEvent*)(input_manager->m_input_action_event_queue, (CB_FindData_Bool_tPtr_tPtr)CallBack_Find_InputActionEvent, (const tptr)event);
     InputActionEvent_Destroy(input_action_event);
 }
 
@@ -116,8 +117,29 @@ void InputManager_InputActionEvent_Clear(InputManager* input_manager)
     Queue_Clear(input_manager->m_input_action_event_queue, InputActionEvent_Destroy);
 }
 
-void InputManager_Event_Send(InputManager* input_manager, const tchar* local_name)
+void CallBack_ProcessInputActionEvent(InputActionEvent* input_action_event, InputManager* input_manager)
 {
+    KeyInfo* key_info = &input_manager->m_key_info[input_action_event->m_key_id];
+    bool is_active = false;
+    Assert( input_action_event->m_key_state != KeyState_Up, "" );
+    switch(input_action_event->m_key_state)
+    {
+    case KeyState_Hold:     is_active = key_info->m_is_hold;        break;
+    case KeyState_Down:     is_active = key_info->m_is_down;        break;
+    case KeyState_Up:       is_active = false;                      break;
+    case KeyState_UpOnce:   is_active = key_info->m_is_up_once;     break;
+    case KeyState_DownOnce: is_active = key_info->m_is_down_once;   break;
+    case KeyState_Toggle:   is_active = key_info->m_is_toggle;      break;
+    }
+    if( is_active )
+    {
+        // EventManager_SendEvent();
+    }
+}
+
+void InputManager_Event_Send(InputManager* input_manager)
+{
+    Queue_ForEach(input_manager->m_input_action_event_queue, CallBack_ProcessInputActionEvent, input_manager);
     for(KeyId key_id=0; key_id<KeyId_Max; key_id++)
     {
         KeyInfo* key_info = &input_manager->m_key_info[key_id];
