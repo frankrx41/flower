@@ -96,6 +96,7 @@ static CB_ComponentCreate_tPtr_tChar Actor_Component_Create_CB_Get(Component com
     case Component_Storage: return Component_Storage_Create;
     default: Assert(false, "");
     }
+    return NULL;
 }
 
 static  CB_ComponentDestroy_Void_tPtr Actor_Component_Destroy_CB_Get(Component component_enum)
@@ -108,6 +109,7 @@ static  CB_ComponentDestroy_Void_tPtr Actor_Component_Destroy_CB_Get(Component c
     case Component_Storage: return Component_Storage_Destroy;
     default: Assert(false, "");
     }
+    return NULL;
 }
 
 static void Actor_Component_Set(Actor* actor, Component component_enum, tptr component)
