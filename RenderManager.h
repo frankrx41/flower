@@ -15,13 +15,11 @@ enum RenderMode
     RenderMode_Gui,
 };
 
-void    RenderManager_Render_ToScreen (RenderManager* render_manager);
-void    RenderManager_Render_ToBackBuffer   (RenderManager* render_manager, vec3 vec, ShaderText* shader_text);
+void    RenderManager_Render_ToScreen       (RenderManager* render_manager);
+void    RenderManager_Render_ToBackBuffer   (RenderManager* render_manager, vec2 offset_vec, ShaderText* shader_text);
 
 void    RenderManager_RenderAllScene        (RenderManager* render_manager, SceneManager* scene_manager);
 
 void    RenderManager_RenderMode_Set        (RenderManager* render_manager, RenderMode render_mode);
-void    RenderManager_OffsetVec_Set         (RenderManager* render_manager, vec2 offset_vec);
-vec2    RenderManager_OffsetVec_Get         (RenderManager* render_manager);
 
 RenderManager* RenderManager_GetInstance();
