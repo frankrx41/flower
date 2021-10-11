@@ -248,14 +248,21 @@ struct RenderManagerWithVec
     vec3            m_vec3;
 };
 
-void CallBack_Render_ShaderText_Plat(ShaderText* shader_text, RenderManagerWithVec* render_manager_with_vec)
+void CallBack_Render_ActorShaderText_Plat(ShaderText* shader_text, Actor* actor)
 {
     if( ShaderText_IsDisable(shader_text) )
     {
         return;
     }
+    vec3 location_vec = vec3_null;
+    if (Actor_Component_Cast(actor, Component_Physics))
+    {
+        location_vec = Actor_Component_Physics_GetLocation(actor);
+    }
 
-    RenderManager_Render_ToBackBuffer(render_manager_with_vec->m_render_manager, render_manager_with_vec->m_vec3, shader_text);
+    ShaderText* shader_text_copy = ShaderText_Create("RenderManager", Vec3_Add(ShaderText_GetVec3(shader_text), location_vec), ShaderText_GetStr(shader_text));
+    RenderManager_Render_ToBackBuffer(RenderManager_GetInstance(), Scene_Render_Offset_Get(Actor_GetScene(actor)), shader_text_copy);
+    ShaderText_Destory(shader_text_copy);
 }
 
 void CallBack_Actor_RenderEachActor(Actor* actor, RenderManager* render_manager)
@@ -265,16 +272,9 @@ void CallBack_Actor_RenderEachActor(Actor* actor, RenderManager* render_manager)
         return;
     }
     RenderComponent* render_component = Actor_Component_Cast(actor, Component_Render);
+    Assert(render_component != false, "");
     if( render_component )
     {
-        vec3 vec = vec3_null;
-        if( Actor_Component_Cast(actor, Component_Physics) )
-        {
-            vec = Actor_Component_Physics_GetLocation(actor);
-        }
-        RenderManagerWithVec render_manager_with_vec;
-        render_manager_with_vec.m_vec3              = vec;
-        render_manager_with_vec.m_render_manager    = render_manager;
-        Queue_ForEach(Component_Render_ShaderText_GetQueue(render_component), (CB_ProcessData_Void_tPtr_tPtr)CallBack_Render_ShaderText_Plat, &render_manager_with_vec);
+        Queue_ForEach(Component_Render_ShaderText_GetQueue(render_component), CallBack_Render_ActorShaderText_Plat, actor);
     }
 }

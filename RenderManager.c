@@ -13,7 +13,7 @@ tptr    RenderManager_PlatformData_Create_Plat  (RenderManager* render_manager, 
 void    RenderManager_PlatformData_Destroy_Plat (RenderManager* render_manager, tptr platform_data);
 void    RenderManager_ToScreen_Plat             (RenderManager* render_manager, tptr platform_data);
 void    RenderManager_SwapBuffer_Plat           (RenderManager* render_manager, tptr platform_data);
-void    RenderManager_Render_ToBackBuffer_Plat  (RenderManager* render_manager, tptr platform_data, vec3 vec, ShaderText* shader_text);
+void    RenderManager_Render_ToBackBuffer_Plat  (RenderManager* render_manager, tptr platform_data, vec2 offset_vec, ShaderText* shader_text);
 
 void    CallBack_Actor_RenderEachActor          (Actor* actor, RenderManager* render_manager);
 
@@ -22,7 +22,6 @@ struct RenderManager
     bool        m_is_initialized;
     RenderMode  m_render_mode;
     tptr        m_platform_data;
-    vec2        m_offset_vec;
 };
 
 RenderManager* RenderManager_Create(const tchar* local_name)
@@ -30,7 +29,6 @@ RenderManager* RenderManager_Create(const tchar* local_name)
     RenderManager* render_manager = MemNew(local_name, RenderManager);
     render_manager->m_platform_data = RenderManager_PlatformData_Create_Plat(render_manager, local_name);
     render_manager->m_is_initialized = true;
-    render_manager->m_offset_vec    = vec2_null;
     return render_manager;
 }
 
@@ -47,9 +45,9 @@ void RenderManager_Render_ToScreen(RenderManager* render_manager)
     RenderManager_SwapBuffer_Plat(render_manager, render_manager->m_platform_data);
 }
 
-void RenderManager_Render_ToBackBuffer(RenderManager* render_manager, vec3 vec, ShaderText* shader_text)
+void RenderManager_Render_ToBackBuffer(RenderManager* render_manager, vec2 offset_vec, ShaderText* shader_text)
 {
-    RenderManager_Render_ToBackBuffer_Plat(render_manager, render_manager->m_platform_data, vec, shader_text);
+    RenderManager_Render_ToBackBuffer_Plat(render_manager, render_manager->m_platform_data, offset_vec, shader_text);
 }
 
 static void CallBack_Render_Scene(Scene* scene, RenderManager* render_manager)
@@ -66,12 +64,3 @@ void RenderManager_RenderAllScene(RenderManager* render_manager, SceneManager* s
     Queue_ForEach(SceneManager_GetSceneQueue(scene_manager), CallBack_Render_Scene, render_manager);
 }
 
-void RenderManager_OffsetVec_Set(RenderManager* render_manager, vec2 offset_vec)
-{
-    render_manager->m_offset_vec = offset_vec;
-}
-
-vec2 RenderManager_OffsetVec_Get(RenderManager* render_manager)
-{
-    return render_manager->m_offset_vec;
-}

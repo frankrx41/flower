@@ -1,15 +1,18 @@
 #pragma once
 
+typedef struct EventInfo EventInfo;
 typedef struct Scene Scene;
 typedef struct Actor Actor;
-typedef enum Event Event;
-typedef struct EventInfo EventInfo;
+typedef struct vec2 vec2;
 typedef union tdata tdata;
+typedef enum Event Event;
 
 typedef bool (*CB_FindData_Bool_tPtr_tPtr)      (const tptr data, const tptr ptr);
 typedef void (*CB_ActorCreate_Void_Actor_tPtr)  (Actor* actor, const tptr ptr);
 typedef void (*CB_SceneDestroy_Void_Scene)      (Scene* scene);
 
+void    Scene_Render_Offset_Set     (Scene* scene, vec2 vec);
+vec2    Scene_Render_Offset_Get     (Scene* scene);
 void    Scene_Destroy_CB_Set        (Scene *scene, CB_SceneDestroy_Void_Scene cb_scene_destroy_void_scene);
 bool    Scene_IsPause               (Scene* scene);
 void    Scene_SetIsPause            (Scene *scene, bool is_pause);

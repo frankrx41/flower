@@ -329,7 +329,7 @@ void Engine_Test5()
     InputManager_InputActionEvent_Add(InputManager_GetInstance(), KeyId_Up, KeyState_Down, Event_Actor_Action_MoveUp);
     InputManager_InputActionEvent_Add(InputManager_GetInstance(), KeyId_Down, KeyState_Down, Event_Actor_Action_MoveDown);
 
-    RenderManager_OffsetVec_Set(RenderManager_GetInstance(), Vec2(0, 10));
+    Scene_Render_Offset_Set(scene, Vec2(0, 10));
 
     SceneManager_Scene_SetCurrent(scene);
 

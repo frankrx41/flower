@@ -15,6 +15,7 @@
 #include "String.h"
 #include "tData.h"
 #include "Storage.h"
+#include "Vec.h"
 
 
 struct Scene
@@ -24,6 +25,7 @@ struct Scene
     String*                     m_local_name;
     Storage*                    m_storage;
     bool                        m_is_pause;
+    vec2                        m_render_offset_vec;
     Queue(Actor*)*              m_child_actor_queue;
     Queue(Actor*)*              m_actor_scene_event_queue_list[Event_Scene_Max-Event_Scene_Min];
     Queue(Actor*)*              m_actor_action_event_queue;
@@ -43,6 +45,7 @@ Scene* Scene_Create(const tchar* local_name)
     scene->m_cb_scene_destroy_void_scene = NULL;
     scene->m_actor_action_event_queue   = Queue_Create(local_name, Actor*);
     scene->m_physics_actor_queue        = Queue_Create(local_name, Actor*);
+    scene->m_render_offset_vec          = vec2_null;
 
     Assert(ARRAY_SIZE(scene->m_actor_scene_event_queue_list) == Event_Scene_Max-Event_Scene_Min, "");
     for(uint32 i=0, max_i = ARRAY_SIZE(scene->m_actor_scene_event_queue_list); i<max_i; i++)
@@ -75,6 +78,18 @@ void Scene_Destroy(Scene* scene)
     String_Del(scene->m_local_name);
     Storage_Destroy(scene->m_storage);
     MemDel(scene);
+}
+
+void Scene_Render_Offset_Set(Scene* scene, vec2 vec)
+{
+    Assert(scene != NULL, "");
+    scene->m_render_offset_vec = vec;
+}
+
+vec2 Scene_Render_Offset_Get(Scene* scene)
+{
+    Assert(scene != NULL, "");
+    return scene->m_render_offset_vec;
 }
 
 static Queue(Actor*)* Scene_EventQueue_Get(Scene* scene, Event event)

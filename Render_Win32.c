@@ -106,10 +106,9 @@ void RenderManager_SwapBuffer_Plat(RenderManager* render_manager, RenderManagerP
     }
 }
 
-void RenderManager_Render_ToBackBuffer_Plat(RenderManager* render_manager, RenderManagerPlatformData* render_manager_platform_data, vec3 vec, ShaderText* shader_text)
+void RenderManager_Render_ToBackBuffer_Plat(RenderManager* render_manager, RenderManagerPlatformData* render_manager_platform_data, vec2 offset_vec, ShaderText* shader_text)
 {
-    const vec2 offset_vec = RenderManager_OffsetVec_Get(render_manager);
-    const vec3 location = Vec3_Add(ShaderText_GetVec3(shader_text), vec);
+    const vec3 location = ShaderText_GetVec3(shader_text);
     const float x = location.m_x + offset_vec.m_x;
     const float y = location.m_y + offset_vec.m_y;
     const tchar* str = ShaderText_GetStr(shader_text);
@@ -125,7 +124,7 @@ void RenderManager_Render_ToBackBuffer_Plat(RenderManager* render_manager, Rende
         }
         else
         {
-            Assert(false, "");
+            Assert(false, "Render out of range!");
         }
     }
 }
