@@ -31,7 +31,7 @@ void    Queue_Sort          (Queue* queue, CB_CompareData_Bool_tPtr_tPtr cb_comp
 #undef Queue
 #define Queue(type)                             struct Queue
 #define Queue_Create(local_name, type)          Queue_Create(local_name, #type)
-#define Queue_Push(type, local_name, queue, reference_data) Queue_Push(local_name, queue, (tptr)reference_data, MACRO_TOSTR(type))
+#define Queue_Push(type, local_name, queue, reference_data) Queue_Push(local_name, queue, (tptr)reference_data, MACRO_TO_STR(type))
 #define Queue_Find(type)                        (type)Queue_Find
 #define Queue_Pop(type)                         (type)Queue_Pop
 #define Queue_Dequeue(type)                     (type)Queue_Dequeue

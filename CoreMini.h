@@ -109,21 +109,21 @@ void    Engine_Profile_Memory   ();
 
 #define _MACRO_REMOVE_BRACKETS(...)  __VA_ARGS__
 #define MACRO_REMOVE_BRACKETS(...)  _MACRO_REMOVE_BRACKETS##__VA_ARGS__
-#define _MACRO_TOSTR(...) #__VA_ARGS__
-#define MACRO_TOSTR(...) _MACRO_TOSTR(__VA_ARGS__)
-#define _MACRO_CONNNECT(a,b)    a##b
-#define MACRO_CONNNECT(a,b)     _MACRO_CONNNECT(a,b)
+#define _MACRO_TO_STR(...)      #__VA_ARGS__
+#define MACRO_TO_STR(...)       _MACRO_TO_STR(__VA_ARGS__)
+#define _MACRO_CONNECT(a,b)     a##b
+#define MACRO_CONNECT(a,b)      _MACRO_CONNECT(a,b)
 
 #define ADDRESS_OF(v)       (&(v))
 #define INT32_SIZEOF(n)     ((sizeof(n) + sizeof(int32) - 1) & ~(sizeof(int32) - 1))
 #define ARRAY_SIZE(a)       (sizeof(a)/sizeof(a[0]))
 
-#define IN_RANGE(x,min,max) ((x)>=(min) && (x)<(max))
+#define IS_IN_RANGE(x,min,max) ((x)>=(min) && (x)<(max))
 
 #if NO_COMPILE_TIME_CHECK
 #define COMPILE_TIME_ASSERT(...)
 #define COMPILE_TIME_REQUIRE(...)
 #else
 #define COMPILE_TIME_ASSERT(must_be_true_condition, msg)    typedef int32 static_assertion[(must_be_true_condition) ? 1 : -1]
-#define COMPILE_TIME_REQUIRE(defined_header_file)           COMPILE_TIME_ASSERT(MACRO_CONNNECT(defined_header_file, _IS_DEFINED), "")
+#define COMPILE_TIME_REQUIRE(defined_header_file)           COMPILE_TIME_ASSERT(MACRO_CONNECT(defined_header_file, _IS_DEFINED), "")
 #endif

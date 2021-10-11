@@ -114,14 +114,14 @@ static CB_ComponentDestroy_Void_tPtr Actor_Component_Destroy_CB_Get(Component co
 
 static void Actor_Component_Set(Actor* actor, Component component_enum, tptr component)
 {
-    Assert(IN_RANGE(component_enum, Component_Min, Component_Max), "");
+    Assert(IS_IN_RANGE(component_enum, Component_Min, Component_Max), "");
     actor->m_components[component_enum - Component_Min] = component;
 }
 
 void Actor_Component_New(Actor* actor, Component component_enum)
 {
     Assert(actor != NULL, "");
-    Assert(IN_RANGE(component_enum, Component_Min, Component_Max), "");
+    Assert(IS_IN_RANGE(component_enum, Component_Min, Component_Max), "");
 
     const tptr component = Actor_Component_Create_CB_Get(component_enum)(Actor_GetLocalName(actor));
     Actor_Component_Set(actor, component_enum, component);
@@ -130,7 +130,7 @@ void Actor_Component_New(Actor* actor, Component component_enum)
 void Actor_Component_Del(Actor* actor, Component component_enum)
 {
     Assert(actor != NULL, "");
-    Assert(IN_RANGE(component_enum, Component_Min, Component_Max), "");
+    Assert(IS_IN_RANGE(component_enum, Component_Min, Component_Max), "");
 
     const tptr component = Actor_Component_Cast(actor, component_enum);
     Assert(component != NULL, "You try to delete a not exist component!");
@@ -141,7 +141,7 @@ void Actor_Component_Del(Actor* actor, Component component_enum)
 
 tptr Actor_Component_Cast(Actor* actor, Component component_enum)
 {
-    Assert(IN_RANGE(component_enum, Component_Min, Component_Max), "");
+    Assert(IS_IN_RANGE(component_enum, Component_Min, Component_Max), "");
     return actor->m_components[component_enum - Component_Min];
 }
 

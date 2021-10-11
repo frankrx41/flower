@@ -146,7 +146,7 @@ void Actor_Component_Render_ShaderText_ClearAll(Actor* actor)
 // Component_Action
 void Actor_Component_Action_EventRespond_Add(Actor* actor, Event event, CB_RespondCondition_Bool_Actor_EventInfo cb_respond_condition_void_actor_eventinfo, CB_RespondAction_Void_Actor_EventInfo cb_respond_action_void_actor_eventinfo)
 {
-    Assert(IN_RANGE(event, Event_Scene_Min, Event_Scene_Max) || IN_RANGE(event, Event_Actor_Min, Event_Actor_Max), "");
+    Assert(IS_IN_RANGE(event, Event_Scene_Min, Event_Scene_Max) || IS_IN_RANGE(event, Event_Actor_Min, Event_Actor_Max), "");
     Assert(actor != NULL, "");
 
     ActionComponent* action_component = Actor_Component_Cast(actor, Component_Action);
@@ -154,11 +154,11 @@ void Actor_Component_Action_EventRespond_Add(Actor* actor, Event event, CB_Respo
     if( action_component )
     {
         Component_Action_EventRespond_Add(action_component, event, cb_respond_condition_void_actor_eventinfo, cb_respond_action_void_actor_eventinfo);
-        if(IN_RANGE(event, Event_Scene_Min, Event_Scene_Max))
+        if(IS_IN_RANGE(event, Event_Scene_Min, Event_Scene_Max))
         {
             Scene_SceneEventGroup_Actor_Add(Actor_GetScene(actor), actor, event);
         }
-        else if(IN_RANGE(event, Event_Actor_Min, Event_Actor_Max))
+        else if(IS_IN_RANGE(event, Event_Actor_Min, Event_Actor_Max))
         {
             Scene_ActionEventGroup_Actor_Add(Actor_GetScene(actor), actor, event);
         }

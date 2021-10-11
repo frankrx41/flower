@@ -79,7 +79,7 @@ void Scene_Destroy(Scene* scene)
 
 static Queue(Actor*)* Scene_EventQueue_Get(Scene* scene, Event event)
 {
-    Assert( IN_RANGE(event, Event_Scene_Min, Event_Scene_Max), "" );
+    Assert(IS_IN_RANGE(event, Event_Scene_Min, Event_Scene_Max), "" );
 
     return scene->m_actor_scene_event_queue_list[event-Event_Scene_Min];
 }
@@ -133,7 +133,7 @@ void Scene_SceneEvent_Send_Actor(Scene* scene, EventInfo* event_info)
     Event event = event_info->m_event;
 
     // Scene event
-    Assert(IN_RANGE(event, Event_Scene_Min, Event_Scene_Max), "");
+    Assert(IS_IN_RANGE(event, Event_Scene_Min, Event_Scene_Max), "");
     Queue_ForEach(Scene_EventQueue_Get(scene, event), (CB_ProcessData_Void_tPtr_tPtr)CallBack_Actor_ProcessSceneEvent, event_info);
 }
 
@@ -141,19 +141,19 @@ void Scene_ActionEvent_Send_Actor(Scene* scene, EventInfo* event_info)
 {
     Event event = event_info->m_event;
 
-    Assert(IN_RANGE(event, Event_Actor_Action_Min, Event_Actor_Action_Max), "");
+    Assert(IS_IN_RANGE(event, Event_Actor_Action_Min, Event_Actor_Action_Max), "");
     Queue_ForEach(scene->m_actor_action_event_queue, CallBack_Actor_ProcessActionEvent, event_info);
 }
 
 void Scene_SceneEventGroup_Actor_Add(Scene* scene, Actor* actor, Event event)
 {
-    Assert(IN_RANGE(event, Event_Scene_Min, Event_Scene_Max), "Invalid event!");
+    Assert(IS_IN_RANGE(event, Event_Scene_Min, Event_Scene_Max), "Invalid event!");
     Queue_Push(Actor*, NULL, Scene_EventQueue_Get(scene, event), actor);
 }
 
 void Scene_ActionEventGroup_Actor_Add(Scene* scene, Actor* actor, Event event)
 {
-    Assert(IN_RANGE(event, Event_Actor_Action_Min, Event_Actor_Action_Max), "Invalid event!");
+    Assert(IS_IN_RANGE(event, Event_Actor_Action_Min, Event_Actor_Action_Max), "Invalid event!");
     Queue_Push(Actor*, NULL, scene->m_actor_action_event_queue, actor);
 }
 
