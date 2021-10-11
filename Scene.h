@@ -17,8 +17,16 @@ void    Scene_SetIsPause            (Scene *scene, bool is_pause);
 Actor*  Scene_Actor_Create          (const tchar* local_name, Scene* scene, CB_ActorCreate_Void_Actor_tPtr cb_actor_create_void_actor_tptr, tptr ptr);
 void    Scene_Actor_Destroy         (Scene* scene, CB_FindData_Bool_tPtr_tPtr cb_find_actor_bool_tptr_tptr, tptr ptr);
 void    Scene_Actor_Destroy_All     (Scene* scene);
-void    Scene_Actor_SendEvent       (Scene* scene, EventInfo* event_info);
-void    Scene_Actor_AddEventGroup   (Scene* scene, Actor* actor, Event event);
+
+void    Scene_SceneEvent_Send_Actor (Scene* scene, EventInfo* event_info);
+void    Scene_ActionEvent_Send_Actor(Scene* scene, EventInfo* event_info);
+
+void    Scene_SceneEventGroup_Actor_Add     (Scene* scene, Actor* actor, Event event);
+void    Scene_ActionEventGroup_Actor_Add    (Scene* scene, Actor* actor, Event event);
+void    Scene_PhysicsGroup_Actor_Add        (Scene* scene, Actor* actor);
+void    Scene_PhysicsGroup_Actor_Remove     (Scene* scene, Actor* actor);
+void    Scene_PhysicsActor_Update           (Scene* scene, float delta_seconds);
+
 
 void    Scene_Storage_StoreData         (Scene* scene, crc32 variable, tdata data);
 bool    Scene_Storage_IsExistVariable   (Scene* scene, crc32 variable);

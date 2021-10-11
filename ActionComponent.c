@@ -58,7 +58,7 @@ void Component_Action_EventRespond_Add(ActionComponent* action_component, Event 
     Assert(action_component != NULL, "");
     EventRespond* event_respond = MemNew(String_CStr(action_component->m_local_name), EventRespond);
     event_respond->m_event              = event;
-    event_respond->m_cb_respond_action_void_actor_eventinfo      = cb_respond_action_void_actor_eventinfo;
+    event_respond->m_cb_respond_action_void_actor_eventinfo     = cb_respond_action_void_actor_eventinfo;
     event_respond->m_cb_respond_condition_bool_actor_eventinfo  = cb_respond_condition_bool_actor_eventinfo;
     Queue_Push(EventRespond*, NULL, action_component->m_event_respond_queue, event_respond);
 }
@@ -82,7 +82,7 @@ void Component_Action_EventRespond_Clear(ActionComponent* action_component)
 }
 
 
-void CallBack_Actor_ProcessEachActorEvent(Actor* actor, const EventInfo* event_info)
+void CallBack_Actor_ProcessSceneEvent(Actor* actor, const EventInfo* event_info)
 {
     ActionComponent* action_component = Actor_Component_Cast(actor, Component_Action);
     Assert(action_component != NULL, "");
@@ -104,3 +104,28 @@ void CallBack_Actor_ProcessEachActorEvent(Actor* actor, const EventInfo* event_i
         event_respond->m_cb_respond_action_void_actor_eventinfo(actor, event_info);
     }
 }
+
+void CallBack_Actor_ProcessActionEvent(Actor* actor, const EventInfo* event_info)
+{
+    ActionComponent* action_component = Actor_Component_Cast(actor, Component_Action);
+    Assert(action_component != NULL, "");
+
+    EventRespond* event_respond = Queue_Find(EventRespond*)(action_component->m_event_respond_queue, (CB_FindData_Bool_tPtr_tPtr)CallBack_EventRespond_FindEvent, (tptr)event_info->m_event);
+
+    Assert(event_respond != NULL, "");
+    // TODO: if
+    Assert(event_respond->m_cb_respond_action_void_actor_eventinfo != NULL, "");
+
+    if (event_respond->m_cb_respond_condition_bool_actor_eventinfo)
+    {
+        if (event_respond->m_cb_respond_condition_bool_actor_eventinfo(actor, event_info))
+        {
+            event_respond->m_cb_respond_action_void_actor_eventinfo(actor, event_info);
+        }
+    }
+    else
+    {
+        event_respond->m_cb_respond_action_void_actor_eventinfo(actor, event_info);
+    }
+}
+

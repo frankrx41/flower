@@ -84,30 +84,28 @@ void Actor_Component_Physics_SetAcceleration(Actor* actor, vec3 acceleration)
     Component_Physics_SetAcceleration(physics_component, acceleration);
 }
 
-void CallBack_Event_Scene_Physics_Update(Actor* actor, const EventInfo* event_info)
+void CallBack_Actor_Component_Physics_Simulate(Actor* actor, float* delta_seconds)
 {
     PhysicsComponent* physics_component = Actor_Component_Cast(actor, Component_Physics);
     Assert(physics_component != NULL, "");
-    Component_Physics_Simulate(physics_component, event_info->m_delta_seconds);
+    Component_Physics_Simulate(physics_component, *delta_seconds);
 }
 
-void Actor_Component_Physics_SetEnableSimulate(Actor* actor, bool is_enable_simulater)
+void Actor_Component_Physics_SetEnableSimulate(Actor* actor, bool is_enable_simulate)
 {
     Assert(actor != NULL, "");
     PhysicsComponent* physics_component = Actor_Component_Cast(actor, Component_Physics);
     Assert(physics_component != NULL, "");
 
-    Component_Physics_SetEnableSimulate(physics_component, is_enable_simulater);
+    Component_Physics_SetEnableSimulate(physics_component, is_enable_simulate);
 
-    ActionComponent* action_component = Actor_Component_Cast(actor, Component_Action);
-    Assert(action_component != NULL, "You need ActionComponent to do physics simulate");
-    if( is_enable_simulater )
+    if( is_enable_simulate )
     {
-        Actor_Component_Action_EventRespond_Add(actor, Event_Scene_Physics_Update, NULL, CallBack_Event_Scene_Physics_Update);
+        Scene_PhysicsGroup_Actor_Add(Actor_GetScene(actor), actor);
     }
     else
     {
-        Actor_Component_Action_EventRespond_Del(actor, Event_Scene_Physics_Update);
+        Scene_PhysicsGroup_Actor_Remove(Actor_GetScene(actor), actor);
     }
 }
 
@@ -156,7 +154,14 @@ void Actor_Component_Action_EventRespond_Add(Actor* actor, Event event, CB_Respo
     if( action_component )
     {
         Component_Action_EventRespond_Add(action_component, event, cb_respond_condition_void_actor_eventinfo, cb_respond_action_void_actor_eventinfo);
-        Scene_Actor_AddEventGroup(Actor_GetScene(actor), actor, event);
+        if(IN_RANGE(event, Event_Scene_Min, Event_Scene_Max))
+        {
+            Scene_SceneEventGroup_Actor_Add(Actor_GetScene(actor), actor, event);
+        }
+        else if(IN_RANGE(event, Event_Actor_Min, Event_Actor_Max))
+        {
+            Scene_ActionEventGroup_Actor_Add(Actor_GetScene(actor), actor, event);
+        }
     }
 }
 

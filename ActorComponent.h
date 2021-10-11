@@ -17,7 +17,8 @@ vec3    Actor_Component_Physics_GetVelocity         (Actor* actor);
 void    Actor_Component_Physics_SetVelocity         (Actor* actor, vec3 velocity);
 vec3    Actor_Component_Physics_GetAcceleration     (Actor* actor);
 void    Actor_Component_Physics_SetAcceleration     (Actor* actor, vec3 acceleration);
-void    Actor_Component_Physics_SetEnableSimulate   (Actor* actor, bool is_enable_simulater);
+void    CallBack_Actor_Component_Physics_Simulate   (Actor* actor, float* delta_seconds);
+void    Actor_Component_Physics_SetEnableSimulate   (Actor* actor, bool is_enable_simulate);
 
 
 ShaderText* Actor_Component_Render_ShaderText_Add       (Actor* actor, vec3 vec, const tchar* str);

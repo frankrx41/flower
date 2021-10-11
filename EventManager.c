@@ -51,12 +51,11 @@ void EventInfo_Destroy(EventInfo* event_info)
 static void CallBack_SendEvent_Scene_Tick(Scene* scene, EventInfo* event_info)
 {
     EventInfo* event_info_scene_tick = EventInfo_Create(Event_Scene_Tick, scene, NULL, KeyId_Null, event_info->m_delta_seconds);
-    Scene_Actor_SendEvent(scene, event_info_scene_tick);
+    Scene_SceneEvent_Send_Actor(scene, event_info_scene_tick);
     EventInfo_Destroy(event_info_scene_tick);
-    
-    EventInfo* event_info_scene_physics_update = EventInfo_Create(Event_Scene_Physics_Update, scene, NULL, KeyId_Null, event_info->m_delta_seconds);
-    Scene_Actor_SendEvent(scene, event_info_scene_physics_update);
-    EventInfo_Destroy(event_info_scene_physics_update);
+
+    // Scene physics update
+    Scene_PhysicsActor_Update(scene, event_info->m_delta_seconds);
 }
 
 void EventManager_SendEvent_Tick(EventManager* event_manager, Event event, float delta_seconds)
@@ -70,7 +69,7 @@ void EventManager_SendEvent_Tick(EventManager* event_manager, Event event, float
 static void CallBack_SendEvent_Actor_Action(Scene* scene, EventInfo* event_info)
 {
     EventInfo* event_info_actor_action = EventInfo_Create(event_info->m_event, scene, NULL, KeyId_Null, event_info->m_delta_seconds);
-    Scene_Actor_SendEvent(scene, event_info_actor_action);
+    Scene_ActionEvent_Send_Actor(scene, event_info_actor_action);
     EventInfo_Destroy(event_info_actor_action);
 }
 
