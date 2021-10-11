@@ -170,7 +170,7 @@ void InputManager_Keys_UpdateState(InputManager* input_manager, float delta_seco
                 }
             }
 
-            float down_second_time = key_info->m_down_seconds;
+            const float down_second_time = key_info->m_down_seconds;
             if( down_second_time > input_manager->m_hold_need_seconds )
             {
                 key_info->m_is_hold = true;

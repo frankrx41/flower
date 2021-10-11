@@ -9,7 +9,7 @@ bool    Str_IsEmpty         (const tchar* str);
 bool    Str_IsSame          (const tchar* str1, const tchar* str2);
 tsize   Str_Copy            (tchar* dest, const tchar* from, tsize length);
 void    Str_FormatArgs      (tchar* buffer, tsize length, const tchar* format, va_list args);
-void    Str_Jion            (tchar* buffer, uint32 count, ...);
+void    Str_Join            (tchar* buffer, uint32 count, ...);
 
 tsize   String_GetLength    (const String* string);
 crc32   String_GetCrc       (const String* string);

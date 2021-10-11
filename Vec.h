@@ -28,6 +28,8 @@ struct aabb
 
 vec3    Vec3        (float x, float y, float z);
 vec3    Vec3_Add    (vec3 v1, vec3 v2);
+bool    Vec3_IsZero (vec3 v);
+
 vec2    Vec2        (float x, float y);
 
 vec3    Vec3_Multiply   (vec3 v, float k);

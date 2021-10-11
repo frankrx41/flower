@@ -125,7 +125,7 @@ tptr Queue_Pop(Queue* queue)
     }
 
     Node* last_node = queue->m_head->m_node_prev;
-    tptr reference_data = last_node->m_reference_data;
+    const tptr reference_data = last_node->m_reference_data;
 
     Node* last_node_prev = last_node->m_node_prev;
     Node* last_node_next = last_node->m_node_next;
@@ -145,7 +145,7 @@ tptr Queue_Dequeue(Queue* queue)
     }
 
     Node* first_node = queue->m_head->m_node_next;
-    tptr reference_data = first_node->m_reference_data;
+    const tptr reference_data = first_node->m_reference_data;
 
     Node* first_node_prev = first_node->m_node_prev;
     Node* first_node_next = first_node->m_node_next;
@@ -188,7 +188,7 @@ static tptr Queue_RemoveNode(Queue* queue, Node* node)
     next_node->m_node_prev = prev_node;
     prev_node->m_node_next = next_node;
 
-    tptr reference_data = node->m_reference_data;
+    const tptr reference_data = node->m_reference_data;
     MemDel(node);
 
     queue->m_length --;

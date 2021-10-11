@@ -70,8 +70,7 @@ static uint32 MemoryManager_IncreaseAllocID(MemoryManager* memory_manager)
 
 static MemoryBlock* CastToMemoryBlock(tptr ptr)
 {
-    MemoryBlock* memory_block;
-    memory_block = (MemoryBlock*)((tchar*)ptr - OFFSET_OF(MemoryBlock, m_byte));
+    MemoryBlock* memory_block = (MemoryBlock*)((tchar*)ptr - OFFSET_OF(MemoryBlock, m_byte));
     Assert(memory_block->m_flag == MAGIC_NUMBER, "");
     return memory_block;
 };
@@ -264,7 +263,7 @@ tsize Memory_GetSize(const tptr ptr)
 bool Memory_IsInBounds(tptr head_ptr, tptr check_ptr)
 {
     MemoryBlock* memory_block = CastToMemoryBlock(head_ptr);
-    tsize size_offset = tSize(check_ptr) - tSize(head_ptr);
+    const tsize size_offset = tSize(check_ptr) - tSize(head_ptr);
     return size_offset < memory_block->m_alloc_size;
 }
 

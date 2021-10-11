@@ -142,7 +142,7 @@ bool Str_IsSame(const tchar* str1, const tchar* str2)
 tsize Str_Copy(tchar* dest, const tchar* from, tsize length)
 {
     uint32 i=0;
-    tsize from_str_length = Str_CalcLength(from);
+    const tsize from_str_length = Str_CalcLength(from);
     if( length == 0 )
     {
         length = from_str_length;
@@ -255,14 +255,14 @@ String* String_New(const tchar* local_name, const tchar* str, bool is_const)
     string->m_is_const      = false;
 
     {
-        tsize local_name_length = Str_CalcLength(local_name);
+        const tsize local_name_length = Str_CalcLength(local_name);
         string->m_str_local_name = MemNewSize(local_name, local_name_length+1);
         Str_Copy(string->m_str_local_name, local_name, local_name_length);
     }
 
     if( !Str_IsEmpty(str) )
     {
-        int32 str_length = Str_CalcLength(str);
+        const int32 str_length = Str_CalcLength(str);
         String_Copy(string, str, str_length);
     }
 

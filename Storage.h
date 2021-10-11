@@ -5,7 +5,7 @@ typedef union tdata tdata;
 
 /*
 Storage will cache the variable that pass in `Storage_IsExistVariable`
-You can use `Storage_IsExistVariable` before `Storage_ReadXXX`
+You can use `Storage_IsExistVariable` before `Storage_ReadData`
 */
 
 Storage*    Storage_Create          (const tchar* local_name);

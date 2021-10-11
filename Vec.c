@@ -21,6 +21,11 @@ vec3 Vec3_Add(vec3 v1, vec3 v2)
                 v1.m_z + v2.m_z);
 }
 
+bool Vec3_IsZero(vec3 v)
+{
+    return v.m_x == 0 && v.m_y == 0 && v.m_z == 0;
+}
+
 vec2 Vec2(float x, float y)
 {
     vec2 vec;

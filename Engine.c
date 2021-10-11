@@ -13,7 +13,6 @@
 #include "SceneManager.h"
 
 #define LOCAL_NAME          "GPYM"
-#define LOCAL_NAME_EVENT    "Event"
 
 typedef struct SceneManager SceneManager;
 typedef struct Engine   Engine;
