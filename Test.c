@@ -273,6 +273,22 @@ void tData_Test0()
 }
 
 ////////////////////////////////////////////////////////////////////////////////
+static bool is_scene_destroy_callback = false;
+void CallBack_SceneDesrtoy(Scene* scene)
+{
+    is_scene_destroy_callback = true;
+}
+
+void Scene_Test0()
+{
+    Scene* scene = SceneManager_Scene_Create(__FUNCTION__);
+    Scene_Destroy_CB_Set(scene, CallBack_SceneDesrtoy);
+
+    SceneManager_Scene_Destroy(scene);
+    Assert(is_scene_destroy_callback == true, "");
+}
+
+////////////////////////////////////////////////////////////////////////////////
 void CallBack_ActorOnEvent5(Actor* actor, const EventInfo* event_info)
 {
     switch(event_info->m_event)
@@ -635,6 +651,8 @@ void Engine_Debug_UnitTesting()
         Actor_Test2,
         Actor_Test1,
         Actor_Test0,
+
+        Scene_Test0,
 
         Engine_Test5,
         Engine_Test4,

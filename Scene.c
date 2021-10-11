@@ -30,6 +30,8 @@ struct Scene
     Queue(Actor*)*              m_physics_actor_queue;
 };
 
+Actor* Actor_Create(const tchar* local_name, Scene* scene, uint32 id, CB_ActorCreate_Void_Actor_tPtr cb_actor_create_void_actor_tptr, tptr ptr);
+
 Scene* Scene_Create(const tchar* local_name)
 {
     Scene* scene = MemNew(local_name, Scene);

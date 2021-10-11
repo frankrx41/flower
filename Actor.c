@@ -99,7 +99,7 @@ static CB_ComponentCreate_tPtr_tChar Actor_Component_Create_CB_Get(Component com
     return NULL;
 }
 
-static  CB_ComponentDestroy_Void_tPtr Actor_Component_Destroy_CB_Get(Component component_enum)
+static CB_ComponentDestroy_Void_tPtr Actor_Component_Destroy_CB_Get(Component component_enum)
 {
     switch (component_enum)
     {
