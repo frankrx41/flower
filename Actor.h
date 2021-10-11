@@ -8,7 +8,7 @@ typedef void (*CB_ActorCreate_Void_Actor_tPtr)  (Actor* actor, tptr ptr);
 typedef void (*CB_ActorDestroy_Void_Actor)      (Actor* actor);
 
 Actor*  Actor_Create            (const tchar* local_name, Scene* scene, uint32 id, CB_ActorCreate_Void_Actor_tPtr cb_actor_create_void_actor_tptr, tptr ptr);
-void    Actor_Set_DestroyCB     (Actor* actor, CB_ActorDestroy_Void_Actor cb_actor_destroy_void_actor);
+void    Actor_Destroy_CB_Set    (Actor* actor, CB_ActorDestroy_Void_Actor cb_actor_destroy_void_actor);
 void    Actor_Destroy           (Actor* actor);
 
 bool    Actor_IsPause           (Actor* actor);

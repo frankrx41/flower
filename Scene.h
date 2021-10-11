@@ -8,8 +8,10 @@ typedef union tdata tdata;
 
 typedef bool (*CB_FindData_Bool_tPtr_tPtr)      (const tptr data, const tptr ptr);
 typedef void (*CB_ActorCreate_Void_Actor_tPtr)  (Actor* actor, const tptr ptr);
+typedef void (*CB_SceneDestroy_Void_Scene)      (Scene* scene);
 
-bool    Scene_IsPause               (Scene *scene);
+void    Scene_Destroy_CB_Set        (Scene *scene, CB_SceneDestroy_Void_Scene cb_scene_destroy_void_scene);
+bool    Scene_IsPause               (Scene* scene);
 void    Scene_SetIsPause            (Scene *scene, bool is_pause);
 
 Actor*  Scene_Actor_Create          (const tchar* local_name, Scene* scene, CB_ActorCreate_Void_Actor_tPtr cb_actor_create_void_actor_tptr, tptr ptr);

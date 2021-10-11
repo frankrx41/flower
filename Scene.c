@@ -17,13 +17,14 @@
 
 struct Scene
 {
-    uint32          m_alloc_actor_id;
-    String*         m_local_name;
-    Storage*        m_storage;
-    bool            m_is_pause;
-    Queue(Actor*)*  m_actor_queue;
-    Queue(Actor*)*  m_actor_scene_event_queue_list[Event_Scene_Max-Event_Scene_Min];
-    Queue(Actor*)*  m_actor_action_event_queue_list[Event_Actor_Action_Max-Event_Actor_Action_Min];
+    uint32                      m_alloc_actor_id;
+    CB_SceneDestroy_Void_Scene  m_cb_scene_destroy_void_scene;
+    String*                     m_local_name;
+    Storage*                    m_storage;
+    bool                        m_is_pause;
+    Queue(Actor*)*              m_actor_queue;
+    Queue(Actor*)*              m_actor_scene_event_queue_list[Event_Scene_Max-Event_Scene_Min];
+    Queue(Actor*)*              m_actor_action_event_queue_list[Event_Actor_Action_Max-Event_Actor_Action_Min];
 };
 
 Scene* Scene_Create(const tchar* local_name)
@@ -34,6 +35,7 @@ Scene* Scene_Create(const tchar* local_name)
     scene->m_local_name     = String_New(local_name, local_name, true);
     scene->m_storage        = Storage_Create(local_name);
     scene->m_is_pause       = false;
+    scene->m_cb_scene_destroy_void_scene = NULL;
 
     Assert(ARRAY_SIZE(scene->m_actor_scene_event_queue_list) == Event_Scene_Max-Event_Scene_Min, "");
     for(uint32 i=0, max_i = ARRAY_SIZE(scene->m_actor_scene_event_queue_list); i<max_i; i++)
@@ -52,6 +54,13 @@ Scene* Scene_Create(const tchar* local_name)
 
 void Scene_Destroy(Scene* scene)
 {
+    Assert(scene != false, "");
+
+    if( scene->m_cb_scene_destroy_void_scene )
+    {
+        scene->m_cb_scene_destroy_void_scene(scene);
+    }
+
     Queue_Destroy(scene->m_actor_queue, Actor_Destroy);
     for(uint32 i=0, max_i=ARRAY_SIZE(scene->m_actor_scene_event_queue_list); i<max_i; i++)
     {
@@ -80,6 +89,11 @@ static Queue(Actor*)* Scene_EventQueue_Get(Scene* scene, Event event)
     }
     Assert( false , "");
     return NULL;
+}
+
+void Scene_Destroy_CB_Set(Scene* scene, CB_SceneDestroy_Void_Scene cb_scene_destroy_void_scene)
+{
+    scene->m_cb_scene_destroy_void_scene = cb_scene_destroy_void_scene;
 }
 
 bool Scene_IsPause(Scene* scene)

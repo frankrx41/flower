@@ -46,7 +46,7 @@ Actor* Actor_Create(const tchar* local_name, Scene* scene, uint32 id, CB_ActorCr
     return actor;
 }
 
-void Actor_Set_DestroyCB(Actor* actor, CB_ActorDestroy_Void_Actor cb_actor_destroy_void_actor)
+void Actor_Destroy_CB_Set(Actor* actor, CB_ActorDestroy_Void_Actor cb_actor_destroy_void_actor)
 {
     actor->m_cb_actor_destroy_void_actor = cb_actor_destroy_void_actor;
 }
