@@ -90,6 +90,9 @@
     <ClCompile Include="Thread_Win32.c">
       <Filter>Platform\Win32</Filter>
     </ClCompile>
+    <ClCompile Include="Task.c">
+      <Filter>Engine\Task</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CoreMini.h" />
@@ -166,6 +169,9 @@
       <Filter>Engine\Thread</Filter>
     </ClInclude>
     <ClInclude Include="TaskManager.h">
+      <Filter>Engine\Task</Filter>
+    </ClInclude>
+    <ClInclude Include="Task.h">
       <Filter>Engine\Task</Filter>
     </ClInclude>
   </ItemGroup>

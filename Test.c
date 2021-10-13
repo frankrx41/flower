@@ -4,6 +4,7 @@
 
 #include "Event.h"
 #include "KeyId.h"
+#include "Task.h"
 
 #include "MemoryManager.h"
 #include "RenderManager.h"
@@ -257,22 +258,18 @@ void Actor_Test0()
 ////////////////////////////////////////////////////////////////////////////////
 void CallBack_TaskRun0(Task* task, tptr ptr)
 {
-
+    volatile int foo = 1;
 }
 
 void Task_Test0()
 {
-    TaskManager* task_manager = TaskManager_Create(__FUNCTION__);
+    Task* task = TaskManager_Task_Add(TaskManager_GetInstance(), __FUNCTION__, 4, false, CallBack_TaskRun0, NULL);
 
-    Task* task = TaskManager_Task_Add(task_manager, __FUNCTION__, 10, false, CallBack_TaskRun0, NULL);
-
-    while(!task->m_is_finish)
+    while(!Task_IsFinish(task))
     {
         ;
     }
     Task_Destroy(task);
-
-    TaskManager_Destroy(task_manager);
 }
 
 ////////////////////////////////////////////////////////////////////////////////

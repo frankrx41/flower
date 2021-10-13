@@ -87,6 +87,7 @@
     <ClCompile Include="Input_Win32.c" />
     <ClCompile Include="PhysicsComponent.c" />
     <ClCompile Include="RenderComponent.c" />
+    <ClCompile Include="Task.c" />
     <ClCompile Include="TaskManager.c" />
     <ClCompile Include="tData.c" />
     <ClCompile Include="Debug_Win32.c" />
@@ -118,6 +119,7 @@
     <ClInclude Include="ActorComponent.h" />
     <ClInclude Include="Component.h" />
     <ClInclude Include="CoreMini.h" />
+    <ClInclude Include="Task.h" />
     <ClInclude Include="TaskManager.h" />
     <ClInclude Include="tData.h" />
     <ClInclude Include="Engine.h" />

@@ -1,5 +1,7 @@
 #include "CoreMini.h"
 
+#include "Task.h"
+
 #include "MemoryManager.h"
 #include "TaskManager.h"
 
@@ -38,26 +40,6 @@ void TaskManager_Destroy(TaskManager* task_manager)
     MemDel(task_manager);
 }
 
-/*
-You should delete task_data in your task_run function
-*/
-Task* Task_Create(const tchar* local_name, uint32 priority, bool is_auto_free, CB_TaskRun_Void_Task_tPtr cb_task_run_void_task_tptr, tptr task_data)
-{
-    Task* task = MemNew(local_name, Task);
-
-    task->m_priority                    = priority;
-    task->m_is_auto_free                = is_auto_free;
-    task->m_cb_task_run_void_task_tptr  = cb_task_run_void_task_tptr;
-    task->m_task_data                   = task_data;
-    task->m_is_finish                   = false;
-    task->m_is_running                  = false;
-    return task;
-}
-
-void Task_Destroy(Task* task)
-{
-    MemDel(task);
-}
 
 Task* TaskManager_Task_Add(TaskManager* task_manager, const tchar* local_name, uint32 priority, bool is_auto_free, CB_TaskRun_Void_Task_tPtr cb_task_run_void_task_tptr, tptr task_data)
 {
@@ -65,9 +47,10 @@ Task* TaskManager_Task_Add(TaskManager* task_manager, const tchar* local_name, u
 
     Queue_Push(Task*, local_name, task_manager->m_task_queue, task);
 
-    if( task->m_is_auto_free )
+    if( is_auto_free )
     {
-        return NULL;
+        // Maybe you should not keep the handle if auto free
+        // return NULL;
     }
 
     return task;
@@ -79,22 +62,10 @@ void TaskManager_RunTask(Thread* thread, TaskManager* task_manager)
     {
         if (!Queue_IsEmpty(task_manager->m_task_queue))
         {
-            Task* task = Queue_Pop(Task*)(task_manager->m_task_queue);
-            if (task->m_priority == 0)
-            {
-                task->m_is_running  = true;
-                task->m_cb_task_run_void_task_tptr(task, task->m_task_data);
-                task->m_is_finish   = true;
-                task->m_is_running  = false;
+            Task* task = Queue_Dequeue(Task*)(task_manager->m_task_queue);
 
-                if( task->m_is_auto_free )
-                {
-                    Task_Destroy(task);
-                }
-            }
-            else
+            if( !Task_TryRun(task) )
             {
-                task->m_priority -= 1;
                 Queue_Push(Task*, String_CStr(task_manager->m_local_name), task_manager->m_task_queue, task);
             }
         }

@@ -11,10 +11,10 @@
 #include "EventManager.h"
 #include "InputManager.h"
 #include "SceneManager.h"
+#include "TaskManager.h"
 
 #define LOCAL_NAME          "GPYM"
 
-typedef struct SceneManager SceneManager;
 typedef struct Engine   Engine;
 
 struct Engine
@@ -29,6 +29,7 @@ struct Engine
     EventManager*   m_event_manager;
     SceneManager*   m_scene_manager;
     InputManager*   m_input_manager;
+    TaskManager*    m_task_manager;
 };
 
 static Engine global_engine;
@@ -45,6 +46,8 @@ SceneManager*       SceneManager_Create     (const tchar* local_name);
 void                SceneManager_Destroy    (SceneManager* scene_manager);
 InputManager*       InputManager_Create     (const tchar* local_name);
 void                InputManager_Destroy    (InputManager* input_manager);
+TaskManager*        TaskManager_Create      (const tchar* local_name);
+void                TaskManager_Destroy     (TaskManager* task_manager);
 
 void                Engine_Debug_Memory_Check_Leak          ();
 void                Engine_Debug_Memory_Static_Check_Leak   ();
@@ -65,6 +68,7 @@ void Engine_Initialize()
     engine->m_event_manager     = EventManager_Create("EventManager");
     engine->m_scene_manager     = SceneManager_Create("SceneManager");
     engine->m_input_manager     = InputManager_Create("InputManager");
+    engine->m_task_manager      = TaskManager_Create("TaskManager");
 
     engine->m_is_initialized    = true;
     engine->m_is_exit           = false;
@@ -102,6 +106,7 @@ void Engine_UnInitialize()
     EventManager_Destroy(engine->m_event_manager);
     SceneManager_Destroy(engine->m_scene_manager);
     InputManager_Destroy(engine->m_input_manager);
+    TaskManager_Destroy(engine->m_task_manager);
 
     Engine_Profile_Memory();
     Engine_Debug_Memory_Check_Leak();
@@ -156,3 +161,8 @@ InputManager* InputManager_GetInstance()
     return Engine_GetInstance()->m_input_manager;
 }
 
+// TaskManager
+TaskManager* TaskManager_GetInstance()
+{
+    return Engine_GetInstance()->m_task_manager;
+}
