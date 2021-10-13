@@ -87,6 +87,7 @@
     <ClCompile Include="Input_Win32.c" />
     <ClCompile Include="PhysicsComponent.c" />
     <ClCompile Include="RenderComponent.c" />
+    <ClCompile Include="TaskManager.c" />
     <ClCompile Include="tData.c" />
     <ClCompile Include="Debug_Win32.c" />
     <ClCompile Include="Engine.c" />
@@ -105,6 +106,8 @@
     <ClCompile Include="String.c" />
     <ClCompile Include="String_Win32.c" />
     <ClCompile Include="Test.c" />
+    <ClCompile Include="Thread.c" />
+    <ClCompile Include="Thread_Win32.c" />
     <ClCompile Include="TimingManager.c" />
     <ClCompile Include="Timing_Win32.c" />
     <ClCompile Include="Vec.c" />
@@ -115,6 +118,7 @@
     <ClInclude Include="ActorComponent.h" />
     <ClInclude Include="Component.h" />
     <ClInclude Include="CoreMini.h" />
+    <ClInclude Include="TaskManager.h" />
     <ClInclude Include="tData.h" />
     <ClInclude Include="Engine.h" />
     <ClInclude Include="Event.h" />
@@ -132,6 +136,7 @@
     <ClInclude Include="Storage.h" />
     <ClInclude Include="StorageComponent.h" />
     <ClInclude Include="String.h" />
+    <ClInclude Include="Thread.h" />
     <ClInclude Include="TimingManager.h" />
     <ClInclude Include="Vec.h" />
   </ItemGroup>

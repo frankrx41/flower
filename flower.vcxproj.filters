@@ -81,6 +81,15 @@
     <ClCompile Include="PhysicsComponent.c">
       <Filter>Scene\Actor\Component</Filter>
     </ClCompile>
+    <ClCompile Include="TaskManager.c">
+      <Filter>Engine\Task</Filter>
+    </ClCompile>
+    <ClCompile Include="Thread.c">
+      <Filter>Engine\Thread</Filter>
+    </ClCompile>
+    <ClCompile Include="Thread_Win32.c">
+      <Filter>Platform\Win32</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CoreMini.h" />
@@ -153,6 +162,12 @@
     <ClInclude Include="PhysicsComponent.h">
       <Filter>Scene\Actor\Component</Filter>
     </ClInclude>
+    <ClInclude Include="Thread.h">
+      <Filter>Engine\Thread</Filter>
+    </ClInclude>
+    <ClInclude Include="TaskManager.h">
+      <Filter>Engine\Task</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Platform">
@@ -208,6 +223,12 @@
     </Filter>
     <Filter Include="Library\Vectors">
       <UniqueIdentifier>{7fb445ef-924a-4d46-b6e4-d7515349f480}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\Task">
+      <UniqueIdentifier>{085417bb-4e85-4866-9b3e-6603807159ff}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\Thread">
+      <UniqueIdentifier>{3f9dc89f-b3fc-41ea-8a82-d4c780382016}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
