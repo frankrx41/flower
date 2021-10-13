@@ -38,8 +38,7 @@ void Thread_Suspend_Plat(Thread* thread, tptr platform_data, bool is_suspend)
 
 void Thread_This_Sleep_Plat(float seconds)
 {
-    Sleep(seconds*1000.f);
+    Sleep((DWORD)(seconds*1000.f));
 }
-
 
 #endif

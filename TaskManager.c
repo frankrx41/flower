@@ -21,21 +21,28 @@ TaskManager* TaskManager_Create(const tchar* local_name)
 {
     TaskManager* task_manager = MemNew(local_name, TaskManager);
 
-    task_manager->m_thread  = Thread_Create(local_name, TaskManager_RunTask, task_manager);
+    task_manager->m_local_name  = String_New(local_name, local_name, true);
+    task_manager->m_thread      = Thread_Create(local_name, TaskManager_RunTask, task_manager);
 
 
     return task_manager;
 }
 
+void TaskManager_Destroy(TaskManager* task_manager)
+{
+    Queue_Destroy(task_manager->m_task_queue, Task_Destroy);
+    String_Del(task_manager->m_local_name);
+    MemDel(task_manager);
+}
 
 struct Task
 {
+    uint32                      m_priority;
+    bool                        m_is_auto_free;
     CB_TaskRun_Void_Task_tPtr   m_cb_task_run_void_task_tptr;
     tptr                        m_task_data;
-    uint32                      m_priority;
     bool                        m_is_finish;
     bool                        m_is_running;
-    bool                        m_is_auto_free;
 };
 
 /*
@@ -65,6 +72,11 @@ Task* TaskManager_Task_Add(TaskManager* task_manager, const tchar* local_name, u
 
     Queue_Push(Task*, local_name, task_manager->m_task_queue, task);
 
+    if( task->m_is_auto_free )
+    {
+        return NULL;
+    }
+
     return task;
 }
 
@@ -81,6 +93,11 @@ void TaskManager_RunTask(Thread* thread, TaskManager* task_manager)
                 task->m_cb_task_run_void_task_tptr(task, task->m_task_data);
                 task->m_is_finish   = true;
                 task->m_is_running  = false;
+
+                if( task->m_is_auto_free )
+                {
+                    Task_Destroy(task);
+                }
             }
             else
             {
