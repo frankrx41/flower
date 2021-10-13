@@ -10,6 +10,7 @@
 #include "SceneManager.h"
 #include "EventManager.h"
 #include "InputManager.h"
+#include "TaskManager.h"
 
 #include "Component.h"
 
@@ -251,6 +252,27 @@ void Actor_Test0()
 
     Scene_Actor_Destroy(scene, NULL, actor);
     SceneManager_Scene_Destroy(scene);
+}
+
+////////////////////////////////////////////////////////////////////////////////
+void CallBack_TaskRun0(Task* task, tptr ptr)
+{
+
+}
+
+void Task_Test0()
+{
+    TaskManager* task_manager = TaskManager_Create(__FUNCTION__);
+
+    Task* task = TaskManager_Task_Add(task_manager, __FUNCTION__, 10, false, CallBack_TaskRun0, NULL);
+
+    while(!task->m_is_finish)
+    {
+        ;
+    }
+    Task_Destroy(task);
+
+    TaskManager_Destroy(task_manager);
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -637,29 +659,32 @@ void Engine_Debug_UnitTesting()
 {
     CB_Test_Void cb_test_void_array[] = 
     {
+        Task_Test0,
+
+
         tData_Test0,
         Storage_Test0,
         Queue_Test0,
         Log_Test0,
         Memory_Test1,
         Memory_Test0,
-
+        
         String_Test0,
         String_Test1,
         String_Test2,
-
+        
         Actor_Test2,
         Actor_Test1,
         Actor_Test0,
-
+        
         Scene_Test0,
 
-        Engine_Test5,
-        Engine_Test4,
-        Engine_Test3,
-        Engine_Test2,
-        Engine_Test1,
-        Engine_Test0,
+        // Engine_Test5,
+        // Engine_Test4,
+        // Engine_Test3,
+        // Engine_Test2,
+        // Engine_Test1,
+        // Engine_Test0,
     };
 
     Log(0, "Test Start\n");

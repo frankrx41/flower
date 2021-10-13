@@ -18,6 +18,7 @@ Add InputBank or named it controller ?
 Add InputBank in Actor_Create
 Add TaskManager in SendEvent
 Add offsetXY in Scene
+Update Timing, use less plat function
 
 Add offsetXY in RenderManager (done)
 Add ARRAY_BOUNDS_CHECK (done)

@@ -23,7 +23,7 @@ TaskManager* TaskManager_Create(const tchar* local_name)
 
     task_manager->m_local_name  = String_New(local_name, local_name, true);
     task_manager->m_thread      = Thread_Create(local_name, TaskManager_RunTask, task_manager);
-
+    task_manager->m_task_queue  = Queue_Create(local_name, Task*);
 
     return task_manager;
 }
@@ -32,18 +32,11 @@ void TaskManager_Destroy(TaskManager* task_manager)
 {
     Queue_Destroy(task_manager->m_task_queue, Task_Destroy);
     String_Del(task_manager->m_local_name);
+
+    Thread_Destroy(task_manager->m_thread);
+
     MemDel(task_manager);
 }
-
-struct Task
-{
-    uint32                      m_priority;
-    bool                        m_is_auto_free;
-    CB_TaskRun_Void_Task_tPtr   m_cb_task_run_void_task_tptr;
-    tptr                        m_task_data;
-    bool                        m_is_finish;
-    bool                        m_is_running;
-};
 
 /*
 You should delete task_data in your task_run function

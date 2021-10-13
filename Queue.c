@@ -116,6 +116,24 @@ void Queue_Push(const tchar* local_name, Queue* queue, tptr reference_data, cons
     queue->m_length++;
 }
 
+static tptr Queue_RemoveNode(Queue* queue, Node* node)
+{
+    Assert(!Queue_IsHead(queue, node), "");
+
+    Node* next_node = node->m_node_next;
+    Node* prev_node = node->m_node_prev;
+
+    next_node->m_node_prev = prev_node;
+    prev_node->m_node_next = next_node;
+
+    const tptr reference_data = node->m_reference_data;
+    MemDel(node);
+
+    queue->m_length--;
+
+    return reference_data;
+}
+
 tptr Queue_Pop(Queue* queue)
 {
     Assert(!Queue_IsEmpty(queue), "");
@@ -127,12 +145,8 @@ tptr Queue_Pop(Queue* queue)
     Node* last_node = queue->m_head->m_node_prev;
     const tptr reference_data = last_node->m_reference_data;
 
-    Node* last_node_prev = last_node->m_node_prev;
-    Node* last_node_next = last_node->m_node_next;
-    last_node->m_node_prev->m_node_next = last_node_prev;
-    last_node->m_node_next->m_node_prev = last_node_next;
-    
-    queue->m_length--;
+    Queue_RemoveNode(queue, last_node);
+
     return reference_data;
 }
 
@@ -147,12 +161,8 @@ tptr Queue_Dequeue(Queue* queue)
     Node* first_node = queue->m_head->m_node_next;
     const tptr reference_data = first_node->m_reference_data;
 
-    Node* first_node_prev = first_node->m_node_prev;
-    Node* first_node_next = first_node->m_node_next;
-    first_node->m_node_prev->m_node_next = first_node_prev;
-    first_node->m_node_next->m_node_prev = first_node_next;
+    Queue_RemoveNode(queue, first_node);
 
-    queue->m_length--;
     return reference_data;
 }
 
@@ -176,24 +186,6 @@ tptr Queue_PeekTail(const Queue* queue)
     }
 
     return queue->m_head->m_node_prev->m_reference_data;
-}
-
-static tptr Queue_RemoveNode(Queue* queue, Node* node)
-{
-    Assert(!Queue_IsHead(queue, node), "");
-
-    Node* next_node = node->m_node_next;
-    Node* prev_node = node->m_node_prev;
-
-    next_node->m_node_prev = prev_node;
-    prev_node->m_node_next = next_node;
-
-    const tptr reference_data = node->m_reference_data;
-    MemDel(node);
-
-    queue->m_length --;
-
-    return reference_data;
 }
 
 static tptr Queue_RemoveByPointer(struct Queue* queue, tptr ptr)
