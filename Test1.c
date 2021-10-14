@@ -38,7 +38,7 @@ static void Actor_OnAction0(Actor* actor, const EventInfo* event_info)
 {
     if( event_info->m_event == Event_Actor_Action_Cancel )
     {
-        SceneManager_Scene_Destroy(Actor_GetScene(actor));
+        SceneManager_Scene_Destroy(Actor_ParentScene_Get(actor));
     }
 }
 

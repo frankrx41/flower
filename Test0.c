@@ -321,7 +321,7 @@ void CallBack_ActorOnEvent5(Actor* actor, const EventInfo* event_info)
 
     vec3 vec = Actor_Component_Physics_GetLocation(actor);
     Actor_Component_Render_ShaderText_ClearAll(actor);
-    String* string = String_New(Actor_GetLocalName(actor), NULL, false);
+    String* string = String_New(Actor_LocalName_Str_Get(actor), NULL, false);
     String_Format(string, "(%.2f) %s", vec.m_y, event_info->m_event == Event_Actor_Action_MoveUp ? "Up" : "Down");
     Actor_Component_Render_ShaderText_Add(actor, Vec3(2,2,0), String_CStr(string));
     String_Del(string);
@@ -373,7 +373,7 @@ void CallBack_ActorOnEvent4(Actor* actor, const EventInfo* event_info)
     Actor_Component_Render_ShaderText_ClearAll(actor);
 
     const vec3 displacement = Actor_Component_Physics_GetLocation(actor);
-    String* string = String_New(Actor_GetLocalName(actor), NULL, false);
+    String* string = String_New(Actor_LocalName_Str_Get(actor), NULL, false);
     String_Format(string, "(%.2f, %.2f, %.2f) %.2f", displacement.m_x, displacement.m_y, displacement.m_z, 0.f);
     Actor_Component_Render_ShaderText_Add(actor, Vec3(0,0,0), String_CStr(string));
     String_Del(string);
@@ -421,7 +421,7 @@ void CallBack_ActorOnEvent3(Actor* actor, const EventInfo* event_info)
 
     Actor_Component_Render_ShaderText_ClearAll(actor);
 
-    String* string = String_New(Actor_GetLocalName(actor), NULL, false);
+    String* string = String_New(Actor_LocalName_Str_Get(actor), NULL, false);
     String_Format(string, "%d %.2f", tick_count, 1.f/event_info->m_delta_seconds);
     Actor_Component_Render_ShaderText_Add(actor, Vec3(0,0,0), String_CStr(string));
     String_Del(string);
@@ -508,7 +508,7 @@ void CallBack_ActorOnEvent2(Actor* actor, const EventInfo* event_info)
             SceneManager_Scene_ExitCurrent();
         }
 
-        String* string = String_New(Actor_GetLocalName(actor), NULL, false);
+        String* string = String_New(Actor_LocalName_Str_Get(actor), NULL, false);
         String_Format(string, "%d", update_tick);
         Actor_Component_Render_ShaderText_Add(actor, Vec3(0,0,0), String_CStr(string));
         String_Del(string);
@@ -659,7 +659,7 @@ void Engine_Debug_UnitTesting0()
 {
     CB_Test_Void cb_test_void_array[] = 
     {
-        Task_Test0,
+        // Task_Test0,
 
 
         tData_Test0,

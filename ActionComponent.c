@@ -38,7 +38,7 @@ ActionComponent* Component_Action_Create(const tchar* local_name, Actor* actor)
     event_respond_component->m_event_respond_queue  = Queue_Create(local_name, EventRespond*);
     event_respond_component->m_local_name           = String_New(local_name, local_name, true);
 
-    Scene_ActionEventGroup_Actor_Add(Actor_GetScene(actor), actor, Event_Actor_Action_Min);
+    Scene_ActionEventGroup_Actor_Add(Actor_ParentScene_Get(actor), actor, Event_Actor_Action_Min);
 
     return event_respond_component;
 }

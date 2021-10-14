@@ -21,7 +21,7 @@ RenderComponent* Component_Render_Create(const tchar* local_name, Actor* actor)
     RenderComponent* render_component = MemNew(local_name, RenderComponent);
     render_component->m_shader_text_queue = Queue_Create(local_name, ShaderText*);
 
-    Scene_ActorQueue_Renderable_Add(Actor_GetScene(actor), actor);
+    Scene_ActorQueue_Renderable_Add(Actor_ParentScene_Get(actor), actor);
 
     return render_component;
 }

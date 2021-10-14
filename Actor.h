@@ -11,7 +11,7 @@ void    Actor_Destroy_CB_Set    (Actor* actor, CB_ActorDestroy_Void_Actor cb_act
 void    Actor_Destroy           (Actor* actor);
 
 bool    Actor_IsPause           (Actor* actor);
-void    Actor_SetIsPause        (Actor* actor, bool is_pause);
+void    Actor_IsPause_Set       (Actor* actor, bool is_pause);
 
 /*
 Actor_Component_Del will be call when Actor_Destroy, you cannot call it.
@@ -20,6 +20,6 @@ void    Actor_Component_New     (Actor* actor, Component component_enum);
 void    Actor_Component_Del     (Actor* actor, Component component_enum);
 tptr    Actor_Component_Cast    (Actor* actor, Component component_enum);
 
-const tchar*    Actor_GetLocalName  (Actor* actor);
-Scene*          Actor_GetScene      (Actor* actor);
+const tchar*    Actor_LocalName_Str_Get     (Actor* actor);
+Scene*          Actor_ParentScene_Get       (Actor* actor);
 

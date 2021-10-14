@@ -117,6 +117,11 @@ void Scene_SetIsPause(Scene* scene, bool is_pause)
     scene->m_is_pause = is_pause;
 }
 
+const tchar* Scene_LocalName_Str_Get(Scene* scene)
+{
+    return String_CStr(scene->m_local_name);
+}
+
 Actor* Scene_Actor_Create(const tchar* local_name, Scene* scene, CB_ActorCreate_Void_Actor_tPtr cb_actor_create_void_actor_tptr, tptr ptr)
 {
     Actor* actor = Actor_Create(local_name, scene, scene->m_alloc_actor_id++, cb_actor_create_void_actor_tptr, ptr);

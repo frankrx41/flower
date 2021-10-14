@@ -13,9 +13,11 @@ typedef void (*CB_SceneDestroy_Void_Scene)      (Scene* scene);
 
 void    Scene_Render_Offset_Set     (Scene* scene, vec2 vec);
 vec2    Scene_Render_Offset_Get     (Scene* scene);
-void    Scene_Destroy_CB_Set        (Scene *scene, CB_SceneDestroy_Void_Scene cb_scene_destroy_void_scene);
+void    Scene_Destroy_CB_Set        (Scene* scene, CB_SceneDestroy_Void_Scene cb_scene_destroy_void_scene);
 bool    Scene_IsPause               (Scene* scene);
-void    Scene_SetIsPause            (Scene *scene, bool is_pause);
+void    Scene_SetIsPause            (Scene* scene, bool is_pause);
+
+const tchar*    Scene_LocalName_Str_Get (Scene* scene);
 
 Actor*  Scene_Actor_Create          (const tchar* local_name, Scene* scene, CB_ActorCreate_Void_Actor_tPtr cb_actor_create_void_actor_tptr, tptr ptr);
 void    Scene_Actor_Destroy         (Scene* scene, CB_FindData_Bool_tPtr_tPtr cb_find_actor_bool_tptr_tptr, tptr ptr);

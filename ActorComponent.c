@@ -101,11 +101,11 @@ void Actor_Component_Physics_SetEnableSimulate(Actor* actor, bool is_enable_simu
 
     if( is_enable_simulate )
     {
-        Scene_PhysicsGroup_Actor_Add(Actor_GetScene(actor), actor);
+        Scene_PhysicsGroup_Actor_Add(Actor_ParentScene_Get(actor), actor);
     }
     else
     {
-        Scene_PhysicsGroup_Actor_Remove(Actor_GetScene(actor), actor);
+        Scene_PhysicsGroup_Actor_Remove(Actor_ParentScene_Get(actor), actor);
     }
 }
 
@@ -118,7 +118,7 @@ ShaderText* Actor_Component_Render_ShaderText_Add(Actor* actor, vec3 vec, const 
     Assert(render_component != NULL, "");
     if( render_component )
     {
-        ShaderText* shader_text = ShaderText_Create(Actor_GetLocalName(actor), vec, str);
+        ShaderText* shader_text = ShaderText_Create(Actor_LocalName_Str_Get(actor), vec, str);
         Component_Render_ShaderText_Add(render_component, shader_text);
         return shader_text;
     }
@@ -156,12 +156,12 @@ void Actor_Component_Action_EventRespond_Add(Actor* actor, Event event, CB_Respo
         Component_Action_EventRespond_Add(action_component, event, cb_respond_condition_void_actor_eventinfo, cb_respond_action_void_actor_eventinfo);
         if(IS_IN_RANGE(event, Event_Scene_Min, Event_Scene_Max))
         {
-            Scene_SceneEventGroup_Actor_Add(Actor_GetScene(actor), actor, event);
+            Scene_SceneEventGroup_Actor_Add(Actor_ParentScene_Get(actor), actor, event);
         }
         else if(IS_IN_RANGE(event, Event_Actor_Min, Event_Actor_Max))
         {
             // We add to queue when Actor_Component is been create, not need this any more
-            // Scene_ActionEventGroup_Actor_Add(Actor_GetScene(actor), actor, event);
+            // Scene_ActionEventGroup_Actor_Add(Actor_ParentScene_Get(actor), actor, event);
         }
     }
 }
@@ -262,7 +262,7 @@ void CallBack_Render_ActorShaderText_Plat(ShaderText* shader_text, Actor* actor)
     }
 
     ShaderText* shader_text_copy = ShaderText_Create("RenderManager", Vec3_Add(ShaderText_GetVec3(shader_text), location_vec), ShaderText_GetStr(shader_text));
-    RenderManager_Render_ToBackBuffer(RenderManager_GetInstance(), Scene_Render_Offset_Get(Actor_GetScene(actor)), shader_text_copy);
+    RenderManager_Render_ToBackBuffer(RenderManager_GetInstance(), Scene_Render_Offset_Get(Actor_ParentScene_Get(actor)), shader_text_copy);
     ShaderText_Destory(shader_text_copy);
 }
 

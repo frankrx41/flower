@@ -2,12 +2,17 @@
 
 #include "Engine.h"
 
+#include "Event.h"
+#include "KeyId.h"
+
 #include "MemoryManager.h"
 #include "SceneManager.h"
+#include "EventManager.h"
+#include "TaskManager.h"
 
 #include "Queue.h"
+#include "Scene.h"
 #include "String.h"
-#include "TaskManager.h"
 
 
 struct SceneManager
@@ -130,4 +135,23 @@ void SceneManager_TryRunNextCommand(SceneManager* scene_manager)
             }
         }
     }
+}
+
+static void CallBack_SendEvent_Scene_Tick(Scene* scene, EventInfo* event_info)
+{
+    EventInfo* event_info_scene_tick = EventInfo_Create(Scene_LocalName_Str_Get(scene), Event_Scene_Tick, scene, NULL, KeyId_Null, event_info->m_delta_seconds);
+    Scene_SceneEvent_Send_Actor(scene, event_info_scene_tick);
+    EventInfo_Destroy(event_info_scene_tick);
+
+    // Scene physics update
+    Scene_PhysicsActor_Update(scene, event_info->m_delta_seconds);
+}
+
+void SceneManager_OnEvent_Tick(SceneManager* scene_manager, EventInfo* event_info)
+{
+    if( SceneManager_Scene_IsLoading(scene_manager) )
+    {
+        return;
+    }
+    Queue_ForEach(SceneManager_SceneQueue_Get(SceneManager_GetInstance()), CallBack_SendEvent_Scene_Tick, event_info);
 }

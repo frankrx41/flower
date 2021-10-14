@@ -2,6 +2,7 @@
 
 typedef struct Scene Scene;
 typedef struct SceneManager SceneManager;
+typedef struct EventInfo EventInfo;
 
 typedef void(*CB_Command_Void)(void);
 
@@ -24,6 +25,9 @@ void    SceneManager_Command_Clear          (SceneManager* scene_manager);
 bool    SceneManager_Scene_IsLoading        (SceneManager* scene_manager);
 
 void    SceneManager_TryRunNextCommand      (SceneManager* scene_manager);
+
+void    SceneManager_OnEvent_Tick           (SceneManager* scene_manager, EventInfo* event_info);
+
 
 SceneManager* SceneManager_GetInstance  ();
 

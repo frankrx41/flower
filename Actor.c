@@ -77,7 +77,7 @@ bool Actor_IsPause(Actor* actor)
     return actor->m_is_pause;
 }
 
-void Actor_SetIsPause(Actor* actor, bool is_pause)
+void Actor_IsPause_Set(Actor* actor, bool is_pause)
 {
     actor->m_is_pause = is_pause;
 }
@@ -123,7 +123,7 @@ void Actor_Component_New(Actor* actor, Component component_enum)
     Assert(actor != NULL, "");
     Assert(IS_IN_RANGE(component_enum, Component_Min, Component_Max), "");
 
-    const tptr component = Actor_Component_Create_CB_Get(component_enum)(Actor_GetLocalName(actor), actor);
+    const tptr component = Actor_Component_Create_CB_Get(component_enum)(Actor_LocalName_Str_Get(actor), actor);
     Actor_Component_Set(actor, component_enum, component);
 }
 
@@ -145,12 +145,12 @@ tptr Actor_Component_Cast(Actor* actor, Component component_enum)
     return actor->m_components[component_enum - Component_Min];
 }
 
-const tchar* Actor_GetLocalName(Actor* actor)
+const tchar* Actor_LocalName_Str_Get(Actor* actor)
 {
     return String_CStr(actor->m_local_name);
 }
 
-Scene* Actor_GetScene(Actor* actor)
+Scene* Actor_ParentScene_Get(Actor* actor)
 {
     return actor->m_scene;
 }
