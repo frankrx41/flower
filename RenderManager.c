@@ -56,7 +56,7 @@ static void CallBack_Render_Scene(Scene* scene, RenderManager* render_manager)
     {
         return;
     }
-    Queue_ForEach(Scene_GetActorQueue(scene), CallBack_Actor_RenderEachActor, render_manager);
+    Queue_ForEach(Scene_GetChildActorQueue(scene), CallBack_Actor_RenderEachActor, render_manager);
 }
 
 void RenderManager_RenderAllScene(RenderManager* render_manager, SceneManager* scene_manager)

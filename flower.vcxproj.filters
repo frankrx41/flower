@@ -19,7 +19,7 @@
     <ClCompile Include="Queue.c">
       <Filter>Library\Queue</Filter>
     </ClCompile>
-    <ClCompile Include="Test.c" />
+    <ClCompile Include="Test0.c" />
     <ClCompile Include="Main.c" />
     <ClCompile Include="Scene.c">
       <Filter>Scene</Filter>
@@ -93,6 +93,7 @@
     <ClCompile Include="Task.c">
       <Filter>Engine\Task</Filter>
     </ClCompile>
+    <ClCompile Include="Test1.c" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CoreMini.h" />

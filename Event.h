@@ -18,6 +18,7 @@ enum Event
 
     Event_Scene_Min,
     Event_Scene_Tick            = Event_Scene_Min,
+    Event_Scene_Idle,
     Event_Scene_Max,
 
 

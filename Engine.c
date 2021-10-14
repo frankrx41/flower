@@ -87,6 +87,8 @@ void Engine_MainLoop()
         InputManager_Keys_UpdateState(InputManager_GetInstance(), delta_second);
         InputManager_Event_Send(InputManager_GetInstance());
 
+        SceneManager_TryRunNextCommand(SceneManager_GetInstance());
+
         RenderManager_RenderAllScene(RenderManager_GetInstance(), SceneManager_GetInstance());
         RenderManager_Render_ToScreen(RenderManager_GetInstance());
 

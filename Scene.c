@@ -29,6 +29,7 @@ struct Scene
     Queue(Actor*)*              m_child_actor_queue;
     Queue(Actor*)*              m_actor_scene_event_queue_list[Event_Scene_Max-Event_Scene_Min];
     Queue(Actor*)*              m_actor_action_event_queue;
+    Queue(Actor*)*              m_actor_renderable_able_queue;
     Queue(Actor*)*              m_physics_actor_queue;
 };
 
@@ -210,7 +211,12 @@ void Scene_Storage_DeleteVariable(Scene* scene, crc32 variable)
     Storage_DeleteVariable(scene->m_storage, variable);
 }
 
-tptr Scene_GetActorQueue(Scene* scene)
+tptr Scene_GetChildActorQueue(Scene* scene)
 {
     return scene->m_child_actor_queue;
+}
+
+tptr Scene_GetRenderableActorQueue(Scene* scene)
+{
+    return scene->m_actor_renderable_able_queue;
 }
