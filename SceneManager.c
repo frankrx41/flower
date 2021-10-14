@@ -7,6 +7,7 @@
 
 #include "Queue.h"
 #include "String.h"
+#include "TaskManager.h"
 
 
 struct SceneManager
@@ -16,6 +17,7 @@ struct SceneManager
     Scene*                  m_current_scene;
     String*                 m_local_name;
     bool                    m_is_exit_current_scene;
+    bool                    m_is_scene_loading;
 };
 
 Scene*  Scene_Create    (const tchar* local_name);
@@ -30,6 +32,7 @@ void    Scene_Destroy   (Scene* scene);
 #undef SceneManager_Command_Add
 #undef SceneManager_Command_Clear
 #undef SceneManager_Scene_ExitCurrent
+#undef SceneManager_Scene_IsLoading
 
 ////////////////////////////////////////////////////////////////////////////////
 SceneManager* SceneManager_Create(const tchar* local_name)
@@ -39,8 +42,8 @@ SceneManager* SceneManager_Create(const tchar* local_name)
     scene_manager->m_command_queue  = Queue_Create(local_name, CB_Command_Void);
     scene_manager->m_current_scene  = NULL;
     scene_manager->m_local_name     = String_New(local_name, local_name, true);
-    scene_manager->m_is_exit_current_scene = true;
-
+    scene_manager->m_is_exit_current_scene  = true;
+    scene_manager->m_is_scene_loading       = false;
     return scene_manager;
 }
 
@@ -79,9 +82,6 @@ Scene* SceneManager_Scene_GetCurrent(SceneManager* scene_manager)
 void SceneManager_Scene_ExitCurrent(SceneManager* scene_manager)
 {
     scene_manager->m_is_exit_current_scene = true;
-    // SceneManager_Scene_Destroy(scene_manager, SceneManager_Scene_GetCurrent(scene_manager));
-    // Queue_Clear(scene_manager->m_scene_queue, Scene_Destroy);
-    // SceneManager_Scene_SetCurrent(scene_manager, NULL);
 }
 
 tptr SceneManager_SceneQueue_Get(SceneManager* scene_manager)
@@ -99,6 +99,20 @@ void SceneManager_Command_Clear(SceneManager* scene_manager)
     Queue_Destroy(scene_manager->m_command_queue, NULL);
 }
 
+bool SceneManager_Scene_IsLoading(SceneManager* scene_manager)
+{
+    return scene_manager->m_is_scene_loading;
+}
+
+static void SceneManager_LoadLastScene(Task* task, SceneManager* scene_manager)
+{
+    SceneManager_Scene_SetCurrent(scene_manager, NULL);
+    scene_manager->m_is_exit_current_scene = false;
+    Queue_Clear(scene_manager->m_scene_queue, Scene_Destroy);
+    (Queue_Dequeue(CB_Command_Void)(scene_manager->m_command_queue))();
+    scene_manager->m_is_scene_loading = false;
+}
+
 void SceneManager_TryRunNextCommand(SceneManager* scene_manager)
 {
     if (Queue_IsEmpty(scene_manager->m_command_queue))
@@ -107,16 +121,13 @@ void SceneManager_TryRunNextCommand(SceneManager* scene_manager)
     }
     else
     {
-        if( scene_manager->m_is_exit_current_scene || Queue_IsEmpty(scene_manager->m_scene_queue))
+        if( scene_manager->m_is_exit_current_scene || Queue_IsEmpty(scene_manager->m_scene_queue) )
         {
-            SceneManager_Scene_SetCurrent(scene_manager, NULL);
-            scene_manager->m_is_exit_current_scene = false;
-            Assert(SceneManager_Scene_GetCurrent(scene_manager) == NULL, "");
-
-            // SceneManager_Scene_Destroy(scene_manager, SceneManager_Scene_GetCurrent(scene_manager));
-            Queue_Clear(scene_manager->m_scene_queue, Scene_Destroy);
-
-            (Queue_Dequeue(CB_Command_Void)(scene_manager->m_command_queue))();
+            if( !SceneManager_Scene_IsLoading(scene_manager) )
+            {
+                scene_manager->m_is_scene_loading = true;
+                TaskManager_Task_Add(String_CStr(scene_manager->m_local_name), 0, true, SceneManager_LoadLastScene, scene_manager);
+            }
         }
     }
 }
