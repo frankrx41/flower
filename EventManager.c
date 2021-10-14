@@ -68,6 +68,7 @@ void EventManager_SendEvent_Tick(EventManager* event_manager, Event event, float
 
 static void CallBack_SendEvent_Actor_Action(Scene* scene, EventInfo* event_info)
 {
+    Assert(scene != NULL, "");
     EventInfo* event_info_actor_action = EventInfo_Create(event_info->m_event, scene, NULL, KeyId_Null, event_info->m_delta_seconds);
     Scene_ActionEvent_Send_Actor(scene, event_info_actor_action);
     EventInfo_Destroy(event_info_actor_action);

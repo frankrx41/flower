@@ -69,9 +69,16 @@ bool Queue_IsEmpty(const Queue* queue)
 void Queue_ForEach(const Queue* queue, CB_ProcessData_Void_tPtr_tPtr cb_process_data_void_tptr_tptr, tptr ptr)
 {
     Node* node = queue->m_head->m_node_next;
+    uint32 for_count = 0;
     for(; !Queue_IsHead(queue, node); node = node->m_node_next)
     {
+        Assert(!Queue_IsEmpty(queue), "");
         cb_process_data_void_tptr_tptr(node->m_reference_data, ptr);
+        for_count++;
+    }
+    if( for_count != 0 )
+    {
+        Assert(!Queue_IsEmpty(queue), "");
     }
 }
 
@@ -259,6 +266,7 @@ void Queue_Clear(Queue* queue, CB_DestroyData_Void_tPtr cb_destroy_data_void_tpt
         Queue_RemoveNode(queue, node);
     }
     Assert(Queue_GetLength(queue) == 0, "");
+    Assert(Queue_IsHead(queue, queue->m_head->m_node_next), "");
 }
 
 void Queue_Sort(Queue* queue, CB_CompareData_Bool_tPtr_tPtr cb_compare_data_bool_tptr_tptr)

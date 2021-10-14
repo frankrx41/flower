@@ -14,6 +14,8 @@ void    SceneManager_Scene_Destroy          (SceneManager* scene_manager, Scene*
 void    SceneManager_Scene_SetCurrent       (SceneManager* scene_manager, Scene* scene);
 Scene*  SceneManager_Scene_GetCurrent       (SceneManager* scene_manager);
 
+void    SceneManager_Scene_ExitCurrent      (SceneManager* scene_manager);
+
 tptr    SceneManager_SceneQueue_Get         (SceneManager* scene_manager);
 
 void    SceneManager_Command_Add            (SceneManager* scene_manager, CB_Command_Void cb_command_void);
@@ -28,3 +30,4 @@ SceneManager* SceneManager_GetInstance  ();
 #define SceneManager_Scene_GetCurrent()             SceneManager_Scene_GetCurrent(SceneManager_GetInstance())
 #define SceneManager_Command_Add(cb_command_void)   SceneManager_Command_Add(SceneManager_GetInstance(), cb_command_void)
 #define SceneManager_Command_Clear()                SceneManager_Command_Clear(SceneManager_GetInstance())
+#define SceneManager_Scene_ExitCurrent()            SceneManager_Scene_ExitCurrent(SceneManager_GetInstance())

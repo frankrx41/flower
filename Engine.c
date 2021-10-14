@@ -99,7 +99,7 @@ void Engine_MainLoop()
 
 void Engine_UnInitialize()
 {
-    Engine_SetExit(true);
+    Engine_NotifyExit(true);
 
     Engine* engine = Engine_GetInstance();
 
@@ -117,9 +117,9 @@ void Engine_UnInitialize()
     Engine_Debug_Memory_Static_Check_Leak();
 }
 
-void Engine_SetExit(bool is_exit)
+void Engine_NotifyExit()
 {
-    Engine_GetInstance()->m_is_exit = is_exit;
+    Engine_GetInstance()->m_is_exit = true;
 }
 
 bool Engine_IsExit()

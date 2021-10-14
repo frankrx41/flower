@@ -15,6 +15,7 @@ struct SceneManager
     Queue(CB_Command_Void)* m_command_queue;
     Scene*                  m_current_scene;
     String*                 m_local_name;
+    bool                    m_is_exit_current_scene;
 };
 
 Scene*  Scene_Create    (const tchar* local_name);
@@ -28,6 +29,7 @@ void    Scene_Destroy   (Scene* scene);
 #undef SceneManager_Scene_GetCurrent
 #undef SceneManager_Command_Add
 #undef SceneManager_Command_Clear
+#undef SceneManager_Scene_ExitCurrent
 
 ////////////////////////////////////////////////////////////////////////////////
 SceneManager* SceneManager_Create(const tchar* local_name)
@@ -37,6 +39,7 @@ SceneManager* SceneManager_Create(const tchar* local_name)
     scene_manager->m_command_queue  = Queue_Create(local_name, CB_Command_Void);
     scene_manager->m_current_scene  = NULL;
     scene_manager->m_local_name     = String_New(local_name, local_name, true);
+    scene_manager->m_is_exit_current_scene = true;
 
     return scene_manager;
 }
@@ -73,6 +76,14 @@ Scene* SceneManager_Scene_GetCurrent(SceneManager* scene_manager)
     return scene_manager->m_current_scene;
 }
 
+void SceneManager_Scene_ExitCurrent(SceneManager* scene_manager)
+{
+    scene_manager->m_is_exit_current_scene = true;
+    // SceneManager_Scene_Destroy(scene_manager, SceneManager_Scene_GetCurrent(scene_manager));
+    // Queue_Clear(scene_manager->m_scene_queue, Scene_Destroy);
+    // SceneManager_Scene_SetCurrent(scene_manager, NULL);
+}
+
 tptr SceneManager_SceneQueue_Get(SceneManager* scene_manager)
 {
     return scene_manager->m_scene_queue;
@@ -92,10 +103,20 @@ void SceneManager_TryRunNextCommand(SceneManager* scene_manager)
 {
     if (Queue_IsEmpty(scene_manager->m_command_queue))
     {
-        Engine_SetExit(true);
+        Engine_NotifyExit();
     }
     else
     {
-        (Queue_Dequeue(CB_Command_Void)(scene_manager->m_command_queue))();
+        if( scene_manager->m_is_exit_current_scene || Queue_IsEmpty(scene_manager->m_scene_queue))
+        {
+            SceneManager_Scene_SetCurrent(scene_manager, NULL);
+            scene_manager->m_is_exit_current_scene = false;
+            Assert(SceneManager_Scene_GetCurrent(scene_manager) == NULL, "");
+
+            // SceneManager_Scene_Destroy(scene_manager, SceneManager_Scene_GetCurrent(scene_manager));
+            Queue_Clear(scene_manager->m_scene_queue, Scene_Destroy);
+
+            (Queue_Dequeue(CB_Command_Void)(scene_manager->m_command_queue))();
+        }
     }
 }

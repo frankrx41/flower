@@ -9,8 +9,10 @@ int32 main()
 {
     Engine_Initialize();
 
-    // Engine_Debug_UnitTesting0();
-    Engine_Debug_UnitTesting1();
+    Engine_Debug_UnitTesting0();
+    // Engine_Debug_UnitTesting1();
+
+    Engine_MainLoop();
 
     Engine_UnInitialize();
 }

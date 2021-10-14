@@ -7,6 +7,7 @@
 #include "EventManager.h"
 
 #include "Actor.h"
+#include "Scene.h"
 #include "Component.h"
 #include "ActionComponent.h"
 
@@ -36,6 +37,9 @@ ActionComponent* Component_Action_Create(const tchar* local_name, Actor* actor)
     ActionComponent* event_respond_component  = MemNew(local_name, ActionComponent);
     event_respond_component->m_event_respond_queue  = Queue_Create(local_name, EventRespond*);
     event_respond_component->m_local_name           = String_New(local_name, local_name, true);
+
+    Scene_ActionEventGroup_Actor_Add(Actor_GetScene(actor), actor, Event_Actor_Action_Min);
+
     return event_respond_component;
 }
 
@@ -112,10 +116,13 @@ void CallBack_Actor_ProcessActionEvent(Actor* actor, const EventInfo* event_info
 
     EventRespond* event_respond = Queue_Find(EventRespond*)(action_component->m_event_respond_queue, (CB_FindData_Bool_tPtr_tPtr)CallBack_EventRespond_FindEvent, (tptr)event_info->m_event);
 
-    Assert(event_respond != NULL, "");
-    // TODO: if
-    Assert(event_respond->m_cb_respond_action_void_actor_eventinfo != NULL, "");
+    // We storage all event in same queue, so we need to check if the event has a respond or not
+    if( event_respond == NULL )
+    {
+        return;
+    }
 
+    Assert(event_respond->m_cb_respond_action_void_actor_eventinfo != NULL, "");
     if (event_respond->m_cb_respond_condition_bool_actor_eventinfo)
     {
         if (event_respond->m_cb_respond_condition_bool_actor_eventinfo(actor, event_info))

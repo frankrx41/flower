@@ -312,7 +312,7 @@ void CallBack_ActorOnEvent5(Actor* actor, const EventInfo* event_info)
 {
     switch(event_info->m_event)
     {
-    case Event_Actor_Action_Cancel: Engine_SetExit(true);   break;
+    case Event_Actor_Action_Cancel: SceneManager_Scene_ExitCurrent();   return;
     case Event_Actor_Action_MoveUp: Actor_Component_Physics_MoveLocation(actor, Vec3(0, -0.1f, 0)); break;
     case Event_Actor_Action_MoveDown: Actor_Component_Physics_MoveLocation(actor, Vec3(0, +0.1f, 0)); break;
     default:
@@ -352,12 +352,12 @@ void Engine_Test5()
 
     SceneManager_Scene_SetCurrent(scene);
 
-    Engine_SetExit(false);
-    Engine_MainLoop();
-
-
-    Scene_Actor_Destroy(scene, NULL, actor);
-    SceneManager_Scene_Destroy(scene);
+    // Engine_NotifyExit(false);
+    // Engine_MainLoop();
+    //
+    //
+    // Scene_Actor_Destroy(scene, NULL, actor);
+    // SceneManager_Scene_Destroy(scene);
 }
 
 void CallBack_ActorOnEvent4(Actor* actor, const EventInfo* event_info)
@@ -366,12 +366,13 @@ void CallBack_ActorOnEvent4(Actor* actor, const EventInfo* event_info)
     update_count++;
     if( update_count > 300 )
     {
-        Engine_SetExit(true);
+        SceneManager_Scene_ExitCurrent();
+        return;
     }
 
     Actor_Component_Render_ShaderText_ClearAll(actor);
 
-    vec3 displacement = Actor_Component_Physics_GetLocation(actor);
+    const vec3 displacement = Actor_Component_Physics_GetLocation(actor);
     String* string = String_New(Actor_GetLocalName(actor), NULL, false);
     String_Format(string, "(%.2f, %.2f, %.2f) %.2f", displacement.m_x, displacement.m_y, displacement.m_z, 0.f);
     Actor_Component_Render_ShaderText_Add(actor, Vec3(0,0,0), String_CStr(string));
@@ -398,12 +399,12 @@ void Engine_Test4()
 
     SceneManager_Scene_SetCurrent(scene);
 
-    Engine_SetExit(false);
-    Engine_MainLoop();
-
-
-    Scene_Actor_Destroy(scene, NULL, actor);
-    SceneManager_Scene_Destroy(scene);
+    // Engine_NotifyExit(false);
+    // Engine_MainLoop();
+    //
+    //
+    // Scene_Actor_Destroy(scene, NULL, actor);
+    // SceneManager_Scene_Destroy(scene);
 }
 
 void CallBack_ActorOnEvent3(Actor* actor, const EventInfo* event_info)
@@ -415,7 +416,7 @@ void CallBack_ActorOnEvent3(Actor* actor, const EventInfo* event_info)
     update_count++;
     if( update_count > 5 )
     {
-        Engine_SetExit(true);
+        SceneManager_Scene_ExitCurrent();
     }
 
     Actor_Component_Render_ShaderText_ClearAll(actor);
@@ -474,12 +475,12 @@ void Engine_Test3()
 
     SceneManager_Scene_SetCurrent(scene);
 
-    Engine_SetExit(false);
-    Engine_MainLoop();
-
-
-    Scene_Actor_Destroy(scene, NULL, actor);
-    SceneManager_Scene_Destroy(scene);
+    // Engine_NotifyExit(false);
+    // Engine_MainLoop();
+    //
+    //
+    // Scene_Actor_Destroy(scene, NULL, actor);
+    // SceneManager_Scene_Destroy(scene);
 }
 
 void CallBack_ActorOnEvent2(Actor* actor, const EventInfo* event_info)
@@ -504,7 +505,7 @@ void CallBack_ActorOnEvent2(Actor* actor, const EventInfo* event_info)
 
         if( update_tick >= 5 )
         {
-            Engine_SetExit(true);
+            SceneManager_Scene_ExitCurrent();
         }
 
         String* string = String_New(Actor_GetLocalName(actor), NULL, false);
@@ -535,12 +536,12 @@ void Engine_Test2()
 
     SceneManager_Scene_SetCurrent(scene);
 
-    Engine_SetExit(false);
-    Engine_MainLoop();
-
-
-    Scene_Actor_Destroy(scene, NULL, actor);
-    SceneManager_Scene_Destroy(scene);
+    // Engine_NotifyExit(false);
+    // Engine_MainLoop();
+    //
+    //
+    // Scene_Actor_Destroy(scene, NULL, actor);
+    // SceneManager_Scene_Destroy(scene);
 }
 
 void CallBack_ActorOnEvent1(Actor* actor, const EventInfo* event_info)
@@ -559,7 +560,7 @@ void CallBack_ActorOnEvent1(Actor* actor, const EventInfo* event_info)
         }
         else
         {
-            Engine_SetExit(true);
+            SceneManager_Scene_ExitCurrent();
         }
 
     }
@@ -596,12 +597,12 @@ void Engine_Test1()
 
     SceneManager_Scene_SetCurrent(scene1);
 
-    Engine_SetExit(false);
-    Engine_MainLoop();
-
-    Scene_Actor_Destroy(scene1, NULL, actor1);
-    SceneManager_Scene_Destroy(scene1);
-    SceneManager_Scene_Destroy(scene2);
+    // Engine_NotifyExit(false);
+    // Engine_MainLoop();
+    //
+    // Scene_Actor_Destroy(scene1, NULL, actor1);
+    // SceneManager_Scene_Destroy(scene1);
+    // SceneManager_Scene_Destroy(scene2);
 }
 
 void CallBack_ActorOnEvent0(Actor* actor, const EventInfo* event_info)
@@ -611,7 +612,7 @@ void CallBack_ActorOnEvent0(Actor* actor, const EventInfo* event_info)
     vec3 vec = Actor_Component_Physics_GetLocation(actor);
     if( vec.m_y > 7 )
     {
-        Engine_SetExit(true);
+        SceneManager_Scene_ExitCurrent();
     }
 }
 
@@ -631,16 +632,16 @@ void Engine_Test0()
 
     SceneManager_Scene_SetCurrent(scene);
 
-    Engine_SetExit(false);
-    Engine_MainLoop();
-
-
-    Actor_Component_Del(actor, Component_Render);
-    Actor_Component_Del(actor, Component_Action);
-    Actor_Component_Del(actor, Component_Physics);
-
-    Scene_Actor_Destroy(scene, NULL, actor);
-    SceneManager_Scene_Destroy(scene);
+    // Engine_NotifyExit(false);
+    // Engine_MainLoop();
+    //
+    //
+    // Actor_Component_Del(actor, Component_Render);
+    // Actor_Component_Del(actor, Component_Action);
+    // Actor_Component_Del(actor, Component_Physics);
+    //
+    // Scene_Actor_Destroy(scene, NULL, actor);
+    // SceneManager_Scene_Destroy(scene);
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -648,7 +649,9 @@ typedef void (*CB_Test_Void)();
 void Test(uint32 index, CB_Test_Void cb_test_void)
 {
     Log(0, "Test %d\n", index);
-    cb_test_void();
+
+    SceneManager_Command_Add(cb_test_void);
+
     Engine_Profile_Memory();
 }
 
@@ -676,12 +679,12 @@ void Engine_Debug_UnitTesting0()
         
         Scene_Test0,
 
-        // Engine_Test5,
-        // Engine_Test4,
-        // Engine_Test3,
-        // Engine_Test2,
-        // Engine_Test1,
-        // Engine_Test0,
+        Engine_Test5,
+        Engine_Test4,
+        Engine_Test3,
+        Engine_Test2,
+        Engine_Test1,
+        Engine_Test0,
     };
 
     Log(0, "Test Start\n");

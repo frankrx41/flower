@@ -160,7 +160,8 @@ void Actor_Component_Action_EventRespond_Add(Actor* actor, Event event, CB_Respo
         }
         else if(IS_IN_RANGE(event, Event_Actor_Min, Event_Actor_Max))
         {
-            Scene_ActionEventGroup_Actor_Add(Actor_GetScene(actor), actor, event);
+            // We add to queue when Actor_Component is been create, not need this any more
+            // Scene_ActionEventGroup_Actor_Add(Actor_GetScene(actor), actor, event);
         }
     }
 }
