@@ -31,7 +31,7 @@ struct ActionComponent
 };
 
 
-ActionComponent* Component_Action_Create(const tchar* local_name)
+ActionComponent* Component_Action_Create(const tchar* local_name, Actor* actor)
 {
     ActionComponent* event_respond_component  = MemNew(local_name, ActionComponent);
     event_respond_component->m_event_respond_queue  = Queue_Create(local_name, EventRespond*);

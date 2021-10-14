@@ -13,7 +13,7 @@ struct PhysicsComponent
     vec3    m_acceleration;
 };
 
-PhysicsComponent* Component_Physics_Create(const tchar* local_name)
+PhysicsComponent* Component_Physics_Create(const tchar* local_name, Actor* actor)
 {
     PhysicsComponent* physics_component = MemNew(local_name, PhysicsComponent);
     physics_component->m_is_enable_simulate = false;

@@ -2,8 +2,10 @@
 
 typedef struct StorageComponent StorageComponent;
 typedef union tdata tdata;
+typedef struct Actor Actor;
 
-StorageComponent*   Component_Storage_Create            (const tchar* local_name);
+
+StorageComponent*   Component_Storage_Create            (const tchar* local_name, Actor* actor);
 void                Component_Storage_Destroy           (StorageComponent* storage_component);
 
 bool                Component_Storage_IsExistVariable   (StorageComponent* storage_component, crc32 variable);

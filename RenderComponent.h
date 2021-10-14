@@ -2,9 +2,10 @@
 
 typedef struct RenderComponent RenderComponent;
 typedef struct ShaderText ShaderText;
+typedef struct Actor Actor;
 
 
-RenderComponent*    Component_Render_Create                 (const tchar* local_name);
+RenderComponent*    Component_Render_Create                 (const tchar* local_name, Actor* actor);
 void                Component_Render_Destroy                (RenderComponent* render_component);
 
 void    Component_Render_ShaderText_Add         (RenderComponent* render_component, ShaderText* shader_text);

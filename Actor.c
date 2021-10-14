@@ -83,10 +83,10 @@ void Actor_SetIsPause(Actor* actor, bool is_pause)
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-typedef tptr(*CB_ComponentCreate_tPtr_tChar)   (const tchar* local_name);
-typedef void (*CB_ComponentDestroy_Void_tPtr)   (tptr component);
+typedef tptr (*CB_ComponentCreate_tPtr_tChar_Actor) (const tchar* local_name, Actor* actor);
+typedef void (*CB_ComponentDestroy_Void_tPtr)       (tptr component);
 
-static CB_ComponentCreate_tPtr_tChar Actor_Component_Create_CB_Get(Component component_enum)
+static CB_ComponentCreate_tPtr_tChar_Actor Actor_Component_Create_CB_Get(Component component_enum)
 {
     switch(component_enum)
     {
@@ -123,7 +123,7 @@ void Actor_Component_New(Actor* actor, Component component_enum)
     Assert(actor != NULL, "");
     Assert(IS_IN_RANGE(component_enum, Component_Min, Component_Max), "");
 
-    const tptr component = Actor_Component_Create_CB_Get(component_enum)(Actor_GetLocalName(actor));
+    const tptr component = Actor_Component_Create_CB_Get(component_enum)(Actor_GetLocalName(actor), actor);
     Actor_Component_Set(actor, component_enum, component);
 }
 
