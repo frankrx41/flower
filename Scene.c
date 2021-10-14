@@ -211,12 +211,22 @@ void Scene_Storage_DeleteVariable(Scene* scene, crc32 variable)
     Storage_DeleteVariable(scene->m_storage, variable);
 }
 
-tptr Scene_GetChildActorQueue(Scene* scene)
+tptr Scene_ActorQueue_Child_Get(Scene* scene)
 {
     return scene->m_child_actor_queue;
 }
 
-tptr Scene_GetRenderableActorQueue(Scene* scene)
+tptr Scene_ActorQueue_Renderable_Get(Scene* scene)
 {
     return scene->m_actor_renderable_able_queue;
+}
+
+void Scene_ActorQueue_Renderable_Add(Scene* scene, Actor* actor)
+{
+    Queue_Push(Actor*, NULL, Scene_ActorQueue_Renderable_Get(scene), actor);
+}
+
+void Scene_ActorQueue_Renderable_Remove(Scene* scene, Actor* actor)
+{
+    Queue_RemoveFindFirst(Actor*)(Scene_ActorQueue_Renderable_Get(scene), NULL, actor);
 }

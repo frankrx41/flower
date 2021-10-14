@@ -5,6 +5,8 @@
 #include "RenderComponent.h"
 #include "ShaderText.h"
 
+#include "Actor.h"
+#include "Scene.h"
 #include "Queue.h"
 
 
@@ -18,6 +20,9 @@ RenderComponent* Component_Render_Create(const tchar* local_name, Actor* actor)
 {
     RenderComponent* render_component = MemNew(local_name, RenderComponent);
     render_component->m_shader_text_queue = Queue_Create(local_name, ShaderText*);
+
+    Scene_ActorQueue_Renderable_Add(Actor_GetScene(actor), actor);
+
     return render_component;
 }
 

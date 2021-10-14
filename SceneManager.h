@@ -14,7 +14,7 @@ void    SceneManager_Scene_Destroy          (SceneManager* scene_manager, Scene*
 void    SceneManager_Scene_SetCurrent       (SceneManager* scene_manager, Scene* scene);
 Scene*  SceneManager_Scene_GetCurrent       (SceneManager* scene_manager);
 
-tptr    SceneManager_GetSceneQueue          (SceneManager* scene_manager);
+tptr    SceneManager_SceneQueue_Get         (SceneManager* scene_manager);
 
 void    SceneManager_Command_Add            (SceneManager* scene_manager, CB_Command_Void cb_command_void);
 void    SceneManager_Command_Clear          (SceneManager* scene_manager);

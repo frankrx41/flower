@@ -62,7 +62,7 @@ void EventManager_SendEvent_Tick(EventManager* event_manager, Event event, float
 {
     Assert(event == Event_Tick, "");
     EventInfo* event_info = EventInfo_Create(event, NULL, NULL, KeyId_Null, delta_seconds);
-    Queue_ForEach(SceneManager_GetSceneQueue(SceneManager_GetInstance()), CallBack_SendEvent_Scene_Tick, event_info);
+    Queue_ForEach(SceneManager_SceneQueue_Get(SceneManager_GetInstance()), CallBack_SendEvent_Scene_Tick, event_info);
     EventInfo_Destroy(event_info);
 }
 
@@ -77,6 +77,6 @@ void EventManager_SendEvent_Actor_Action(EventManager* event_manager, Event even
 {
     Assert(IS_IN_RANGE(event, Event_Actor_Action_Min, Event_Actor_Action_Max), "");
     EventInfo* event_info = EventInfo_Create(event, NULL, NULL, KeyId_Null, 0);
-    Queue_ForEach(SceneManager_GetSceneQueue(SceneManager_GetInstance()), CallBack_SendEvent_Actor_Action, event_info);
+    Queue_ForEach(SceneManager_SceneQueue_Get(SceneManager_GetInstance()), CallBack_SendEvent_Actor_Action, event_info);
     EventInfo_Destroy(event_info);
 }

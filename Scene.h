@@ -36,4 +36,7 @@ bool    Scene_Storage_IsExistVariable   (Scene* scene, crc32 variable);
 tdata   Scene_Storage_ReadData          (Scene* scene, crc32 variable);
 void    Scene_Storage_DeleteVariable    (Scene* scene, crc32 variable);
 
-tptr    Scene_GetChildActorQueue        (Scene* scene);
+tptr    Scene_ActorQueue_Child_Get      (Scene* scene);
+tptr    Scene_ActorQueue_Renderable_Get (Scene* scene);
+void    Scene_ActorQueue_Renderable_Add     (Scene* scene, Actor* actor);
+void    Scene_ActorQueue_Renderable_Remove  (Scene* scene, Actor* actor);
