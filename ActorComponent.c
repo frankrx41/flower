@@ -272,7 +272,7 @@ void CallBack_Actor_RenderEachActor(Actor* actor, RenderManager* render_manager)
         return;
     }
     RenderComponent* render_component = Actor_Component_Cast(actor, Component_Render);
-    // Assert(render_component != false, "");
+    Assert(render_component != false, "");
     if( render_component )
     {
         Queue_ForEach(Component_Render_ShaderText_GetQueue(render_component), CallBack_Render_ActorShaderText_Plat, actor);

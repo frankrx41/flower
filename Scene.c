@@ -46,6 +46,7 @@ Scene* Scene_Create(const tchar* local_name)
     scene->m_cb_scene_destroy_void_scene = NULL;
     scene->m_actor_action_event_queue   = Queue_Create(local_name, Actor*);
     scene->m_physics_actor_queue        = Queue_Create(local_name, Actor*);
+    scene->m_actor_renderable_able_queue= Queue_Create(local_name, Actor*);
     scene->m_render_offset_vec          = vec2_null;
 
     Assert(ARRAY_SIZE(scene->m_actor_scene_event_queue_list) == Event_Scene_Max-Event_Scene_Min, "");
@@ -74,6 +75,7 @@ void Scene_Destroy(Scene* scene)
 
     Queue_Destroy(scene->m_actor_action_event_queue, NULL);
     Queue_Destroy(scene->m_physics_actor_queue, NULL);
+    Queue_Destroy(Scene_ActorQueue_Renderable_Get(scene), NULL);
 
 
     String_Del(scene->m_local_name);
