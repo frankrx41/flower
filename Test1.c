@@ -62,6 +62,7 @@ void CallBack_Actor_Create5(Actor* actor, tptr ptr)
     Actor_Component_Action_EventRespond_Add(actor, Event_Actor_Action_MoveUp, NULL, CallBack_ActorOnEvent5);
     Actor_Component_Action_EventRespond_Add(actor, Event_Actor_Action_MoveDown, NULL, CallBack_ActorOnEvent5);
 };
+
 void Engine_Test5()
 {
     Scene* scene = SceneManager_Scene_Create(__FUNCTION__);
@@ -74,15 +75,9 @@ void Engine_Test5()
     Scene_Render_Offset_Set(scene, Vec2(0, 10));
 
     SceneManager_Scene_SetCurrent(scene);
-
-    // Engine_NotifyExit(false);
-    // Engine_MainLoop();
-    //
-    //
-    // Scene_Actor_Destroy(scene, NULL, actor);
-    // SceneManager_Scene_Destroy(scene);
 }
 
+////////////////////////////////////////////////////////////////////////////////
 void CallBack_ActorOnEvent4(Actor* actor, const EventInfo* event_info)
 {
     static int32 update_count = 0;
@@ -121,15 +116,9 @@ void Engine_Test4()
     Actor* actor = Scene_Actor_Create(__FUNCTION__, scene, CallBack_Actor_Create4, __FUNCTION__);
 
     SceneManager_Scene_SetCurrent(scene);
-
-    // Engine_NotifyExit(false);
-    // Engine_MainLoop();
-    //
-    //
-    // Scene_Actor_Destroy(scene, NULL, actor);
-    // SceneManager_Scene_Destroy(scene);
 }
 
+////////////////////////////////////////////////////////////////////////////////
 void CallBack_ActorOnEvent3(Actor* actor, const EventInfo* event_info)
 {
     crc32 crc_tick_count = Str_CalcCrc("tick_count", 0);
@@ -197,15 +186,9 @@ void Engine_Test3()
     Actor* actor = Scene_Actor_Create(__FUNCTION__, scene, CallBack_Actor_Create3, __FUNCTION__);
 
     SceneManager_Scene_SetCurrent(scene);
-
-    // Engine_NotifyExit(false);
-    // Engine_MainLoop();
-    //
-    //
-    // Scene_Actor_Destroy(scene, NULL, actor);
-    // SceneManager_Scene_Destroy(scene);
 }
 
+////////////////////////////////////////////////////////////////////////////////
 void CallBack_ActorOnEvent2(Actor* actor, const EventInfo* event_info)
 {
     const crc32 crc_delta_second = Str_CalcCrc("delta_seconds", 0);
@@ -252,21 +235,16 @@ void CallBack_Actor_Create2(Actor* actor, tptr ptr)
     Actor_Component_Action_EventRespond_Add(actor, Event_Scene_Tick, NULL, CallBack_ActorOnEvent2);
 
 };
+
 void Engine_Test2()
 {
     Scene* scene = SceneManager_Scene_Create(__FUNCTION__);
     Actor* actor = Scene_Actor_Create(__FUNCTION__, scene, CallBack_Actor_Create2, __FUNCTION__);
 
     SceneManager_Scene_SetCurrent(scene);
-
-    // Engine_NotifyExit(false);
-    // Engine_MainLoop();
-    //
-    //
-    // Scene_Actor_Destroy(scene, NULL, actor);
-    // SceneManager_Scene_Destroy(scene);
 }
 
+////////////////////////////////////////////////////////////////////////////////
 void CallBack_ActorOnEvent1(Actor* actor, const EventInfo* event_info)
 {
     float seconds = Actor_Component_Storage_ReadData(actor, Str_CalcCrc("seconds", 0)).m_float;
@@ -288,6 +266,7 @@ void CallBack_ActorOnEvent1(Actor* actor, const EventInfo* event_info)
 
     }
 }
+
 void Engine_Test1()
 {
     Scene* scene1 = SceneManager_Scene_Create(__FUNCTION__);
@@ -319,15 +298,9 @@ void Engine_Test1()
 
 
     SceneManager_Scene_SetCurrent(scene1);
-
-    // Engine_NotifyExit(false);
-    // Engine_MainLoop();
-    //
-    // Scene_Actor_Destroy(scene1, NULL, actor1);
-    // SceneManager_Scene_Destroy(scene1);
-    // SceneManager_Scene_Destroy(scene2);
 }
 
+////////////////////////////////////////////////////////////////////////////////
 void CallBack_ActorOnEvent0(Actor* actor, const EventInfo* event_info)
 {
     Actor_Component_Physics_MoveLocation(actor, Vec3(0.1f, 0.05f, 0));
@@ -354,17 +327,6 @@ void Engine_Test0()
     Actor_Component_Action_EventRespond_Add(actor, Event_Scene_Tick, NULL, CallBack_ActorOnEvent0);
 
     SceneManager_Scene_SetCurrent(scene);
-
-    // Engine_NotifyExit(false);
-    // Engine_MainLoop();
-    //
-    //
-    // Actor_Component_Del(actor, Component_Render);
-    // Actor_Component_Del(actor, Component_Action);
-    // Actor_Component_Del(actor, Component_Physics);
-    //
-    // Scene_Actor_Destroy(scene, NULL, actor);
-    // SceneManager_Scene_Destroy(scene);
 }
 
 ////////////////////////////////////////////////////////////////////////////////
