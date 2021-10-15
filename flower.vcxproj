@@ -108,6 +108,7 @@
     <ClCompile Include="String_Win32.c" />
     <ClCompile Include="Test0.c" />
     <ClCompile Include="Test1.c" />
+    <ClCompile Include="Test2.c" />
     <ClCompile Include="Thread.c" />
     <ClCompile Include="Thread_Win32.c" />
     <ClCompile Include="TimingManager.c" />

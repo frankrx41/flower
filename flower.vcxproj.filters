@@ -93,6 +93,7 @@
     <ClCompile Include="Task.c">
       <Filter>Engine\Task</Filter>
     </ClCompile>
+    <ClCompile Include="Test2.c" />
     <ClCompile Include="Test1.c" />
   </ItemGroup>
   <ItemGroup>

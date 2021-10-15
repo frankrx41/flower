@@ -99,8 +99,6 @@ void Engine_MainLoop()
 
 void Engine_UnInitialize()
 {
-    Engine_NotifyExit(true);
-
     Engine* engine = Engine_GetInstance();
 
     RenderManager_Destroy(engine->m_render_manager);
@@ -119,6 +117,7 @@ void Engine_UnInitialize()
 
 void Engine_NotifyExit()
 {
+    Assert(Engine_GetInstance()->m_is_exit == false, "Try repeated exit engine!");
     Engine_GetInstance()->m_is_exit = true;
 }
 

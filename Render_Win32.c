@@ -66,11 +66,11 @@ void RenderManager_PlatformData_Destroy_Plat(RenderManager* render_manager, Rend
     MemDel(render_manager_platform_data);
 }
 
-static void Render_PrintCharAtXY_Plat(RenderManagerPlatformData* render_manager_platform_data, uint32 x, uint32 y, tchar ch)
+static void Render_PrintCharAtXY_Win32(RenderManagerPlatformData* render_manager_platform_data, uint32 x, uint32 y, tchar ch)
 {
-    COORD coord_screen = { x, y };
+    const COORD coord_screen = { x, y };
     SetConsoleCursorPosition(render_manager_platform_data->m_std_output, coord_screen);
-    printf("%c", ch);
+    printf("%c", ch == 0 ? ' ' : ch);
 }
 
 void RenderManager_ToScreen_Plat(RenderManager* render_manager, RenderManagerPlatformData* render_manager_platform_data)
@@ -84,7 +84,7 @@ void RenderManager_ToScreen_Plat(RenderManager* render_manager, RenderManagerPla
             uint32 i = x + y*render_manager_platform_data->m_width;
             if( render_manager_platform_data->m_front_buffer[i].m_tchar != render_manager_platform_data->m_back_buffer[i].m_tchar )
             {
-                Render_PrintCharAtXY_Plat(render_manager_platform_data, x, y, render_manager_platform_data->m_back_buffer[i].m_tchar);
+                Render_PrintCharAtXY_Win32(render_manager_platform_data, x, y, render_manager_platform_data->m_back_buffer[i].m_tchar);
             }
         }
     }
