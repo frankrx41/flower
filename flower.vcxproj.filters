@@ -20,7 +20,7 @@
       <Filter>Library\Queue</Filter>
     </ClCompile>
     <ClCompile Include="Test0.c" />
-    <ClCompile Include="Main.c" />
+    <ClCompile Include="StdMain.c" />
     <ClCompile Include="Scene.c">
       <Filter>Scene</Filter>
     </ClCompile>
