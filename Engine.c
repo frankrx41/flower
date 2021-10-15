@@ -52,6 +52,14 @@ void                TaskManager_Destroy     (TaskManager* task_manager);
 void                Engine_Debug_Memory_Check_Leak          ();
 void                Engine_Debug_Memory_Static_Check_Leak   ();
 
+
+void    Engine_Debug_UnitTesting0   ();
+void    Engine_Debug_UnitTesting1   ();
+
+void    Engine_Initialize   (void);
+void    Engine_MainLoop     (void);
+void    Engine_UnInitialize (void);
+
 static Engine* Engine_GetInstance()
 {
     return &global_engine;
@@ -74,6 +82,17 @@ void Engine_Initialize()
     engine->m_is_exit           = false;
 }
 
+void Engine_Main(const tchar* command_line)
+{
+    Engine_Initialize();
+
+    Engine_Debug_UnitTesting0();
+    Engine_Debug_UnitTesting1();
+
+    Engine_MainLoop();
+
+    Engine_UnInitialize();
+}
 
 void Engine_MainLoop()
 {
