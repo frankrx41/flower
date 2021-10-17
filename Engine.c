@@ -118,12 +118,12 @@ void Engine_UnInitialize()
 {
     Engine* engine = Engine_GetInstance();
 
+    TaskManager_Destroy(engine->m_task_manager);
     RenderManager_Destroy(engine->m_render_manager);
     TimingManager_Destroy(engine->m_timing_manager);
     EventManager_Destroy(engine->m_event_manager);
     SceneManager_Destroy(engine->m_scene_manager);
     InputManager_Destroy(engine->m_input_manager);
-    TaskManager_Destroy(engine->m_task_manager);
 
     Engine_Profile_Memory();
     Engine_Debug_Memory_Check_Leak();

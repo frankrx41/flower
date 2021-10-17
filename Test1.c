@@ -82,7 +82,7 @@ void CallBack_ActorOnEvent4(Actor* actor, const EventInfo* event_info)
 {
     static int32 update_count = 0;
     update_count++;
-    if (update_count > 300)
+    if (update_count > 100)
     {
         SceneManager_Scene_ExitCurrent();
         return;
@@ -126,7 +126,7 @@ void CallBack_ActorOnEvent3(Actor* actor, const EventInfo* event_info)
 
     static int32 update_count = 0;
     update_count++;
-    if (update_count > 5)
+    if (update_count > 2)
     {
         SceneManager_Scene_ExitCurrent();
     }
@@ -209,7 +209,7 @@ void CallBack_ActorOnEvent2(Actor* actor, const EventInfo* event_info)
         int32 update_tick = Actor_Component_Storage_ReadData(actor, crc_update_tick).m_int32;
         update_tick += 1;
 
-        if (update_tick >= 5)
+        if (update_tick >= 2)
         {
             SceneManager_Scene_ExitCurrent();
         }
@@ -306,7 +306,7 @@ void CallBack_ActorOnEvent0(Actor* actor, const EventInfo* event_info)
     Actor_Component_Physics_MoveLocation(actor, Vec3(0.1f, 0.05f, 0));
 
     vec3 vec = Actor_Component_Physics_GetLocation(actor);
-    if (vec.m_y > 7)
+    if (vec.m_y > 2)
     {
         SceneManager_Scene_ExitCurrent();
     }
@@ -336,8 +336,6 @@ static void Test(uint32 index, CB_Test_Void cb_test_void)
     Log(0, "Test %d\n", index);
 
     SceneManager_Command_Add((CB_Command_Void)cb_test_void);
-
-    Engine_Profile_Memory();
 }
 
 void Engine_Debug_UnitTesting1()
