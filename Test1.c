@@ -74,7 +74,7 @@ void Engine_Test5()
 
     Scene_Render_Offset_Set(scene, Vec2(0, 10));
 
-    SceneManager_Scene_SetCurrent(scene);
+    SceneManager_Scene_Foreground_Queue_Add(scene);
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -115,7 +115,7 @@ void Engine_Test4()
     Scene* scene = SceneManager_Scene_Create(__FUNCTION__);
     Actor* actor = Scene_Actor_Create(__FUNCTION__, scene, CallBack_Actor_Create4, __FUNCTION__);
 
-    SceneManager_Scene_SetCurrent(scene);
+    SceneManager_Scene_Foreground_Queue_Add(scene);
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -185,7 +185,7 @@ void Engine_Test3()
     Scene* scene = SceneManager_Scene_Create(__FUNCTION__);
     Actor* actor = Scene_Actor_Create(__FUNCTION__, scene, CallBack_Actor_Create3, __FUNCTION__);
 
-    SceneManager_Scene_SetCurrent(scene);
+    SceneManager_Scene_Foreground_Queue_Add(scene);
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -241,7 +241,7 @@ void Engine_Test2()
     Scene* scene = SceneManager_Scene_Create(__FUNCTION__);
     Actor* actor = Scene_Actor_Create(__FUNCTION__, scene, CallBack_Actor_Create2, __FUNCTION__);
 
-    SceneManager_Scene_SetCurrent(scene);
+    SceneManager_Scene_Foreground_Queue_Add(scene);
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -256,7 +256,7 @@ void CallBack_ActorOnEvent1(Actor* actor, const EventInfo* event_info)
         Scene* scene = Actor_Component_Storage_ReadData(actor, Str_CalcCrc("scene", 0)).m_tptr;
         if (scene)
         {
-            SceneManager_Scene_SetCurrent(scene);
+            SceneManager_Scene_Foreground_Queue_Add(scene);
             Scene_Is_Pause_Set(event_info->m_scene, true);
         }
         else
@@ -297,7 +297,7 @@ void Engine_Test1()
 
 
 
-    SceneManager_Scene_SetCurrent(scene1);
+    SceneManager_Scene_Foreground_Queue_Add(scene1);
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -326,7 +326,7 @@ void Engine_Test0()
     Actor_Component_Physics_SetLocation(actor, Vec3(0, 0, 0));
     Actor_Component_Action_EventRespond_Add(actor, Event_Scene_Tick, NULL, CallBack_ActorOnEvent0);
 
-    SceneManager_Scene_SetCurrent(scene);
+    SceneManager_Scene_Foreground_Queue_Add(scene);
 }
 
 ////////////////////////////////////////////////////////////////////////////////

@@ -131,16 +131,7 @@ Actor* Scene_Actor_Create(const tchar* local_name, Scene* scene, CB_ActorCreate_
 
 void Scene_Actor_Destroy(Scene* scene, CB_FindData_Bool_tPtr_tPtr cb_find_actor_bool_tptr_tptr, tptr ptr)
 {
-    if( cb_find_actor_bool_tptr_tptr == NULL )
-    {
-        Queue_RemoveFindFirst(Actor*)(scene->m_child_actor_queue, NULL, ptr);
-        Actor_Destroy(ptr);
-    }
-    else
-    {
-        Actor* actor = Queue_RemoveFindFirst(Actor*)(scene->m_child_actor_queue, cb_find_actor_bool_tptr_tptr, ptr);
-        Actor_Destroy(actor);
-    }
+    Queue_RemoveFindFirst(Actor*)(scene->m_child_actor_queue, cb_find_actor_bool_tptr_tptr, ptr, Actor_Destroy);
 }
 
 void Scene_Actor_Destroy_All(Scene* scene)
@@ -187,7 +178,7 @@ void Scene_PhysicsGroup_Actor_Add(Scene* scene, Actor* actor)
 
 void Scene_PhysicsGroup_Actor_Remove(Scene* scene, Actor* actor)
 {
-    Queue_RemoveFindFirst(Actor*)(scene->m_physics_actor_queue, NULL, actor);
+    Queue_RemoveFindFirst(Actor*)(scene->m_physics_actor_queue, NULL, actor, NULL);
 }
 
 void Scene_PhysicsActor_Update(Scene* scene, float delta_seconds)
@@ -235,5 +226,5 @@ void Scene_ActorQueue_Renderable_Add(Scene* scene, Actor* actor)
 
 void Scene_ActorQueue_Renderable_Remove(Scene* scene, Actor* actor)
 {
-    Queue_RemoveFindFirst(Actor*)(Scene_ActorQueue_Renderable_Get(scene), NULL, actor);
+    Queue_RemoveFindFirst(Actor*)(Scene_ActorQueue_Renderable_Get(scene), NULL, actor, NULL);
 }

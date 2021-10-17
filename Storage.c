@@ -109,7 +109,7 @@ tdata Storage_ReadData(const Storage* storage, crc32 variable)
 void Storage_DeleteVariable(Storage* storage, crc32 variable)
 {
     StoreContent* store_content = Storage_FindStoreContent(storage, variable);
-    Queue_RemoveFindFirst(StoreContent*)(storage->m_store_queue, NULL, store_content);
+    Queue_RemoveFindFirst(StoreContent*)(storage->m_store_queue, NULL, store_content, NULL);
     MemDel(store_content);
 }
 

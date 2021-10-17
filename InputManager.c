@@ -108,8 +108,7 @@ static bool CallBack_Find_InputActionEvent(InputActionEvent* input_action_event,
 void InputManager_InputActionEvent_Del(InputManager* input_manager, Event event)
 {
     Assert(IS_IN_RANGE(event, Event_Actor_Action_Min, Event_Actor_Action_Max), "");
-    InputActionEvent* input_action_event = Queue_RemoveFindFirst(InputActionEvent*)(input_manager->m_input_action_event_queue, (CB_FindData_Bool_tPtr_tPtr)CallBack_Find_InputActionEvent, (const tptr)event);
-    InputActionEvent_Destroy(input_action_event);
+    Queue_RemoveFindFirst(InputActionEvent*)(input_manager->m_input_action_event_queue, (CB_FindData_Bool_tPtr_tPtr)CallBack_Find_InputActionEvent, (const tptr)event, InputActionEvent_Destroy);
 }
 
 void InputManager_InputActionEvent_Clear(InputManager* input_manager)

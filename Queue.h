@@ -2,7 +2,7 @@
 
 #define Queue struct Queue
 
-typedef bool (*CB_FindData_Bool_tPtr_tPtr)      (tptr data, const tptr ptr);
+typedef bool (*CB_FindData_Bool_tPtr_tPtr)      (const tptr data, const tptr ptr);
 typedef void (*CB_ProcessData_Void_tPtr_tPtr)   (tptr data, const tptr ptr);
 typedef bool (*CB_CompareData_Bool_tPtr_tPtr)   (const tptr dat1, const tptr dat2);
 typedef void (*CB_DestroyData_Void_tPtr)        (tptr data);
@@ -22,16 +22,16 @@ tptr    Queue_Dequeue       (Queue* queue);
 tptr    Queue_PeekFirst     (const Queue* queue);
 tptr    Queue_PeekTail      (const Queue* queue);
 
-tptr    Queue_RemoveFindFirst   (Queue* queue, CB_FindData_Bool_tPtr_tPtr cb_find_data_bool_tptr_tptr, tptr ptr);     // If cb_find_data_bool_tptr_tptr is NULL, it will find the ptr
-int32   Queue_RemoveFindAll     (Queue* queue, CB_FindData_Bool_tPtr_tPtr cb_find_data_bool_tptr_tptr, tptr ptr);
+tptr    Queue_RemoveFindFirst   (Queue* queue, CB_FindData_Bool_tPtr_tPtr cb_find_data_bool_tptr_tptr, tptr ptr, CB_DestroyData_Void_tPtr cb_destroy_data_void_tptr);     // If cb_find_data_bool_tptr_tptr is NULL, it will find the ptr
+int32   Queue_RemoveFindAll     (Queue* queue, CB_FindData_Bool_tPtr_tPtr cb_find_data_bool_tptr_tptr, tptr ptr, CB_DestroyData_Void_tPtr cb_destroy_data_void_tptr);
 
 void    Queue_Clear         (Queue* queue, CB_DestroyData_Void_tPtr cb_destroy_data_void_tptr);
 void    Queue_Sort          (Queue* queue, CB_CompareData_Bool_tPtr_tPtr cb_compare_data_bool_tptr_tptr);
 
 #undef Queue
 #define Queue(type)                             struct Queue
-#define Queue_Create(local_name, type)          Queue_Create(local_name, #type)
-#define Queue_Push(type, local_name, queue, reference_data) Queue_Push(local_name, queue, (tptr)reference_data, MACRO_TO_STR(type))
+#define Queue_Create(local_name, type)          (((type*)0), Queue_Create(local_name, #type))
+#define Queue_Push(type, local_name, queue, reference_data) (((type*)0), Queue_Push(local_name, queue, (tptr)reference_data, MACRO_TO_STR(type)))
 #define Queue_Find(type)                        (type)Queue_Find
 #define Queue_Pop(type)                         (type)Queue_Pop
 #define Queue_Dequeue(type)                     (type)Queue_Dequeue

@@ -17,9 +17,9 @@
 
 struct SceneManager
 {
-    Queue(Scene*)*          m_scene_queue;
+    Queue(Scene*)*          m_scene_queue_all;
+    Queue(Scene*)*          m_scene_queue_foreground;
     Queue(CB_Command_Void)* m_command_queue;
-    Scene*                  m_current_scene;
     String*                 m_local_name;
     bool                    m_is_exit_current_scene;
     bool                    m_is_scene_loading;
@@ -38,15 +38,19 @@ void    Scene_Destroy   (Scene* scene);
 #undef SceneManager_Command_Clear
 #undef SceneManager_Scene_ExitCurrent
 #undef SceneManager_Scene_IsLoading
+#undef SceneManager_Scene_Foreground_Queue_Add
+#undef SceneManager_Scene_Foreground_Queue_Remove
+#undef SceneManager_Scene_Foreground_Queue_Clear
+
 
 ////////////////////////////////////////////////////////////////////////////////
 SceneManager* SceneManager_Create(const tchar* local_name)
 {
-    SceneManager* scene_manager     = MemNew(local_name, SceneManager);
-    scene_manager->m_scene_queue    = Queue_Create(local_name, Sence*);
-    scene_manager->m_command_queue  = Queue_Create(local_name, CB_Command_Void);
-    scene_manager->m_current_scene  = NULL;
-    scene_manager->m_local_name     = String_New(local_name, local_name, true);
+    SceneManager* scene_manager             = MemNew(local_name, SceneManager);
+    scene_manager->m_scene_queue_all        = Queue_Create(local_name, Scene*);
+    scene_manager->m_scene_queue_foreground = Queue_Create(local_name, Scene*);
+    scene_manager->m_command_queue          = Queue_Create(local_name, CB_Command_Void);
+    scene_manager->m_local_name             = String_New(local_name, local_name, true);
     scene_manager->m_is_exit_current_scene  = true;
     scene_manager->m_is_scene_loading       = false;
     return scene_manager;
@@ -54,7 +58,8 @@ SceneManager* SceneManager_Create(const tchar* local_name)
 
 void SceneManager_Destroy(SceneManager* scene_manager)
 {
-    Queue_Destroy(scene_manager->m_scene_queue, Scene_Destroy);
+    Queue_Destroy(scene_manager->m_scene_queue_all, Scene_Destroy);
+    Queue_Destroy(scene_manager->m_scene_queue_foreground, NULL);
     Queue_Destroy(scene_manager->m_command_queue, NULL);
     String_Del(scene_manager->m_local_name);
     MemDel(scene_manager);
@@ -63,25 +68,36 @@ void SceneManager_Destroy(SceneManager* scene_manager)
 Scene* SceneManager_Scene_Create(SceneManager* scene_manager, const tchar* local_name)
 {
     Scene* scene = Scene_Create(local_name);
-    Queue_Push(Sence*, local_name, scene_manager->m_scene_queue, scene);
+    Queue_Push(Scene*, local_name, scene_manager->m_scene_queue_all, scene);
 
     return scene;
 }
 
 void SceneManager_Scene_Destroy(SceneManager* scene_manager, Scene* scene)
 {
-    Queue_RemoveFindFirst(Scene*)(scene_manager->m_scene_queue, NULL, scene);
-    Scene_Destroy(scene);
+    Queue_RemoveFindFirst(Scene*)(scene_manager->m_scene_queue_all, NULL, scene, Scene_Destroy);
 }
 
-void SceneManager_Scene_SetCurrent(SceneManager* scene_manager, Scene* scene)
+void SceneManager_Scene_Foreground_Queue_Add(SceneManager* scene_manager, Scene* scene)
 {
-    scene_manager->m_current_scene = scene;
+    Queue_Push(Scene*, NULL, scene_manager->m_scene_queue_foreground, scene);
 }
 
-Scene* SceneManager_Scene_GetCurrent(SceneManager* scene_manager)
+void SceneManager_Scene_Foreground_Queue_Remove(SceneManager* scene_manager, Scene* scene)
 {
-    return scene_manager->m_current_scene;
+    Queue_RemoveFindFirst(Scene*)(scene_manager->m_scene_queue_foreground, NULL, scene, NULL);
+}
+
+void SceneManager_Scene_Foreground_Queue_Clear(SceneManager* scene_manager)
+{
+    Assert( Queue_IsEmpty(scene_manager->m_scene_queue_foreground) == false, "You try to clear empty scene foreground queue!");
+    uint32 destroy_count = 0;
+    for(;!Queue_IsEmpty(scene_manager->m_scene_queue_foreground);)
+    {
+        Scene* scene = Queue_Dequeue(Scene*)(scene_manager->m_scene_queue_foreground);
+        SceneManager_Scene_Destroy(scene_manager, scene);
+        destroy_count ++;
+    }
 }
 
 void SceneManager_Scene_ExitCurrent(SceneManager* scene_manager)
@@ -91,7 +107,7 @@ void SceneManager_Scene_ExitCurrent(SceneManager* scene_manager)
 
 tptr SceneManager_SceneQueue_Get(SceneManager* scene_manager)
 {
-    return scene_manager->m_scene_queue;
+    return scene_manager->m_scene_queue_all;
 }
 
 void SceneManager_Command_Add(SceneManager* scene_manager, CB_Command_Void cb_command_void)
@@ -111,7 +127,6 @@ bool SceneManager_Scene_IsLoading(SceneManager* scene_manager)
 
 static void SceneManager_LoadLastScene(Task* task, SceneManager* scene_manager)
 {
-    SceneManager_Scene_SetCurrent(scene_manager, NULL);
     scene_manager->m_is_exit_current_scene = false;
     (Queue_Dequeue(CB_Command_Void)(scene_manager->m_command_queue))();
     scene_manager->m_is_scene_loading = false;
@@ -125,15 +140,14 @@ void SceneManager_TryRunNextCommand(SceneManager* scene_manager)
     }
     else
     {
-        if( scene_manager->m_is_exit_current_scene || Queue_IsEmpty(scene_manager->m_scene_queue) )
+        if( scene_manager->m_is_exit_current_scene || Queue_IsEmpty(scene_manager->m_scene_queue_all) )
         {
             if( !SceneManager_Scene_IsLoading(scene_manager) )
             {
                 scene_manager->m_is_scene_loading = true;
-                if( SceneManager_Scene_GetCurrent(scene_manager) )
+                if( !Queue_IsEmpty(scene_manager->m_scene_queue_foreground) )
                 {
-                    Scene* scene = Queue_RemoveFindFirst(Scene*)(scene_manager->m_scene_queue, NULL, SceneManager_Scene_GetCurrent(scene_manager));
-                    Scene_Destroy(scene);
+                    SceneManager_Scene_Foreground_Queue_Clear(scene_manager);
                 }
                 TaskManager_Task_Add(String_CStr(scene_manager->m_local_name), 0, true, SceneManager_LoadLastScene, scene_manager);
             }
