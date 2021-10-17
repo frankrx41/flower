@@ -16,4 +16,4 @@ void        TaskManager_Task_Render_Add         (TaskManager* task_manager, cons
 TaskManager* TaskManager_GetInstance();
 
 #define TaskManager_Task_Job_Add(local_name, thread_id, priority, is_auto_destroy, cb_task_run_condition_bool_task_tptr, cb_task_run_void_task_tptr, task_data)   TaskManager_Task_Job_Add(TaskManager_GetInstance(), local_name, TaskManager_TaskThread_Job_Get(TaskManager_GetInstance(), thread_id), priority, is_auto_destroy, cb_task_run_condition_bool_task_tptr, cb_task_run_void_task_tptr, task_data)
-#define TaskManager_Task_Render_Add(local_name, cb_task_run_void_task_tptr, task_data)   TaskManager_RenderTask_Add(TaskManager_GetInstance(), local_name, cb_task_run_void_task_tptr, task_data)
+#define TaskManager_Task_Render_Add(local_name, cb_task_run_void_task_tptr, task_data)   TaskManager_Task_Render_Add(TaskManager_GetInstance(), local_name, cb_task_run_void_task_tptr, task_data)

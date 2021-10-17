@@ -10,8 +10,10 @@ typedef void (*CB_ActorDestroy_Void_Actor)      (Actor* actor);
 void    Actor_Destroy_CB_Set    (Actor* actor, CB_ActorDestroy_Void_Actor cb_actor_destroy_void_actor);
 void    Actor_Destroy           (Actor* actor);
 
-bool    Actor_IsPause           (Actor* actor);
-void    Actor_IsPause_Set       (Actor* actor, bool is_pause);
+bool    Actor_Is_Pause          (Actor* actor);
+void    Actor_Pause             (Actor* actor, bool is_pause);
+bool    Actor_Is_Hide           (Actor* actor);
+void    Actor_Hide              (Actor* actor, bool is_hide);
 
 /*
 Actor_Component_Del will be call when Actor_Destroy, you cannot call it.

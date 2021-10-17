@@ -13,13 +13,14 @@
 
 struct Actor
 {
-    uint32                      m_id;
-    String*                     m_local_name;
+    uint32  m_id;
+    String* m_local_name;
 
-    tptr                        m_components[Component_Max - Component_Min];
+    tptr    m_components[Component_Max - Component_Min];
 
-    Scene*                      m_scene;
-    bool                        m_is_pause;
+    Scene*  m_scene;
+    bool    m_is_pause;
+    bool    m_is_hide;
     CB_ActorDestroy_Void_Actor  m_cb_actor_destroy_void_actor;
 };
 
@@ -36,6 +37,7 @@ Actor* Actor_Create(const tchar* local_name, Scene* scene, uint32 id, CB_ActorCr
 
     actor->m_scene                          = scene;
     actor->m_is_pause                       = false;
+    actor->m_is_hide                        = false;
     actor->m_cb_actor_destroy_void_actor    = NULL;
 
     if( cb_actor_create_void_actor_tptr )
@@ -72,14 +74,24 @@ void Actor_Destroy(Actor* actor)
     MemDel(actor);
 }
 
-bool Actor_IsPause(Actor* actor)
+bool Actor_Is_Pause(Actor* actor)
 {
     return actor->m_is_pause;
 }
 
-void Actor_IsPause_Set(Actor* actor, bool is_pause)
+void Actor_Pause(Actor* actor, bool is_pause)
 {
     actor->m_is_pause = is_pause;
+}
+
+bool Actor_Is_Hide(Actor* actor)
+{
+    return actor->m_is_hide;
+}
+
+void Actor_Hide(Actor* actor, bool is_hide)
+{
+    actor->m_is_hide = is_hide;
 }
 
 ////////////////////////////////////////////////////////////////////////////////

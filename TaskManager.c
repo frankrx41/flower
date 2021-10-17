@@ -59,6 +59,7 @@ TaskManager* TaskManager_Create(const tchar* local_name)
     {
         task_manager->m_task_thread_job[i] = TaskThread_Create(local_name);
     }
+    task_manager->m_task_thread_render  = TaskThread_Create(local_name);
 
     return task_manager;
 }
@@ -70,6 +71,7 @@ void TaskManager_Destroy(TaskManager* task_manager)
     {
         TaskThread_Destroy(task_manager->m_task_thread_job[i]);
     }
+    TaskThread_Destroy(task_manager->m_task_thread_render);
 
     MemDel(task_manager->m_task_thread_job);
     MemDel(task_manager);
