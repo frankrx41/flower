@@ -64,12 +64,12 @@ bool Thread_IsSuspend(Thread* thread)
     return thread->m_is_suspend;
 }
 
-void Thread_This_Sleep(float seconds)
+void Thread_Sleep_This(float seconds)
 {
     Thread_This_Sleep_Plat(seconds);
 }
 
-void Thread_This_Sleep_Tick()
+void Thread_Sleep_This_Tick()
 {
     Thread_This_Sleep_Tick_Plat();
 }
@@ -78,7 +78,7 @@ void Thread_Sleep(Thread* thread, float seconds)
 {
     if( thread == NULL )
     {
-        Thread_This_Sleep(seconds);
+        Thread_Sleep_This(seconds);
     }
     else
     {

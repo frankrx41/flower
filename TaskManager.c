@@ -114,7 +114,7 @@ static void TaskManager_Thread_RunTask(Thread* thread, TaskThread* task_thread)
         }
         else
         {
-            Thread_This_Sleep_Tick();
+            Thread_Sleep_This_Tick();
         }
     }
 

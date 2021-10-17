@@ -110,7 +110,7 @@ void TimingManager_TrimSpeed(TimingManager* timing_manager)
             break;
         }
 
-        Thread_This_Sleep_Tick();
+        Thread_Sleep_This_Tick();
     }
 
     timing_manager->m_next_cpu_tick = timing_manager->m_next_cpu_tick + timing_manager->m_ticks_in_one_frame;
