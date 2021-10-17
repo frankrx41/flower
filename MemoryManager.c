@@ -282,6 +282,7 @@ void Engine_Profile_Memory()
     Log(0, "=====================================================\n");
     Queue_ForEach( memory_profile_data_queue, CallBack_Memory_ProfileLog, &total_alloc_size );
     Log(0, "%-30s: %d\n", "Static", static_alloc_memory_size);
+    total_alloc_size += static_alloc_memory_size;
     Log(0, "%-30s: %d\n", "Total", total_alloc_size);
     Log(0, "=====================================================\n");
 }
