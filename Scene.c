@@ -107,12 +107,12 @@ void Scene_Destroy_CB_Set(Scene* scene, CB_SceneDestroy_Void_Scene cb_scene_dest
     scene->m_cb_scene_destroy_void_scene = cb_scene_destroy_void_scene;
 }
 
-bool Scene_IsPause(Scene* scene)
+bool Scene_Is_Pause_Get(Scene* scene)
 {
     return scene->m_is_pause;
 }
 
-void Scene_SetIsPause(Scene* scene, bool is_pause)
+void Scene_Is_Pause_Set(Scene* scene, bool is_pause)
 {
     scene->m_is_pause = is_pause;
 }
