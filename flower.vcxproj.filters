@@ -20,7 +20,6 @@
       <Filter>Library\Queue</Filter>
     </ClCompile>
     <ClCompile Include="Test0.c" />
-    <ClCompile Include="StdMain.c" />
     <ClCompile Include="Scene.c">
       <Filter>Scene</Filter>
     </ClCompile>
@@ -101,6 +100,7 @@
     <ClCompile Include="Timer.c">
       <Filter>Library\Timer</Filter>
     </ClCompile>
+    <ClCompile Include="UnixMain.c" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CoreMini.h" />

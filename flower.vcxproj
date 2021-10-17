@@ -94,7 +94,7 @@
     <ClCompile Include="Debug_Win32.c" />
     <ClCompile Include="Engine.c" />
     <ClCompile Include="EventManager.c" />
-    <ClCompile Include="StdMain.c" />
+    <ClCompile Include="UnixMain.c" />
     <ClCompile Include="MemoryManager.c" />
     <ClCompile Include="Memory_Win32.c" />
     <ClCompile Include="Queue.c" />
