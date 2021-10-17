@@ -262,21 +262,27 @@ bool Memory_IsInBounds(tptr head_ptr, tptr check_ptr)
 }
 
 ////////////////////////////////////////////////////////////////////////////////
+#undef Engine_Profile_Memory
 
-static void CallBack_Memory_ProfileLog(MemoryProfileData* memory_profile_data, tptr ptr)
+static void CallBack_Memory_ProfileLog(MemoryProfileData* memory_profile_data, uint32* total_alloc_size)
 {
-    Log(0, "%-20s: %d / %d \n", String_CStr(memory_profile_data->m_local_name), memory_profile_data->m_alloc_size, memory_profile_data->m_alloc_size_max);
+    if( memory_profile_data->m_alloc_size != 0 )
+    {
+        Log(0, "%-30s: %-8d / %-8d \n", String_CStr(memory_profile_data->m_local_name), memory_profile_data->m_alloc_size, memory_profile_data->m_alloc_size_max);
+        *total_alloc_size += memory_profile_data->m_alloc_size;
+    }
 }
 
-#undef Engine_Profile_Memory
 void Engine_Profile_Memory()
 {
+    uint32 total_alloc_size = 0;
     MemoryManager* memory_manager = MemoryManager_GetInstance();
     Queue(MemoryProfileData*)* memory_profile_data_queue = memory_manager->m_memory_profile_data_queue;
     Log(0, "Memory Profile\n");
     Log(0, "=====================================================\n");
-    Queue_ForEach( memory_profile_data_queue, CallBack_Memory_ProfileLog, NULL );
-    Log(0, "%-20s: %d\n", "Static", static_alloc_memory_size);
+    Queue_ForEach( memory_profile_data_queue, CallBack_Memory_ProfileLog, &total_alloc_size );
+    Log(0, "%-30s: %d\n", "Static", static_alloc_memory_size);
+    Log(0, "%-30s: %d\n", "Total", total_alloc_size);
     Log(0, "=====================================================\n");
 }
 
