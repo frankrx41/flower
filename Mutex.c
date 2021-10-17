@@ -11,7 +11,9 @@ struct Mutex
     uint8   m_lock_count;
     uint8   m_lock_count_max;
     String* m_local_name;
-    uint32  m_statistics_;
+    uint32  m_statistics_lock_time_out_count;
+    uint32  m_statistics_lock_wait_and_lock_count;
+    uint32  m_statistics_immediate_lock_count;
 };
 
 
@@ -31,44 +33,48 @@ Mutex* Mutex_Create(const tchar* local_name, uint8 max_lock_count)
 
 void Mutex_Destroy(Mutex* mutex)
 {
-    Assert(mutex->m_lock_count != 0, "You can not delete a locked mutex!");
+    Assert(mutex->m_lock_count == 0, "You can not delete a locked mutex!");
+    String_Del(mutex->m_local_name);
     MemDel(mutex);
 }
 
 void Mutex_Lock(Mutex* mutex, float time_out_seconds)
 {
-    bool success = Mutex_TryLock(mutex, time_out_seconds);
-    Assert(success == true, "");
+    bool is_lock = Mutex_TryLock(mutex, time_out_seconds);
+    Assert(is_lock == true, "Lock time out!");
 }
 
 bool Mutex_TryLock(Mutex* mutex, float time_out_seconds)
 {
-    bool can_lock = false;
+    bool is_can_lock = false;
     if( mutex->m_lock_count < mutex->m_lock_count_max )
     {
-        can_lock = true;
+        is_can_lock = true;
+        mutex->m_statistics_immediate_lock_count++;
     }
-    else
+    else if( time_out_seconds > 0 )
     {
         Timer* timer = Timer_Create(String_CStr(mutex->m_local_name));
         for(;;)
         {
             if( Timer_Elapsed_Time_Get(timer) > time_out_seconds )
             {
-                can_lock = false;
+                is_can_lock = false;
+                mutex->m_statistics_lock_time_out_count++;
                 break;
             }
 
             if( mutex->m_lock_count < mutex->m_lock_count_max )
             {
-                can_lock = true;
+                is_can_lock = true;
+                mutex->m_statistics_lock_wait_and_lock_count++;
                 break;
             }
         }
         Timer_Destroy(timer);
     }
 
-    if( can_lock )
+    if( is_can_lock )
     {
         mutex->m_lock_count++;
         return true;
@@ -82,7 +88,51 @@ bool Mutex_TryLock(Mutex* mutex, float time_out_seconds)
 
 void Mutex_UnLock(Mutex* mutex)
 {
-    Assert(mutex->m_lock_count > 0, "You try to unlock a unlocked mutex!");
+    Assert(Mutex_IsLock(mutex), "You try to unlock a unlocked mutex!");
     mutex->m_lock_count--;
 }
 
+bool Mutex_IsLock(Mutex* mutex)
+{
+    return mutex->m_lock_count > 0;
+}
+
+bool Mutex_IsFullLock(Mutex* mutex)
+{
+    return mutex->m_lock_count == mutex->m_lock_count_max;
+}
+
+void Mutex_WaitUnLock(Mutex* mutex, float time_out_seconds)
+{
+    bool is_unlock = Mutex_TryWaitUnLock(mutex, time_out_seconds);
+    Assert(is_unlock == true, "");
+}
+
+bool Mutex_TryWaitUnLock(Mutex* mutex, float time_out_seconds)
+{
+    bool is_unlock = false;
+    if( !Mutex_IsLock(mutex) )
+    {
+        is_unlock = true;
+    }
+    else if( time_out_seconds > 0 )
+    {
+        Timer* timer = Timer_Create(String_CStr(mutex->m_local_name));
+        for(;;)
+        {
+            if( Timer_Elapsed_Time_Get(timer) > time_out_seconds )
+            {
+                is_unlock = false;
+                break;
+            }
+
+            if( !Mutex_IsLock(mutex) )
+            {
+                is_unlock = true;
+                break;
+            }
+        }
+        Timer_Destroy(timer);
+    }
+    return is_unlock;
+}

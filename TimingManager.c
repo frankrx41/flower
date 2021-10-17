@@ -129,5 +129,5 @@ void TimingManager_TrimSpeed(TimingManager* timing_manager)
 
 float TimingManager_Cpu_Seconds_Get(TimingManager* timing_manager)
 {
-    return timing_manager->m_last_cpu_tick / (timing_manager->m_ticks_in_one_frame * timing_manager->m_frame_rate);
+    return TimingManager_Cpu_Tick_Get_Plat(timing_manager, timing_manager->m_platform_data) / (timing_manager->m_ticks_in_one_frame * timing_manager->m_frame_rate);
 }

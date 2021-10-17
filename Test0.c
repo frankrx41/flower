@@ -25,6 +25,7 @@
 #include "Queue.h"
 #include "Storage.h"
 #include "Actor.h"
+#include "Mutex.h"
 #include "Scene.h"
 #include "tData.h"
 #include "Vec.h"
@@ -308,6 +309,35 @@ void Scene_Test0()
 }
 
 ////////////////////////////////////////////////////////////////////////////////
+void Mutex_Test0()
+{
+    bool success;
+    Mutex* mutex1 = Mutex_Create(__FUNCTION__, 1);
+    Mutex* mutex2 = Mutex_Create(__FUNCTION__, 2);
+    // Mutex* mutex0 = Mutex_Create(__FUNCTION__, 0);
+
+    Mutex_Lock(mutex1, 0);
+    Mutex_Lock(mutex2, 0);
+    Mutex_Lock(mutex2, 0);
+
+    Mutex_UnLock(mutex2);
+    Mutex_UnLock(mutex1);
+
+    success = Mutex_TryLock(mutex2, 0);
+    Assert(success == true, "");
+    success = Mutex_TryLock(mutex1, 0);
+    Assert(success == true, "");
+    success = Mutex_TryLock(mutex1, 0);
+    Assert(success == false, "");
+
+    Mutex_UnLock(mutex1);
+    Mutex_Destroy(mutex1);
+    Mutex_UnLock(mutex2);
+    Mutex_UnLock(mutex2);
+    Mutex_Destroy(mutex2);
+}
+
+////////////////////////////////////////////////////////////////////////////////
 typedef void (*CB_Test_Void)();
 static void Test(uint32 index, CB_Test_Void cb_test_void)
 {
@@ -338,6 +368,8 @@ void Engine_Debug_UnitTesting0()
         Actor_Test0,
         
         Scene_Test0,
+
+        Mutex_Test0,
     };
 
     Log(0, "%s Start\n", __FUNCTION__);
