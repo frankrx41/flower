@@ -20,8 +20,8 @@ Update Timing, use less plat function
 Rename Scene_SetIsPause
 Add Platform.h
 
-Fix memory leak
-Fix screen flashing
+Fix memory leak (done)
+Fix screen flashing (done)
 
 Add offsetXY in Scene (done)
 Add TaskManager (done)

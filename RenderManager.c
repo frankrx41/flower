@@ -71,6 +71,6 @@ void RenderManager_RenderAllScene(RenderManager* render_manager, SceneManager* s
 
     // RenderManager_Render_ToScreen(RenderManager_GetInstance());
 
-    TaskManager_Task_Render_Add("RenderManager", CallBack_RenderManager_Render_ToScreen_Task, RenderManager_GetInstance());
+    TaskManager_Task_Render_Add("RenderManager_Task", CallBack_RenderManager_Render_ToScreen_Task, NULL, RenderManager_GetInstance());
 }
 
