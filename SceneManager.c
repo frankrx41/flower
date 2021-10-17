@@ -149,7 +149,7 @@ void SceneManager_TryRunNextCommand(SceneManager* scene_manager)
                 {
                     SceneManager_Scene_Foreground_Queue_Clear(scene_manager);
                 }
-                TaskManager_Task_Add(String_CStr(scene_manager->m_local_name), 0, true, SceneManager_LoadLastScene, scene_manager);
+                TaskManager_Task_Add(String_CStr(scene_manager->m_local_name), 0, 0, true, NULL, SceneManager_LoadLastScene, scene_manager);
             }
         }
     }
