@@ -15,6 +15,7 @@ tchar   - str
 struct String
 {
     bool    m_is_const;
+    bool    m_is_calc_crc;
     crc32   m_crc;
     tsize   m_length;
     tchar*  m_char;
@@ -141,7 +142,6 @@ bool Str_IsSame(const tchar* str1, const tchar* str2)
 
 tsize Str_Copy(tchar* dest, const tchar* from, tsize length)
 {
-    uint32 i=0;
     const tsize from_str_length = Str_CalcLength(from);
     if( length == 0 )
     {
@@ -155,6 +155,7 @@ tsize Str_Copy(tchar* dest, const tchar* from, tsize length)
     Assert(length > 0, "");
     Assert(Memory_IsInBounds(dest, dest+length), "");
 
+    uint32 i=0;
     for(i=0; i<length; i++)
     {
         dest[i] = from[i];
@@ -172,7 +173,7 @@ tsize String_GetLength(const String* string)
 
 crc32 String_GetCrc(const String* string)
 {
-    Assert(string->m_is_const == true, "Only const string has crc! Please use Str_CalcCrc instead.");
+    Assert(string->m_is_calc_crc == true, "This string has not crc! Please use Str_CalcCrc instead.");
     Assert(string->m_crc != 0, "");
     return string->m_crc;
 }
@@ -240,6 +241,12 @@ void String_Copy(String* string, const tchar* str, const tsize length)
         const tsize string_length = Str_Copy(string->m_char, str, length);
         string->m_length = string_length;
     }
+
+    if( string->m_is_calc_crc )
+    {
+        Assert(str != NULL, "You can not create a const NULL string!");
+        string->m_crc = Str_CalcCrc(string->m_char, string->m_length);
+    }
 }
 
 String* String_New(const tchar* local_name, const tchar* str, bool is_const)
@@ -253,6 +260,7 @@ String* String_New(const tchar* local_name, const tchar* str, bool is_const)
     string->m_length        = 0;
     string->m_crc           = 0;
     string->m_is_const      = false;
+    string->m_is_calc_crc   = is_const; //is_calc_crc;
 
     {
         const tsize local_name_length = Str_CalcLength(local_name);
@@ -267,11 +275,6 @@ String* String_New(const tchar* local_name, const tchar* str, bool is_const)
     }
 
     string->m_is_const      = is_const;
-    if( string->m_is_const )
-    {
-        Assert(str != NULL, "You can not create a const NULL string!");
-        string->m_crc = Str_CalcCrc(string->m_char, string->m_length);
-    }
 
     return string;
 }
