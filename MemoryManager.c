@@ -41,24 +41,18 @@ tptr   Memory_Set_Plat     (tptr address, int32 val, tsize size);
 
 static tsize static_alloc_memory_size = 0;
 
-#define MAGIC_NUMBER        'GPYM'
-#define STATIC_LOCAL_NAME   "GPYM"
 
-
-
-//  +----+--------------+-------------------------
-//  |flag| id |crc |size|  Memory Data ...
-//  +----+----+----+----+-------------------------
-//  |MYPG|              |
-//  +----+--------------+-------------------------
-//  |block              |ptr
+//  +----+---------------+-------------------
+//  |tptr|size| id | crc |  Memory Data ...
+//  +----+----+----+-----+-------------------
+//  |block               |ptr
 
 struct MemoryBlock
 {
-    uint32  m_flag;
+    tptr    m_pointer;
+    tsize   m_alloc_size;
     uint32  m_id;
     crc32   m_crc;
-    tsize   m_alloc_size;
     byte    m_byte[1];
 };
 
@@ -71,7 +65,7 @@ static uint32 MemoryManager_IncreaseAllocID(MemoryManager* memory_manager)
 static MemoryBlock* CastToMemoryBlock(tptr ptr)
 {
     MemoryBlock* memory_block = (MemoryBlock*)((tchar*)ptr - OFFSET_OF(MemoryBlock, m_byte));
-    Assert(memory_block->m_flag == MAGIC_NUMBER, "");
+    Assert(memory_block->m_pointer == ptr, "");
     return memory_block;
 };
 
@@ -105,10 +99,10 @@ static bool CallBack_Memory_Profile_FindData(MemoryProfileData* memory_profile_d
 
 tptr MemoryManager_Alloc(MemoryManager* memory_manager,const tchar* local_name, tsize size)
 {
-    const bool is_dynamic = !Str_IsSame(local_name, STATIC_LOCAL_NAME);
+    const bool is_dynamic = !Str_IsSame(local_name, "MemoryManager");
     MemoryBlock * memory_block  = Memory_Alloc_Plat(sizeof(MemoryBlock) + size);
     Assert(memory_block != NULL, "");
-    memory_block->m_flag        = MAGIC_NUMBER;
+    memory_block->m_pointer     = memory_block->m_byte;
     memory_block->m_id          = is_dynamic ? MemoryManager_IncreaseAllocID(memory_manager) : 0;
     memory_block->m_crc         = Str_CalcCrc(local_name, 0);
     memory_block->m_alloc_size  = size;

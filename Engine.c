@@ -13,7 +13,6 @@
 #include "SceneManager.h"
 #include "TaskManager.h"
 
-#define LOCAL_NAME          "GPYM"
 
 typedef struct Engine   Engine;
 
@@ -69,7 +68,7 @@ void Engine_Initialize()
 {
     Engine* engine = Engine_GetInstance();
 
-    engine->m_memory_manager    = MemoryManager_Create(LOCAL_NAME);
+    engine->m_memory_manager    = MemoryManager_Create("MemoryManager");
 
     engine->m_render_manager    = RenderManager_Create("RenderManager");
     engine->m_timing_manager    = TimingManager_Create("TimingManager");
