@@ -85,6 +85,7 @@
     <ClCompile Include="ActorComponent.c" />
     <ClCompile Include="InputManager.c" />
     <ClCompile Include="Input_Win32.c" />
+    <ClCompile Include="Mutex.c" />
     <ClCompile Include="PhysicsComponent.c" />
     <ClCompile Include="RenderComponent.c" />
     <ClCompile Include="Task.c" />
@@ -111,6 +112,7 @@
     <ClCompile Include="Test2.c" />
     <ClCompile Include="Thread.c" />
     <ClCompile Include="Thread_Win32.c" />
+    <ClCompile Include="Timer.c" />
     <ClCompile Include="TimingManager.c" />
     <ClCompile Include="Timing_Win32.c" />
     <ClCompile Include="Vec.c" />
@@ -121,6 +123,7 @@
     <ClInclude Include="ActorComponent.h" />
     <ClInclude Include="Component.h" />
     <ClInclude Include="CoreMini.h" />
+    <ClInclude Include="Mutex.h" />
     <ClInclude Include="Task.h" />
     <ClInclude Include="TaskManager.h" />
     <ClInclude Include="tData.h" />
@@ -141,6 +144,7 @@
     <ClInclude Include="StorageComponent.h" />
     <ClInclude Include="String.h" />
     <ClInclude Include="Thread.h" />
+    <ClInclude Include="Timer.h" />
     <ClInclude Include="TimingManager.h" />
     <ClInclude Include="Vec.h" />
   </ItemGroup>

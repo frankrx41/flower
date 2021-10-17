@@ -32,6 +32,8 @@ XXXManager* local_name Event/Scene/Actor/String... others
 */
 
 // New key word
+typedef signed char         int8;
+typedef unsigned char       uint8;
 typedef int                 int32;
 typedef unsigned int        uint32;
 typedef unsigned char       byte;

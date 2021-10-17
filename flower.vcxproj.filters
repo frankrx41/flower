@@ -95,6 +95,12 @@
     </ClCompile>
     <ClCompile Include="Test2.c" />
     <ClCompile Include="Test1.c" />
+    <ClCompile Include="Mutex.c">
+      <Filter>Library\Mutex</Filter>
+    </ClCompile>
+    <ClCompile Include="Timer.c">
+      <Filter>Library\Timer</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CoreMini.h" />
@@ -176,6 +182,12 @@
     <ClInclude Include="Task.h">
       <Filter>Engine\Task</Filter>
     </ClInclude>
+    <ClInclude Include="Mutex.h">
+      <Filter>Library\Mutex</Filter>
+    </ClInclude>
+    <ClInclude Include="Timer.h">
+      <Filter>Library\Timer</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Platform">
@@ -237,6 +249,12 @@
     </Filter>
     <Filter Include="Engine\Thread">
       <UniqueIdentifier>{3f9dc89f-b3fc-41ea-8a82-d4c780382016}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Library\Mutex">
+      <UniqueIdentifier>{f9cb8d5f-338d-4ec9-926a-8a58508061cc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Library\Timer">
+      <UniqueIdentifier>{f1311dc5-4a60-470c-b202-95117aec6b99}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

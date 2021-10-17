@@ -18,6 +18,7 @@ Add InputBank in Actor_Create
 Add TaskManager in SendEvent
 Update Timing, use less plat function
 Rename Scene_SetIsPause
+Add Platform.h
 
 Add offsetXY in Scene (done)
 Add TaskManager (done)
