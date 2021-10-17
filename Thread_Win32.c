@@ -41,4 +41,9 @@ void Thread_This_Sleep_Plat(float seconds)
     Sleep((DWORD)(seconds*1000.f));
 }
 
+void Thread_This_Sleep_Tick_Plat()
+{
+    Sleep(1);
+}
+
 #endif

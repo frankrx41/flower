@@ -73,7 +73,7 @@ void TaskManager_RunTask(Thread* thread, TaskManager* task_manager)
         }
         else
         {
-            Thread_Sleep(NULL, 0.001f);
+            Thread_This_Sleep_Tick();
         }
     }
 

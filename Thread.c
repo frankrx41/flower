@@ -18,10 +18,11 @@ struct Thread
     float                           m_need_sleep_seconds;
 };
 
-tptr    Thread_Create_Plat      (const Thread* thread);
-void    Thread_Suspend_Plat     (Thread* thread, tptr platform_data, bool is_suspend);
-void    Thread_Destroy_Plat     (Thread* thread, tptr platform_data);
-void    Thread_This_Sleep_Plat  (float seconds);
+tptr    Thread_Create_Plat          (const Thread* thread);
+void    Thread_Suspend_Plat         (Thread* thread, tptr platform_data, bool is_suspend);
+void    Thread_Destroy_Plat         (Thread* thread, tptr platform_data);
+void    Thread_This_Sleep_Plat      (float seconds);
+void    Thread_This_Sleep_Tick_Plat ();
 
 Thread* Thread_Create(const tchar* local_name, CB_ThreadFun_Void_Thread_tPtr cb_thread_fun_void_thread_tptr, tptr ptr)
 {
@@ -66,6 +67,11 @@ bool Thread_IsSuspend(Thread* thread)
 void Thread_This_Sleep(float seconds)
 {
     Thread_This_Sleep_Plat(seconds);
+}
+
+void Thread_This_Sleep_Tick()
+{
+    Thread_This_Sleep_Tick_Plat();
 }
 
 void Thread_Sleep(Thread* thread, float seconds)

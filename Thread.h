@@ -11,5 +11,9 @@ tptr                            Thread_Run_Data_Get     (const Thread* thread);
 
 void                            Thread_Suspend          (Thread* thread, bool is_suspend);
 bool                            Thread_IsSuspend        (Thread* thread);
+
+void                            Thread_This_Sleep       (float seconds);
+void                            Thread_This_Sleep_Tick  ();
+
 void                            Thread_Sleep            (Thread* thread, float seconds);
 
