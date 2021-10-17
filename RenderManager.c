@@ -3,6 +3,7 @@
 #include "MemoryManager.h"
 #include "RenderManager.h"
 #include "SceneManager.h"
+#include "TaskManager.h"
 
 #include "Queue.h"
 #include "Scene.h"
@@ -59,8 +60,17 @@ static void CallBack_Render_Scene(Scene* scene, RenderManager* render_manager)
     Queue_ForEach(Scene_ActorQueue_Renderable_Get(scene), CallBack_Actor_RenderEachActor, render_manager);
 }
 
+static void CallBack_RenderManager_Render_ToScreen_Task(Task* task, RenderManager* render_manager)
+{
+    RenderManager_Render_ToScreen(render_manager);
+}
+
 void RenderManager_RenderAllScene(RenderManager* render_manager, SceneManager* scene_manager)
 {
     Queue_ForEach(SceneManager_SceneQueue_Foreground_Get(scene_manager), CallBack_Render_Scene, render_manager);
+
+    RenderManager_Render_ToScreen(RenderManager_GetInstance());
+
+    TaskManager_Task_Render_Add("RenderManager", CallBack_RenderManager_Render_ToScreen_Task, RenderManager_GetInstance());
 }
 
