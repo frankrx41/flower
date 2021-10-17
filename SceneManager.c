@@ -113,7 +113,6 @@ static void SceneManager_LoadLastScene(Task* task, SceneManager* scene_manager)
 {
     SceneManager_Scene_SetCurrent(scene_manager, NULL);
     scene_manager->m_is_exit_current_scene = false;
-    Queue_Clear(scene_manager->m_scene_queue, Scene_Destroy);
     (Queue_Dequeue(CB_Command_Void)(scene_manager->m_command_queue))();
     scene_manager->m_is_scene_loading = false;
 }
@@ -131,6 +130,11 @@ void SceneManager_TryRunNextCommand(SceneManager* scene_manager)
             if( !SceneManager_Scene_IsLoading(scene_manager) )
             {
                 scene_manager->m_is_scene_loading = true;
+                if( SceneManager_Scene_GetCurrent(scene_manager) )
+                {
+                    Scene* scene = Queue_RemoveFindFirst(Scene*)(scene_manager->m_scene_queue, NULL, SceneManager_Scene_GetCurrent(scene_manager));
+                    Scene_Destroy(scene);
+                }
                 TaskManager_Task_Add(String_CStr(scene_manager->m_local_name), 0, true, SceneManager_LoadLastScene, scene_manager);
             }
         }
