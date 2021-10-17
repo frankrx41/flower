@@ -19,7 +19,7 @@ void    SceneManager_Scene_Foreground_Queue_Clear   (SceneManager* scene_manager
 
 void    SceneManager_Scene_ExitCurrent      (SceneManager* scene_manager);
 
-tptr    SceneManager_SceneQueue_Get         (SceneManager* scene_manager);
+tptr    SceneManager_SceneQueue_Foreground_Get         (SceneManager* scene_manager);
 
 void    SceneManager_Command_Add            (SceneManager* scene_manager, CB_Command_Void cb_command_void);
 void    SceneManager_Command_Clear          (SceneManager* scene_manager);

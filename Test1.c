@@ -257,7 +257,7 @@ void CallBack_ActorOnEvent1(Actor* actor, const EventInfo* event_info)
         if (scene)
         {
             SceneManager_Scene_Foreground_Queue_Add(scene);
-            Scene_Is_Pause_Set(event_info->m_scene, true);
+            Scene_Pause_All(event_info->m_scene);
         }
         else
         {

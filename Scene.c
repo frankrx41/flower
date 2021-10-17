@@ -24,7 +24,10 @@ struct Scene
     CB_SceneDestroy_Void_Scene  m_cb_scene_destroy_void_scene;
     String*                     m_local_name;
     Storage*                    m_storage;
-    bool                        m_is_pause;
+    
+    bool                        m_is_pause_event;
+    bool                        m_is_pause_render;
+
     vec2                        m_render_offset_vec;
     Queue(Actor*)*              m_child_actor_queue;
     Queue(Actor*)*              m_actor_scene_event_queue_list[Event_Scene_Max-Event_Scene_Min];
@@ -42,7 +45,8 @@ Scene* Scene_Create(const tchar* local_name)
     scene->m_alloc_actor_id             = 0;
     scene->m_local_name                 = String_New(local_name, local_name, true);
     scene->m_storage                    = Storage_Create(local_name);
-    scene->m_is_pause                   = false;
+    scene->m_is_pause_event             = false;
+    scene->m_is_pause_render            = false;
     scene->m_cb_scene_destroy_void_scene = NULL;
     scene->m_actor_action_event_queue   = Queue_Create(local_name, Actor*);
     scene->m_physics_actor_queue        = Queue_Create(local_name, Actor*);
@@ -107,14 +111,30 @@ void Scene_Destroy_CB_Set(Scene* scene, CB_SceneDestroy_Void_Scene cb_scene_dest
     scene->m_cb_scene_destroy_void_scene = cb_scene_destroy_void_scene;
 }
 
-bool Scene_Is_Pause_Get(Scene* scene)
+void Scene_Pause_All(Scene* scene)
 {
-    return scene->m_is_pause;
+    scene->m_is_pause_render    = true;
+    scene->m_is_pause_event     = true;
 }
 
-void Scene_Is_Pause_Set(Scene* scene, bool is_pause)
+bool Scene_Is_Pause_Render(Scene* scene)
 {
-    scene->m_is_pause = is_pause;
+    return scene->m_is_pause_render;
+}
+
+void Scene_Pause_Render(Scene* scene, bool is_pause)
+{
+    scene->m_is_pause_render = is_pause;
+}
+
+bool Scene_Is_Pause_Event(Scene* scene)
+{
+    return scene->m_is_pause_event;
+}
+
+void Scene_Pause_Event(Scene* scene, bool is_pause)
+{
+    scene->m_is_pause_event = is_pause;
 }
 
 const tchar* Scene_LocalName_Str_Get(Scene* scene)

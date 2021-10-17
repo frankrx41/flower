@@ -52,7 +52,7 @@ void RenderManager_Render_ToBackBuffer(RenderManager* render_manager, vec2 offse
 
 static void CallBack_Render_Scene(Scene* scene, RenderManager* render_manager)
 {
-    if( Scene_Is_Pause_Get(scene) )
+    if( Scene_Is_Pause_Render(scene) )
     {
         return;
     }
@@ -61,6 +61,6 @@ static void CallBack_Render_Scene(Scene* scene, RenderManager* render_manager)
 
 void RenderManager_RenderAllScene(RenderManager* render_manager, SceneManager* scene_manager)
 {
-    Queue_ForEach(SceneManager_SceneQueue_Get(scene_manager), CallBack_Render_Scene, render_manager);
+    Queue_ForEach(SceneManager_SceneQueue_Foreground_Get(scene_manager), CallBack_Render_Scene, render_manager);
 }
 

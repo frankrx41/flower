@@ -105,9 +105,9 @@ void SceneManager_Scene_ExitCurrent(SceneManager* scene_manager)
     scene_manager->m_is_exit_current_scene = true;
 }
 
-tptr SceneManager_SceneQueue_Get(SceneManager* scene_manager)
+tptr SceneManager_SceneQueue_Foreground_Get(SceneManager* scene_manager)
 {
-    return scene_manager->m_scene_queue_all;
+    return scene_manager->m_scene_queue_foreground;
 }
 
 void SceneManager_Command_Add(SceneManager* scene_manager, CB_Command_Void cb_command_void)
@@ -171,5 +171,5 @@ void SceneManager_OnEvent_Tick(SceneManager* scene_manager, EventInfo* event_inf
     {
         return;
     }
-    Queue_ForEach(SceneManager_SceneQueue_Get(SceneManager_GetInstance()), CallBack_SendEvent_Scene_Tick, event_info);
+    Queue_ForEach(SceneManager_SceneQueue_Foreground_Get(SceneManager_GetInstance()), CallBack_SendEvent_Scene_Tick, event_info);
 }
