@@ -66,7 +66,7 @@ static void Scene_Create_Task(Task* task, tptr ptr)
 
 void Engine_Debug_UnitTesting2()
 {
-    // TaskManager_Task_Add(TaskManager_GetInstance(), __FUNCTION__, 0, true, Scene_Create_Task, NULL);
+    // TaskManager_Task_Job_Add(TaskManager_GetInstance(), __FUNCTION__, 0, true, Scene_Create_Task, NULL);
     SceneManager_Command_Add(Scene_Create0);
 
     InputManager_InputActionEvent_Add(InputManager_GetInstance(), KeyId_Escape, KeyState_Down, Event_Actor_Action_Cancel);

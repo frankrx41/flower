@@ -40,24 +40,24 @@ void TaskThread_Destroy(TaskThread* task_thread)
 struct TaskManager
 {
     String*         m_local_name;
-    uint32          m_task_thread_id_max;
-    TaskThread*     m_render_task_thread;
-    TaskThread**    m_task_thread;
+    uint32          m_task_thread_job_max;
+    TaskThread*     m_task_thread_render;
+    TaskThread**    m_task_thread_job;
 };
 
-#undef TaskManager_Task_Add
-#undef TaskManager_RenderTask_Add
+#undef TaskManager_Task_Job_Add
+#undef TaskManager_Task_Render_Add
 
 TaskManager* TaskManager_Create(const tchar* local_name)
 {
     TaskManager* task_manager = MemNew(local_name, TaskManager);
 
     task_manager->m_local_name      = String_New(local_name, local_name, true);
-    task_manager->m_task_thread_id_max = 6;
-    task_manager->m_task_thread     = MemNewSize(local_name, sizeof(TaskThread*)*task_manager->m_task_thread_id_max);
-    for(uint32 i=0; i<task_manager->m_task_thread_id_max; i++)
+    task_manager->m_task_thread_job_max = 6;
+    task_manager->m_task_thread_job     = MemNewSize(local_name, sizeof(TaskThread*)*task_manager->m_task_thread_job_max);
+    for(uint32 i=0; i<task_manager->m_task_thread_job_max; i++)
     {
-        task_manager->m_task_thread[i] = TaskThread_Create(local_name);
+        task_manager->m_task_thread_job[i] = TaskThread_Create(local_name);
     }
 
     return task_manager;
@@ -66,18 +66,28 @@ TaskManager* TaskManager_Create(const tchar* local_name)
 void TaskManager_Destroy(TaskManager* task_manager)
 {
     String_Del(task_manager->m_local_name);
-    for(uint32 i=0; i<task_manager->m_task_thread_id_max; i++)
+    for(uint32 i=0; i<task_manager->m_task_thread_job_max; i++)
     {
-        TaskThread_Destroy(task_manager->m_task_thread[i]);
+        TaskThread_Destroy(task_manager->m_task_thread_job[i]);
     }
 
-    MemDel(task_manager->m_task_thread);
+    MemDel(task_manager->m_task_thread_job);
     MemDel(task_manager);
 }
-Task* TaskManager_Task_Add(TaskManager* task_manager, const tchar* local_name, uint32 thread_id, uint32 priority, bool is_auto_destroy, CB_TaskRun_Condition_Bool_Task_tPtr cb_task_run_condition_bool_task_tptr, CB_TaskRun_Void_Task_tPtr cb_task_run_void_task_tptr, tptr task_data)
+
+TaskThread* TaskManager_TaskThread_Job_Get(TaskManager* task_manager, uint32 index)
 {
-    Assert(thread_id >=0 && thread_id < task_manager->m_task_thread_id_max, "");
-    TaskThread* task_thread = task_manager->m_task_thread[thread_id];
+    Assert(IS_IN_RANGE(index, 0, task_manager->m_task_thread_job_max), "");
+    return task_manager->m_task_thread_job[index];
+}
+
+TaskThread* TaskManager_TaskThread_Render_Get(TaskManager* task_manager)
+{
+    return task_manager->m_task_thread_render;
+}
+
+Task* TaskManager_Task_Job_Add(TaskManager* task_manager, const tchar* local_name, TaskThread* task_thread, uint32 priority, bool is_auto_destroy, CB_TaskRun_Condition_Bool_Task_tPtr cb_task_run_condition_bool_task_tptr, CB_TaskRun_Void_Task_tPtr cb_task_run_void_task_tptr, tptr task_data)
+{
     Task* task = Task_Create(local_name, task_thread, priority, is_auto_destroy, cb_task_run_condition_bool_task_tptr, cb_task_run_void_task_tptr, task_data);
 
     Queue_Push(Task*, local_name, task_thread->m_task_queue, task);
@@ -91,11 +101,10 @@ Task* TaskManager_Task_Add(TaskManager* task_manager, const tchar* local_name, u
     return task;
 }
 
-void TaskManager_RenderTask_Add(TaskManager* task_manager, const tchar* local_name, CB_TaskRun_Void_Task_tPtr cb_task_run_void_task_tptr, tptr task_data)
+void TaskManager_Task_Render_Add(TaskManager* task_manager, const tchar* local_name, CB_TaskRun_Void_Task_tPtr cb_task_run_void_task_tptr, tptr task_data)
 {
-    TaskThread* task_thread = task_manager->m_render_task_thread;
-    Task* task = Task_Create(local_name, task_thread, 0, true, NULL, cb_task_run_void_task_tptr, task_data);
-    Queue_Push(Task*, local_name, task_thread->m_task_queue, task);
+    TaskThread* task_thread = task_manager->m_task_thread_render;
+    TaskManager_Task_Job_Add(task_manager, local_name, task_thread, 0, true, NULL, cb_task_run_void_task_tptr, task_data);
 }
 
 static void TaskManager_Thread_RunTask(Thread* thread, TaskThread* task_thread)

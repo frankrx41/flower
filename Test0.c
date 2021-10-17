@@ -264,7 +264,7 @@ void CallBack_TaskRun0(Task* task, tptr ptr)
 
 void Task_Test0()
 {
-    Task* task = TaskManager_Task_Add(__FUNCTION__,0, 4, false, NULL, CallBack_TaskRun0, NULL);
+    Task* task = TaskManager_Task_Job_Add(__FUNCTION__,0, 4, false, NULL, CallBack_TaskRun0, NULL);
 
     while(!Task_IsFinish(task))
     {
