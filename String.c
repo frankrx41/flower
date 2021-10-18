@@ -259,8 +259,8 @@ String* String_New(const tchar* local_name, const tchar* str, bool is_const)
     string->m_char          = NULL;
     string->m_length        = 0;
     string->m_crc           = 0;
-    string->m_is_const      = false;
     string->m_is_calc_crc   = is_const; //is_calc_crc;
+    string->m_is_const      = is_const;
 
     {
         const tsize local_name_length = Str_CalcLength(local_name);
@@ -270,11 +270,25 @@ String* String_New(const tchar* local_name, const tchar* str, bool is_const)
 
     if( !Str_IsEmpty(str) )
     {
-        const int32 str_length = Str_CalcLength(str);
-        String_Copy(string, str, str_length);
+        if( string->m_is_const )
+        {
+            const int32 str_length = Str_CalcLength(str);
+
+            string->m_char = str;
+            string->m_length = str_length;
+
+            if( string->m_is_calc_crc )
+            {
+                string->m_crc = Str_CalcCrc(string->m_char, string->m_length);
+            }
+        }
+        else
+        {
+            const int32 str_length = Str_CalcLength(str);
+            String_Copy(string, str, str_length);
+        }
     }
 
-    string->m_is_const      = is_const;
 
     return string;
 }
@@ -282,7 +296,10 @@ String* String_New(const tchar* local_name, const tchar* str, bool is_const)
 void String_Del(String* string)
 {
     MemDel(string->m_str_local_name);
-    MemSafeDel(string->m_char);
+    if( !string->m_is_const )
+    {
+        MemSafeDel(string->m_char);
+    }
     MemDel(string);
 }
 
