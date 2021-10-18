@@ -18,7 +18,7 @@ struct Thread
     float                           m_need_sleep_seconds;
 };
 
-tptr    Thread_Create_Plat          (const Thread* thread);
+tptr    Thread_Create_Plat          (Thread* thread, const tchar* local_name);
 void    Thread_Suspend_Plat         (Thread* thread, tptr platform_data, bool is_suspend);
 void    Thread_Destroy_Plat         (Thread* thread, tptr platform_data);
 void    Thread_This_Sleep_Plat      (float seconds);
@@ -31,7 +31,7 @@ Thread* Thread_Create(const tchar* local_name, CB_ThreadFun_Void_Thread_tPtr cb_
     thread->m_thread_input_data                 = ptr;
     thread->m_local_name                        = String_New(local_name, local_name, true);
     thread->m_is_suspend                        = false;
-    thread->m_thread_platform_data              = Thread_Create_Plat(thread);
+    thread->m_thread_platform_data              = Thread_Create_Plat(thread, local_name);
     return thread;
 }
 
@@ -86,4 +86,9 @@ void Thread_Sleep(Thread* thread, float seconds)
         thread->m_need_sleep_seconds += seconds;
         Assert(thread->m_need_sleep_seconds >= 0, "");
     }
+}
+
+const tchar* Thread_LocalName_Get(Thread* thread)
+{
+    return String_CStr(thread->m_local_name);
 }

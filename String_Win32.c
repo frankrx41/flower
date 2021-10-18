@@ -1,9 +1,13 @@
 #include "CoreMini.h"
+
 #if PLATFORM_WIN32
+
+#include "MemoryManager.h"
 
 #include "String.h"
 
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
 
 #pragma warning(disable: 4996)
@@ -20,6 +24,14 @@ void Str_FormatArgs(tchar* buffer, tsize length, const tchar* format, va_list ar
 {
     Assert(buffer != NULL, "");
     vsnprintf(buffer, length, format, args);
+}
+
+wchar* wStr_New(const tchar* str)
+{
+    const size_t size = Str_CalcLength(str) + 1;
+    wchar* wstr = MemNewSize("wChar", sizeof(wchar) * size);
+    mbstowcs(wstr, str, size);
+    return wstr;
 }
 
 #endif

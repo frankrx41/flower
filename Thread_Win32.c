@@ -1,7 +1,11 @@
 #include "CoreMini.h"
+
 #if PLATFORM_WIN32
 
+#include "MemoryManager.h"
+
 #include "Thread.h"
+#include "String.h"
 
 #include <Windows.h>
 
@@ -13,10 +17,13 @@ static DWORD WINAPI Thread_Run_Function(LPVOID lpParam)
     return 0;
 }
 
-tptr Thread_Create_Plat(const Thread* thread)
+tptr Thread_Create_Plat(Thread* thread, const tchar* local_name)
 {
-    return
-    CreateThread(NULL, 0, Thread_Run_Function, (void*)thread, 0, 0);
+    const HANDLE thread_handle = CreateThread(NULL, 0, Thread_Run_Function, (void*)thread, 0, 0);
+    wchar* wstr = wStr_New(local_name);
+    SetThreadDescription(thread_handle, wstr);
+    MemDel(wstr);
+    return thread_handle;
 }
 
 void Thread_Destroy_Plat(Thread* thread, tptr platform_data)

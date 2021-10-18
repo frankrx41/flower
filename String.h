@@ -10,6 +10,7 @@ bool    Str_IsSame          (const tchar* str1, const tchar* str2);
 tsize   Str_Copy            (tchar* dest, const tchar* from, tsize length);
 void    Str_FormatArgs      (tchar* buffer, tsize length, const tchar* format, va_list args);
 void    Str_Join            (tchar* buffer, uint32 count, ...);
+wchar*  wStr_New  (const tchar* str);
 
 tsize   String_GetLength    (const String* string);
 crc32   String_GetCrc       (const String* string);

@@ -17,3 +17,4 @@ void                            Thread_Sleep_This_Tick  ();
 
 void                            Thread_Sleep            (Thread* thread, float seconds);
 
+const tchar*                    Thread_LocalName_Get    (Thread* thread);
