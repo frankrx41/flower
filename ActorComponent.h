@@ -10,13 +10,13 @@ typedef enum Event Event;
 typedef union tdata tdata;
 
 
-vec3    Actor_Component_Physics_GetLocation         (Actor* actor);
-void    Actor_Component_Physics_SetLocation         (Actor* actor, vec3 vec);
-void    Actor_Component_Physics_MoveLocation        (Actor* actor, vec3 offset_vec);
-vec3    Actor_Component_Physics_GetVelocity         (Actor* actor);
-void    Actor_Component_Physics_SetVelocity         (Actor* actor, vec3 velocity);
-vec3    Actor_Component_Physics_GetAcceleration     (Actor* actor);
-void    Actor_Component_Physics_SetAcceleration     (Actor* actor, vec3 acceleration);
+vec3    Actor_Component_Physics_Location_Get        (Actor* actor);
+void    Actor_Component_Physics_Location_Set        (Actor* actor, vec3 vec);
+void    Actor_Component_Physics_Location_Move       (Actor* actor, vec3 offset_vec);
+vec3    Actor_Component_Physics_Velocity_Get        (Actor* actor);
+void    Actor_Component_Physics_Velocity_Set        (Actor* actor, vec3 velocity);
+vec3    Actor_Component_Physics_Acceleration_Get    (Actor* actor);
+void    Actor_Component_Physics_Acceleration_Set    (Actor* actor, vec3 acceleration);
 void    CallBack_Actor_Component_Physics_Simulate   (Actor* actor, float* delta_seconds);
 void    Actor_Component_Physics_SetEnableSimulate   (Actor* actor, bool is_enable_simulate);
 
@@ -32,6 +32,6 @@ void    Actor_Component_Action_EventRespond_Clear   (Actor* actor);
 
 
 bool    Actor_Component_Storage_IsExistVariable (Actor* actor, crc32 variable);
-void    Actor_Component_Storage_StoreData       (Actor* actor, crc32 variable, tdata data);
-tdata   Actor_Component_Storage_ReadData        (Actor* actor, crc32 variable);
-void    Actor_Component_Storage_DeleteVariable  (Actor* actor, crc32 variable);
+void    Actor_Component_Storage_Data_Store      (Actor* actor, crc32 variable, tdata data);
+tdata   Actor_Component_Storage_Data_Read       (Actor* actor, crc32 variable);
+void    Actor_Component_Storage_Variable_Delete (Actor* actor, crc32 variable);

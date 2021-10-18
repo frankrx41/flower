@@ -35,21 +35,21 @@ static void Storage_Test0()
 {
     Storage* storage = Storage_Create(__FUNCTION__);
 
-    Storage_StoreData(storage, Str_CalcCrc("a",0), tData(int32, 123));
+    Storage_Data_Store(storage, Str_CalcCrc("a",0), tData(int32, 123));
 
-    const bool is_exist_a = Storage_IsExistVariable(storage, Str_CalcCrc("a", 0));
-    const bool is_exist_b = Storage_IsExistVariable(storage, Str_CalcCrc("b", 0));
+    const bool is_exist_a = Storage_Is_ExistVariable(storage, Str_CalcCrc("a", 0));
+    const bool is_exist_b = Storage_Is_ExistVariable(storage, Str_CalcCrc("b", 0));
 
     Assert(is_exist_a == true, "");
     Assert(is_exist_b == false, "");
 
-    const int32 data1 = Storage_ReadData(storage, Str_CalcCrc("a",0)).m_int32;
-    const int32 data2 = Storage_ReadData(storage, Str_CalcCrc("b",0)).m_int32;
+    const int32 data1 = Storage_Data_Read(storage, Str_CalcCrc("a",0)).m_int32;
+    const int32 data2 = Storage_Data_Read(storage, Str_CalcCrc("b",0)).m_int32;
 
     Assert(data1 == 123, "");
     Assert(data2 == 0, "");
 
-    Storage_DeleteVariable(storage, Str_CalcCrc("a",0));
+    Storage_Variable_Delete(storage, Str_CalcCrc("a",0));
 
     Storage_Destroy(storage);
 }

@@ -27,28 +27,28 @@ void Component_Storage_Destroy(StorageComponent* storage_component)
     MemDel(storage_component);
 }
 
-bool Component_Storage_IsExistVariable(StorageComponent* storage_component, crc32 variable)
+bool Component_Storage_Is_ExistVariable(StorageComponent* storage_component, crc32 variable)
 {
     Assert(storage_component, "");
     return
-    Storage_IsExistVariable(storage_component->m_storage, variable);
+    Storage_Is_ExistVariable(storage_component->m_storage, variable);
 }
 
-void Component_Storage_StoreData(StorageComponent* storage_component, crc32 variable, tdata data)
+void Component_Storage_Data_Store(StorageComponent* storage_component, crc32 variable, tdata data)
 {
     Assert(storage_component, "");
-    Storage_StoreData(storage_component->m_storage, variable, data);
+    Storage_Data_Store(storage_component->m_storage, variable, data);
 }
 
-tdata Component_Storage_ReadData(StorageComponent* storage_component, crc32 variable)
+tdata Component_Storage_Data_Read(StorageComponent* storage_component, crc32 variable)
 {
     Assert(storage_component, "");
     return
-    Storage_ReadData(storage_component->m_storage, variable);
+    Storage_Data_Read(storage_component->m_storage, variable);
 }
 
-void Component_Storage_DeleteVariable(StorageComponent* storage_component, crc32 variable)
+void Component_Storage_Variable_Delete(StorageComponent* storage_component, crc32 variable)
 {
     Assert(storage_component, "");
-    Storage_DeleteVariable(storage_component->m_storage, variable);
+    Storage_Variable_Delete(storage_component->m_storage, variable);
 }

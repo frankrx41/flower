@@ -72,9 +72,9 @@ static StoreContent* Storage_FindStoreContent(const Storage* storage, crc32 vari
     return store_content;
 }
 
-void Storage_StoreData(Storage* storage, crc32 variable, tdata data)
+void Storage_Data_Store(Storage* storage, crc32 variable, tdata data)
 {
-    if( Storage_IsExistVariable(storage, variable) )
+    if( Storage_Is_ExistVariable(storage, variable) )
     {
         // Assert(false, "You try to add a exist variable!");
         StoreContent* store_content = Storage_FindStoreContent(storage, variable);
@@ -89,7 +89,7 @@ void Storage_StoreData(Storage* storage, crc32 variable, tdata data)
     }
 }
 
-bool Storage_IsExistVariable(Storage* storage, crc32 variable)
+bool Storage_Is_ExistVariable(Storage* storage, crc32 variable)
 {
     StoreContent* store_content = Queue_Find(StoreContent*)(storage->m_store_queue, (CB_FindData_Bool_tPtr_tPtr)CallBack_Storage_FindVariable, (tptr)variable);
     if( store_content )
@@ -100,20 +100,20 @@ bool Storage_IsExistVariable(Storage* storage, crc32 variable)
     return false;
 }
 
-tdata Storage_ReadData(const Storage* storage, crc32 variable)
+tdata Storage_Data_Read(const Storage* storage, crc32 variable)
 {
     StoreContent* store_content = Storage_FindStoreContent(storage, variable);
     return store_content ? store_content->m_data : tdata_null;
 }
 
-void Storage_DeleteVariable(Storage* storage, crc32 variable)
+void Storage_Variable_Delete(Storage* storage, crc32 variable)
 {
     StoreContent* store_content = Storage_FindStoreContent(storage, variable);
     Queue_RemoveFindFirst(StoreContent*)(storage->m_store_queue, NULL, store_content, NULL);
     MemDel(store_content);
 }
 
-uint32 Storage_GetSotreCount(const Storage* storage)
+uint32 Storage_StoreCount_Get(const Storage* storage)
 {
     return
     Queue_GetLength(storage->m_store_queue);

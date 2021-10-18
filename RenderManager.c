@@ -53,7 +53,7 @@ void RenderManager_Render_ToBackBuffer(RenderManager* render_manager, vec2 offse
 
 static void CallBack_Render_Scene(Scene* scene, RenderManager* render_manager)
 {
-    if( Scene_Is_Pause_Render(scene) )
+    if( Scene_Is_Hide(scene) )
     {
         return;
     }

@@ -15,10 +15,10 @@ void    Scene_Render_Offset_Set     (Scene* scene, vec2 vec);
 vec2    Scene_Render_Offset_Get     (Scene* scene);
 void    Scene_Destroy_CB_Set        (Scene* scene, CB_SceneDestroy_Void_Scene cb_scene_destroy_void_scene);
 void    Scene_Pause_All             (Scene* scene);
-bool    Scene_Is_Pause_Render       (Scene* scene);
-void    Scene_Pause_Render          (Scene* scene, bool is_pause);
-bool    Scene_Is_Pause_Event        (Scene* scene);
-void    Scene_Pause_Event           (Scene* scene, bool is_pause);
+bool    Scene_Is_Hide               (Scene* scene);
+void    Scene_Hide                  (Scene* scene, bool is_pause);
+bool    Scene_Is_Pause              (Scene* scene);
+void    Scene_Pause                 (Scene* scene, bool is_pause);
 
 const tchar*    Scene_LocalName_Str_Get (Scene* scene);
 

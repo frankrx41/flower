@@ -117,22 +117,22 @@ void Scene_Pause_All(Scene* scene)
     scene->m_is_pause_event     = true;
 }
 
-bool Scene_Is_Pause_Render(Scene* scene)
+bool Scene_Is_Hide(Scene* scene)
 {
     return scene->m_is_pause_render;
 }
 
-void Scene_Pause_Render(Scene* scene, bool is_pause)
+void Scene_Hide(Scene* scene, bool is_pause)
 {
     scene->m_is_pause_render = is_pause;
 }
 
-bool Scene_Is_Pause_Event(Scene* scene)
+bool Scene_Is_Pause(Scene* scene)
 {
     return scene->m_is_pause_event;
 }
 
-void Scene_Pause_Event(Scene* scene, bool is_pause)
+void Scene_Pause(Scene* scene, bool is_pause)
 {
     scene->m_is_pause_event = is_pause;
 }
@@ -209,24 +209,24 @@ void Scene_PhysicsActor_Update(Scene* scene, float delta_seconds)
 
 void Scene_Storage_StoreData(Scene* scene, crc32 variable, tdata data)
 {
-    Storage_StoreData(scene->m_storage, variable, data);
+    Storage_Data_Store(scene->m_storage, variable, data);
 }
 
 bool Scene_Storage_IsExistVariable(Scene* scene, crc32 variable)
 {
     return
-    Storage_IsExistVariable(scene->m_storage, variable);
+    Storage_Is_ExistVariable(scene->m_storage, variable);
 }
 
 tdata Scene_Storage_ReadData(Scene* scene, crc32 variable)
 {
     return
-    Storage_ReadData(scene->m_storage, variable);
+    Storage_Data_Read(scene->m_storage, variable);
 }
 
 void Scene_Storage_DeleteVariable(Scene* scene, crc32 variable)
 {
-    Storage_DeleteVariable(scene->m_storage, variable);
+    Storage_Variable_Delete(scene->m_storage, variable);
 }
 
 tptr Scene_ActorQueue_Child_Get(Scene* scene)

@@ -8,7 +8,7 @@ typedef struct Actor Actor;
 StorageComponent*   Component_Storage_Create            (const tchar* local_name, Actor* actor);
 void                Component_Storage_Destroy           (StorageComponent* storage_component);
 
-bool                Component_Storage_IsExistVariable   (StorageComponent* storage_component, crc32 variable);
-void                Component_Storage_StoreData         (StorageComponent* storage_component, crc32 variable, tdata data);
-tdata               Component_Storage_ReadData          (StorageComponent* storage_component, crc32 variable);
-void                Component_Storage_DeleteVariable    (StorageComponent* storage_component, crc32 variable);
+bool                Component_Storage_Is_ExistVariable  (StorageComponent* storage_component, crc32 variable);
+void                Component_Storage_Data_Store        (StorageComponent* storage_component, crc32 variable, tdata data);
+tdata               Component_Storage_Data_Read         (StorageComponent* storage_component, crc32 variable);
+void                Component_Storage_Variable_Delete   (StorageComponent* storage_component, crc32 variable);
