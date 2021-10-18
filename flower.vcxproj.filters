@@ -188,6 +188,9 @@
     <ClInclude Include="Timer.h">
       <Filter>Library\Timer</Filter>
     </ClInclude>
+    <ClInclude Include="Platform.h">
+      <Filter>Platform</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Platform">

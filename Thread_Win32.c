@@ -7,7 +7,8 @@
 #include "Thread.h"
 #include "String.h"
 
-#include <Windows.h>
+#include "Platform.h"
+
 
 static DWORD WINAPI Thread_Run_Function(LPVOID lpParam)
 {

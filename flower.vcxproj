@@ -124,6 +124,7 @@
     <ClInclude Include="Component.h" />
     <ClInclude Include="CoreMini.h" />
     <ClInclude Include="Mutex.h" />
+    <ClInclude Include="Platform.h" />
     <ClInclude Include="Task.h" />
     <ClInclude Include="TaskManager.h" />
     <ClInclude Include="tData.h" />

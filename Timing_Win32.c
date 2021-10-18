@@ -1,10 +1,11 @@
 #include "CoreMini.h"
+
 #if PLATFORM_WIN32
 
 #include "TimingManager.h"
 #include "MemoryManager.h"
 
-#include <Windows.h>
+#include "Platform.h"
 
 
 tptr TimingManager_PlatformData_Create(TimingManager* timing_manager, const tchar* local_name)

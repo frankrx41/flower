@@ -3,7 +3,8 @@
 
 #include "KeyId.h"
 
-#include <Windows.h>
+#include "Platform.h"
+
 
 static int32 KeyId_To_WinVK(KeyId key_id)
 {

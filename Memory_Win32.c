@@ -1,8 +1,7 @@
 #include "CoreMini.h"
 #if PLATFORM_WIN32
 
-#include <stdlib.h>
-#include <string.h>
+#include "Platform.h"
 
 
 tptr Memory_Alloc_Plat(tsize size)

@@ -10,19 +10,19 @@ Add ShaderText info
 Add Queue_Sort
 Add Fps profile
 Add Shader2D
+Update TaskManager_Thread_RunTask
 
 Add Event_Actor_Destroy
 Add CB_ProcessSence in Sence_Destroy
 Add InputBank or named it controller ?
 Add InputBank in Actor_Create
 Add TaskManager in SendEvent
-Update Timing, use less plat function
-Rename Scene_SetIsPause
-Add Platform.h
 
+Update Timing, use less plat function (done)
+Rename Scene_SetIsPause (done)
+Add Platform.h (done)
 Fix memory leak (done)
 Fix screen flashing (done)
-
 Add offsetXY in Scene (done)
 Add TaskManager (done)
 Add offsetXY in RenderManager (done)

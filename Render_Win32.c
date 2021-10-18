@@ -10,8 +10,8 @@
 #include "Vec.h"
 #include "tData.h"
 
-#include <stdio.h>
-#include <windows.h>
+#include "Platform.h"
+
 
 typedef struct RenderManagerPlatformData RenderManagerPlatformData;
 typedef struct PixData PixData;

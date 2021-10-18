@@ -6,9 +6,8 @@
 
 #include "String.h"
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
+#include "Platform.h"
+
 
 #pragma warning(disable: 4996)
 

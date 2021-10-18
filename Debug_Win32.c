@@ -3,7 +3,8 @@
 
 #include "String.h"
 
-#include <Windows.h>
+#include "Platform.h"
+
 
 void Engine_Debug_Break()
 {
