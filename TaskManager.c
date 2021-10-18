@@ -59,15 +59,17 @@ TaskManager* TaskManager_Create(const tchar* local_name)
     TaskManager* task_manager = MemNew(local_name, TaskManager);
 
     task_manager->m_local_name      = String_New(local_name, local_name, true);
-    task_manager->m_task_thread_job_max = 3;
+    task_manager->m_task_thread_job_max = 0;
     task_manager->m_task_thread_work    = MemNewSize(local_name, sizeof(TaskThread*)*task_manager->m_task_thread_job_max);
-    if( task_manager->m_task_thread_job_max > 0 )
+
+    for(uint32 i=0; i<task_manager->m_task_thread_job_max; i++)
     {
-        task_manager->m_task_thread_work[TaskManager_TaskThread_Render_Index_Get(task_manager)] = TaskThread_Create("Render_TaskThread");
-    }
-    for(uint32 i=0; i<task_manager->m_task_thread_job_max-1; i++)
-    {
-        task_manager->m_task_thread_work[i] = TaskThread_Create(local_name);
+        const tchar* str = local_name;
+        if( i == TaskManager_TaskThread_Render_Index_Get(task_manager) )
+        {
+            str = "Render_TaskThread";
+        }
+        task_manager->m_task_thread_work[i] = TaskThread_Create(str);
     }
 
     return task_manager;

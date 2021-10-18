@@ -89,6 +89,8 @@ void MemoryManager_Destroy(MemoryManager* memory_manager)
     Queue_Destroy(memory_manager->m_memory_profile_data_queue, MemoryProfileData_Destroy);
     String_Del(memory_manager->m_local_name);
 
+    Log(4, "%-30s: %d\n", "memory alloc count", memory_manager->m_alloc_id);
+
     MemDel(memory_manager);
 }
 
