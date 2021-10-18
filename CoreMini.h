@@ -79,11 +79,11 @@ typedef byte bool;
 
 #if CONFIG_DEBUG || CONFIG_RELEASE
 
-// 0 info, 1 warn, 2 error
 void    Engine_Debug_Log        (int32 type, const tchar* format, ...);
 bool    Str_IsEmpty             (const tchar* str);
 void    Engine_Debug_Break      ();
 void    Engine_Profile_Memory   ();
+// 0 info, 1 warn, 2 error, 4 profile
 #define Log                     Engine_Debug_Log
 
 #define Assert(must_true_condition, msg, ...) do{ \

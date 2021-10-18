@@ -269,7 +269,7 @@ static void CallBack_Memory_ProfileLog(MemoryProfileData* memory_profile_data, u
 {
     if( memory_profile_data->m_alloc_size != 0 )
     {
-        Log(0, "%-30s: %-8d / %-8d \n", String_CStr(memory_profile_data->m_local_name), memory_profile_data->m_alloc_size, memory_profile_data->m_alloc_size_max);
+        Log(4, "%-30s: %-8d / %-8d \n", String_CStr(memory_profile_data->m_local_name), memory_profile_data->m_alloc_size, memory_profile_data->m_alloc_size_max);
         *total_alloc_size += memory_profile_data->m_alloc_size;
     }
 }
@@ -279,13 +279,14 @@ void Engine_Profile_Memory()
     uint32 total_alloc_size = 0;
     MemoryManager* memory_manager = MemoryManager_GetInstance();
     Queue(MemoryProfileData*)* memory_profile_data_queue = memory_manager->m_memory_profile_data_queue;
-    Log(0, "Memory Profile\n");
-    Log(0, "=====================================================\n");
+    Log(4, "Memory Profile\n");
+    Log(4, "=====================================================\n");
     Queue_ForEach( memory_profile_data_queue, CallBack_Memory_ProfileLog, &total_alloc_size );
-    Log(0, "%-30s: %d\n", "Static", static_alloc_memory_size);
+    Log(4, "%-30s: %d\n", "Static", static_alloc_memory_size);
     total_alloc_size += static_alloc_memory_size;
-    Log(0, "%-30s: %d\n", "Total", total_alloc_size);
-    Log(0, "=====================================================\n");
+    Log(4, "%-30s: %d\n", "Total", total_alloc_size);
+    Log(4, "%-30s: %d\n", "memory alloc count", memory_manager->m_alloc_id);
+    Log(4, "=====================================================\n");
 }
 
 static void CallBack_Memory_Check_Memory_Leak(MemoryProfileData* memory_profile_data, tptr ptr)
