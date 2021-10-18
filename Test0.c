@@ -204,7 +204,7 @@ static void String_Test0()
 ////////////////////////////////////////////////////////////////////////////////
 void Actor_Test2()
 {
-    Scene* scene = SceneManager_Scene_Create(__FUNCTION__);
+    Scene* scene = SceneManager_Scene_Create(__FUNCTION__, NULL);
     Actor* actor = Scene_Actor_Create(__FUNCTION__, scene, NULL, NULL);
 
     Actor_Component_New(actor, Component_Render);
@@ -221,7 +221,7 @@ void Actor_Test2()
 
 void Actor_Test1()
 {
-    Scene* scene = SceneManager_Scene_Create(__FUNCTION__);
+    Scene* scene = SceneManager_Scene_Create(__FUNCTION__, NULL);
     Actor* actor = Scene_Actor_Create(__FUNCTION__, scene, NULL, NULL);
 
     Actor_Component_New(actor, Component_Physics);
@@ -240,7 +240,7 @@ void Actor_Test1()
 
 void Actor_Test0()
 {
-    Scene* scene = SceneManager_Scene_Create(__FUNCTION__);
+    Scene* scene = SceneManager_Scene_Create(__FUNCTION__, NULL);
     Actor* actor = Scene_Actor_Create(__FUNCTION__, scene, NULL, NULL);
 
     Actor_Component_New(actor, Component_Render);
@@ -301,8 +301,7 @@ void CallBack_SceneDesrtoy(Scene* scene)
 
 void Scene_Test0()
 {
-    Scene* scene = SceneManager_Scene_Create(__FUNCTION__);
-    Scene_Destroy_CB_Set(scene, CallBack_SceneDesrtoy);
+    Scene* scene = SceneManager_Scene_Create(__FUNCTION__, CallBack_SceneDesrtoy);
 
     SceneManager_Scene_Destroy(scene);
     Assert(is_scene_destroy_callback == true, "");

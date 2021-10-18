@@ -1,5 +1,6 @@
 #pragma once
 
+typedef struct SceneManager SceneManager;
 typedef struct EventInfo EventInfo;
 typedef struct Scene Scene;
 typedef struct Actor Actor;
@@ -11,9 +12,10 @@ typedef bool (*CB_FindData_Bool_tPtr_tPtr)      (const tptr data, const tptr ptr
 typedef void (*CB_ActorCreate_Void_Actor_tPtr)  (Actor* actor, const tptr ptr);
 typedef void (*CB_SceneDestroy_Void_Scene)      (Scene* scene);
 
+Scene*  Scene_Create                (const tchar* local_name, SceneManager* scene_manager, CB_SceneDestroy_Void_Scene cb_scene_destroy_void_scene);
+void    Scene_Destroy               (Scene* scene);
 void    Scene_Render_Offset_Set     (Scene* scene, vec2 vec);
 vec2    Scene_Render_Offset_Get     (Scene* scene);
-void    Scene_Destroy_CB_Set        (Scene* scene, CB_SceneDestroy_Void_Scene cb_scene_destroy_void_scene);
 void    Scene_Pause_All             (Scene* scene);
 bool    Scene_Is_Hide               (Scene* scene);
 void    Scene_Hide                  (Scene* scene, bool is_pause);

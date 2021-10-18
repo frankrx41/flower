@@ -123,6 +123,8 @@ void    Engine_Profile_Memory   ();
 
 #define IS_IN_RANGE(x,min,max) ((x)>=(min) && (x)<(max))
 
+#define ABANDONED(...)  do{ Log(2, __VA_ARGS__); }while(0)
+
 #if NO_COMPILE_TIME_CHECK
 #define COMPILE_TIME_ASSERT(...)
 #define COMPILE_TIME_REQUIRE(...)

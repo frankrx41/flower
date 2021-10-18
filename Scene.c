@@ -38,7 +38,7 @@ struct Scene
 
 Actor* Actor_Create(const tchar* local_name, Scene* scene, uint32 id, CB_ActorCreate_Void_Actor_tPtr cb_actor_create_void_actor_tptr, tptr ptr);
 
-Scene* Scene_Create(const tchar* local_name)
+Scene* Scene_Create(const tchar* local_name, SceneManager* scene_manager, CB_SceneDestroy_Void_Scene cb_scene_destroy_void_scene)
 {
     Scene* scene = MemNew(local_name, Scene);
     scene->m_child_actor_queue          = Queue_Create(local_name, Actor*);
@@ -47,7 +47,7 @@ Scene* Scene_Create(const tchar* local_name)
     scene->m_storage                    = Storage_Create(local_name);
     scene->m_is_pause_event             = false;
     scene->m_is_pause_render            = false;
-    scene->m_cb_scene_destroy_void_scene = NULL;
+    scene->m_cb_scene_destroy_void_scene = cb_scene_destroy_void_scene;
     scene->m_actor_action_event_queue   = Queue_Create(local_name, Actor*);
     scene->m_physics_actor_queue        = Queue_Create(local_name, Actor*);
     scene->m_actor_renderable_able_queue= Queue_Create(local_name, Actor*);
@@ -106,8 +106,9 @@ static Queue(Actor*)* Scene_EventQueue_Get(Scene* scene, Event event)
     return scene->m_actor_scene_event_queue_list[event-Event_Scene_Min];
 }
 
-void Scene_Destroy_CB_Set(Scene* scene, CB_SceneDestroy_Void_Scene cb_scene_destroy_void_scene)
+static void Scene_Destroy_CB_Set(Scene* scene, CB_SceneDestroy_Void_Scene cb_scene_destroy_void_scene)
 {
+    ABANDONED("Please set cb_scene_destroy_void_scene in create function.");
     scene->m_cb_scene_destroy_void_scene = cb_scene_destroy_void_scene;
 }
 

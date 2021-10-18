@@ -274,7 +274,7 @@ String* String_New(const tchar* local_name, const tchar* str, bool is_const)
         {
             const int32 str_length = Str_CalcLength(str);
 
-            string->m_char = str;
+            string->m_char = (tchar*)str;
             string->m_length = str_length;
 
             if( string->m_is_calc_crc )

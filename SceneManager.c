@@ -25,9 +25,6 @@ struct SceneManager
     bool                    m_is_scene_loading;
 };
 
-Scene*  Scene_Create    (const tchar* local_name);
-void    Scene_Destroy   (Scene* scene);
-
 #undef SceneManager_Scene_Create
 #undef SceneManager_SetCurrentScene
 #undef SceneManager_GetCurrentScene
@@ -65,9 +62,9 @@ void SceneManager_Destroy(SceneManager* scene_manager)
     MemDel(scene_manager);
 }
 
-Scene* SceneManager_Scene_Create(SceneManager* scene_manager, const tchar* local_name)
+Scene* SceneManager_Scene_Create(SceneManager* scene_manager, const tchar* local_name, CB_SceneDestroy_Void_Scene cb_scene_destroy_void_scene)
 {
-    Scene* scene = Scene_Create(local_name);
+    Scene* scene = Scene_Create(local_name, scene_manager, cb_scene_destroy_void_scene);
     Queue_Push(Scene*, local_name, scene_manager->m_scene_queue_all, scene);
 
     return scene;

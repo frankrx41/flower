@@ -53,7 +53,7 @@ static void Actor_Create0(Actor* actor, tptr ptr)
 static void Scene_Create0(void)
 {
     
-    Scene * scene = SceneManager_Scene_Create(__FUNCTION__);
+    Scene * scene = SceneManager_Scene_Create(__FUNCTION__, NULL);
 
     Actor * actor = Scene_Actor_Create(__FUNCTION__, scene, Actor_Create0, NULL);
 }
