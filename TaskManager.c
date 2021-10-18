@@ -55,8 +55,8 @@ TaskManager* TaskManager_Create(const tchar* local_name)
     TaskManager* task_manager = MemNew(local_name, TaskManager);
 
     task_manager->m_local_name      = String_New(local_name, local_name, true);
-    task_manager->m_task_thread_job_max = 6;
-    task_manager->m_task_thread_work     = MemNewSize(local_name, sizeof(TaskThread*)*task_manager->m_task_thread_job_max);
+    task_manager->m_task_thread_job_max = 0;
+    task_manager->m_task_thread_work    = MemNewSize(local_name, sizeof(TaskThread*)*task_manager->m_task_thread_job_max);
     for(uint32 i=0; i<task_manager->m_task_thread_job_max; i++)
     {
         task_manager->m_task_thread_work[i] = TaskThread_Create(local_name);
@@ -81,6 +81,10 @@ void TaskManager_Destroy(TaskManager* task_manager)
 
 TaskThread* TaskManager_TaskThread_Work_Get(TaskManager* task_manager, uint32 index)
 {
+    if( task_manager->m_task_thread_job_max == 0 )
+    {
+        return NULL;
+    }
     Assert(IS_IN_RANGE(index, 0, task_manager->m_task_thread_job_max), "");
     return task_manager->m_task_thread_work[index];
 }
@@ -92,17 +96,39 @@ TaskThread* TaskManager_TaskThread_Render_Get(TaskManager* task_manager)
 
 Task* TaskManager_Task_Work_Add(TaskManager* task_manager, const tchar* local_name, TaskThread* task_thread, uint32 priority, bool is_auto_destroy, CB_TaskRun_Condition_Bool_Task_tPtr cb_task_run_condition_bool_task_tptr, CB_TaskRun_Void_Task_tPtr cb_task_run_void_task_tptr, CB_TaskEnd_ClearData_Void_tPtr cb_task_end_clear_data_void_tptr, tptr task_data)
 {
-    Task* task = Task_Create(local_name, task_thread, priority, is_auto_destroy, cb_task_run_condition_bool_task_tptr, cb_task_run_void_task_tptr, cb_task_end_clear_data_void_tptr, task_data);
-
-    Queue_Push(Task*, local_name, task_thread->m_task_queue, task);
-
-    if( is_auto_destroy )
+    Assert( cb_task_run_void_task_tptr != NULL, "" );
+    if( task_thread == NULL )
     {
-        // Maybe you should not keep the handle if auto free
-        // return NULL;
-    }
+        bool is_can_run = true;
+        if( cb_task_run_condition_bool_task_tptr )
+        {
+            is_can_run = cb_task_run_condition_bool_task_tptr(NULL, task_data);
+        }
 
-    return task;
+        if( is_can_run )
+        {
+            cb_task_run_void_task_tptr(NULL, task_data);
+            if( cb_task_end_clear_data_void_tptr )
+            {
+                cb_task_end_clear_data_void_tptr(task_data);
+            }
+        }
+        return NULL;
+    }
+    else
+    {
+        Task* task = Task_Create(local_name, task_thread, priority, is_auto_destroy, cb_task_run_condition_bool_task_tptr, cb_task_run_void_task_tptr, cb_task_end_clear_data_void_tptr, task_data);
+
+        Queue_Push(Task*, local_name, task_thread->m_task_queue, task);
+
+        if( is_auto_destroy )
+        {
+            // Maybe you should not keep the handle if auto free
+            // return NULL;
+        }
+
+        return task;
+    }
 }
 
 void TaskManager_Task_Render_Add(TaskManager* task_manager, const tchar* local_name, CB_TaskRun_Void_Task_tPtr cb_task_run_void_task_tptr, CB_TaskEnd_ClearData_Void_tPtr cb_task_end_clear_data_void_tptr, tptr task_data)
