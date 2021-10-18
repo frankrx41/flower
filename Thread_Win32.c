@@ -20,9 +20,6 @@ static DWORD WINAPI Thread_Run_Function(LPVOID lpParam)
 tptr Thread_Create_Plat(Thread* thread, const tchar* local_name)
 {
     const HANDLE thread_handle = CreateThread(NULL, 0, Thread_Run_Function, (void*)thread, 0, 0);
-    wchar* wstr = wStr_New(local_name);
-    SetThreadDescription(thread_handle, wstr);
-    MemDel(wstr);
     return thread_handle;
 }
 
