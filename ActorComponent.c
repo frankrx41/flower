@@ -266,7 +266,7 @@ void CallBack_Render_ActorShaderText_Plat(ShaderText* shader_text, Actor* actor)
 
     ShaderText* shader_text_copy = ShaderText_Create("RenderManager_ShaderText", true,vec, ShaderText_GetStr(shader_text));
     ShaderText_Offset_Set(shader_text_copy, Scene_Render_Offset_Get(Actor_ParentScene_Get(actor)));
-    TaskManager_Task_Render_Add("RenderManager_Task", CallBack_RenderManager_Render_ToBackBuffer_Task, ShaderText_Destory, shader_text_copy);
+    TaskManager_Task_Render_Add("RenderManager_ShaderText_Task", CallBack_RenderManager_Render_ToBackBuffer_Task, ShaderText_Destory, shader_text_copy);
 }
 
 void CallBack_Actor_RenderEachActor(Actor* actor, RenderManager* render_manager)

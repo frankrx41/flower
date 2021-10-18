@@ -100,12 +100,17 @@ void Engine_MainLoop()
 
     float delta_second = TimingManager_GetPrevFrameDeltaSeconds(TimingManager_GetInstance());
 
-    for(;!engine->m_is_exit;)
+    for(;;)
     {
         InputManager_Keys_UpdateState(InputManager_GetInstance(), delta_second);
         InputManager_Event_Send(InputManager_GetInstance());
 
         SceneManager_TryRunNextCommand(SceneManager_GetInstance());
+
+        if( Engine_IsExit() )
+        {
+            break;
+        }
 
         RenderManager_RenderAllScene(RenderManager_GetInstance(), SceneManager_GetInstance());
 

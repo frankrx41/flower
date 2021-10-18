@@ -103,6 +103,7 @@ void SceneManager_Scene_Foreground_Queue_Clear(SceneManager* scene_manager)
 void SceneManager_Scene_ExitCurrent(SceneManager* scene_manager)
 {
     scene_manager->m_is_exit_current_scene = true;
+    Log(4, "Scene End\n");
 }
 
 tptr SceneManager_SceneQueue_Foreground_Get(SceneManager* scene_manager)
@@ -127,30 +128,33 @@ bool SceneManager_Scene_IsLoading(SceneManager* scene_manager)
 
 static void SceneManager_LoadLastScene(Task* task, SceneManager* scene_manager)
 {
-    scene_manager->m_is_exit_current_scene = false;
+    Log(4, "Scene Loading\n");
     (Queue_Dequeue(CB_Command_Void)(scene_manager->m_command_queue))();
     scene_manager->m_is_scene_loading = false;
 }
 
 void SceneManager_TryRunNextCommand(SceneManager* scene_manager)
 {
-    if (Queue_IsEmpty(scene_manager->m_command_queue))
+    if( scene_manager->m_is_exit_current_scene || Queue_IsEmpty(scene_manager->m_scene_queue_all) )
     {
-        Engine_NotifyExit();
-    }
-    else
-    {
-        if( scene_manager->m_is_exit_current_scene || Queue_IsEmpty(scene_manager->m_scene_queue_all) )
+        scene_manager->m_is_exit_current_scene = false;
+
+        if (!Queue_IsEmpty(scene_manager->m_scene_queue_foreground))
         {
-            if( !SceneManager_Scene_IsLoading(scene_manager) )
+            SceneManager_Scene_Foreground_Queue_Clear(scene_manager);
+        }
+
+        if( !SceneManager_Scene_IsLoading(scene_manager) )
+        {
+            if( !Queue_IsEmpty(scene_manager->m_command_queue) )
             {
                 scene_manager->m_is_scene_loading = true;
-                if( !Queue_IsEmpty(scene_manager->m_scene_queue_foreground) )
-                {
-                    SceneManager_Scene_Foreground_Queue_Clear(scene_manager);
-                }
                 TaskManager_Task_Work_Add(String_CStr(scene_manager->m_local_name), 0, 0, true, NULL, SceneManager_LoadLastScene, NULL, scene_manager);
                 Engine_Profile_Memory();
+            }
+            else
+            {
+                Engine_NotifyExit();
             }
         }
     }

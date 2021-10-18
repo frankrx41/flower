@@ -69,8 +69,6 @@ void RenderManager_RenderAllScene(RenderManager* render_manager, SceneManager* s
 {
     Queue_ForEach(SceneManager_SceneQueue_Foreground_Get(scene_manager), CallBack_Render_Scene, render_manager);
 
-    // RenderManager_Render_ToScreen(RenderManager_GetInstance());
-
-    TaskManager_Task_Render_Add("RenderManager_Task", CallBack_RenderManager_Render_ToScreen_Task, NULL, RenderManager_GetInstance());
+    TaskManager_Task_Render_Add("RenderManager_Render_All_Task", CallBack_RenderManager_Render_ToScreen_Task, NULL, RenderManager_GetInstance());
 }
 
