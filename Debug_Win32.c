@@ -5,8 +5,6 @@
 
 #include <Windows.h>
 
-#define LOCAL_NAME  "Debug"
-
 void Engine_Debug_Break()
 {
     __debugbreak();

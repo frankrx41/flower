@@ -142,7 +142,6 @@ void MemoryManager_Free(MemoryManager* memory_manager, tptr ptr)
 {
     Assert(ptr != NULL, "");
 
-
     MemoryBlock * memory_block = CastToMemoryBlock(ptr);
 
     if( !Engine_IsExit() )
@@ -158,11 +157,13 @@ void MemoryManager_Free(MemoryManager* memory_manager, tptr ptr)
         if( memory_profile_data )
         {
             memory_profile_data->m_alloc_size -= memory_block->m_alloc_size;
+            Assert(memory_profile_data->m_alloc_size >= 0, "");
         }
     }
     else
     {
         static_alloc_memory_size -= memory_block->m_alloc_size;
+        Assert(static_alloc_memory_size >= 0, "");
     }
 
     Memory_Free_Plat(memory_block);
