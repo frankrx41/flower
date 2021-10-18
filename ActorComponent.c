@@ -132,7 +132,7 @@ void Actor_Component_Render_ShaderText_Del(Actor* actor, ShaderText* shader_text
     Assert(false, "");
 }
 
-void Actor_Component_Render_ShaderText_ClearAll(Actor* actor)
+void Actor_Component_Render_ShaderText_Clear(Actor* actor)
 {
     Assert(actor != NULL, "");
     RenderComponent* render_component = Actor_Component_Cast(actor, Component_Render);

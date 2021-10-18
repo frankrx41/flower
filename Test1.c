@@ -43,7 +43,7 @@ void CallBack_ActorOnEvent5(Actor* actor, const EventInfo* event_info)
     }
 
     vec3 vec = Actor_Component_Physics_Location_Get(actor);
-    Actor_Component_Render_ShaderText_ClearAll(actor);
+    Actor_Component_Render_ShaderText_Clear(actor);
     String* string = String_New(Actor_LocalName_Str_Get(actor), NULL, false);
     String_Format(string, "(%.2f) %s", vec.m_y, event_info->m_event == Event_Actor_Action_MoveUp ? "Up" : "Down");
     Actor_Component_Render_ShaderText_Add(actor, Vec3(2, 2, 0), String_CStr(string));
@@ -88,7 +88,7 @@ void CallBack_ActorOnEvent4(Actor* actor, const EventInfo* event_info)
         return;
     }
 
-    Actor_Component_Render_ShaderText_ClearAll(actor);
+    Actor_Component_Render_ShaderText_Clear(actor);
 
     const vec3 displacement = Actor_Component_Physics_Location_Get(actor);
     String* string = String_New(Actor_LocalName_Str_Get(actor), NULL, false);
@@ -131,7 +131,7 @@ void CallBack_ActorOnEvent3(Actor* actor, const EventInfo* event_info)
         SceneManager_Scene_ExitCurrent();
     }
 
-    Actor_Component_Render_ShaderText_ClearAll(actor);
+    Actor_Component_Render_ShaderText_Clear(actor);
 
     String* string = String_New(Actor_LocalName_Str_Get(actor), NULL, false);
     String_Format(string, "%d %.2f", tick_count, 1.f / event_info->m_delta_seconds);
@@ -203,7 +203,7 @@ void CallBack_ActorOnEvent2(Actor* actor, const EventInfo* event_info)
     {
         delta_second -= update_need_seconds;
 
-        Actor_Component_Render_ShaderText_ClearAll(actor);
+        Actor_Component_Render_ShaderText_Clear(actor);
 
         const crc32 crc_update_tick = Str_CalcCrc("update_tick", 0);
         int32 update_tick = Actor_Component_Storage_Data_Read(actor, crc_update_tick).m_int32;

@@ -100,7 +100,7 @@ bool Storage_Is_ExistVariable(Storage* storage, crc32 variable)
     return false;
 }
 
-tdata Storage_Data_Read(const Storage* storage, crc32 variable)
+tdata Storage_Data_Read(Storage* storage, crc32 variable)
 {
     StoreContent* store_content = Storage_FindStoreContent(storage, variable);
     return store_content ? store_content->m_data : tdata_null;

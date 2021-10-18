@@ -21,9 +21,9 @@ void    CallBack_Actor_Component_Physics_Simulate   (Actor* actor, float* delta_
 void    Actor_Component_Physics_SetEnableSimulate   (Actor* actor, bool is_enable_simulate);
 
 
-ShaderText* Actor_Component_Render_ShaderText_Add       (Actor* actor, vec3 vec, const tchar* str);
-void        Actor_Component_Render_ShaderText_Del       (Actor* actor, ShaderText* shader_text);
-void        Actor_Component_Render_ShaderText_ClearAll  (Actor* actor);
+ShaderText* Actor_Component_Render_ShaderText_Add   (Actor* actor, vec3 vec, const tchar* str);
+void        Actor_Component_Render_ShaderText_Del   (Actor* actor, ShaderText* shader_text);
+void        Actor_Component_Render_ShaderText_Clear (Actor* actor);
 
 
 void    Actor_Component_Action_EventRespond_Add     (Actor* actor, Event event, CB_RespondCondition_Bool_Actor_EventInfo cb_respond_condition_void_actor_eventinfo, CB_RespondAction_Void_Actor_EventInfo cb_respond_action_void_actor_eventinfo);
@@ -31,7 +31,7 @@ void    Actor_Component_Action_EventRespond_Del     (Actor* actor, Event event);
 void    Actor_Component_Action_EventRespond_Clear   (Actor* actor);
 
 
-bool    Actor_Component_Storage_IsExistVariable (Actor* actor, crc32 variable);
-void    Actor_Component_Storage_Data_Store      (Actor* actor, crc32 variable, tdata data);
-tdata   Actor_Component_Storage_Data_Read       (Actor* actor, crc32 variable);
-void    Actor_Component_Storage_Variable_Delete (Actor* actor, crc32 variable);
+bool    Actor_Component_Storage_IsExistVariable     (Actor* actor, crc32 variable);
+void    Actor_Component_Storage_Data_Store          (Actor* actor, crc32 variable, tdata data);
+tdata   Actor_Component_Storage_Data_Read           (Actor* actor, crc32 variable);
+void    Actor_Component_Storage_Variable_Delete     (Actor* actor, crc32 variable);
