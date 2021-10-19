@@ -73,19 +73,22 @@ bool Task_IsRunning(Task* task)
     return task->m_is_running;
 }
 
-static void Task_TryDestory(Task* task)
+bool Task_TryDestory(Task* task)
 {
     if (task->m_is_auto_destroy)
     {
         Task_Destroy(task);
+        return true;
     }
+    return false;
 }
 
 bool Task_TryExecute(Task* task)
 {
+    Assert(Task_IsFinish(task) == false, "");
+
     if( Task_IsCancel(task) )
     {
-        Task_TryDestory(task);
         return true;
     }
 
@@ -103,8 +106,6 @@ bool Task_TryExecute(Task* task)
         task->m_cb_task_run_void_task_tptr(task, task->m_task_data);
         task->m_is_running  = false;
         task->m_is_finish   = true;
-
-        Task_TryDestory(task);
 
         return true;
     }

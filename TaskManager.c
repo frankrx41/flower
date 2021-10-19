@@ -68,7 +68,7 @@ TaskManager* TaskManager_Create(const tchar* local_name)
     TaskManager* task_manager = MemNew(local_name, TaskManager);
 
     task_manager->m_local_name      = String_New(local_name, local_name, true);
-    task_manager->m_task_queue_thread_job_max = 0;
+    task_manager->m_task_queue_thread_job_max = 3;
     task_manager->m_task_queue_thread_work    = MemNewSize(local_name, sizeof(TaskQueueThread*)*task_manager->m_task_queue_thread_job_max);
 
     for(uint32 i=0; i<task_manager->m_task_queue_thread_job_max; i++)
@@ -160,19 +160,24 @@ void TaskManager_Task_Render_Add(TaskManager* task_manager, const tchar* local_n
     TaskManager_Task_Work_Add(task_manager, local_name, thread, 0, true, NULL, cb_task_run_void_task_tptr, cb_task_end_clear_data_void_tptr, task_data);
 }
 
+static bool TaskQueueThread_Task_Is_Finish(Task* task, tptr reserve)
+{
+    return Task_IsFinish(task);
+}
+
+static void TaskQueueThread_RunTask(Task* task, tptr reserve)
+{
+    Task_TryExecute(task);
+}
+
 static void TaskManager_TaskQueueThread_RunTask(Thread* thread, TaskQueueThread* task_queue_thread)
 {
     for(;;)
     {
         if (!Queue_IsEmpty(task_queue_thread->m_task_queue))
         {
-            // TODO: use pick
-            Task* task = Queue_Dequeue(Task*)(task_queue_thread->m_task_queue);
-
-            if( !Task_TryExecute(task) )
-            {
-                Queue_Push(Task*, NULL, task_queue_thread->m_task_queue, task);
-            }
+            Queue_ForEach(task_queue_thread->m_task_queue, TaskQueueThread_RunTask, NULL);
+            Queue_RemoveFindAll(task_queue_thread->m_task_queue, TaskQueueThread_Task_Is_Finish, NULL, Task_TryDestory);
         }
         else
         {

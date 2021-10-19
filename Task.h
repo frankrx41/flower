@@ -18,6 +18,7 @@ bool                        Task_IsCancel       (Task* task);
 bool                        Task_IsFinish       (Task* task);
 bool                        Task_IsRunning      (Task* task);
 
+bool                        Task_TryDestory     (Task* task);
 bool                        Task_TryExecute     (Task* task);
 
 #define TASK_IS_DEFINED 1
