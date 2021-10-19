@@ -46,18 +46,18 @@ void EventInfo_Destroy(EventInfo* event_info)
     MemDel(event_info);
 }
 
-void EventManager_SendEvent_Tick(EventManager* event_manager, Event event, float delta_seconds)
+void EventManager_SendEvent_Update(EventManager* event_manager, Event event, float delta_seconds)
 {
-    Assert(event == Event_Tick, "");
     EventInfo* event_info = EventInfo_Create("EventManager_Tick", event, NULL, NULL, KeyId_Null, delta_seconds);
-    SceneManager_TickEvent_SendTo_Scene(SceneManager_GetInstance(), event_info);
+    SceneManager_SceneEvent_SendTo_Scene(SceneManager_GetInstance(), event_info);
     EventInfo_Destroy(event_info);
 }
 
+////////////////////////////////////////////////////////////////////////////////
 static void CallBack_SendEvent_Actor_Action(Scene* scene, EventInfo* event_info)
 {
     Assert(scene != NULL, "");
-    EventInfo* event_info_actor_action = EventInfo_Create("EventManager_Action", event_info->m_event, scene, NULL, KeyId_Null, event_info->m_delta_seconds);
+    EventInfo* event_info_actor_action = EventInfo_Create("EventManager_Control", event_info->m_event, scene, NULL, KeyId_Null, event_info->m_delta_seconds);
     Scene_ControlEvent_SendTo_Actor(scene, event_info_actor_action);
     EventInfo_Destroy(event_info_actor_action);
 }

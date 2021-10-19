@@ -12,4 +12,6 @@ float   TimingManager_GetPrevFrameDeltaSeconds  (TimingManager* timing_manager);
 void    TimingManager_TrimSpeed                 (TimingManager* timing_manager);
 float   TimingManager_Cpu_Seconds_Get           (TimingManager* timing_manager);
 
+void    TimingManager_ResetIdleSecond           (TimingManager* timing_manager);
+
 TimingManager* TimingManager_GetInstance        ();

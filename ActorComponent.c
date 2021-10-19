@@ -145,9 +145,23 @@ void Actor_Component_Render_ShaderText_Clear(Actor* actor)
 
 
 // Component_Control
-void Actor_Component_Control_EventRespond_Add(Actor* actor, Event event, CB_RespondCondition_Bool_Actor_EventInfo cb_respond_condition_void_actor_eventinfo, CB_RespondAction_Void_Actor_EventInfo cb_respond_action_void_actor_eventinfo)
+void Actor_Component_Control_SceneEventRespond_Add(Actor* actor, Event event, CB_RespondCondition_Bool_Actor_EventInfo cb_respond_condition_void_actor_eventinfo, CB_RespondAction_Void_Actor_EventInfo cb_respond_action_void_actor_eventinfo)
 {
-    Assert(IS_IN_RANGE(event, Event_Scene_Min, Event_Scene_Max) || IS_IN_RANGE(event, Event_Control_Min, Event_Control_Max), "");
+    Assert(IS_IN_RANGE(event, Event_Scene_Min, Event_Scene_Max), "");
+    Assert(event != Event_Scene_Update_Physics, "Update_Physics is handle by engine");
+
+    ControlComponent* control_component = Actor_Component_Cast(actor, Component_Control);
+    Assert(control_component != NULL, "");
+    if( control_component )
+    {
+        Component_Control_EventRespond_Add(control_component, event, cb_respond_condition_void_actor_eventinfo, cb_respond_action_void_actor_eventinfo);
+        Scene_SceneEventGroup_Actor_Add(Actor_OwnerScene_Get(actor), actor, event);
+    }
+}
+
+void Actor_Component_Control_ControlEventRespond_Add(Actor* actor, Event event, CB_RespondCondition_Bool_Actor_EventInfo cb_respond_condition_void_actor_eventinfo, CB_RespondAction_Void_Actor_EventInfo cb_respond_action_void_actor_eventinfo)
+{
+    Assert(IS_IN_RANGE(event, Event_Control_Min, Event_Control_Max), "");
     Assert(actor != NULL, "");
 
     ControlComponent* control_component = Actor_Component_Cast(actor, Component_Control);
@@ -159,15 +173,10 @@ void Actor_Component_Control_EventRespond_Add(Actor* actor, Event event, CB_Resp
         {
             Scene_SceneEventGroup_Actor_Add(Actor_OwnerScene_Get(actor), actor, event);
         }
-        else if(IS_IN_RANGE(event, Event_Actor_Min, Event_Actor_Max))
-        {
-            // We add to queue when Actor_Component is been create, not need this any more
-            // Scene_ControlEventGroup_Actor_Add(Actor_OwnerScene_Get(actor), actor, event);
-        }
     }
 }
 
-void Actor_Component_Control_EventRespond_Del(Actor* actor, Event event)
+void Actor_Component_Control_ControlEventRespond_Del(Actor* actor, Event event)
 {
     Assert(actor != NULL, "");
     ControlComponent* control_component = Actor_Component_Cast(actor, Component_Control);
@@ -178,7 +187,7 @@ void Actor_Component_Control_EventRespond_Del(Actor* actor, Event event)
     }
 }
 
-void Actor_Component_Control_EventRespond_Clear(Actor* actor)
+void Actor_Component_Control_ControlEventRespond_Clear(Actor* actor)
 {
     Assert(actor != NULL, "");
     ControlComponent* control_component = Actor_Component_Cast(actor, Component_Control);

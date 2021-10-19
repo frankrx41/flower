@@ -6,8 +6,6 @@ enum Event
 {
     Event_Null,
 
-    Event_Tick,
-
     Event_Key_Min,
     Event_Key_Any_Down          = Event_Key_Min,
     Event_Key_Any_Down_Once,
@@ -21,6 +19,8 @@ enum Event
     Event_Scene_Idle,
     Event_Scene_Max,
 
+    Event_Scene_Update_Anime,
+    Event_Scene_Update_Physics,
 
 
     Event_Control_Min,
@@ -41,11 +41,6 @@ enum Event
     Event_Control_Cover,
 
     Event_Control_Max,
-
-
-
-    Event_Actor_Min,
-    Event_Actor_Max,
 
     Event_Max
 };

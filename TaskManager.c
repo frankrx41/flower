@@ -176,6 +176,7 @@ static void TaskManager_TaskQueueThread_RunTask(Thread* thread, TaskQueueThread*
     {
         if (!Queue_IsEmpty(task_queue_thread->m_task_queue))
         {
+            // We need lock m_task_queue
             Queue_ForEach(task_queue_thread->m_task_queue, TaskQueueThread_RunTask, NULL);
             Queue_RemoveFindAll(task_queue_thread->m_task_queue, TaskQueueThread_Task_Is_Finish, NULL, Task_TryDestory);
         }

@@ -85,7 +85,7 @@ void Component_Control_EventRespond_Clear(ControlComponent* control_component)
 }
 
 
-void CallBack_Actor_ProcessSceneEvent(Actor* actor, const EventInfo* event_info)
+void CallBack_Actor_Receive_SceneEvent(Actor* actor, const EventInfo* event_info)
 {
     ControlComponent* control_component = Actor_Component_Cast(actor, Component_Control);
     Assert(control_component != NULL, "");

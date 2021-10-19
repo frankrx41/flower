@@ -102,8 +102,8 @@ void Engine_MainLoop()
 
     for(;;)
     {
-        InputManager_Keys_UpdateState(InputManager_GetInstance(), delta_second);
-        InputManager_Event_Send(InputManager_GetInstance());
+        InputManager_KeysState_Update(InputManager_GetInstance(), delta_second);
+        InputManager_ControlEvent_Distribute(InputManager_GetInstance());
 
         SceneManager_TryRunNextCommand(SceneManager_GetInstance());
 

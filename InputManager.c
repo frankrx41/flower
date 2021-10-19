@@ -116,7 +116,7 @@ void InputManager_Input_ControlEvent_Clear(InputManager* input_manager)
     Queue_Clear(input_manager->m_input_state_event_queue, InputActionEvent_Destroy);
 }
 
-void CallBack_ProcessInputActionEvent(InputStateEvent* input_state_event, InputManager* input_manager)
+void CallBack_ProcessInputStateEvent(InputStateEvent* input_state_event, InputManager* input_manager)
 {
     KeyInfo* key_info = &input_manager->m_key_info[input_state_event->m_key_id];
     bool is_active = false;
@@ -132,17 +132,17 @@ void CallBack_ProcessInputActionEvent(InputStateEvent* input_state_event, InputM
     }
     if( is_active )
     {
-        SendEvent_Actor_Action(input_state_event->m_event);
+        EventManager_SendEvent_Control(EventManager_GetInstance(), input_state_event->m_event);
     }
 }
 
-void InputManager_Event_Send(InputManager* input_manager)
+void InputManager_ControlEvent_Distribute(InputManager* input_manager)
 {
-    Queue_ForEach(input_manager->m_input_state_event_queue, CallBack_ProcessInputActionEvent, input_manager);
+    Queue_ForEach(input_manager->m_input_state_event_queue, CallBack_ProcessInputStateEvent, input_manager);
 }
 
 
-void InputManager_Keys_UpdateState(InputManager* input_manager, float delta_second)
+void InputManager_KeysState_Update(InputManager* input_manager, float delta_second)
 {
     for(KeyId key_id=KeyId_Min; key_id<KeyId_Max; key_id++)
     {

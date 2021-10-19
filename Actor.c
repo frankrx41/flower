@@ -102,7 +102,7 @@ static CB_ComponentCreate_tPtr_tChar_Actor Actor_Component_Create_CB_Get(Compone
 {
     switch(component_enum)
     {
-    case Component_Control:  return Component_Control_Create;
+    case Component_Control: return Component_Control_Create;
     case Component_Physics: return Component_Physics_Create;
     case Component_Render:  return Component_Render_Create;
     case Component_Storage: return Component_Storage_Create;

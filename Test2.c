@@ -45,9 +45,9 @@ static void Actor_OnAction0(Actor* actor, const EventInfo* event_info)
 static void Actor_Create0(Actor* actor, tptr ptr)
 {
     Actor_Component_New(actor, Component_Control);
-    Actor_Component_Control_EventRespond_Add(actor, Event_Control_MoveUp, NULL, Actor_OnAction0 );
-    Actor_Component_Control_EventRespond_Add(actor, Event_Control_MoveDown, NULL, Actor_OnAction0 );
-    Actor_Component_Control_EventRespond_Add(actor, Event_Control_Cancel, NULL, Actor_OnAction0 );
+    Actor_Component_Control_ControlEventRespond_Add(actor, Event_Control_MoveUp, NULL, Actor_OnAction0 );
+    Actor_Component_Control_ControlEventRespond_Add(actor, Event_Control_MoveDown, NULL, Actor_OnAction0 );
+    Actor_Component_Control_ControlEventRespond_Add(actor, Event_Control_Cancel, NULL, Actor_OnAction0 );
 }
 
 static void Scene_Create0(void)

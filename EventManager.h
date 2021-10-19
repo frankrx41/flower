@@ -21,15 +21,10 @@ EventInfo*  EventInfo_Create    (const tchar* local_name, Event event, Scene* sc
 void        EventInfo_Destroy   (EventInfo* event_info);
 
 
-void    EventManager_SendEvent_Tick                 (EventManager* event_manager, Event event, float delta_seconds);
-void    EventManager_SendEvent_Control         (EventManager* event_manager, Event event);
+void    EventManager_SendEvent_Update       (EventManager* event_manager, Event event, float delta_seconds);
+void    EventManager_SendEvent_Control      (EventManager* event_manager, Event event);
 
 EventManager* EventManager_GetInstance();
-
-
-#define SendEvent_Tick(event, ...)                  EventManager_SendEvent_Tick(EventManager_GetInstance(), event, __VA_ARGS__)
-#define SendEvent_Actor_Action(event, ...)          EventManager_SendEvent_Control(EventManager_GetInstance(), event, __VA_ARGS__)
-
 
 // gcc requires that enum must be fully declaration, but clang and msbuild do not have this requirement.
 // We force these enumerations to be quoted to make sure our code can be compiled correctly by gcc.

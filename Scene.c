@@ -160,16 +160,28 @@ void Scene_Actor_Destroy_All(Scene* scene)
     Queue_Destroy(scene->m_child_actor_queue, Actor_Destroy);
 }
 
-void CallBack_Actor_ProcessSceneEvent(Actor* actor, const EventInfo* event_info);
+void CallBack_Actor_Receive_SceneEvent(Actor* actor, const EventInfo* event_info);
 void CallBack_Actor_Receive_ControlEvent(Actor* actor, const EventInfo* event_info);
 
 void Scene_SceneEvent_SendTo_Actor(Scene* scene, EventInfo* event_info)
 {
-    Event event = event_info->m_event;
+    if( event_info->m_event == Event_Scene_Update_Physics )
+    {
+        Scene_PhysicsGroup_Actor_Update(scene, event_info->m_delta_seconds);
+    }
+    else
+    if( event_info->m_event == Event_Scene_Update_Anime )
+    {
+        TODO("Update Anime");
+    }
+    else
+    {
+        Event event = event_info->m_event;
 
-    // Scene event
-    Assert(IS_IN_RANGE(event, Event_Scene_Min, Event_Scene_Max), "");
-    Queue_ForEach(Scene_EventQueue_Get(scene, event), (CB_ProcessData_Void_tPtr_tPtr)CallBack_Actor_ProcessSceneEvent, event_info);
+        // Scene event
+        Assert(IS_IN_RANGE(event, Event_Scene_Min, Event_Scene_Max), "");
+        Queue_ForEach(Scene_EventQueue_Get(scene, event), CallBack_Actor_Receive_SceneEvent, event_info);
+    }
 }
 
 void Scene_ControlEvent_SendTo_Actor(Scene* scene, EventInfo* event_info)
@@ -202,7 +214,7 @@ void Scene_PhysicsGroup_Actor_Remove(Scene* scene, Actor* actor)
     Queue_RemoveFindFirst(Actor*)(scene->m_actor_queue_physics, NULL, actor, NULL);
 }
 
-void Scene_PhysicsActor_Update(Scene* scene, float delta_seconds)
+void Scene_PhysicsGroup_Actor_Update(Scene* scene, float delta_seconds)
 {
     float delta_second_copy = delta_seconds;
     Queue_ForEach(scene->m_actor_queue_physics, CallBack_Actor_Component_Physics_Simulate, &delta_second_copy);
