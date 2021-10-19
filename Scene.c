@@ -161,9 +161,9 @@ void Scene_Actor_Destroy_All(Scene* scene)
 }
 
 void CallBack_Actor_ProcessSceneEvent(Actor* actor, const EventInfo* event_info);
-void CallBack_Actor_ProcessActionEvent(Actor* actor, const EventInfo* event_info);
+void CallBack_Actor_Receive_ControlEvent(Actor* actor, const EventInfo* event_info);
 
-void Scene_SceneEvent_Send_Actor(Scene* scene, EventInfo* event_info)
+void Scene_SceneEvent_SendTo_Actor(Scene* scene, EventInfo* event_info)
 {
     Event event = event_info->m_event;
 
@@ -172,12 +172,12 @@ void Scene_SceneEvent_Send_Actor(Scene* scene, EventInfo* event_info)
     Queue_ForEach(Scene_EventQueue_Get(scene, event), (CB_ProcessData_Void_tPtr_tPtr)CallBack_Actor_ProcessSceneEvent, event_info);
 }
 
-void Scene_ControlEvent_Send_Actor(Scene* scene, EventInfo* event_info)
+void Scene_ControlEvent_SendTo_Actor(Scene* scene, EventInfo* event_info)
 {
     Event event = event_info->m_event;
 
     Assert(IS_IN_RANGE(event, Event_Control_Min, Event_Control_Max), "");
-    Queue_ForEach(scene->m_actor_queue_control, CallBack_Actor_ProcessActionEvent, event_info);
+    Queue_ForEach(scene->m_actor_queue_control, CallBack_Actor_Receive_ControlEvent, event_info);
 }
 
 void Scene_SceneEventGroup_Actor_Add(Scene* scene, Actor* actor, Event event)

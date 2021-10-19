@@ -74,8 +74,8 @@ static bool CallBack_EventRespond_FindEvent(ControlEventRespond* event_respond, 
 void Component_Control_EventRespond_Del(ControlComponent* control_component, Event event)
 {
     Assert(control_component != NULL, "");
-    ControlEventRespond* event_respond = Queue_RemoveFindFirst(ControlEventRespond*)(control_component->m_control_event_respond_queue, (CB_FindData_Bool_tPtr_tPtr)CallBack_EventRespond_FindEvent, (tptr)event, NULL);
-    MemSafeDel(event_respond);
+    ControlEventRespond* control_event_respond = Queue_RemoveFindFirst(ControlEventRespond*)(control_component->m_control_event_respond_queue, (CB_FindData_Bool_tPtr_tPtr)CallBack_EventRespond_FindEvent, (tptr)event, NULL);
+    MemSafeDel(control_event_respond);
 }
 
 void Component_Control_EventRespond_Clear(ControlComponent* control_component)
@@ -90,49 +90,49 @@ void CallBack_Actor_ProcessSceneEvent(Actor* actor, const EventInfo* event_info)
     ControlComponent* control_component = Actor_Component_Cast(actor, Component_Control);
     Assert(control_component != NULL, "");
 
-    ControlEventRespond* event_respond = Queue_Find(ControlEventRespond*)(control_component->m_control_event_respond_queue, (CB_FindData_Bool_tPtr_tPtr)CallBack_EventRespond_FindEvent, (tptr)event_info->m_event);
+    ControlEventRespond* control_event_respond = Queue_Find(ControlEventRespond*)(control_component->m_control_event_respond_queue, (CB_FindData_Bool_tPtr_tPtr)CallBack_EventRespond_FindEvent, (tptr)event_info->m_event);
     
-    Assert(event_respond != NULL, "");
-    Assert(event_respond->m_cb_respond_action_void_actor_eventinfo != NULL, "");
+    Assert(control_event_respond != NULL, "");
+    Assert(control_event_respond->m_cb_respond_action_void_actor_eventinfo != NULL, "");
 
-    if( event_respond->m_cb_respond_condition_bool_actor_eventinfo )
+    if( control_event_respond->m_cb_respond_condition_bool_actor_eventinfo )
     {
-        if( event_respond->m_cb_respond_condition_bool_actor_eventinfo(actor, event_info) )
+        if( control_event_respond->m_cb_respond_condition_bool_actor_eventinfo(actor, event_info) )
         {
-            event_respond->m_cb_respond_action_void_actor_eventinfo(actor, event_info);
+            control_event_respond->m_cb_respond_action_void_actor_eventinfo(actor, event_info);
         }
     }
     else
     {
-        event_respond->m_cb_respond_action_void_actor_eventinfo(actor, event_info);
+        control_event_respond->m_cb_respond_action_void_actor_eventinfo(actor, event_info);
     }
 }
 
-void CallBack_Actor_ProcessActionEvent(Actor* actor, const EventInfo* event_info)
+void CallBack_Actor_Receive_ControlEvent(Actor* actor, const EventInfo* event_info)
 {
     ControlComponent* control_component = Actor_Component_Cast(actor, Component_Control);
     Assert(control_component != NULL, "");
 
-    ControlEventRespond* event_respond = Queue_Find(ControlEventRespond*)(control_component->m_control_event_respond_queue, (CB_FindData_Bool_tPtr_tPtr)CallBack_EventRespond_FindEvent, (tptr)event_info->m_event);
+    ControlEventRespond* control_event_respond = Queue_Find(ControlEventRespond*)(control_component->m_control_event_respond_queue, (CB_FindData_Bool_tPtr_tPtr)CallBack_EventRespond_FindEvent, (tptr)event_info->m_event);
 
     // We storage all event in same queue, so we need to check if the event has a respond or not
-    if( event_respond == NULL )
+    if( control_event_respond == NULL )
     {
         return;
     }
 
     bool is_can_respond = true;
-    Assert(event_respond->m_cb_respond_action_void_actor_eventinfo != NULL, "");
+    Assert(control_event_respond->m_cb_respond_action_void_actor_eventinfo != NULL, "");
 
 
-    if( event_respond->m_cb_respond_condition_bool_actor_eventinfo )
+    if( control_event_respond->m_cb_respond_condition_bool_actor_eventinfo )
     {
-        is_can_respond = event_respond->m_cb_respond_condition_bool_actor_eventinfo(actor, event_info);
+        is_can_respond = control_event_respond->m_cb_respond_condition_bool_actor_eventinfo(actor, event_info);
     }
 
     if( is_can_respond )
     {
-        event_respond->m_cb_respond_action_void_actor_eventinfo(actor, event_info);
+        control_event_respond->m_cb_respond_action_void_actor_eventinfo(actor, event_info);
     }
 }
 

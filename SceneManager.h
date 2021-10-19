@@ -29,7 +29,7 @@ bool    SceneManager_Scene_IsLoading        (SceneManager* scene_manager);
 
 void    SceneManager_TryRunNextCommand      (SceneManager* scene_manager);
 
-void    SceneManager_OnEvent_Tick           (SceneManager* scene_manager, EventInfo* event_info);
+void    SceneManager_TickEvent_SendTo_Scene           (SceneManager* scene_manager, EventInfo* event_info);
 
 
 SceneManager* SceneManager_GetInstance  ();

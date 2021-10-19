@@ -157,21 +157,21 @@ void SceneManager_TryRunNextCommand(SceneManager* scene_manager)
     }
 }
 
-static void CallBack_SendEvent_Scene_Tick(Scene* scene, EventInfo* event_info)
+static void CallBack_Scene_Receive_TickEvent(Scene* scene, EventInfo* event_info)
 {
     EventInfo* event_info_scene_tick = EventInfo_Create(Scene_LocalName_Str_Get(scene), Event_Scene_Tick, scene, NULL, KeyId_Null, event_info->m_delta_seconds);
-    Scene_SceneEvent_Send_Actor(scene, event_info_scene_tick);
+    Scene_SceneEvent_SendTo_Actor(scene, event_info_scene_tick);
     EventInfo_Destroy(event_info_scene_tick);
 
     // Scene physics update
     Scene_PhysicsActor_Update(scene, event_info->m_delta_seconds);
 }
 
-void SceneManager_OnEvent_Tick(SceneManager* scene_manager, EventInfo* event_info)
+void SceneManager_TickEvent_SendTo_Scene(SceneManager* scene_manager, EventInfo* event_info)
 {
     if( SceneManager_Scene_IsLoading(scene_manager) )
     {
         return;
     }
-    Queue_ForEach(SceneManager_SceneQueue_Foreground_Get(SceneManager_GetInstance()), CallBack_SendEvent_Scene_Tick, event_info);
+    Queue_ForEach(SceneManager_SceneQueue_Foreground_Get(SceneManager_GetInstance()), CallBack_Scene_Receive_TickEvent, event_info);
 }

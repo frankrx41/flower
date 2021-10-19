@@ -342,7 +342,7 @@ void Engine_Debug_UnitTesting1()
 {
     CB_Test_Void cb_test_void_array[] =
     {
-        // Engine_Test5,
+        Engine_Test5,
         Engine_Test4,
         Engine_Test3,
         Engine_Test2,
