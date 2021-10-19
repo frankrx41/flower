@@ -128,7 +128,7 @@ ShaderText* Actor_Component_Render_ShaderText_Add(Actor* actor, vec3 vec, const 
 
 void Actor_Component_Render_ShaderText_Del(Actor* actor, ShaderText* shader_text)
 {
-    // TODO:
+    TODO("Actor_Component_Render_ShaderText_Del")
     Assert(false, "");
 }
 

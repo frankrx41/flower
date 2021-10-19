@@ -118,11 +118,10 @@ void TimingManager_TrimSpeed(TimingManager* timing_manager)
 
     timing_manager->m_prev_frame_delta_seconds = (current_cpu_tick - last_cpu_tick) / (timing_manager->m_ticks_in_one_frame * TimingManager_GetFrameRate(timing_manager));
 
-
-
     // EventManager_SendEvent(Event_Tick, String_CStr(timing_manager->m_local_name), timing_manager->m_prev_frame_delta_seconds);
     SendEvent_Tick(Event_Tick, timing_manager->m_prev_frame_delta_seconds);
-    // TODO: Add fps profile
+
+    TODO("Add fps profile");
     // Log(0, "%f\n", timing_manager->m_prev_frame_delta_seconds);
     // Assert(timing_manager->m_prev_frame_delta_seconds < 1.f, "Fps is too low!");
 }
