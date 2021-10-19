@@ -10,12 +10,15 @@ typedef struct Thread Thread;
 
 struct Thread
 {
-    CB_ThreadFun_Void_Thread_tPtr   m_cb_thread_fun_void_thread_tptr;
+    CB_ThreadRun_Void_Thread_tPtr   m_cb_thread_run_void_thread_tptr;
     tptr                            m_thread_input_data;
-    tptr                            m_thread_platform_data;
     String*                         m_local_name;
     bool                            m_is_suspend;
+
+    TODO("Implement any thread sleep")
     float                           m_need_sleep_seconds;
+
+    tptr                            m_thread_platform_data;
 };
 
 tptr    Thread_Create_Plat          (Thread* thread, const tchar* local_name);
@@ -24,10 +27,10 @@ void    Thread_Destroy_Plat         (Thread* thread, tptr platform_data);
 void    Thread_This_Sleep_Plat      (float seconds);
 void    Thread_This_Sleep_Tick_Plat ();
 
-Thread* Thread_Create(const tchar* local_name, CB_ThreadFun_Void_Thread_tPtr cb_thread_fun_void_thread_tptr, tptr ptr)
+Thread* Thread_Create(const tchar* local_name, CB_ThreadRun_Void_Thread_tPtr cb_thread_run_void_thread_tptr, tptr ptr)
 {
     Thread* thread = MemNew(local_name, Thread);
-    thread->m_cb_thread_fun_void_thread_tptr    = cb_thread_fun_void_thread_tptr;
+    thread->m_cb_thread_run_void_thread_tptr    = cb_thread_run_void_thread_tptr;
     thread->m_thread_input_data                 = ptr;
     thread->m_local_name                        = String_New(local_name, local_name, true);
     thread->m_is_suspend                        = false;
@@ -43,9 +46,9 @@ void Thread_Destroy(Thread* thread)
 }
 
 
-CB_ThreadFun_Void_Thread_tPtr Thread_Run_CB_Get(const Thread* thread)
+CB_ThreadRun_Void_Thread_tPtr Thread_Run_CB_Get(const Thread* thread)
 {
-    return thread->m_cb_thread_fun_void_thread_tptr;
+    return thread->m_cb_thread_run_void_thread_tptr;
 }
 
 tptr Thread_Run_Data_Get(const Thread* thread)

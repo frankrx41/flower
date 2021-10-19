@@ -16,13 +16,13 @@ struct Task
     bool        m_is_finish;
     bool        m_is_running;
     bool        m_is_cancel;
-    TaskThread* m_task_thread;
+    Thread*     m_thread;
 };
 
 /*
 You should delete task_data in your task_run function
 */
-Task* Task_Create(const tchar* local_name, TaskThread* task_thread, uint32 priority, bool is_auto_destroy, CB_TaskRun_Condition_Bool_Task_tPtr cb_task_run_condition_bool_task_tptr, CB_TaskRun_Void_Task_tPtr cb_task_run_void_task_tptr, CB_TaskEnd_ClearData_Void_tPtr cb_task_end_clear_data_void_tptr, tptr task_data)
+Task* Task_Create(const tchar* local_name, Thread* thread, uint32 priority, bool is_auto_destroy, CB_TaskRun_Condition_Bool_Task_tPtr cb_task_run_condition_bool_task_tptr, CB_TaskRun_Void_Task_tPtr cb_task_run_void_task_tptr, CB_TaskEnd_ClearData_Void_tPtr cb_task_end_clear_data_void_tptr, tptr task_data)
 {
     Task* task = MemNew(local_name, Task);
 
@@ -34,7 +34,7 @@ Task* Task_Create(const tchar* local_name, TaskThread* task_thread, uint32 prior
 
     task->m_priority        = priority;
     task->m_task_data       = task_data;
-    task->m_task_thread     = task_thread;
+    task->m_thread          = thread;
 
     task->m_is_auto_destroy = is_auto_destroy;
     task->m_is_finish       = false;
@@ -81,7 +81,7 @@ static void Task_TryDestory(Task* task)
     }
 }
 
-bool Task_TryRun(Task* task)
+bool Task_TryExecute(Task* task)
 {
     if( Task_IsCancel(task) )
     {
