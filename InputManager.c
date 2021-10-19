@@ -91,9 +91,9 @@ void InputManager_Destroy(InputManager* input_manager)
     MemDel(input_manager);
 }
 
-void InputManager_InputActionEvent_Add(InputManager* input_manager, KeyId key_id, KeyState key_state, Event event)
+void InputManager_Input_To_ControlEvent_Add(InputManager* input_manager, KeyId key_id, KeyState key_state, Event event)
 {
-    Assert(IS_IN_RANGE(event, Event_Actor_Action_Min, Event_Actor_Action_Max), "");
+    Assert(IS_IN_RANGE(event, Event_Control_Min, Event_Control_Max), "");
     Assert( key_state != KeyState_Up, "Not support KeyState_Up");
     InputActionEvent* input_action_event = InputActionEvent_Create(String_CStr(input_manager->m_local_name), key_id, key_state, event);
 
@@ -105,13 +105,13 @@ static bool CallBack_Find_InputActionEvent(InputActionEvent* input_action_event,
     return input_action_event->m_event == event;
 }
 
-void InputManager_InputActionEvent_Del(InputManager* input_manager, Event event)
+void InputManager_Input_To_ControlEvent_Del(InputManager* input_manager, Event event)
 {
-    Assert(IS_IN_RANGE(event, Event_Actor_Action_Min, Event_Actor_Action_Max), "");
+    Assert(IS_IN_RANGE(event, Event_Control_Min, Event_Control_Max), "");
     Queue_RemoveFindFirst(InputActionEvent*)(input_manager->m_input_action_event_queue, (CB_FindData_Bool_tPtr_tPtr)CallBack_Find_InputActionEvent, (const tptr)event, InputActionEvent_Destroy);
 }
 
-void InputManager_InputActionEvent_Clear(InputManager* input_manager)
+void InputManager_Input_To_Control_Event_Clear(InputManager* input_manager)
 {
     Queue_Clear(input_manager->m_input_action_event_queue, InputActionEvent_Destroy);
 }

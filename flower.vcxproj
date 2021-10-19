@@ -80,7 +80,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="ActionComponent.c" />
+    <ClCompile Include="ControlComponent.c" />
     <ClCompile Include="Actor.c" />
     <ClCompile Include="ActorComponent.c" />
     <ClCompile Include="InputManager.c" />
@@ -118,7 +118,7 @@
     <ClCompile Include="Vec.c" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="ActionComponent.h" />
+    <ClInclude Include="ControlComponent.h" />
     <ClInclude Include="Actor.h" />
     <ClInclude Include="ActorComponent.h" />
     <ClInclude Include="Component.h" />

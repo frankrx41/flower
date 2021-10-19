@@ -23,5 +23,5 @@ void    Actor_Component_Del     (Actor* actor, Component component_enum);
 tptr    Actor_Component_Cast    (Actor* actor, Component component_enum);
 
 const tchar*    Actor_LocalName_Str_Get     (Actor* actor);
-Scene*          Actor_ParentScene_Get       (Actor* actor);
+Scene*          Actor_OwnerScene_Get       (Actor* actor);
 

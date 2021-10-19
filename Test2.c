@@ -16,7 +16,7 @@
 #include "Component.h"
 
 #include "ActorComponent.h"
-#include "ActionComponent.h"
+#include "ControlComponent.h"
 #include "PhysicsComponent.h"
 #include "RenderComponent.h"
 #include "StorageComponent.h"
@@ -36,18 +36,18 @@ static void Scene_Create1(Task* task, tptr ptr)
 
 static void Actor_OnAction0(Actor* actor, const EventInfo* event_info)
 {
-    if( event_info->m_event == Event_Actor_Action_Cancel )
+    if( event_info->m_event == Event_Control_Cancel )
     {
-        SceneManager_Scene_Destroy(Actor_ParentScene_Get(actor));
+        SceneManager_Scene_Destroy(Actor_OwnerScene_Get(actor));
     }
 }
 
 static void Actor_Create0(Actor* actor, tptr ptr)
 {
-    Actor_Component_New(actor, Component_Action);
-    Actor_Component_Action_EventRespond_Add(actor, Event_Actor_Action_MoveUp, NULL, Actor_OnAction0 );
-    Actor_Component_Action_EventRespond_Add(actor, Event_Actor_Action_MoveDown, NULL, Actor_OnAction0 );
-    Actor_Component_Action_EventRespond_Add(actor, Event_Actor_Action_Cancel, NULL, Actor_OnAction0 );
+    Actor_Component_New(actor, Component_Control);
+    Actor_Component_Control_EventRespond_Add(actor, Event_Control_MoveUp, NULL, Actor_OnAction0 );
+    Actor_Component_Control_EventRespond_Add(actor, Event_Control_MoveDown, NULL, Actor_OnAction0 );
+    Actor_Component_Control_EventRespond_Add(actor, Event_Control_Cancel, NULL, Actor_OnAction0 );
 }
 
 static void Scene_Create0(void)
@@ -69,9 +69,9 @@ void Engine_Debug_UnitTesting2()
     // TaskManager_Task_Work_Add(TaskManager_GetInstance(), __FUNCTION__, 0, true, Scene_Create_Task, NULL);
     SceneManager_Command_Add(Scene_Create0);
 
-    InputManager_InputActionEvent_Add(InputManager_GetInstance(), KeyId_Escape, KeyState_Down, Event_Actor_Action_Cancel);
-    InputManager_InputActionEvent_Add(InputManager_GetInstance(), KeyId_Up, KeyState_Down, Event_Actor_Action_MoveUp);
-    InputManager_InputActionEvent_Add(InputManager_GetInstance(), KeyId_Down, KeyState_Down, Event_Actor_Action_MoveDown);
+    InputManager_Input_To_ControlEvent_Add(InputManager_GetInstance(), KeyId_Escape, KeyState_Down, Event_Control_Cancel);
+    InputManager_Input_To_ControlEvent_Add(InputManager_GetInstance(), KeyId_Up, KeyState_Down, Event_Control_MoveUp);
+    InputManager_Input_To_ControlEvent_Add(InputManager_GetInstance(), KeyId_Down, KeyState_Down, Event_Control_MoveDown);
 
     // Engine_MainLoop();
 }

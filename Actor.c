@@ -5,7 +5,7 @@
 #include "Component.h"
 #include "PhysicsComponent.h"
 #include "RenderComponent.h"
-#include "ActionComponent.h"
+#include "ControlComponent.h"
 #include "StorageComponent.h"
 
 #include "String.h"
@@ -102,7 +102,7 @@ static CB_ComponentCreate_tPtr_tChar_Actor Actor_Component_Create_CB_Get(Compone
 {
     switch(component_enum)
     {
-    case Component_Action:  return Component_Action_Create;
+    case Component_Control:  return Component_Control_Create;
     case Component_Physics: return Component_Physics_Create;
     case Component_Render:  return Component_Render_Create;
     case Component_Storage: return Component_Storage_Create;
@@ -115,7 +115,7 @@ static CB_ComponentDestroy_Void_tPtr Actor_Component_Destroy_CB_Get(Component co
 {
     switch (component_enum)
     {
-    case Component_Action:  return Component_Action_Destroy;
+    case Component_Control:  return Component_Control_Destroy;
     case Component_Physics: return Component_Physics_Destroy;
     case Component_Render:  return Component_Render_Destroy;
     case Component_Storage: return Component_Storage_Destroy;
@@ -162,7 +162,7 @@ const tchar* Actor_LocalName_Str_Get(Actor* actor)
     return String_CStr(actor->m_local_name);
 }
 
-Scene* Actor_ParentScene_Get(Actor* actor)
+Scene* Actor_OwnerScene_Get(Actor* actor)
 {
     return actor->m_scene;
 }

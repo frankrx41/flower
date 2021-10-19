@@ -23,28 +23,28 @@ enum Event
 
 
 
+    Event_Control_Min,
+    Event_Control_MoveUp        = Event_Control_Min,
+    Event_Control_MoveDown,
+    Event_Control_MoveLeft,
+    Event_Control_MoveRight,
+
+    Event_Control_LookUp,
+    Event_Control_LookDown,
+    Event_Control_LookLeft,
+    Event_Control_LookRight,
+
+    Event_Control_Main,
+    Event_Control_Cancel,
+    Event_Control_OpenBackpack,
+    Event_Control_Fire,
+    Event_Control_Cover,
+
+    Event_Control_Max,
+
+
+
     Event_Actor_Min,
-    
-    Event_Actor_Action_Min      = Event_Actor_Min,
-    Event_Actor_Action_MoveUp   = Event_Actor_Action_Min,
-    Event_Actor_Action_MoveDown,
-    Event_Actor_Action_MoveLeft,
-    Event_Actor_Action_MoveRight,
-
-    Event_Actor_Action_LookUp,
-    Event_Actor_Action_LookDown,
-    Event_Actor_Action_LookLeft,
-    Event_Actor_Action_LookRight,
-
-    Event_Actor_Action_Main,
-    Event_Actor_Action_Cancel,
-    Event_Actor_Action_OpenBackpack,
-    Event_Actor_Action_Fire,
-    Event_Actor_Action_Cover,
-
-    Event_Actor_Action_Max,
-
-
     Event_Actor_Max,
 
     Event_Max

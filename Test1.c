@@ -16,7 +16,7 @@
 #include "Component.h"
 
 #include "ActorComponent.h"
-#include "ActionComponent.h"
+#include "ControlComponent.h"
 #include "PhysicsComponent.h"
 #include "RenderComponent.h"
 #include "StorageComponent.h"
@@ -35,9 +35,9 @@ void CallBack_ActorOnEvent5(Actor* actor, const EventInfo* event_info)
 {
     switch (event_info->m_event)
     {
-    case Event_Actor_Action_Cancel: SceneManager_Scene_ExitCurrent();   return;
-    case Event_Actor_Action_MoveUp: Actor_Component_Physics_Location_Move(actor, Vec3(0, -0.1f, 0)); break;
-    case Event_Actor_Action_MoveDown: Actor_Component_Physics_Location_Move(actor, Vec3(0, +0.1f, 0)); break;
+    case Event_Control_Cancel: SceneManager_Scene_ExitCurrent();   return;
+    case Event_Control_MoveUp: Actor_Component_Physics_Location_Move(actor, Vec3(0, -0.1f, 0)); break;
+    case Event_Control_MoveDown: Actor_Component_Physics_Location_Move(actor, Vec3(0, +0.1f, 0)); break;
     default:
         Assert(false, "");
     }
@@ -45,7 +45,7 @@ void CallBack_ActorOnEvent5(Actor* actor, const EventInfo* event_info)
     vec3 vec = Actor_Component_Physics_Location_Get(actor);
     Actor_Component_Render_ShaderText_Clear(actor);
     String* string = String_New(Actor_LocalName_Str_Get(actor), NULL, false);
-    String_Format(string, "(%.2f) %s", vec.m_y, event_info->m_event == Event_Actor_Action_MoveUp ? "Up" : "Down");
+    String_Format(string, "(%.2f) %s", vec.m_y, event_info->m_event == Event_Control_MoveUp ? "Up" : "Down");
     Actor_Component_Render_ShaderText_Add(actor, Vec3(2, 2, 0), String_CStr(string));
     String_Del(string);
 }
@@ -53,14 +53,14 @@ void CallBack_ActorOnEvent5(Actor* actor, const EventInfo* event_info)
 void CallBack_Actor_Create5(Actor* actor, tptr ptr)
 {
     Actor_Component_New(actor, Component_Render);
-    Actor_Component_New(actor, Component_Action);
+    Actor_Component_New(actor, Component_Control);
     Actor_Component_New(actor, Component_Physics);
 
     Actor_Component_Render_ShaderText_Add(actor, Vec3(2, 2, 0), "Press Esc to exit");
     Actor_Component_Physics_Location_Set(actor, Vec3(6, 0, 0));
-    Actor_Component_Action_EventRespond_Add(actor, Event_Actor_Action_Cancel, NULL, CallBack_ActorOnEvent5);
-    Actor_Component_Action_EventRespond_Add(actor, Event_Actor_Action_MoveUp, NULL, CallBack_ActorOnEvent5);
-    Actor_Component_Action_EventRespond_Add(actor, Event_Actor_Action_MoveDown, NULL, CallBack_ActorOnEvent5);
+    Actor_Component_Control_EventRespond_Add(actor, Event_Control_Cancel, NULL, CallBack_ActorOnEvent5);
+    Actor_Component_Control_EventRespond_Add(actor, Event_Control_MoveUp, NULL, CallBack_ActorOnEvent5);
+    Actor_Component_Control_EventRespond_Add(actor, Event_Control_MoveDown, NULL, CallBack_ActorOnEvent5);
 };
 
 void Engine_Test5()
@@ -68,9 +68,9 @@ void Engine_Test5()
     Scene* scene = SceneManager_Scene_Create(__FUNCTION__, NULL);
     Actor* actor = Scene_Actor_Create(__FUNCTION__, scene, CallBack_Actor_Create5, __FUNCTION__);
 
-    InputManager_InputActionEvent_Add(InputManager_GetInstance(), KeyId_Escape, KeyState_Down, Event_Actor_Action_Cancel);
-    InputManager_InputActionEvent_Add(InputManager_GetInstance(), KeyId_Up, KeyState_Down, Event_Actor_Action_MoveUp);
-    InputManager_InputActionEvent_Add(InputManager_GetInstance(), KeyId_Down, KeyState_Down, Event_Actor_Action_MoveDown);
+    InputManager_Input_To_ControlEvent_Add(InputManager_GetInstance(), KeyId_Escape, KeyState_Down, Event_Control_Cancel);
+    InputManager_Input_To_ControlEvent_Add(InputManager_GetInstance(), KeyId_Up, KeyState_Down, Event_Control_MoveUp);
+    InputManager_Input_To_ControlEvent_Add(InputManager_GetInstance(), KeyId_Down, KeyState_Down, Event_Control_MoveDown);
 
     Scene_Render_Offset_Set(scene, Vec2(0, 10));
 
@@ -100,14 +100,14 @@ void CallBack_ActorOnEvent4(Actor* actor, const EventInfo* event_info)
 void CallBack_Actor_Create4(Actor* actor, tptr ptr)
 {
     Actor_Component_New(actor, Component_Render);
-    Actor_Component_New(actor, Component_Action);
+    Actor_Component_New(actor, Component_Control);
     Actor_Component_New(actor, Component_Physics);
 
     Actor_Component_Physics_Location_Set(actor, Vec3(1.f, 1.f, 0.f));
     Actor_Component_Physics_Velocity_Set(actor, Vec3(1.f, 0, 2.f));
 
     Actor_Component_Physics_SetEnableSimulate(actor, true);
-    Actor_Component_Action_EventRespond_Add(actor, Event_Scene_Tick, NULL, CallBack_ActorOnEvent4);
+    Actor_Component_Control_EventRespond_Add(actor, Event_Scene_Tick, NULL, CallBack_ActorOnEvent4);
 
 };
 void Engine_Test4()
@@ -173,11 +173,11 @@ bool CallBack_ActorOnEventCondition3(Actor* actor, const EventInfo* event_info)
 void CallBack_Actor_Create3(Actor* actor, tptr ptr)
 {
     Actor_Component_New(actor, Component_Render);
-    Actor_Component_New(actor, Component_Action);
+    Actor_Component_New(actor, Component_Control);
     Actor_Component_New(actor, Component_Storage);
 
     Actor_Component_Render_ShaderText_Add(actor, Vec3(1, 1, 0), ptr);
-    Actor_Component_Action_EventRespond_Add(actor, Event_Scene_Tick, CallBack_ActorOnEventCondition3, CallBack_ActorOnEvent3);
+    Actor_Component_Control_EventRespond_Add(actor, Event_Scene_Tick, CallBack_ActorOnEventCondition3, CallBack_ActorOnEvent3);
 
 };
 void Engine_Test3()
@@ -228,11 +228,11 @@ void CallBack_ActorOnEvent2(Actor* actor, const EventInfo* event_info)
 void CallBack_Actor_Create2(Actor* actor, tptr ptr)
 {
     Actor_Component_New(actor, Component_Render);
-    Actor_Component_New(actor, Component_Action);
+    Actor_Component_New(actor, Component_Control);
     Actor_Component_New(actor, Component_Storage);
 
     Actor_Component_Render_ShaderText_Add(actor, Vec3(1, 1, 0), ptr);
-    Actor_Component_Action_EventRespond_Add(actor, Event_Scene_Tick, NULL, CallBack_ActorOnEvent2);
+    Actor_Component_Control_EventRespond_Add(actor, Event_Scene_Tick, NULL, CallBack_ActorOnEvent2);
 
 };
 
@@ -275,8 +275,8 @@ void Engine_Test1()
     Actor_Component_New(actor1, Component_Render);
     Actor_Component_Render_ShaderText_Add(actor1, Vec3(1, 1, 0), "hello world");
 
-    Actor_Component_New(actor1, Component_Action);
-    Actor_Component_Action_EventRespond_Add(actor1, Event_Scene_Tick, NULL, CallBack_ActorOnEvent1);
+    Actor_Component_New(actor1, Component_Control);
+    Actor_Component_Control_EventRespond_Add(actor1, Event_Scene_Tick, NULL, CallBack_ActorOnEvent1);
 
     Actor_Component_New(actor1, Component_Storage);
     Actor_Component_Storage_Data_Store(actor1, Str_CalcCrc("seconds", 0), tData(float, 0));
@@ -288,8 +288,8 @@ void Engine_Test1()
     Actor_Component_New(actor2, Component_Render);
     Actor_Component_Render_ShaderText_Add(actor2, Vec3(1, 1, 0), "goodbye world");
 
-    Actor_Component_New(actor2, Component_Action);
-    Actor_Component_Action_EventRespond_Add(actor2, Event_Scene_Tick, NULL, CallBack_ActorOnEvent1);
+    Actor_Component_New(actor2, Component_Control);
+    Actor_Component_Control_EventRespond_Add(actor2, Event_Scene_Tick, NULL, CallBack_ActorOnEvent1);
 
     Actor_Component_New(actor2, Component_Storage);
     Actor_Component_Storage_Data_Store(actor2, Str_CalcCrc("seconds", 0), tData(float, 0));
@@ -320,11 +320,11 @@ void Engine_Test0()
     Actor_Component_New(actor, Component_Render);
     Actor_Component_Render_ShaderText_Add(actor, Vec3(1, 1, 0), "hello world");
 
-    Actor_Component_New(actor, Component_Action);
+    Actor_Component_New(actor, Component_Control);
     Actor_Component_New(actor, Component_Physics);
 
     Actor_Component_Physics_Location_Set(actor, Vec3(0, 0, 0));
-    Actor_Component_Action_EventRespond_Add(actor, Event_Scene_Tick, NULL, CallBack_ActorOnEvent0);
+    Actor_Component_Control_EventRespond_Add(actor, Event_Scene_Tick, NULL, CallBack_ActorOnEvent0);
 
     SceneManager_Scene_Foreground_Queue_Add(scene);
 }
@@ -342,7 +342,7 @@ void Engine_Debug_UnitTesting1()
 {
     CB_Test_Void cb_test_void_array[] =
     {
-        Engine_Test5,
+        // Engine_Test5,
         Engine_Test4,
         Engine_Test3,
         Engine_Test2,

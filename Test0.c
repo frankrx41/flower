@@ -16,7 +16,7 @@
 #include "Component.h"
 
 #include "ActorComponent.h"
-#include "ActionComponent.h"
+#include "ControlComponent.h"
 #include "PhysicsComponent.h"
 #include "RenderComponent.h"
 #include "StorageComponent.h"

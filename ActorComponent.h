@@ -26,9 +26,9 @@ void        Actor_Component_Render_ShaderText_Del   (Actor* actor, ShaderText* s
 void        Actor_Component_Render_ShaderText_Clear (Actor* actor);
 
 
-void    Actor_Component_Action_EventRespond_Add     (Actor* actor, Event event, CB_RespondCondition_Bool_Actor_EventInfo cb_respond_condition_void_actor_eventinfo, CB_RespondAction_Void_Actor_EventInfo cb_respond_action_void_actor_eventinfo);
-void    Actor_Component_Action_EventRespond_Del     (Actor* actor, Event event);
-void    Actor_Component_Action_EventRespond_Clear   (Actor* actor);
+void    Actor_Component_Control_EventRespond_Add    (Actor* actor, Event event, CB_RespondCondition_Bool_Actor_EventInfo cb_respond_condition_void_actor_eventinfo, CB_RespondAction_Void_Actor_EventInfo cb_respond_action_void_actor_eventinfo);
+void    Actor_Component_Control_EventRespond_Del    (Actor* actor, Event event);
+void    Actor_Component_Control_EventRespond_Clear  (Actor* actor);
 
 
 bool    Actor_Component_Storage_IsExistVariable     (Actor* actor, crc32 variable);

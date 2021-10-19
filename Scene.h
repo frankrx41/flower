@@ -29,10 +29,10 @@ void    Scene_Actor_Destroy         (Scene* scene, CB_FindData_Bool_tPtr_tPtr cb
 void    Scene_Actor_Destroy_All     (Scene* scene);
 
 void    Scene_SceneEvent_Send_Actor (Scene* scene, EventInfo* event_info);
-void    Scene_ActionEvent_Send_Actor(Scene* scene, EventInfo* event_info);
+void    Scene_ControlEvent_Send_Actor(Scene* scene, EventInfo* event_info);
 
 void    Scene_SceneEventGroup_Actor_Add     (Scene* scene, Actor* actor, Event event);
-void    Scene_ActionEventGroup_Actor_Add    (Scene* scene, Actor* actor, Event event);
+void    Scene_ControlEventGroup_Actor_Add    (Scene* scene, Actor* actor, Event event);
 void    Scene_PhysicsGroup_Actor_Add        (Scene* scene, Actor* actor);
 void    Scene_PhysicsGroup_Actor_Remove     (Scene* scene, Actor* actor);
 void    Scene_PhysicsActor_Update           (Scene* scene, float delta_seconds);

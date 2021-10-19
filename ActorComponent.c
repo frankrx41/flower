@@ -7,7 +7,7 @@
 #include "TaskManager.h"
 
 #include "Component.h"
-#include "ActionComponent.h"
+#include "ControlComponent.h"
 #include "PhysicsComponent.h"
 #include "RenderComponent.h"
 #include "StorageComponent.h"
@@ -102,11 +102,11 @@ void Actor_Component_Physics_SetEnableSimulate(Actor* actor, bool is_enable_simu
 
     if( is_enable_simulate )
     {
-        Scene_PhysicsGroup_Actor_Add(Actor_ParentScene_Get(actor), actor);
+        Scene_PhysicsGroup_Actor_Add(Actor_OwnerScene_Get(actor), actor);
     }
     else
     {
-        Scene_PhysicsGroup_Actor_Remove(Actor_ParentScene_Get(actor), actor);
+        Scene_PhysicsGroup_Actor_Remove(Actor_OwnerScene_Get(actor), actor);
     }
 }
 
@@ -144,48 +144,48 @@ void Actor_Component_Render_ShaderText_Clear(Actor* actor)
 }
 
 
-// Component_Action
-void Actor_Component_Action_EventRespond_Add(Actor* actor, Event event, CB_RespondCondition_Bool_Actor_EventInfo cb_respond_condition_void_actor_eventinfo, CB_RespondAction_Void_Actor_EventInfo cb_respond_action_void_actor_eventinfo)
+// Component_Control
+void Actor_Component_Control_EventRespond_Add(Actor* actor, Event event, CB_RespondCondition_Bool_Actor_EventInfo cb_respond_condition_void_actor_eventinfo, CB_RespondAction_Void_Actor_EventInfo cb_respond_action_void_actor_eventinfo)
 {
-    Assert(IS_IN_RANGE(event, Event_Scene_Min, Event_Scene_Max) || IS_IN_RANGE(event, Event_Actor_Min, Event_Actor_Max), "");
+    Assert(IS_IN_RANGE(event, Event_Scene_Min, Event_Scene_Max) || IS_IN_RANGE(event, Event_Control_Min, Event_Control_Max), "");
     Assert(actor != NULL, "");
 
-    ActionComponent* action_component = Actor_Component_Cast(actor, Component_Action);
+    ControlComponent* action_component = Actor_Component_Cast(actor, Component_Control);
     Assert(action_component != NULL, "");
     if( action_component )
     {
-        Component_Action_EventRespond_Add(action_component, event, cb_respond_condition_void_actor_eventinfo, cb_respond_action_void_actor_eventinfo);
+        Component_Control_EventRespond_Add(action_component, event, cb_respond_condition_void_actor_eventinfo, cb_respond_action_void_actor_eventinfo);
         if(IS_IN_RANGE(event, Event_Scene_Min, Event_Scene_Max))
         {
-            Scene_SceneEventGroup_Actor_Add(Actor_ParentScene_Get(actor), actor, event);
+            Scene_SceneEventGroup_Actor_Add(Actor_OwnerScene_Get(actor), actor, event);
         }
         else if(IS_IN_RANGE(event, Event_Actor_Min, Event_Actor_Max))
         {
             // We add to queue when Actor_Component is been create, not need this any more
-            // Scene_ActionEventGroup_Actor_Add(Actor_ParentScene_Get(actor), actor, event);
+            // Scene_ControlEventGroup_Actor_Add(Actor_OwnerScene_Get(actor), actor, event);
         }
     }
 }
 
-void Actor_Component_Action_EventRespond_Del(Actor* actor, Event event)
+void Actor_Component_Control_EventRespond_Del(Actor* actor, Event event)
 {
     Assert(actor != NULL, "");
-    ActionComponent* action_component = Actor_Component_Cast(actor, Component_Action);
+    ControlComponent* action_component = Actor_Component_Cast(actor, Component_Control);
     Assert(action_component != NULL, "");
     if( action_component )
     {
-        Component_Action_EventRespond_Del(action_component, event);
+        Component_Control_EventRespond_Del(action_component, event);
     }
 }
 
-void Actor_Component_Action_EventRespond_Clear(Actor* actor)
+void Actor_Component_Control_EventRespond_Clear(Actor* actor)
 {
     Assert(actor != NULL, "");
-    ActionComponent* action_component = Actor_Component_Cast(actor, Component_Action);
+    ControlComponent* action_component = Actor_Component_Cast(actor, Component_Control);
     Assert(action_component != NULL, "");
     if( action_component )
     {
-        Component_Action_EventRespond_Clear(action_component);
+        Component_Control_EventRespond_Clear(action_component);
     }
 }
 
@@ -265,7 +265,7 @@ void CallBack_Render_ActorShaderText_Plat(ShaderText* shader_text, Actor* actor)
 
 
     ShaderText* shader_text_copy = ShaderText_Create("RenderManager_ShaderText", true,vec, ShaderText_GetStr(shader_text));
-    ShaderText_Offset_Set(shader_text_copy, Scene_Render_Offset_Get(Actor_ParentScene_Get(actor)));
+    ShaderText_Offset_Set(shader_text_copy, Scene_Render_Offset_Get(Actor_OwnerScene_Get(actor)));
     TaskManager_Task_Render_Add("RenderManager_ShaderText_Task", CallBack_RenderManager_Render_ToBackBuffer_Task, ShaderText_Destory, shader_text_copy);
 }
 
