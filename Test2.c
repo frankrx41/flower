@@ -69,9 +69,9 @@ void Engine_Debug_UnitTesting2()
     // TaskManager_Task_Work_Add(TaskManager_GetInstance(), __FUNCTION__, 0, true, Scene_Create_Task, NULL);
     SceneManager_Command_Add(Scene_Create0);
 
-    InputManager_Input_To_ControlEvent_Add(InputManager_GetInstance(), KeyId_Escape, KeyState_Down, Event_Control_Cancel);
-    InputManager_Input_To_ControlEvent_Add(InputManager_GetInstance(), KeyId_Up, KeyState_Down, Event_Control_MoveUp);
-    InputManager_Input_To_ControlEvent_Add(InputManager_GetInstance(), KeyId_Down, KeyState_Down, Event_Control_MoveDown);
+    InputManager_Input_ControlEvent_Add(InputManager_GetInstance(), KeyId_Escape, KeyState_Down, Event_Control_Cancel);
+    InputManager_Input_ControlEvent_Add(InputManager_GetInstance(), KeyId_Up, KeyState_Down, Event_Control_MoveUp);
+    InputManager_Input_ControlEvent_Add(InputManager_GetInstance(), KeyId_Down, KeyState_Down, Event_Control_MoveDown);
 
     // Engine_MainLoop();
 }

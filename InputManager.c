@@ -12,7 +12,7 @@
 
 
 typedef struct KeyInfo KeyInfo;
-typedef struct InputActionEvent InputActionEvent;
+typedef struct InputStateEvent InputStateEvent;
 
 struct KeyInfo
 {
@@ -26,26 +26,26 @@ struct KeyInfo
     float   m_down_seconds;
 };
 
-struct InputActionEvent
+struct InputStateEvent
 {
     KeyId               m_key_id;
     KeyState            m_key_state;
     Event               m_event;
 };
 
-static InputActionEvent* InputActionEvent_Create(const tchar* local_name, KeyId key_id, KeyState key_state, Event event)
+static InputStateEvent* InputActionEvent_Create(const tchar* local_name, KeyId key_id, KeyState key_state, Event event)
 {
-    InputActionEvent* input_action_event = MemNew(local_name, InputActionEvent);
-    input_action_event->m_key_id    = key_id;
-    input_action_event->m_key_state = key_state;
-    input_action_event->m_event     = event;
+    InputStateEvent* input_state_event = MemNew(local_name, InputStateEvent);
+    input_state_event->m_key_id    = key_id;
+    input_state_event->m_key_state = key_state;
+    input_state_event->m_event     = event;
 
-    return input_action_event;
+    return input_state_event;
 }
 
-static void InputActionEvent_Destroy(InputActionEvent* input_action_event)
+static void InputActionEvent_Destroy(InputStateEvent* input_state_event)
 {
-    MemDel(input_action_event);
+    MemDel(input_state_event);
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -55,7 +55,7 @@ struct InputManager
     float       m_hold_need_seconds;
     tptr        m_platform_data;
     String*     m_local_name;
-    Queue(InputActionEvent*)*   m_input_action_event_queue;
+    Queue(InputActionEvent*)*   m_input_state_event_queue;
 };
 
 bool InputManager_Key_IsPhysicsDown_Plat(KeyId key_id);
@@ -77,7 +77,7 @@ InputManager* InputManager_Create(const tchar* local_name)
         key_info->m_down_seconds    = 0.f;
     }
 
-    input_manager->m_input_action_event_queue = Queue_Create(local_name, InputActionEvent*);
+    input_manager->m_input_state_event_queue = Queue_Create(local_name, InputStateEvent*);
     input_manager->m_local_name         = String_New(local_name, local_name, true);
     input_manager->m_hold_need_seconds  = 1.f;
     return input_manager;
@@ -85,43 +85,43 @@ InputManager* InputManager_Create(const tchar* local_name)
 
 void InputManager_Destroy(InputManager* input_manager)
 {
-    Queue_Destroy(input_manager->m_input_action_event_queue, InputActionEvent_Destroy);
+    Queue_Destroy(input_manager->m_input_state_event_queue, InputActionEvent_Destroy);
     String_Del(input_manager->m_local_name);
 
     MemDel(input_manager);
 }
 
-void InputManager_Input_To_ControlEvent_Add(InputManager* input_manager, KeyId key_id, KeyState key_state, Event event)
+void InputManager_Input_ControlEvent_Add(InputManager* input_manager, KeyId key_id, KeyState key_state, Event event)
 {
     Assert(IS_IN_RANGE(event, Event_Control_Min, Event_Control_Max), "");
     Assert( key_state != KeyState_Up, "Not support KeyState_Up");
-    InputActionEvent* input_action_event = InputActionEvent_Create(String_CStr(input_manager->m_local_name), key_id, key_state, event);
+    InputStateEvent* input_state_event = InputActionEvent_Create(String_CStr(input_manager->m_local_name), key_id, key_state, event);
 
-    Queue_Push(InputActionEvent*, String_CStr(input_manager->m_local_name), input_manager->m_input_action_event_queue, input_action_event);
+    Queue_Push(InputStateEvent*, String_CStr(input_manager->m_local_name), input_manager->m_input_state_event_queue, input_state_event);
 }
 
-static bool CallBack_Find_InputActionEvent(InputActionEvent* input_action_event, Event event)
+static bool CallBack_Find_InputActionEvent(InputStateEvent* input_state_event, Event event)
 {
-    return input_action_event->m_event == event;
+    return input_state_event->m_event == event;
 }
 
-void InputManager_Input_To_ControlEvent_Del(InputManager* input_manager, Event event)
+void InputManager_Input_ControlEvent_Del(InputManager* input_manager, Event event)
 {
     Assert(IS_IN_RANGE(event, Event_Control_Min, Event_Control_Max), "");
-    Queue_RemoveFindFirst(InputActionEvent*)(input_manager->m_input_action_event_queue, (CB_FindData_Bool_tPtr_tPtr)CallBack_Find_InputActionEvent, (const tptr)event, InputActionEvent_Destroy);
+    Queue_RemoveFindFirst(InputStateEvent*)(input_manager->m_input_state_event_queue, (CB_FindData_Bool_tPtr_tPtr)CallBack_Find_InputActionEvent, (const tptr)event, InputActionEvent_Destroy);
 }
 
-void InputManager_Input_To_Control_Event_Clear(InputManager* input_manager)
+void InputManager_Input_ControlEvent_Clear(InputManager* input_manager)
 {
-    Queue_Clear(input_manager->m_input_action_event_queue, InputActionEvent_Destroy);
+    Queue_Clear(input_manager->m_input_state_event_queue, InputActionEvent_Destroy);
 }
 
-void CallBack_ProcessInputActionEvent(InputActionEvent* input_action_event, InputManager* input_manager)
+void CallBack_ProcessInputActionEvent(InputStateEvent* input_state_event, InputManager* input_manager)
 {
-    KeyInfo* key_info = &input_manager->m_key_info[input_action_event->m_key_id];
+    KeyInfo* key_info = &input_manager->m_key_info[input_state_event->m_key_id];
     bool is_active = false;
-    Assert( input_action_event->m_key_state != KeyState_Up, "" );
-    switch(input_action_event->m_key_state)
+    Assert( input_state_event->m_key_state != KeyState_Up, "" );
+    switch(input_state_event->m_key_state)
     {
     case KeyState_Hold:     is_active = key_info->m_is_hold;        break;
     case KeyState_Down:     is_active = key_info->m_is_down;        break;
@@ -132,13 +132,13 @@ void CallBack_ProcessInputActionEvent(InputActionEvent* input_action_event, Inpu
     }
     if( is_active )
     {
-        SendEvent_Actor_Action(input_action_event->m_event);
+        SendEvent_Actor_Action(input_state_event->m_event);
     }
 }
 
 void InputManager_Event_Send(InputManager* input_manager)
 {
-    Queue_ForEach(input_manager->m_input_action_event_queue, CallBack_ProcessInputActionEvent, input_manager);
+    Queue_ForEach(input_manager->m_input_state_event_queue, CallBack_ProcessInputActionEvent, input_manager);
 }
 
 

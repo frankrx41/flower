@@ -150,11 +150,11 @@ void Actor_Component_Control_EventRespond_Add(Actor* actor, Event event, CB_Resp
     Assert(IS_IN_RANGE(event, Event_Scene_Min, Event_Scene_Max) || IS_IN_RANGE(event, Event_Control_Min, Event_Control_Max), "");
     Assert(actor != NULL, "");
 
-    ControlComponent* action_component = Actor_Component_Cast(actor, Component_Control);
-    Assert(action_component != NULL, "");
-    if( action_component )
+    ControlComponent* control_component = Actor_Component_Cast(actor, Component_Control);
+    Assert(control_component != NULL, "");
+    if( control_component )
     {
-        Component_Control_EventRespond_Add(action_component, event, cb_respond_condition_void_actor_eventinfo, cb_respond_action_void_actor_eventinfo);
+        Component_Control_EventRespond_Add(control_component, event, cb_respond_condition_void_actor_eventinfo, cb_respond_action_void_actor_eventinfo);
         if(IS_IN_RANGE(event, Event_Scene_Min, Event_Scene_Max))
         {
             Scene_SceneEventGroup_Actor_Add(Actor_OwnerScene_Get(actor), actor, event);
@@ -170,22 +170,22 @@ void Actor_Component_Control_EventRespond_Add(Actor* actor, Event event, CB_Resp
 void Actor_Component_Control_EventRespond_Del(Actor* actor, Event event)
 {
     Assert(actor != NULL, "");
-    ControlComponent* action_component = Actor_Component_Cast(actor, Component_Control);
-    Assert(action_component != NULL, "");
-    if( action_component )
+    ControlComponent* control_component = Actor_Component_Cast(actor, Component_Control);
+    Assert(control_component != NULL, "");
+    if( control_component )
     {
-        Component_Control_EventRespond_Del(action_component, event);
+        Component_Control_EventRespond_Del(control_component, event);
     }
 }
 
 void Actor_Component_Control_EventRespond_Clear(Actor* actor)
 {
     Assert(actor != NULL, "");
-    ControlComponent* action_component = Actor_Component_Cast(actor, Component_Control);
-    Assert(action_component != NULL, "");
-    if( action_component )
+    ControlComponent* control_component = Actor_Component_Cast(actor, Component_Control);
+    Assert(control_component != NULL, "");
+    if( control_component )
     {
-        Component_Control_EventRespond_Clear(action_component);
+        Component_Control_EventRespond_Clear(control_component);
     }
 }
 
