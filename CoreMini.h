@@ -2,14 +2,19 @@
 
 #define NO_COMPILE_TIME_CHECK   0
 #define KEEP_LEGACY_TYPE        0
-#define X_64                    0
-#define X_32                    0
+#define PLATFORM_32BITS         0
+#define PLATFORM_64BITS         0
 
 #if PLATFORM_WIN32
+
 #undef  KEEP_LEGACY_TYPE
 #define KEEP_LEGACY_TYPE        1
-#undef  X_32
-#define X_32                    1
+
+#undef  PLATFORM_32BITS
+#define PLATFORM_32BITS         1
+
+#define UTF8                    1
+
 #endif
 
 #include <stdarg.h>
@@ -34,22 +39,31 @@ XXXManager* local_name Event/Scene/Actor/String... others
 // New key word
 typedef signed char         int8;
 typedef unsigned char       uint8;
+typedef signed short        int16;
+typedef unsigned short      uint16;
 typedef int                 int32;
 typedef unsigned int        uint32;
-typedef unsigned char       byte;
-typedef char*               va_list;
 typedef long long           int64;
 typedef unsigned long long  uint64;
 
-typedef signed char     tchar;
-typedef wchar_t         wchar;
+typedef unsigned char   byte;
+typedef char*           va_list;
+typedef uint16          wchar;
 typedef void*           tptr;
 typedef uint32          crc32;
 
-#if X_64
+#if ASCII || UTF8
+typedef int8            tchar;
+#elif UTF16
+typedef int16           tchar;
+#elif UTF32
+typedef int32           tchar;
+#endif
+
+#if PLATFORM_64BITS
 typedef uint64          tsize;
 
-#elif X_32
+#elif PLATFORM_32BITS
 typedef uint32          tsize;
 
 #else
