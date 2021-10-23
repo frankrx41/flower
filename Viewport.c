@@ -84,7 +84,8 @@ void Viewport_RenderTo_Viewport(const Viewport* viewport, Viewport* out_viewport
         for( int32 x=out_viewport->m_offset.m_x; x<viewport->m_width; x++ )
         {
             int32 i1 = x + y*Int32(out_viewport->m_width);
-            int32 i2 = (out_viewport->m_offset.m_y-y) * (Int32(viewport->m_width)+out_viewport->m_offset.m_x) + x;
+            // int32 i2 = (out_viewport->m_offset.m_y-y) * (Int32(viewport->m_width)+out_viewport->m_offset.m_x) + x;
+            int32 i2 = i1;
             if( out_viewport->m_data[i2].m_tchar != 0 )
             {
                 if( viewport->m_data[i1].m_tchar != out_viewport->m_data[i2].m_tchar )

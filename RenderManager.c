@@ -81,13 +81,15 @@ void RenderManager_Render_ToBackBuffer(RenderManager* render_manager, ShaderText
 
 static void CallBack_Render_Scene(Scene* scene, const RenderManager* render_manager)
 {
-    if( Scene_Is_Hide(scene) || Scene_Viewport_Get(scene) == NULL)
+    Viewport* viewport = Scene_Viewport_Get(scene);
+    if( Scene_Is_Hide(scene) || viewport == NULL)
     {
         return;
     }
     Queue_ForEach(Scene_ActorQueue_Renderable_Get(scene), CallBack_Actor_RenderTo_Scene_Viewport, scene);
 
-    Viewport_RenderTo_Viewport(render_manager->m_back_buffer, Scene_Viewport_Get(scene));
+    Viewport_RenderTo_Viewport(render_manager->m_back_buffer, viewport);
+    Viewport_Clean(viewport);
 }
 
 static void CallBack_RenderManager_Render_ToScreen_Task(Task* task, RenderManager* render_manager)

@@ -78,6 +78,11 @@ void Scene_Destroy(Scene* scene)
         scene->m_cb_scene_destroy_void_scene(scene);
     }
 
+    if( scene->m_viewport )
+    {
+        Viewport_Destroy(scene->m_viewport);
+    }
+
     Queue_Destroy(scene->m_child_actor_queue, Actor_Destroy);
     for(uint32 i=0, max_i=ARRAY_SIZE(scene->m_actor_queue_scene_event_list); i<max_i; i++)
     {
