@@ -16,6 +16,7 @@
 #include "tData.h"
 #include "Storage.h"
 #include "Vec.h"
+#include "Viewport.h"
 
 
 struct Scene
@@ -28,7 +29,8 @@ struct Scene
     bool                        m_is_pause_event;
     bool                        m_is_pause_render;
 
-    vec2                        m_render_offset_vec;
+    Viewport*                   m_viewport;
+
     Queue(Actor*)*              m_child_actor_queue;
     Queue(Actor*)*              m_actor_queue_scene_event_list[Event_Scene_Max-Event_Scene_Min];
     Queue(Actor*)*              m_actor_queue_control;
@@ -48,10 +50,10 @@ Scene* Scene_Create(const strcrc* local_name, SceneManager* scene_manager, CB_Sc
     scene->m_is_pause_event             = false;
     scene->m_is_pause_render            = false;
     scene->m_cb_scene_destroy_void_scene = cb_scene_destroy_void_scene;
-    scene->m_actor_queue_control   = Queue_Create(local_name, Actor*);
-    scene->m_actor_queue_physics        = Queue_Create(local_name, Actor*);
-    scene->m_actor_queue_renderable= Queue_Create(local_name, Actor*);
-    scene->m_render_offset_vec          = vec2_null;
+    scene->m_actor_queue_control    = Queue_Create(local_name, Actor*);
+    scene->m_actor_queue_physics    = Queue_Create(local_name, Actor*);
+    scene->m_actor_queue_renderable = Queue_Create(local_name, Actor*);
+    scene->m_viewport               = NULL;
 
     Assert(ARRAY_SIZE(scene->m_actor_queue_scene_event_list) == Event_Scene_Max-Event_Scene_Min, "");
     for(uint32 i=0, max_i = ARRAY_SIZE(scene->m_actor_queue_scene_event_list); i<max_i; i++)
@@ -60,6 +62,11 @@ Scene* Scene_Create(const strcrc* local_name, SceneManager* scene_manager, CB_Sc
     }
 
     return scene;
+}
+
+void Scene_Viewport_Create(Scene* scene, float width, float height, const vec2* scale, const vec2* offset)
+{
+    scene->m_viewport = Viewport_Create(&scene->m_local_name, width, height, scale, offset);
 }
 
 void Scene_Destroy(Scene* scene)
@@ -84,18 +91,6 @@ void Scene_Destroy(Scene* scene)
 
     Storage_Destroy(scene->m_storage);
     MemDel(scene);
-}
-
-void Scene_Render_Offset_Set(Scene* scene, vec2 vec)
-{
-    Assert(scene != NULL, "");
-    scene->m_render_offset_vec = vec;
-}
-
-vec2 Scene_Render_Offset_Get(Scene* scene)
-{
-    Assert(scene != NULL, "");
-    return scene->m_render_offset_vec;
 }
 
 static Queue(Actor*)* Scene_EventQueue_Get(Scene* scene, Event event)
@@ -131,7 +126,13 @@ void Scene_Pause(Scene* scene, bool is_pause)
     scene->m_is_pause_event = is_pause;
 }
 
-const strcrc* Scene_LocalName_Str_Get(Scene* scene)
+////////////////////////////////////////////////////////////////////////////////
+Viewport* Scene_Viewport_Get(const Scene* scene)
+{
+    return scene->m_viewport;
+}
+
+const strcrc* Scene_LocalName_Get(const Scene* scene)
 {
     return &scene->m_local_name;
 }

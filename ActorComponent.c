@@ -22,6 +22,7 @@
 #include "Vec.h"
 #include "Scene.h"
 #include "String.h"
+#include "Viewport.h"
 
 // Location
 vec3* Actor_Component_Physics_Location_Get(const Actor* actor)
@@ -113,14 +114,14 @@ void Actor_Component_Physics_SetEnableSimulate(Actor* actor, bool is_enable_simu
 
 
 // Component_Render
-ShaderText* Actor_Component_Render_ShaderText_Add(Actor* actor, vec3 vec, const tchar* str)
+ShaderText* Actor_Component_Render_ShaderText_Add(Actor* actor, vec3* location, vec2* offset, const tchar* str)
 {
     Assert(actor != NULL, "");
     RenderComponent* render_component = Actor_Component_Cast(actor, Component_Render);
     Assert(render_component != NULL, "");
     if( render_component )
     {
-        ShaderText* shader_text = ShaderText_Create(Actor_LocalName_Str_Get(actor), false, vec, str);
+        ShaderText* shader_text = ShaderText_Create(Actor_LocalName_Str_Get(actor), false, location, offset, str);
         Component_Render_ShaderText_Add(render_component, shader_text);
         return shader_text;
     }
@@ -252,32 +253,35 @@ void Actor_Component_Storage_Variable_Delete(Actor* actor, crc32 variable)
 // CallBack
 ////////////////////////////////////////////////////////////////////////////////
 typedef struct RenderManager RenderManager;
-void CallBack_RenderManager_Render_ToBackBuffer_Task(Task* task, ShaderText* shader_text)
+static void CallBack_RenderManager_Render_ToBackBuffer_Task(Task* task, ShaderText* shader_text)
 {
-    RenderManager_Render_ToBackBuffer(RenderManager_GetInstance(), ShaderText_Offset_Get(shader_text), shader_text);
+    RenderManager_Render_ToBackBuffer(RenderManager_GetInstance(), shader_text);
 }
 
-void CallBack_Render_ActorShaderText_Plat(ShaderText* shader_text, const Actor* actor)
+static void CallBack_Render_ActorShaderText(ShaderText* shader_text, const Actor* actor)
 {
     if( ShaderText_IsDisable(shader_text) )
     {
         return;
     }
 
-    vec3 vec = ShaderText_GetVec3(shader_text);
+    vec3 location = *ShaderText_Location_Get(shader_text);
     if( !ShaderText_Is_Absolute(shader_text) )
     {
         if (Actor_Component_Cast(actor, Component_Physics))
         {
-            Vec3_Add(&vec, Actor_Component_Physics_Location_Get(actor), &vec);
+            Vec3_Add(&location, Actor_Component_Physics_Location_Get(actor), &location);
         }
     }
 
     strcrc local_name;
 
     local_name = StrCrc("RenderManager_ShaderText", 0);
-    ShaderText* shader_text_copy = ShaderText_Create(&local_name, true,vec, ShaderText_GetStr(shader_text));
-    ShaderText_Offset_Set(shader_text_copy, Scene_Render_Offset_Get(Actor_OwnerScene_Get(actor)));
+    ShaderText* shader_text_copy = ShaderText_Create(&local_name, true, &location, ShaderText_Offset_Get(shader_text), ShaderText_Str_Get(shader_text));
+    
+    // TODO: render to viewport first
+    // Viewport* viewport = Scene_Viewport_Get(Actor_OwnerScene_Get(actor));
+    // Viewport_Render_ShaderText(viewport, shader_text_copy);
 
     local_name = StrCrc("RenderManager_ShaderText_Task", 0);
     TaskManager_Task_Render_Add(&local_name, CallBack_RenderManager_Render_ToBackBuffer_Task, ShaderText_Destory, shader_text_copy);
@@ -292,5 +296,5 @@ void CallBack_Actor_RenderEachActor(Actor* actor, const RenderManager* render_ma
     RenderComponent* render_component = Actor_Component_Cast(actor, Component_Render);
     Assert(render_component != false, "");
 
-    Queue_ForEach(Component_Render_ShaderText_GetQueue(render_component), CallBack_Render_ActorShaderText_Plat, actor);
+    Queue_ForEach(Component_Render_ShaderText_GetQueue(render_component), CallBack_Render_ActorShaderText, actor);
 }

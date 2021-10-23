@@ -45,6 +45,16 @@ void Viewport_Destroy(Viewport* viewport)
     MemDel(viewport);
 }
 
+void Viewport_Offset_Set(Viewport* viewport, vec2* offset)
+{
+    viewport->m_offset = *offset;
+}
+
+void Viewport_Scale_Set(Viewport* viewport, vec2* scale)
+{
+    viewport->m_scale = *scale;
+}
+
 void Viewport_Clean(Viewport* viewport)
 {
     MemZero(viewport->m_data);
@@ -73,10 +83,10 @@ void Viewport_RenderTo_Viewport(const Viewport* viewport, Viewport* out_viewport
 
 void Viewport_Render_ShaderText(Viewport* viewport, ShaderText* shader_text)
 {
-    const vec3 location = ShaderText_GetVec3(shader_text);
-    const float x = location.m_x + viewport->m_offset.m_x;
-    const float y = location.m_y + viewport->m_offset.m_y;
-    const tchar* str = ShaderText_GetStr(shader_text);
+    const vec3* location = ShaderText_Location_Get(shader_text);
+    const float x = location->m_x + viewport->m_offset.m_x;
+    const float y = location->m_y + viewport->m_offset.m_y;
+    const tchar* str = ShaderText_Str_Get(shader_text);
     
     const uint32 index = uInt32(viewport->m_width) * uInt32(y) + uInt32(x);
     

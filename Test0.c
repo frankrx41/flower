@@ -217,13 +217,15 @@ static void String_Test0()
 void Actor_Test2()
 {
     strcrc local_name = StrCrc(__FUNCTION__, 0);
-
+    vec3 location;
     Scene* scene = SceneManager_Scene_Create(&local_name, NULL);
     Actor* actor = Scene_Actor_Create(&local_name, scene, NULL, NULL);
 
     Actor_Component_New(actor, Component_Render);
-    Actor_Component_Render_ShaderText_Add(actor, Vec3(1, 1, 0), "* hello world" );
-    Actor_Component_Render_ShaderText_Add(actor, Vec3(1, 2, 0), "* goodbye world" );
+    location = Vec3(1, 1, 0);
+    Actor_Component_Render_ShaderText_Add(actor, &location, NULL, "* hello world" );
+    location = Vec3(1, 2, 0);
+    Actor_Component_Render_ShaderText_Add(actor, &location, NULL, "* goodbye world" );
 
     RenderManager_RenderAllScene(RenderManager_GetInstance(), SceneManager_GetInstance());
 
@@ -242,7 +244,9 @@ void Actor_Test1()
 
     Actor_Component_New(actor, Component_Physics);
     Actor_Component_New(actor, Component_Render);
-    Actor_Component_Render_ShaderText_Add(actor, Vec3(2, 2, 0), "hello world" );
+
+    vec3 location = Vec3(2, 2, 0);
+    Actor_Component_Render_ShaderText_Add(actor, &location, NULL, "hello world" );
 
     RenderManager_RenderAllScene(RenderManager_GetInstance(), SceneManager_GetInstance());
 
@@ -262,7 +266,8 @@ void Actor_Test0()
     Actor* actor = Scene_Actor_Create(&local_name, scene, NULL, NULL);
 
     Actor_Component_New(actor, Component_Render);
-    Actor_Component_Render_ShaderText_Add(actor, Vec3(0, 10, 0), "hello world" );
+    vec3 location = Vec3(0, 10, 0);
+    Actor_Component_Render_ShaderText_Add(actor, &location, NULL, "hello world" );
 
     RenderManager_RenderAllScene(RenderManager_GetInstance(), SceneManager_GetInstance());
 

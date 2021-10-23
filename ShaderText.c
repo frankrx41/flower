@@ -11,20 +11,20 @@ struct ShaderText
 {
     bool    m_is_disable;
     bool    m_is_absolute;
-    vec2    m_screen_offset;
-    vec3    m_vec3;
+    vec2    m_offset;
+    vec3    m_location;
     uint32  m_info;
     String* m_string;
 };
 
 
-ShaderText* ShaderText_Create(const strcrc* local_name, bool is_absolute, vec3 vec, const tchar* str)
+ShaderText* ShaderText_Create(const strcrc* local_name, bool is_absolute, const vec3* location, const vec2* offset, const tchar* str)
 {
     ShaderText* shader_text = MemNew(local_name, ShaderText);
     shader_text->m_is_absolute  = is_absolute;
     shader_text->m_is_disable   = false;
-    shader_text->m_vec3         = vec;
-    shader_text->m_screen_offset = vec2_null;
+    shader_text->m_location     = location ? *location : vec3_null;
+    shader_text->m_offset       = offset ? *offset : vec2_null;
     shader_text->m_string       = String_New(local_name, str, 0, false);
     shader_text->m_info         = 0;
 
@@ -52,22 +52,22 @@ bool ShaderText_IsDisable(ShaderText* shader_text)
     return shader_text->m_is_disable;
 }
 
-vec3 ShaderText_GetVec3(ShaderText* shader_text)
+vec3* ShaderText_Location_Get(ShaderText* shader_text)
 {
-    return shader_text->m_vec3;
+    return &shader_text->m_location;
 }
 
-tchar* ShaderText_GetStr(ShaderText* shader_text)
+tchar* ShaderText_Str_Get(ShaderText* shader_text)
 {
     return String_CStr(shader_text->m_string);
 }
 
-void ShaderText_Offset_Set(ShaderText* shader_text, vec2 vec)
-{
-    shader_text->m_screen_offset = vec;
-}
+// void ShaderText_Offset_Set(ShaderText* shader_text, vec2 vec)
+// {
+//     shader_text->m_offset = vec;
+// }
 
-vec2 ShaderText_Offset_Get(ShaderText* shader_text)
+vec2* ShaderText_Offset_Get(ShaderText* shader_text)
 {
-    return shader_text->m_screen_offset;
+    return &shader_text->m_offset;
 }

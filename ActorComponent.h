@@ -1,6 +1,7 @@
 #pragma once
 
 typedef struct vec3 vec3;
+typedef struct vec2 vec2;
 typedef struct Actor Actor;
 typedef struct ShaderText ShaderText;
 typedef struct EventInfo EventInfo;
@@ -21,7 +22,7 @@ void    CallBack_Actor_Component_Physics_Simulate   (Actor* actor, const float* 
 void    Actor_Component_Physics_SetEnableSimulate   (Actor* actor, bool is_enable_simulate);
 
 
-ShaderText* Actor_Component_Render_ShaderText_Add   (Actor* actor, vec3 vec, const tchar* str);
+ShaderText* Actor_Component_Render_ShaderText_Add   (Actor* actor, vec3* location, vec2* offset, const tchar* str);
 void        Actor_Component_Render_ShaderText_Del   (Actor* actor, ShaderText* shader_text);
 void        Actor_Component_Render_ShaderText_Clear (Actor* actor);
 

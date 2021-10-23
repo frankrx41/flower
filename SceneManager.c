@@ -161,7 +161,7 @@ void SceneManager_TryRunNextCommand(SceneManager* scene_manager)
 
 static void CallBack_Scene_Receive_SceneEvent(Scene* scene, const EventInfo* event_info)
 {
-    EventInfo* scene_event_info = EventInfo_Create(Scene_LocalName_Str_Get(scene), event_info->m_event, scene, NULL, KeyId_Null, event_info->m_delta_seconds);
+    EventInfo* scene_event_info = EventInfo_Create(Scene_LocalName_Get(scene), event_info->m_event, scene, NULL, KeyId_Null, event_info->m_delta_seconds);
     Scene_SceneEvent_SendTo_Actor(scene, scene_event_info);
     EventInfo_Destroy(scene_event_info);
 }

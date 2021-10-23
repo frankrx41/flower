@@ -16,7 +16,7 @@ enum RenderMode
 };
 
 void    RenderManager_Render_ToScreen       (RenderManager* render_manager);
-void    RenderManager_Render_ToBackBuffer   (RenderManager* render_manager, vec2 offset_vec, ShaderText* shader_text);
+void    RenderManager_Render_ToBackBuffer   (RenderManager* render_manager, ShaderText* shader_text);
 
 void    RenderManager_RenderAllScene        (RenderManager* render_manager, SceneManager* scene_manager);
 
