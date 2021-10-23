@@ -31,8 +31,8 @@ struct RenderManager
 RenderManager* RenderManager_Create(const strcrc* local_name)
 {
     RenderManager* render_manager   = MemNew(local_name, RenderManager);
-    render_manager->m_buffer[0]     = Viewport_Create(local_name, 80, 25, &vec2_null, &vec2_null);
-    render_manager->m_buffer[1]     = Viewport_Create(local_name, 80, 25, &vec2_null, &vec2_null);
+    render_manager->m_buffer[0]     = Viewport_Create(local_name, 80, 25, &vec2_zero, &vec2_zero);
+    render_manager->m_buffer[1]     = Viewport_Create(local_name, 80, 25, &vec2_zero, &vec2_zero);
 
     render_manager->m_front_buffer  = render_manager->m_buffer[0];
     render_manager->m_back_buffer   = render_manager->m_buffer[1];

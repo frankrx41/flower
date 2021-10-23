@@ -8,8 +8,10 @@
 
 #endif
 
-const vec3 vec3_null = {0, 0, 0};
-const vec2 vec2_null = {0, 0};
+const vec3 vec3_zero = {0, 0, 0};
+const vec3 vec3_unit = {0, 0, 0};
+const vec2 vec2_zero = {0, 0};
+const vec2 vec2_unit = {1, 1};
 
 vec3 Vec3(float x, float y, float z)
 {

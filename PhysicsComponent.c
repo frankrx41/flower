@@ -17,9 +17,9 @@ PhysicsComponent* Component_Physics_Create(const strcrc* local_name, Actor* acto
 {
     PhysicsComponent* physics_component = MemNew(local_name, PhysicsComponent);
     physics_component->m_is_enable_simulate = false;
-    physics_component->m_displacement       = vec3_null;
-    physics_component->m_velocity       = vec3_null;
-    physics_component->m_acceleration   = vec3_null;
+    physics_component->m_displacement       = vec3_zero;
+    physics_component->m_velocity       = vec3_zero;
+    physics_component->m_acceleration   = vec3_zero;
     return physics_component;
 }
 
@@ -91,7 +91,7 @@ void Component_Physics_Simulate(PhysicsComponent* physics_component, float delta
     // s = s + vt + 1/2 a t^2
     vec3 vec3_temp;
     vec3 s_vt = *Vec3_Add(&physics_component->m_displacement, Vec3_Multiply(&physics_component->m_velocity, delta_seconds, &vec3_temp), &vec3_temp);
-    vec3 a_tt = vec3_null;
+    vec3 a_tt = vec3_zero;
     if( Vec3_IsZero(&physics_component->m_acceleration) )
     {
         a_tt = *Vec3_Multiply(&physics_component->m_acceleration, delta_seconds * delta_seconds * .5f, &vec3_temp);

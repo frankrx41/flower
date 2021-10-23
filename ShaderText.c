@@ -23,8 +23,8 @@ ShaderText* ShaderText_Create(const strcrc* local_name, bool is_absolute, const 
     ShaderText* shader_text = MemNew(local_name, ShaderText);
     shader_text->m_is_absolute  = is_absolute;
     shader_text->m_is_disable   = false;
-    shader_text->m_location     = location ? *location : vec3_null;
-    shader_text->m_offset       = offset ? *offset : vec2_null;
+    shader_text->m_location     = location ? *location : vec3_zero;
+    shader_text->m_offset       = offset ? *offset : vec2_zero;
     shader_text->m_string       = String_New(local_name, str, 0, false);
     shader_text->m_info         = 0;
 

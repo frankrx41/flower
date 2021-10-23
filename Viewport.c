@@ -5,6 +5,7 @@
 
 #include "Viewport.h"
 #include "ShaderText.h"
+#include "String.h"
 #include "tData.h"
 #include "Vec.h"
 
@@ -18,6 +19,7 @@ struct PixData
 
 struct Viewport
 {
+    strcrc      m_local_name;
     vec2        m_scale;
     vec2        m_offset;
     float       m_width;
@@ -29,8 +31,9 @@ struct Viewport
 Viewport* Viewport_Create(const strcrc* local_name, float width, float height, const vec2* scale, const vec2* offset)
 {
     Viewport* viewport  = MemNew(local_name, Viewport);
-    viewport->m_scale   = scale ? *scale : vec2_null;
-    viewport->m_offset  = offset ? *offset : vec2_null;
+    viewport->m_local_name  = *local_name;
+    viewport->m_scale   = scale ? *scale : vec2_unit;
+    viewport->m_offset  = offset ? *offset : vec2_zero;
     viewport->m_width   = width;
     viewport->m_height  = height;
     viewport->m_data    = MemNewSize(local_name, tSize(width*height*sizeof(PixData)));
@@ -79,14 +82,13 @@ void Viewport_RenderTo_Screen(RenderManager* render_manager, void* platform_data
 void Viewport_RenderTo_Viewport(const Viewport* viewport, Viewport* out_viewport)
 {
     Assert(out_viewport != NULL, "");
-    for( int32 y=out_viewport->m_offset.m_y; y<viewport->m_height; y++ )
+    for( int32 y=0; y<out_viewport->m_height; y++ )
     {
-        for( int32 x=out_viewport->m_offset.m_x; x<viewport->m_width; x++ )
+        for( int32 x=0; x<out_viewport->m_width; x++ )
         {
-            int32 i1 = x + y*Int32(out_viewport->m_width);
-            // int32 i2 = (out_viewport->m_offset.m_y-y) * (Int32(viewport->m_width)+out_viewport->m_offset.m_x) + x;
-            int32 i2 = i1;
-            if( out_viewport->m_data[i2].m_tchar != 0 )
+            int32 i2 = x + y*Int32(out_viewport->m_width);
+            int32 i1 = out_viewport->m_offset.m_y * Int32(viewport->m_width) + out_viewport->m_offset.m_x + x + y*Int32(viewport->m_width);
+            if( out_viewport->m_data[i2].m_tchar != 0 && i1 < viewport->m_width * viewport->m_height)
             {
                 if( viewport->m_data[i1].m_tchar != out_viewport->m_data[i2].m_tchar )
                 {
@@ -100,11 +102,11 @@ void Viewport_RenderTo_Viewport(const Viewport* viewport, Viewport* out_viewport
 void Viewport_Render_ShaderText(Viewport* viewport, ShaderText* shader_text)
 {
     const vec3* location = ShaderText_Location_Get(shader_text);
-    const float x = location->m_x + viewport->m_offset.m_x;
-    const float y = location->m_y + viewport->m_offset.m_y;
+    const float x = location->m_x;
+    const float y = location->m_y;
     const tchar* str = ShaderText_Str_Get(shader_text);
     
-    const uint32 index = uInt32(viewport->m_width) * uInt32(y) + uInt32(x);
+    const uint32 index = uInt32(viewport->m_width) * uInt32(y)*viewport->m_scale.m_y + uInt32(x)*viewport->m_scale.m_x;
     
     for( uint32 i=0; str[i] != NULL; i++ )
     {
@@ -115,7 +117,7 @@ void Viewport_Render_ShaderText(Viewport* viewport, ShaderText* shader_text)
         }
         else
         {
-            Assert(false, "Render out of range!");
+            // Assert(false, "Render out of range!");
         }
     }
 }
