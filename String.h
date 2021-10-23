@@ -19,9 +19,10 @@ struct strcrc
     crc32           m_crc32;
 };
 
-strcrc* StrCrc              (const tchar* str, crc32 crc, strcrc* out_strcrc);
+strcrc  StrCrc              (const tchar* str, crc32 crc);
 strcrc* StrCrc_Copy         (const strcrc* source_strcrc, strcrc* out_strcrc);
 bool    StrCrc_IsSame       (const strcrc* strcrc1, const strcrc* strcrc2);
+bool    StrCrc_IsEmpty      (const strcrc* strcrc);
 
 tsize   String_GetLength    (const String* string);
 crc32   String_GetCrc       (const String* string);

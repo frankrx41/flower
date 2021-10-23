@@ -48,7 +48,6 @@ TaskManager*        TaskManager_Create      (const strcrc* local_name);
 void                TaskManager_Destroy     (TaskManager* task_manager);
 
 void                Engine_Debug_Memory_Check_Leak          ();
-void                Engine_Debug_Memory_Static_Check_Leak   ();
 
 
 void    Engine_Debug_UnitTesting0   ();
@@ -69,22 +68,22 @@ void Engine_Initialize()
 
     strcrc manager_strcrc;
 
-    StrCrc("RenderManager", 0, &manager_strcrc);
+    manager_strcrc = StrCrc("RenderManager", 0);
     engine->m_render_manager    = RenderManager_Create(&manager_strcrc);
     
-    StrCrc("TimingManager", 0, &manager_strcrc);
+    manager_strcrc = StrCrc("TimingManager", 0);
     engine->m_timing_manager    = TimingManager_Create(&manager_strcrc);
     
-    StrCrc("EventManager", 0, &manager_strcrc);
+    manager_strcrc = StrCrc("EventManager", 0);
     engine->m_event_manager     = EventManager_Create(&manager_strcrc);
     
-    StrCrc("SceneManager", 0, &manager_strcrc);
+    manager_strcrc = StrCrc("SceneManager", 0);
     engine->m_scene_manager     = SceneManager_Create(&manager_strcrc);
     
-    StrCrc("InputManager", 0, &manager_strcrc);
+    manager_strcrc = StrCrc("InputManager", 0);
     engine->m_input_manager     = InputManager_Create(&manager_strcrc);
     
-    StrCrc("TaskManager", 0, &manager_strcrc);
+    manager_strcrc = StrCrc("TaskManager", 0);
     engine->m_task_manager      = TaskManager_Create(&manager_strcrc);
 
     engine->m_is_initialized    = true;
@@ -142,7 +141,6 @@ void Engine_UnInitialize()
 
     Engine_Profile_Memory();
     Engine_Debug_Memory_Check_Leak();
-    Engine_Debug_Memory_Static_Check_Leak();
 }
 
 void Engine_NotifyExit()

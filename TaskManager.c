@@ -72,8 +72,7 @@ TaskManager* TaskManager_Create(const strcrc* local_name)
 
     for(uint32 i=0; i<task_manager->m_task_queue_thread_job_max; i++)
     {
-        strcrc render_local_name;
-        StrCrc("Render_TaskQueueThread", 0, &render_local_name);
+        strcrc render_local_name = StrCrc("Render_TaskQueueThread", 0);
 
         if( i == TaskManager_TaskQueueThread_Render_Index_Get(task_manager) )
         {

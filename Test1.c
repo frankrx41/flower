@@ -65,8 +65,7 @@ void CallBack_Actor_Create5(Actor* actor, tptr ptr)
 
 void Engine_Test5()
 {
-    strcrc local_name;
-    StrCrc(__FUNCTION__, 0, &local_name);
+    strcrc local_name = StrCrc(__FUNCTION__, 0);
 
     Scene* scene = SceneManager_Scene_Create(&local_name, NULL);
     Actor* actor = Scene_Actor_Create(&local_name, scene, CallBack_Actor_Create5, __FUNCTION__);
@@ -115,8 +114,7 @@ void CallBack_Actor_Create4(Actor* actor, tptr ptr)
 };
 void Engine_Test4()
 {
-    strcrc local_name;
-    StrCrc(__FUNCTION__, 0, &local_name);
+    strcrc local_name = StrCrc(__FUNCTION__, 0);
 
     Scene* scene = SceneManager_Scene_Create(&local_name, NULL);
     Actor* actor = Scene_Actor_Create(&local_name, scene, CallBack_Actor_Create4, __FUNCTION__);
@@ -188,8 +186,7 @@ void CallBack_Actor_Create3(Actor* actor, tptr ptr)
 };
 void Engine_Test3()
 {
-    strcrc local_name;
-    StrCrc(__FUNCTION__, 0, &local_name);
+    strcrc local_name = StrCrc(__FUNCTION__, 0);
 
     Scene* scene = SceneManager_Scene_Create(&local_name, NULL);
     Actor* actor = Scene_Actor_Create(&local_name, scene, CallBack_Actor_Create3, __FUNCTION__);
@@ -247,8 +244,7 @@ void CallBack_Actor_Create2(Actor* actor, tptr ptr)
 
 void Engine_Test2()
 {
-    strcrc local_name;
-    StrCrc(__FUNCTION__, 0, &local_name);
+    strcrc local_name = StrCrc(__FUNCTION__, 0);
 
     Scene* scene = SceneManager_Scene_Create(&local_name, NULL);
     Actor* actor = Scene_Actor_Create(&local_name, scene, CallBack_Actor_Create2, __FUNCTION__);
@@ -281,8 +277,7 @@ void CallBack_ActorOnEvent1(Actor* actor, const EventInfo* event_info)
 
 void Engine_Test1()
 {
-    strcrc local_name;
-    StrCrc(__FUNCTION__, 0, &local_name);
+    strcrc local_name = StrCrc(__FUNCTION__, 0);
 
     Scene* scene1 = SceneManager_Scene_Create(&local_name, NULL);
     Actor* actor1 = Scene_Actor_Create(&local_name, scene1, NULL, NULL);
@@ -329,8 +324,7 @@ void CallBack_ActorOnEvent0(Actor* actor, const EventInfo* event_info)
 
 void Engine_Test0()
 {
-    strcrc local_name;
-    StrCrc(__FUNCTION__, 0, &local_name);
+    strcrc local_name = StrCrc(__FUNCTION__, 0);
 
     Scene* scene = SceneManager_Scene_Create(&local_name, NULL);
     Actor* actor = Scene_Actor_Create(&local_name, scene, NULL, NULL);

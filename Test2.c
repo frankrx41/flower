@@ -53,8 +53,7 @@ static void Actor_Create0(Actor* actor, tptr ptr)
 
 static void Scene_Create0(void)
 {
-    strcrc local_name;
-    StrCrc(__FUNCTION__, 0, &local_name);
+    strcrc local_name = StrCrc(__FUNCTION__, 0);
 
     Scene * scene = SceneManager_Scene_Create(&local_name, NULL);
 

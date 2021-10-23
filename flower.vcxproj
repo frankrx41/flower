@@ -88,6 +88,7 @@
     <ClCompile Include="Mutex.c" />
     <ClCompile Include="PhysicsComponent.c" />
     <ClCompile Include="RenderComponent.c" />
+    <ClCompile Include="Stat.c" />
     <ClCompile Include="Task.c" />
     <ClCompile Include="TaskManager.c" />
     <ClCompile Include="tData.c" />
@@ -125,6 +126,7 @@
     <ClInclude Include="CoreMini.h" />
     <ClInclude Include="Mutex.h" />
     <ClInclude Include="Platform.h" />
+    <ClInclude Include="Stat.h" />
     <ClInclude Include="Task.h" />
     <ClInclude Include="TaskManager.h" />
     <ClInclude Include="tData.h" />

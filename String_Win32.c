@@ -27,8 +27,7 @@ void Str_FormatArgs(tchar* buffer, tsize length, const tchar* format, va_list ar
 
 wchar* wStr_New(const tchar* str)
 {
-    strcrc local_name;
-    StrCrc(__FUNCTION__, 0, &local_name);
+    strcrc local_name = StrCrc(__FUNCTION__, 0);
 
     const size_t size = Str_CalcLength(str) + 1;
     wchar* wstr = MemNewSize(&local_name, sizeof(wchar) * size);

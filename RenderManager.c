@@ -70,8 +70,7 @@ void RenderManager_RenderAllScene(RenderManager* render_manager, SceneManager* s
 {
     Queue_ForEach(SceneManager_SceneQueue_Foreground_Get(scene_manager), CallBack_Render_Scene, render_manager);
     
-    strcrc local_name;
-    StrCrc("RenderManager_Render_All_Task", 0, &local_name);
+    strcrc local_name = StrCrc("RenderManager_Render_All_Task", 0);
     
     TaskManager_Task_Render_Add(&local_name, CallBack_RenderManager_Render_ToScreen_Task, NULL, RenderManager_GetInstance());
 }

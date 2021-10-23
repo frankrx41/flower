@@ -49,8 +49,7 @@ void EventInfo_Destroy(EventInfo* event_info)
 
 void EventManager_SendEvent_Update(EventManager* event_manager, Event event, float delta_seconds)
 {
-    strcrc local_name;
-    StrCrc("EventManager_Tick", 0, &local_name);
+    strcrc local_name = StrCrc("EventManager_Tick", 0);
 
     EventInfo* event_info = EventInfo_Create(&local_name, event, NULL, NULL, KeyId_Null, delta_seconds);
     SceneManager_SceneEvent_SendTo_Scene(SceneManager_GetInstance(), event_info);
@@ -60,8 +59,7 @@ void EventManager_SendEvent_Update(EventManager* event_manager, Event event, flo
 ////////////////////////////////////////////////////////////////////////////////
 static void CallBack_SendEvent_Actor_Action(Scene* scene, EventInfo* event_info)
 {
-    strcrc local_name;
-    StrCrc("EventManager_Control", 0, &local_name);
+    strcrc local_name = StrCrc("EventManager_Control", 0);
 
     Assert(scene != NULL, "");
     EventInfo* event_info_actor_action = EventInfo_Create(&local_name, event_info->m_event, scene, NULL, KeyId_Null, event_info->m_delta_seconds);
@@ -71,8 +69,7 @@ static void CallBack_SendEvent_Actor_Action(Scene* scene, EventInfo* event_info)
 
 void EventManager_SendEvent_Control(EventManager* event_manager, Event event)
 {
-    strcrc local_name;
-    StrCrc("EventManager_Action", 0, &local_name);
+    strcrc local_name = StrCrc("EventManager_Action", 0);
 
     Assert(IS_IN_RANGE(event, Event_Control_Min, Event_Control_Max), "");
     EventInfo* event_info = EventInfo_Create(&local_name, event, NULL, NULL, KeyId_Null, 0);

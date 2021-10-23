@@ -274,12 +274,12 @@ void CallBack_Render_ActorShaderText_Plat(ShaderText* shader_text, Actor* actor)
     }
 
     strcrc local_name;
-    StrCrc("RenderManager_ShaderText", 0, &local_name);
 
+    local_name = StrCrc("RenderManager_ShaderText", 0);
     ShaderText* shader_text_copy = ShaderText_Create(&local_name, true,vec, ShaderText_GetStr(shader_text));
     ShaderText_Offset_Set(shader_text_copy, Scene_Render_Offset_Get(Actor_OwnerScene_Get(actor)));
 
-    StrCrc("RenderManager_ShaderText_Task", 0, &local_name);
+    local_name = StrCrc("RenderManager_ShaderText_Task", 0);
     TaskManager_Task_Render_Add(&local_name, CallBack_RenderManager_Render_ToBackBuffer_Task, ShaderText_Destory, shader_text_copy);
 }
 

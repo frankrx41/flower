@@ -101,6 +101,9 @@
     <ClCompile Include="ControlComponent.c">
       <Filter>Scene\Actor\Component</Filter>
     </ClCompile>
+    <ClCompile Include="Stat.c">
+      <Filter>Library\Stat</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CoreMini.h" />
@@ -191,6 +194,9 @@
     <ClInclude Include="ControlComponent.h">
       <Filter>Scene\Actor\Component</Filter>
     </ClInclude>
+    <ClInclude Include="Stat.h">
+      <Filter>Library\Stat</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Platform">
@@ -258,6 +264,9 @@
     </Filter>
     <Filter Include="Library\Timer">
       <UniqueIdentifier>{f1311dc5-4a60-470c-b202-95117aec6b99}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Library\Stat">
+      <UniqueIdentifier>{e2d1d52e-8412-4341-b32a-712930c84372}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

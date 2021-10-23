@@ -7,41 +7,88 @@
 #include "Queue.h"
 #include "String.h"
 #include "tData.h"
+#include "Stat.h"
 
-typedef struct MemoryBlock MemoryBlock;
-typedef struct MemoryProfileData MemoryProfileData;
 
-struct MemoryProfileData
+#define MEMORY_STAT_MAX     ( 50 )
+static StatDataCount stat_alloc_size[MEMORY_STAT_MAX];
+static StatDataCount stat_alloc_count;
+
+static StatDataCount* Memory_FindStatData(const strcrc* local_name)
 {
-    strcrc  m_local_name;
-    crc32   m_crc;
-    tsize   m_alloc_size;
-    tsize   m_alloc_size_max;
-};
+    for(int i=0; i<MEMORY_STAT_MAX; i++)
+    {
+        if( StrCrc_IsSame(&stat_alloc_size[i].m_local_name, local_name) )
+        {
+            return &stat_alloc_size[i];
+        }
+        
+        if( StrCrc_IsEmpty(&stat_alloc_size[i].m_local_name) )
+        {
+            StrCrc_Copy(local_name, &stat_alloc_size[i].m_local_name);
+            return &stat_alloc_size[i];
+        }
+    }
 
-static void MemoryProfileData_Destroy(MemoryProfileData* memory_profile_data)
-{
-    MemDel(memory_profile_data);
+    Assert(false, "stat_alloc_size is full, please inc MEMORY_STAT_MAX");
+    return NULL;
 }
 
-tptr    Memory_Alloc_Plat   (tsize size);
-void    Memory_Free_Plat    (void* ptr);
-tptr    Memory_Copy_Plat    (tptr dst_ptr, const tptr src_ptr, tsize size);
-tptr    Memory_Set_Plat     (tptr address, int32 val, tsize size);
+////////////////////////////////////////////////////////////////////////////////
+#undef Engine_Profile_Memory
 
-static tsize static_alloc_memory_size = 0;
+void Engine_Profile_Memory()
+{
+    tsize   total_alloc_size = 0;
+    uint32  total_alloc_count = 0;
+
+    Log(4, "Memory Profile:\n");
+    Log(4, "=====================================================\n");
+
+    for(int i=0; i<MEMORY_STAT_MAX; i++)
+    {
+        StatDataCount* stat_data_count = &stat_alloc_size[i];
+        tsize size = stat_data_count->m_data_value.m_int32;
+        if( StrCrc_IsEmpty(&stat_data_count->m_local_name) )
+        {
+            break;
+        }
+
+        if( size == 0 )
+        {
+            continue;
+        }
+
+        Log(4, "%-30s: %-8d / %-8d \n", stat_data_count->m_local_name.m_str, size, stat_data_count->m_data_max.m_int32);
+        total_alloc_size    += size;
+    }
+
+    Log(4, "%-30s: %d\n", "Total", total_alloc_size);
+    Log(4, "%-30s: %d\n", "Alloc Count", stat_alloc_count.m_data_value);
+    Log(4, "=====================================================\n");
+}
+
+void Engine_Debug_Memory_Check_Leak()
+{
+    for(int i=0; i<MEMORY_STAT_MAX; i++)
+    {
+        StatDataCount* stat_data_count = &stat_alloc_size[i];
+        Assert(stat_data_count->m_data_value.m_int32 == 0, "");
+    }
+}
 
 
+////////////////////////////////////////////////////////////////////////////////
 //  +----+---------+-------------------
 //  |tptr|size| crc|  Memory Data ...
 //  +----+----+----+-------------------
 //  |block         |ptr
-
+typedef struct MemoryBlock MemoryBlock;
 struct MemoryBlock
 {
+    strcrc  m_local_name;
     tptr    m_pointer;
     tsize   m_alloc_size;
-    crc32   m_crc;
     byte    m_byte[1];
 };
 
@@ -53,18 +100,27 @@ static MemoryBlock* CastToMemoryBlock(tptr ptr)
 };
 
 ////////////////////////////////////////////////////////////////////////////////
-static bool CallBack_Memory_Profile_FindData(MemoryProfileData* memory_profile_data, crc32 crc)
-{
-    return memory_profile_data->m_crc == crc;
-}
+// static bool CallBack_Memory_Profile_FindData(MemoryProfileData* memory_profile_data, crc32 crc)
+// {
+//     return memory_profile_data->m_crc == crc;
+// }
+
+tptr    Memory_Alloc_Plat   (tsize size);
+void    Memory_Free_Plat    (void* ptr);
+tptr    Memory_Copy_Plat    (tptr dst_ptr, const tptr src_ptr, tsize size);
+tptr    Memory_Set_Plat     (tptr address, int32 val, tsize size);
+
 
 tptr Memory_Alloc(const strcrc* local_name, tsize size)
 {
     MemoryBlock * memory_block  = Memory_Alloc_Plat(sizeof(MemoryBlock) + size);
     Assert(memory_block != NULL, "");
     memory_block->m_pointer     = memory_block->m_byte;
-    memory_block->m_crc         = local_name->m_crc32;
+    StrCrc_Copy(local_name, &memory_block->m_local_name);
     memory_block->m_alloc_size  = size;
+
+    StatDataCount_Int32_Add(Memory_FindStatData(local_name), memory_block->m_alloc_size);
+    StatDataCount_Int32_Add(&stat_alloc_count, 1);
 
     return memory_block->m_byte;
 }
@@ -74,6 +130,8 @@ void Memory_Free(tptr ptr)
     Assert(ptr != NULL, "");
 
     MemoryBlock * memory_block = CastToMemoryBlock(ptr);
+
+    StatDataCount_Int32_Add(Memory_FindStatData(&memory_block->m_local_name), -1*memory_block->m_alloc_size);
 
     Memory_Free_Plat(memory_block);
 }
@@ -169,49 +227,4 @@ bool Memory_IsInBounds(tptr head_ptr, tptr check_ptr)
     MemoryBlock* memory_block = CastToMemoryBlock(head_ptr);
     const tsize size_offset = tSize(check_ptr) - tSize(head_ptr);
     return size_offset < memory_block->m_alloc_size;
-}
-
-////////////////////////////////////////////////////////////////////////////////
-#undef Engine_Profile_Memory
-
-static void CallBack_Memory_ProfileLog(MemoryProfileData* memory_profile_data, uint32* total_alloc_size)
-{
-    if( memory_profile_data->m_alloc_size != 0 )
-    {
-        Log(4, "%-30s: %-8d / %-8d \n", memory_profile_data->m_local_name.m_str, memory_profile_data->m_alloc_size, memory_profile_data->m_alloc_size_max);
-        *total_alloc_size += memory_profile_data->m_alloc_size;
-    }
-}
-
-void Engine_Profile_Memory()
-{
-    // uint32 total_alloc_size = 0;
-    // MemoryManager* memory_manager = MemoryManager_GetInstance();
-    // Queue(MemoryProfileData*)* memory_profile_data_queue = memory_manager->m_memory_profile_data_queue;
-    // Log(4, "Memory Profile\n");
-    // Log(4, "=====================================================\n");
-    // Queue_ForEach( memory_profile_data_queue, CallBack_Memory_ProfileLog, &total_alloc_size );
-    // Log(4, "%-30s: %d\n", "Static", static_alloc_memory_size);
-    // total_alloc_size += static_alloc_memory_size;
-    // Log(4, "%-30s: %d\n", "Total", total_alloc_size);
-    // Log(4, "%-30s: %d\n", "memory alloc count", memory_manager->m_alloc_id);
-    // Log(4, "=====================================================\n");
-}
-
-static void CallBack_Memory_Check_Memory_Leak(MemoryProfileData* memory_profile_data, tptr ptr)
-{
-    Assert(memory_profile_data->m_alloc_size == 0, "There has a memory leak!");
-}
-
-void Engine_Debug_Memory_Check_Leak()
-{
-    // MemoryManager* memory_manager = MemoryManager_GetInstance();
-    // Assert(memory_manager != NULL, "You had free MemoryManager? If you want to check static memory, use Engine_Debug_Memory_Static_Check_Leak.");
-    // Queue(MemoryProfileData*)* memory_profile_data_queue = memory_manager->m_memory_profile_data_queue;
-    // Queue_ForEach( memory_profile_data_queue, CallBack_Memory_Check_Memory_Leak, NULL );
-}
-
-void Engine_Debug_Memory_Static_Check_Leak()
-{
-    Assert( static_alloc_memory_size == 0, "Memory leak!");
 }

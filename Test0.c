@@ -33,8 +33,7 @@
 
 static void Storage_Test0()
 {
-    strcrc local_name;
-    StrCrc(__FUNCTION__, 0, &local_name);
+    strcrc local_name = StrCrc(__FUNCTION__, 0);
 
     Storage* storage = Storage_Create(&local_name);
 
@@ -89,8 +88,7 @@ static bool CallBack_Queue_Test_Find(Data* a, int32 v)
 
 static void Queue_Test0()
 {
-    strcrc local_name;
-    StrCrc(__FUNCTION__, 0, &local_name);
+    strcrc local_name = StrCrc(__FUNCTION__, 0);
 
     Queue(Data*)* queue = Queue_Create(&local_name, Data*);
 
@@ -124,8 +122,7 @@ static void Log_Test0()
 ////////////////////////////////////////////////////////////////////////////////
 static void Memory_Test1()
 {
-    strcrc local_name;
-    StrCrc(__FUNCTION__, 0, &local_name);
+    strcrc local_name = StrCrc(__FUNCTION__, 0);
 
     tchar* ptr = MemNewSize(&local_name, 256);
     tptr ptr2 = ptr + 1;
@@ -143,8 +140,7 @@ static void Memory_Test1()
 
 static void Memory_Test0()
 {
-    strcrc local_name;
-    StrCrc(__FUNCTION__, 0, &local_name);
+    strcrc local_name = StrCrc(__FUNCTION__, 0);
 
     tptr ptr = MemNewSize(&local_name, 256);
     MemDel(ptr);
@@ -171,8 +167,7 @@ static void String_Test2()
 
 static void String_Test1()
 {
-    strcrc local_name;
-    StrCrc(__FUNCTION__, 0, &local_name);
+    strcrc local_name = StrCrc(__FUNCTION__, 0);
 
     String* a = String_New(&local_name, NULL, 0, false);
 
@@ -189,8 +184,7 @@ static void String_Test1()
 
 static void String_Test0()
 {
-    strcrc local_name;
-    StrCrc(__FUNCTION__, 0, &local_name);
+    strcrc local_name = StrCrc(__FUNCTION__, 0);
 
     String* string1 = String_New(&local_name, "hello world", 0, true);
     String* string2 = String_New(&local_name, "goodbye world", 0, true);
@@ -221,8 +215,7 @@ static void String_Test0()
 ////////////////////////////////////////////////////////////////////////////////
 void Actor_Test2()
 {
-    strcrc local_name;
-    StrCrc(__FUNCTION__, 0, &local_name);
+    strcrc local_name = StrCrc(__FUNCTION__, 0);
 
     Scene* scene = SceneManager_Scene_Create(&local_name, NULL);
     Actor* actor = Scene_Actor_Create(&local_name, scene, NULL, NULL);
@@ -241,8 +234,7 @@ void Actor_Test2()
 
 void Actor_Test1()
 {
-    strcrc local_name;
-    StrCrc(__FUNCTION__, 0, &local_name);
+    strcrc local_name = StrCrc(__FUNCTION__, 0);
 
     Scene* scene = SceneManager_Scene_Create(&local_name, NULL);
     Actor* actor = Scene_Actor_Create(&local_name, scene, NULL, NULL);
@@ -263,8 +255,7 @@ void Actor_Test1()
 
 void Actor_Test0()
 {
-    strcrc local_name;
-    StrCrc(__FUNCTION__, 0, &local_name);
+    strcrc local_name = StrCrc(__FUNCTION__, 0);
 
     Scene* scene = SceneManager_Scene_Create(&local_name, NULL);
     Actor* actor = Scene_Actor_Create(&local_name, scene, NULL, NULL);
@@ -290,8 +281,7 @@ void CallBack_TaskRun0(Task* task, tptr ptr)
 
 void Task_Test0()
 {
-    strcrc local_name;
-    StrCrc(__FUNCTION__, 0, &local_name);
+    strcrc local_name = StrCrc(__FUNCTION__, 0);
 
     Task* task = TaskManager_Task_Work_Add(&local_name,0, 4, false, NULL, CallBack_TaskRun0, NULL, NULL);
 
@@ -330,8 +320,7 @@ void CallBack_SceneDesrtoy(Scene* scene)
 
 void Scene_Test0()
 {
-    strcrc local_name;
-    StrCrc(__FUNCTION__, 0, &local_name);
+    strcrc local_name = StrCrc(__FUNCTION__, 0);
 
     Scene* scene = SceneManager_Scene_Create(&local_name, CallBack_SceneDesrtoy);
 
@@ -342,8 +331,7 @@ void Scene_Test0()
 ////////////////////////////////////////////////////////////////////////////////
 void Mutex_Test0()
 {
-    strcrc local_name;
-    StrCrc(__FUNCTION__, 0, &local_name);
+    strcrc local_name = StrCrc(__FUNCTION__, 0);
 
     bool success;
     Mutex* mutex1 = Mutex_Create(&local_name, 1);

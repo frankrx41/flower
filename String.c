@@ -167,8 +167,9 @@ tsize Str_Copy(tchar* dest, const tchar* from, tsize length)
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-strcrc* StrCrc(const tchar* str, crc32 crc, strcrc* out_strcrc)
+strcrc StrCrc(const tchar* str, crc32 crc)
 {
+    strcrc out_strcrc;
 #if HELP_CALC_CRC
     if( crc == 0 )
     {
@@ -177,8 +178,8 @@ strcrc* StrCrc(const tchar* str, crc32 crc, strcrc* out_strcrc)
 #endif
     Assert(crc == Str_CalcCrc(str, Str_CalcLength(str)), "");
 
-    out_strcrc->m_str = str;
-    out_strcrc->m_crc32 = crc;
+    out_strcrc.m_str    = str;
+    out_strcrc.m_crc32  = crc;
 
     return out_strcrc;
 }
@@ -195,6 +196,11 @@ strcrc* StrCrc_Copy(const strcrc* source_strcrc, strcrc* out_strcrc)
 bool StrCrc_IsSame(const strcrc* strcrc1, const strcrc* strcrc2)
 {
     return strcrc1->m_crc32 == strcrc2->m_crc32;
+}
+
+bool StrCrc_IsEmpty(const strcrc* strcrc)
+{
+    return strcrc->m_crc32 == 0;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
