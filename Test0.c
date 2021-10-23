@@ -29,6 +29,7 @@
 #include "Scene.h"
 #include "tData.h"
 #include "Vec.h"
+#include "Stat.h"
 
 
 static void Storage_Test0()
@@ -360,6 +361,23 @@ void Mutex_Test0()
 }
 
 ////////////////////////////////////////////////////////////////////////////////
+void Stat_Test0()
+{
+    statcycle stat_data_cycle;
+
+    StatCycle_Reset(&stat_data_cycle);
+
+    StatCycle_Float_Add(&stat_data_cycle, 5);
+    StatCycle_Float_Add(&stat_data_cycle, 4);
+    StatCycle_Float_Add(&stat_data_cycle, 3);
+
+    Assert(stat_data_cycle.m_data_ave.m_float == 4, "");
+
+    StatCycle_Float_Add(&stat_data_cycle, 88);
+    Assert(stat_data_cycle.m_data_ave.m_float == 25, "");
+}
+
+////////////////////////////////////////////////////////////////////////////////
 typedef void (*CB_Test_Void)();
 static void Test(uint32 index, CB_Test_Void cb_test_void)
 {
@@ -392,6 +410,8 @@ void Engine_Debug_UnitTesting0()
         Scene_Test0,
 
         Mutex_Test0,
+
+        Stat_Test0,
     };
 
     Log(0, "%s Start\n", __FUNCTION__);

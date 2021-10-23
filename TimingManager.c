@@ -9,8 +9,23 @@
 
 #include "String.h"
 #include "Thread.h"
+#include "tData.h"
+#include "Stat.h"
 
+static statcycle stat_cpu_seconds;
+static statcycle stat_fps;
 
+void TimingManager_Stat()
+{
+    Log(4, "Fps Profile:\n");
+    Log(4, "=====================================================\n");
+
+    Log(4, "%-20s: %7.2f  %7.2f  %7.2f\n", "Cpu seconds", stat_cpu_seconds.m_data_ave.m_float, stat_cpu_seconds.m_data_min.m_float, stat_cpu_seconds.m_data_max.m_float);
+    Log(4, "%-20s: %7.2f  %7.2f  %7.2f\n", "Fps", stat_fps.m_data_ave.m_float, stat_fps.m_data_min.m_float, stat_fps.m_data_max.m_float);
+    Log(4, "=====================================================\n");
+}
+
+////////////////////////////////////////////////////////////////////////////////
 struct TimingManager
 {
     bool    m_is_initialized;
@@ -97,13 +112,17 @@ bool TimingManager_IsLimitFrameRate(TimingManager* timing_manager)
 
 void TimingManager_TrimSpeed(TimingManager* timing_manager)
 {
-    int64 current_cpu_tick;
     const int64 last_cpu_tick = timing_manager->m_last_cpu_tick;
     const int64 next_cpu_tick = timing_manager->m_next_cpu_tick;
+    int64 current_cpu_tick = TimingManager_Cpu_Tick_Get_Plat(timing_manager, timing_manager->m_platform_data);
+
+    {
+        float seconds = (current_cpu_tick - last_cpu_tick) / (timing_manager->m_ticks_in_one_frame * TimingManager_GetFrameRate(timing_manager));
+        StatCycle_Float_Add(&stat_cpu_seconds, seconds);
+    }
 
     for(;;)
     {
-
         current_cpu_tick = TimingManager_Cpu_Tick_Get_Plat(timing_manager, timing_manager->m_platform_data);
         
         if( current_cpu_tick >= next_cpu_tick )
@@ -120,6 +139,9 @@ void TimingManager_TrimSpeed(TimingManager* timing_manager)
     timing_manager->m_prev_frame_delta_seconds = (current_cpu_tick - last_cpu_tick) / (timing_manager->m_ticks_in_one_frame * TimingManager_GetFrameRate(timing_manager));
     timing_manager->m_idle_seconds += timing_manager->m_prev_frame_delta_seconds;
 
+    {
+        StatCycle_Float_Add(&stat_fps, 1.f / timing_manager->m_prev_frame_delta_seconds);
+    }
 
     EventManager_SendEvent_Update(EventManager_GetInstance(), Event_Scene_Tick, timing_manager->m_prev_frame_delta_seconds);
     EventManager_SendEvent_Update(EventManager_GetInstance(), Event_Scene_Update_Anime, timing_manager->m_prev_frame_delta_seconds);
@@ -128,10 +150,6 @@ void TimingManager_TrimSpeed(TimingManager* timing_manager)
     {
         EventManager_SendEvent_Update(EventManager_GetInstance(), Event_Scene_Idle, timing_manager->m_idle_seconds);
     }
-
-    TODO("Add fps profile");
-    // Log(0, "%f\n", timing_manager->m_prev_frame_delta_seconds);
-    // Assert(timing_manager->m_prev_frame_delta_seconds < 1.f, "Fps is too low!");
 }
 
 float TimingManager_Cpu_Seconds_Get(TimingManager* timing_manager)

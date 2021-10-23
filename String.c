@@ -186,10 +186,19 @@ strcrc StrCrc(const tchar* str, crc32 crc)
 
 strcrc* StrCrc_Copy(const strcrc* source_strcrc, strcrc* out_strcrc)
 {
-    Assert(source_strcrc->m_crc32 != 0, "");
-    out_strcrc->m_crc32 = source_strcrc->m_crc32;
-    out_strcrc->m_str   = source_strcrc->m_str;
+    Assert( out_strcrc != NULL, "");
+    if( source_strcrc == NULL )
+    {
+        out_strcrc->m_str   = NULL;
+        out_strcrc->m_crc32 = 0;
+    }
+    else
+    {
+        Assert( source_strcrc->m_crc32 != 0, "");
 
+        out_strcrc->m_crc32 = source_strcrc->m_crc32;
+        out_strcrc->m_str   = source_strcrc->m_str;
+    }
     return out_strcrc;
 }
 

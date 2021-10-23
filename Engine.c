@@ -97,6 +97,7 @@ void Engine_Main(const tchar* command_line)
     Engine_Debug_UnitTesting0();
     Engine_Debug_UnitTesting1();
 
+    TimingManager_SetFrameRate(TimingManager_GetInstance(), 30);
     Engine_MainLoop();
 
     Engine_UnInitialize();
@@ -140,6 +141,7 @@ void Engine_UnInitialize()
     InputManager_Destroy(engine->m_input_manager);
 
     Memory_Stat();
+    TimingManager_Stat();
     Engine_Debug_Memory_Check_Leak();
 }
 

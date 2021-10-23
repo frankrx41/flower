@@ -1,14 +1,15 @@
 #pragma once
 
-typedef struct StatDataCycle StatDataCycle;
-typedef struct StatDataCount StatDataCount;
+typedef struct statcycle statcycle;
+typedef struct statcount statcount;
 typedef struct strcrc strcrc;
 typedef union tdata tdata;
 
 #define STAT_CYCLE_FRAME_MAX  ( 60 )
 
-struct StatDataCycle
+struct statcycle
 {
+    bool    m_is_initialized;
     strcrc  m_local_name;
 
     tdata   m_data_frame[STAT_CYCLE_FRAME_MAX];
@@ -24,9 +25,11 @@ struct StatDataCycle
     uint32  m_sleep_frame_count;
 };
 
-struct StatDataCount
+struct statcount
 {
+    bool    m_is_initialized;
     strcrc  m_local_name;
+
     tdata   m_data_value;
     tdata   m_data_ave;
     tdata   m_data_max;
@@ -37,12 +40,13 @@ struct StatDataCount
 
 
 
-void    StatDataCycle_Int32_Add (StatDataCycle* stat_data_cycle, int32 data);
-void    StatDataCycle_Int32_Set (StatDataCycle* stat_data_cycle, int32 data);
-
-tdata   StatDataCycle_Data_Get  (const StatDataCycle* stat_data_cycle);
+void    StatCycle_Int32_Add (statcycle* stat_cycle, int32 data);
+void    StatCycle_Float_Add (statcycle* stat_cycle, float data);
 
 
-void    StatDataCount_Int32_Add (StatDataCount* stat_data_count, int32 data);
-void    StatDataCount_Int32_Set (StatDataCount* stat_data_count, int32 data);
+tdata   StatCycle_Data_Get  (const statcycle* stat_cycle);
+void    StatCycle_Reset     (statcycle* stat_cycle);
+
+void    StatCount_Int32_Inc (statcount* stat_count, int32 data);
+void    StatCount_Int32_Set (statcount* stat_count, int32 data);
 

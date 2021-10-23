@@ -67,7 +67,7 @@ TaskManager* TaskManager_Create(const strcrc* local_name)
 {
     TaskManager* task_manager = MemNew(local_name, TaskManager);
     StrCrc_Copy(local_name, &task_manager->m_local_name);
-    task_manager->m_task_queue_thread_job_max = 3;
+    task_manager->m_task_queue_thread_job_max = 0;
     task_manager->m_task_queue_thread_work    = MemNewSize(local_name, sizeof(TaskQueueThread*)*task_manager->m_task_queue_thread_job_max);
 
     for(uint32 i=0; i<task_manager->m_task_queue_thread_job_max; i++)

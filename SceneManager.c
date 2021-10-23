@@ -9,6 +9,7 @@
 #include "SceneManager.h"
 #include "EventManager.h"
 #include "TaskManager.h"
+#include "TimingManager.h"
 
 #include "Queue.h"
 #include "Scene.h"
@@ -148,6 +149,7 @@ void SceneManager_TryRunNextCommand(SceneManager* scene_manager)
                 scene_manager->m_is_scene_loading = true;
                 TaskManager_Task_Work_Add(&scene_manager->m_local_name, 0, 0, true, NULL, SceneManager_LoadLastScene, NULL, scene_manager);
                 Memory_Stat();
+                TimingManager_Stat();
             }
             else
             {

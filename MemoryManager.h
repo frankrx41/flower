@@ -14,6 +14,7 @@ tptr    Memory_Copy         (tptr dst_ptr, const tptr src_ptr, tsize size);
 tptr    Memory_Set          (tptr ptr, int32 val, tsize size);
 tptr    Memory_FullFill     (tptr ptr, int32 val);
 tptr    Memory_Zero         (tptr ptr);
+tptr    Memory_ZeroSize     (tptr ptr, tsize size);
 tsize   Memory_GetSize      (const tptr ptr);
 
 bool    Memory_IsInBounds   (tptr head_ptr, tptr check_ptr);
@@ -24,5 +25,6 @@ bool    Memory_IsInBounds   (tptr head_ptr, tptr check_ptr);
 #define MemClone(local_name, ptr)           Memory_Clone(local_name, (tptr)ptr)
 #define MemSafeClone(local_name, ptr)       Memory_SafeClone(local_name, (tptr)ptr)
 #define MemZero(ptr)                        Memory_Zero(ptr)
+#define MemZeroSize(ptr, size)              Memory_ZeroSize(ptr, size)
 #define MemDel(ptr)                         do{Memory_Free(ptr); ptr = NULL;}while(0)
 #define MemSafeDel(ptr)                     do{if(ptr){Memory_Free(ptr); ptr = NULL;}}while(0)

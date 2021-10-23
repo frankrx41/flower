@@ -11,10 +11,10 @@
 
 
 #define MEMORY_STAT_MAX     ( 50 )
-static StatDataCount stat_alloc_size[MEMORY_STAT_MAX];
-static StatDataCount stat_alloc_count;
+static statcount stat_alloc_size[MEMORY_STAT_MAX];
+static statcount stat_alloc_count;
 
-static StatDataCount* Memory_FindStatData(const strcrc* local_name)
+static statcount* Memory_FindStatData(const strcrc* local_name)
 {
     for(int i=0; i<MEMORY_STAT_MAX; i++)
     {
@@ -45,7 +45,7 @@ void Memory_Stat()
 
     for(int i=0; i<MEMORY_STAT_MAX; i++)
     {
-        StatDataCount* stat_data_count = &stat_alloc_size[i];
+        statcount* stat_data_count = &stat_alloc_size[i];
         tsize size = stat_data_count->m_data_value.m_int32;
         if( StrCrc_IsEmpty(&stat_data_count->m_local_name) )
         {
@@ -70,7 +70,7 @@ void Engine_Debug_Memory_Check_Leak()
 {
     for(int i=0; i<MEMORY_STAT_MAX; i++)
     {
-        StatDataCount* stat_data_count = &stat_alloc_size[i];
+        statcount* stat_data_count = &stat_alloc_size[i];
         Assert(stat_data_count->m_data_value.m_int32 == 0, "");
     }
 }
@@ -114,11 +114,18 @@ tptr Memory_Alloc(const strcrc* local_name, tsize size)
     MemoryBlock * memory_block  = Memory_Alloc_Plat(sizeof(MemoryBlock) + size);
     Assert(memory_block != NULL, "");
     memory_block->m_pointer     = memory_block->m_byte;
-    StrCrc_Copy(local_name, &memory_block->m_local_name);
+    if( local_name != NULL )
+    {
+        StrCrc_Copy(local_name, &memory_block->m_local_name);
+    }
+    else
+    {
+        memory_block->m_local_name = StrCrc("Null", 0);
+    }
     memory_block->m_alloc_size  = size;
 
-    StatDataCount_Int32_Add(Memory_FindStatData(local_name), memory_block->m_alloc_size);
-    StatDataCount_Int32_Add(&stat_alloc_count, 1);
+    StatCount_Int32_Inc(Memory_FindStatData(&memory_block->m_local_name), memory_block->m_alloc_size);
+    StatCount_Int32_Inc(&stat_alloc_count, 1);
 
     return memory_block->m_byte;
 }
@@ -129,7 +136,7 @@ void Memory_Free(tptr ptr)
 
     MemoryBlock * memory_block = CastToMemoryBlock(ptr);
 
-    StatDataCount_Int32_Add(Memory_FindStatData(&memory_block->m_local_name), -1*memory_block->m_alloc_size);
+    StatCount_Int32_Inc(Memory_FindStatData(&memory_block->m_local_name), -1*memory_block->m_alloc_size);
 
     Memory_Free_Plat(memory_block);
 }
@@ -210,6 +217,18 @@ tptr Memory_Zero(tptr ptr)
 
     return
     Memory_Set_Plat(ptr, 0, memory_block->m_alloc_size);
+}
+
+tptr Memory_ZeroSize(tptr ptr, tsize size)
+{
+    MemoryBlock* memory_block = CastToMemoryBlock(ptr);
+    if( memory_block )
+    {
+        Assert(size < memory_block->m_alloc_size, "");
+    }
+
+    return
+    Memory_Set_Plat(ptr, 0, size);
 }
 
 tsize Memory_GetSize(const tptr ptr)
