@@ -367,7 +367,7 @@ static void Test(uint32 index, CB_Test_Void cb_test_void)
 
     cb_test_void();
 
-    Engine_Profile_Memory();
+    Memory_Stat();
 }
 
 void Engine_Debug_UnitTesting0()
@@ -395,7 +395,7 @@ void Engine_Debug_UnitTesting0()
     };
 
     Log(0, "%s Start\n", __FUNCTION__);
-    Engine_Profile_Memory();
+    Memory_Stat();
 
     for(uint32 i=0, max_i = ARRAY_SIZE(cb_test_void_array); i<max_i; i++)
     {

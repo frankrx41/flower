@@ -147,7 +147,7 @@ void SceneManager_TryRunNextCommand(SceneManager* scene_manager)
             {
                 scene_manager->m_is_scene_loading = true;
                 TaskManager_Task_Work_Add(&scene_manager->m_local_name, 0, 0, true, NULL, SceneManager_LoadLastScene, NULL, scene_manager);
-                Engine_Profile_Memory();
+                Memory_Stat();
             }
             else
             {

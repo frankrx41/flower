@@ -35,9 +35,7 @@ static StatDataCount* Memory_FindStatData(const strcrc* local_name)
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-#undef Engine_Profile_Memory
-
-void Engine_Profile_Memory()
+void Memory_Stat()
 {
     tsize   total_alloc_size = 0;
     uint32  total_alloc_count = 0;

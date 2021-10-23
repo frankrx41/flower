@@ -139,7 +139,7 @@ void Engine_UnInitialize()
     SceneManager_Destroy(engine->m_scene_manager);
     InputManager_Destroy(engine->m_input_manager);
 
-    Engine_Profile_Memory();
+    Memory_Stat();
     Engine_Debug_Memory_Check_Leak();
 }
 

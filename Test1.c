@@ -340,7 +340,7 @@ void Engine_Test0()
 
     SceneManager_Scene_Foreground_Queue_Add(scene);
 
-    Engine_Profile_Memory();
+    Memory_Stat();
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -365,7 +365,7 @@ void Engine_Debug_UnitTesting1()
     };
 
     Log(0, "%s Start\n", __FUNCTION__);
-    Engine_Profile_Memory();
+    Memory_Stat();
 
     for (uint32 i = 0, max_i = ARRAY_SIZE(cb_test_void_array); i < max_i; i++)
     {

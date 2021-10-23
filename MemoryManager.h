@@ -2,6 +2,7 @@
 
 typedef struct strcrc strcrc;
 
+void    Memory_Stat         ();
 
 tptr    Memory_Alloc        (const strcrc* local_name, tsize size);
 void    Memory_Free         (tptr ptr);

@@ -6,12 +6,12 @@
 #include "Platform.h"
 
 
-void Engine_Debug_Break()
+void Debug_Break()
 {
     __debugbreak();
 }
 
-void Engine_Debug_Log(int32 type, const tchar* format, ...)
+void Debug_Log(int32 type, const tchar* format, ...)
 {
     tchar buffer[4996];
     va_list ap;

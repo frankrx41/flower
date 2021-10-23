@@ -79,25 +79,25 @@ typedef byte bool;
 
 #if CONFIG_DEBUG || CONFIG_RELEASE
 
-void    Engine_Debug_Log        (int32 type, const tchar* format, ...);
-bool    Str_IsEmpty             (const tchar* str);
-void    Engine_Debug_Break      ();
-void    Engine_Profile_Memory   ();
+extern void     Debug_Log               (int32 type, const tchar* format, ...);
+extern void     Debug_Break             ();
+extern bool     Str_IsEmpty             (const tchar* str);
+
 // 0 info, 1 warn, 2 error, 4 profile
-#define Log                     Engine_Debug_Log
+#define Log                     Debug_Log
 
 #define Assert(must_true_condition, msg, ...) do{ \
     if(!(must_true_condition)) { \
         if (!(Str_IsEmpty(msg))) { Log(2, msg, ##__VA_ARGS__); } \
         else { Log(2, "Error at file %s, function %s, line %u: %s\n", __FILE__, __FUNCTION__, __LINE__, #must_true_condition); } \
-        Engine_Debug_Break(); \
+        Debug_Break(); \
     } \
 }while(0)
 #else
 
 #define Log(...)
 #define Assert(must_be_true_condition, msg)
-#define Engine_Profile_Memory()
+
 
 #endif
 
