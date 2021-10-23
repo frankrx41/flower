@@ -104,6 +104,9 @@
     <ClCompile Include="Stat.c">
       <Filter>Library\Stat</Filter>
     </ClCompile>
+    <ClCompile Include="Viewport.c">
+      <Filter>Render\Viewport</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CoreMini.h" />
@@ -197,6 +200,9 @@
     <ClInclude Include="Stat.h">
       <Filter>Library\Stat</Filter>
     </ClInclude>
+    <ClInclude Include="Viewport.h">
+      <Filter>Render\Viewport</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Platform">
@@ -267,6 +273,9 @@
     </Filter>
     <Filter Include="Library\Stat">
       <UniqueIdentifier>{e2d1d52e-8412-4341-b32a-712930c84372}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Render\Viewport">
+      <UniqueIdentifier>{5684c7c4-5526-441d-b68e-e79d9156e34e}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

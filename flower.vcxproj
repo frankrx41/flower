@@ -117,6 +117,7 @@
     <ClCompile Include="TimingManager.c" />
     <ClCompile Include="Timing_Win32.c" />
     <ClCompile Include="Vec.c" />
+    <ClCompile Include="Viewport.c" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ControlComponent.h" />
@@ -150,6 +151,7 @@
     <ClInclude Include="Timer.h" />
     <ClInclude Include="TimingManager.h" />
     <ClInclude Include="Vec.h" />
+    <ClInclude Include="Viewport.h" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="Help.txt" />
