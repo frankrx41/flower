@@ -26,14 +26,14 @@ struct aabb
     vec3 m_v2;
 };
 
-vec3    Vec3        (float x, float y, float z);
-vec3    Vec3_Add    (vec3 v1, vec3 v2);
-bool    Vec3_IsZero (vec3 v);
+vec3    Vec3            (float x, float y, float z);
+vec3*   Vec3_Add        (vec3* v1, vec3* v2, vec3* out);
+vec3*   Vec3_Multiply   (vec3* v, float k, vec3* out);
+vec3*   Vec3_Cross      (vec3* v1, vec3* v2, vec3* out);
+float   Vec3_Dot        (vec3* v1, vec3* v2);
+bool    Vec3_IsZero     (vec3* v);
 
-vec2    Vec2        (float x, float y);
+vec2    Vec2            (float x, float y);
 
-vec3    Vec3_Multiply   (vec3 v, float k);
-vec3    Vec3_Cross      (vec3 v1, vec3 v2);
-float   Vec3_Dot        (vec3 v1, vec3 v2);
 
-aabb    AABB        (vec3 v1, vec3 v2);
+aabb    AABB            (vec3* v1, vec3* v2);

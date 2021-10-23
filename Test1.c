@@ -33,16 +33,17 @@
 ////////////////////////////////////////////////////////////////////////////////
 void CallBack_ActorOnEvent5(Actor* actor, const EventInfo* event_info)
 {
+    vec3 vec3_temp;
     switch (event_info->m_event)
     {
     case Event_Control_Cancel: SceneManager_Scene_ExitCurrent();   return;
-    case Event_Control_MoveUp: Actor_Component_Physics_Location_Move(actor, Vec3(0, -0.1f, 0)); break;
-    case Event_Control_MoveDown: Actor_Component_Physics_Location_Move(actor, Vec3(0, +0.1f, 0)); break;
+    case Event_Control_MoveUp: vec3_temp = Vec3(0, -0.1f, 0); Actor_Component_Physics_Location_Move(actor, &vec3_temp); break;
+    case Event_Control_MoveDown: vec3_temp = Vec3(0, +0.1f, 0); Actor_Component_Physics_Location_Move(actor, &vec3_temp); break;
     default:
         Assert(false, "");
     }
 
-    vec3 vec = Actor_Component_Physics_Location_Get(actor);
+    vec3 vec = *Actor_Component_Physics_Location_Get(actor);
     Actor_Component_Render_ShaderText_Clear(actor);
     String* string = String_New(Actor_LocalName_Str_Get(actor), NULL, 0, false);
     String_Format(string, "(%.2f) %s", vec.m_y, event_info->m_event == Event_Control_MoveUp ? "Up" : "Down");
@@ -57,7 +58,8 @@ void CallBack_Actor_Create5(Actor* actor, const void* ptr)
     Actor_Component_New(actor, Component_Physics);
 
     Actor_Component_Render_ShaderText_Add(actor, Vec3(2, 2, 0), "Press Esc to exit");
-    Actor_Component_Physics_Location_Set(actor, Vec3(6, 0, 0));
+    vec3 vec3_temp = Vec3(6, 0, 0);
+    Actor_Component_Physics_Location_Set(actor, &vec3_temp);
     Actor_Component_Control_ControlEventRespond_Add(actor, Event_Control_Cancel, NULL, CallBack_ActorOnEvent5);
     Actor_Component_Control_ControlEventRespond_Add(actor, Event_Control_MoveUp, NULL, CallBack_ActorOnEvent5);
     Actor_Component_Control_ControlEventRespond_Add(actor, Event_Control_MoveDown, NULL, CallBack_ActorOnEvent5);
@@ -92,7 +94,7 @@ void CallBack_ActorOnEvent4(Actor* actor, const EventInfo* event_info)
 
     Actor_Component_Render_ShaderText_Clear(actor);
 
-    const vec3 displacement = Actor_Component_Physics_Location_Get(actor);
+    const vec3 displacement = *Actor_Component_Physics_Location_Get(actor);
     String* string = String_New(Actor_LocalName_Str_Get(actor), NULL, 0, false);
     String_Format(string, "(%.2f, %.2f, %.2f) %.2f", displacement.m_x, displacement.m_y, displacement.m_z, 0.f);
     Actor_Component_Render_ShaderText_Add(actor, Vec3(0, 0, 0), String_CStr(string));
@@ -105,8 +107,11 @@ void CallBack_Actor_Create4(Actor* actor, const void* ptr)
     Actor_Component_New(actor, Component_Control);
     Actor_Component_New(actor, Component_Physics);
 
-    Actor_Component_Physics_Location_Set(actor, Vec3(1.f, 1.f, 0.f));
-    Actor_Component_Physics_Velocity_Set(actor, Vec3(1.f, 0, 2.f));
+    vec3 vec3_temp;
+    vec3_temp = Vec3(1.f, 1.f, 0.f);
+    Actor_Component_Physics_Location_Set(actor, &vec3_temp);
+    vec3_temp = Vec3(1.f, 0, 2.f);
+    Actor_Component_Physics_Velocity_Set(actor, &vec3_temp);
 
     Actor_Component_Physics_SetEnableSimulate(actor, true);
     Actor_Component_Control_SceneEventRespond_Add(actor, Event_Scene_Tick, NULL, CallBack_ActorOnEvent4);
@@ -313,9 +318,10 @@ void Engine_Test1()
 ////////////////////////////////////////////////////////////////////////////////
 void CallBack_ActorOnEvent0(Actor* actor, const EventInfo* event_info)
 {
-    Actor_Component_Physics_Location_Move(actor, Vec3(0.1f, 0.05f, 0));
+    vec3 vec3_temp = Vec3(0.1f, 0.05f, 0);
+    Actor_Component_Physics_Location_Move(actor, &vec3_temp);
 
-    vec3 vec = Actor_Component_Physics_Location_Get(actor);
+    vec3 vec = *Actor_Component_Physics_Location_Get(actor);
     if (vec.m_y > 2)
     {
         SceneManager_Scene_ExitCurrent();
@@ -335,7 +341,8 @@ void Engine_Test0()
     Actor_Component_New(actor, Component_Control);
     Actor_Component_New(actor, Component_Physics);
 
-    Actor_Component_Physics_Location_Set(actor, Vec3(0, 0, 0));
+    vec3 vec3_temp = Vec3(0, 0, 0);
+    Actor_Component_Physics_Location_Set(actor, &vec3_temp);
     Actor_Component_Control_SceneEventRespond_Add(actor, Event_Scene_Tick, NULL, CallBack_ActorOnEvent0);
 
     SceneManager_Scene_Foreground_Queue_Add(scene);

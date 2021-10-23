@@ -12,6 +12,7 @@ Add Fps profile
 Add Shader2D
 Update TaskManager_Thread_RunTask
 Add extern
+Rename out_
 
 Add Event_Actor_Destroy
 Add CB_ProcessSence in Sence_Destroy

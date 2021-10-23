@@ -29,46 +29,47 @@ void Component_Physics_Destroy(PhysicsComponent* physics_component)
     MemDel(physics_component);
 }
 
-vec3 Component_Physics_GetLocation(PhysicsComponent* physics_component)
+vec3* Component_Physics_GetLocation(PhysicsComponent* physics_component)
 {
     Assert(physics_component != NULL, "");
-    return physics_component->m_displacement;
+    return &physics_component->m_displacement;
 }
 
-void Component_Physics_SetLocation(PhysicsComponent* physics_component, vec3 vec)
+void Component_Physics_SetLocation(PhysicsComponent* physics_component, vec3* vec)
 {
     Assert(physics_component != NULL, "");
-    physics_component->m_displacement = vec;
+    physics_component->m_displacement = *vec;
 }
 
-void Component_Physics_MoveLocation(PhysicsComponent* physics_component, vec3 offset_vec)
+void Component_Physics_MoveLocation(PhysicsComponent* physics_component, vec3* offset_vec)
 {
     Assert(physics_component != NULL, "");
-    physics_component->m_displacement = Vec3_Add(physics_component->m_displacement, offset_vec);
+
+    Vec3_Add(&physics_component->m_displacement, offset_vec, &physics_component->m_displacement);
 }
 
-vec3 Component_Physics_GetVelocity(PhysicsComponent* physics_component)
+vec3* Component_Physics_GetVelocity(PhysicsComponent* physics_component)
 {
     Assert(physics_component != NULL, "");
-    return physics_component->m_velocity;
+    return &physics_component->m_velocity;
 }
 
-void Component_Physics_SetVelocity(PhysicsComponent* physics_component, vec3 velocity)
+void Component_Physics_SetVelocity(PhysicsComponent* physics_component, vec3* velocity)
 {
     Assert(physics_component != NULL, "");
-    physics_component->m_velocity = velocity;
+    physics_component->m_velocity = *velocity;
 }
 
-vec3 Component_Physics_GetAcceleration(PhysicsComponent* physics_component)
+vec3* Component_Physics_GetAcceleration(PhysicsComponent* physics_component)
 {
     Assert(physics_component != NULL, "");
-    return physics_component->m_acceleration;
+    return &physics_component->m_acceleration;
 }
 
-void Component_Physics_SetAcceleration(PhysicsComponent* physics_component, vec3 acceleration)
+void Component_Physics_SetAcceleration(PhysicsComponent* physics_component, vec3* acceleration)
 {
     Assert(physics_component != NULL, "");
-    physics_component->m_acceleration = acceleration;
+    physics_component->m_acceleration = *acceleration;
 }
 
 
@@ -88,15 +89,16 @@ void Component_Physics_Simulate(PhysicsComponent* physics_component, float delta
 {
     Assert( physics_component->m_is_enable_simulate != false, "" );
     // s = s + vt + 1/2 a t^2
-    const vec3 s_vt = Vec3_Add(physics_component->m_displacement, Vec3_Multiply(physics_component->m_velocity, delta_seconds));
+    vec3 vec3_temp;
+    vec3 s_vt = *Vec3_Add(&physics_component->m_displacement, Vec3_Multiply(&physics_component->m_velocity, delta_seconds, &vec3_temp), &vec3_temp);
     vec3 a_tt = vec3_null;
-    if( Vec3_IsZero(physics_component->m_acceleration) )
+    if( Vec3_IsZero(&physics_component->m_acceleration) )
     {
-        a_tt = Vec3_Multiply(physics_component->m_acceleration, delta_seconds * delta_seconds * .5f);
+        a_tt = *Vec3_Multiply(&physics_component->m_acceleration, delta_seconds * delta_seconds * .5f, &vec3_temp);
     }
-    physics_component->m_displacement = Vec3_Add(s_vt, a_tt);
+    physics_component->m_displacement = *Vec3_Add(&s_vt, &a_tt, &vec3_temp);
 
     // v = v + at
-    physics_component->m_velocity = Vec3_Add(physics_component->m_velocity, Vec3_Multiply(physics_component->m_acceleration, delta_seconds));
+    physics_component->m_velocity = *Vec3_Add(&physics_component->m_velocity, Vec3_Multiply(&physics_component->m_acceleration, delta_seconds, &vec3_temp), &vec3_temp);
 
 }

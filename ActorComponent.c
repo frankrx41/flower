@@ -24,7 +24,7 @@
 #include "String.h"
 
 // Location
-vec3 Actor_Component_Physics_Location_Get(const Actor* actor)
+vec3* Actor_Component_Physics_Location_Get(const Actor* actor)
 {
     Assert(actor != NULL, "");
     PhysicsComponent* physics_component = Actor_Component_Cast(actor, Component_Physics);
@@ -34,7 +34,7 @@ vec3 Actor_Component_Physics_Location_Get(const Actor* actor)
     Component_Physics_GetLocation(physics_component);
 }
 
-void Actor_Component_Physics_Location_Set(Actor* actor, vec3 vec)
+void Actor_Component_Physics_Location_Set(Actor* actor, vec3* vec)
 {
     Assert(actor != NULL, "");
     PhysicsComponent* physics_component = Actor_Component_Cast(actor, Component_Physics);
@@ -42,7 +42,7 @@ void Actor_Component_Physics_Location_Set(Actor* actor, vec3 vec)
     Component_Physics_SetLocation(physics_component, vec);
 }
 
-void Actor_Component_Physics_Location_Move(Actor* actor, vec3 offset_vec)
+void Actor_Component_Physics_Location_Move(Actor* actor, vec3* offset_vec)
 {
     Assert(actor != NULL, "");
     PhysicsComponent* physics_component = Actor_Component_Cast(actor, Component_Physics);
@@ -50,7 +50,7 @@ void Actor_Component_Physics_Location_Move(Actor* actor, vec3 offset_vec)
     Component_Physics_MoveLocation(physics_component, offset_vec);
 }
 
-vec3 Actor_Component_Physics_Velocity_Get(const Actor* actor)
+vec3* Actor_Component_Physics_Velocity_Get(const Actor* actor)
 {
     Assert(actor != NULL, "");
     PhysicsComponent* physics_component = Actor_Component_Cast(actor, Component_Physics);
@@ -60,7 +60,7 @@ vec3 Actor_Component_Physics_Velocity_Get(const Actor* actor)
     Component_Physics_GetVelocity(physics_component);
 }
 
-void Actor_Component_Physics_Velocity_Set(Actor* actor, vec3 velocity)
+void Actor_Component_Physics_Velocity_Set(Actor* actor, vec3* velocity)
 {
     Assert(actor != NULL, "");
     PhysicsComponent* physics_component = Actor_Component_Cast(actor, Component_Physics);
@@ -68,7 +68,7 @@ void Actor_Component_Physics_Velocity_Set(Actor* actor, vec3 velocity)
     Component_Physics_SetVelocity(physics_component, velocity);
 }
 
-vec3 Actor_Component_Physics_Acceleration_Get(const Actor* actor)
+vec3* Actor_Component_Physics_Acceleration_Get(const Actor* actor)
 {
     Assert(actor != NULL, "");
     PhysicsComponent* physics_component = Actor_Component_Cast(actor, Component_Physics);
@@ -78,7 +78,7 @@ vec3 Actor_Component_Physics_Acceleration_Get(const Actor* actor)
     Component_Physics_GetAcceleration(physics_component);
 }
 
-void Actor_Component_Physics_Acceleration_Set(Actor* actor, vec3 acceleration)
+void Actor_Component_Physics_Acceleration_Set(Actor* actor, vec3* acceleration)
 {
     Assert(actor != NULL, "");
     PhysicsComponent* physics_component = Actor_Component_Cast(actor, Component_Physics);
@@ -269,7 +269,7 @@ void CallBack_Render_ActorShaderText_Plat(ShaderText* shader_text, const Actor* 
     {
         if (Actor_Component_Cast(actor, Component_Physics))
         {
-            vec = Vec3_Add(vec, Actor_Component_Physics_Location_Get(actor));
+            Vec3_Add(&vec, Actor_Component_Physics_Location_Get(actor), &vec);
         }
     }
 
