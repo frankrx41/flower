@@ -87,7 +87,7 @@ void Viewport_RenderTo_Viewport(const Viewport* viewport, Viewport* out_viewport
         for( int32 x=0; x<out_viewport->m_width; x++ )
         {
             int32 i2 = x + y*Int32(out_viewport->m_width);
-            int32 i1 = out_viewport->m_offset.m_y * Int32(viewport->m_width) + out_viewport->m_offset.m_x + x + y*Int32(viewport->m_width);
+            int32 i1 = Int32(out_viewport->m_offset.m_y) * Int32(viewport->m_width) + Int32(out_viewport->m_offset.m_x)+x + y*Int32(viewport->m_width);
             if( out_viewport->m_data[i2].m_tchar != 0 && i1 < viewport->m_width * viewport->m_height)
             {
                 if( viewport->m_data[i1].m_tchar != out_viewport->m_data[i2].m_tchar )
@@ -106,7 +106,7 @@ void Viewport_Render_ShaderText(Viewport* viewport, ShaderText* shader_text)
     const float y = location->m_y;
     const tchar* str = ShaderText_Str_Get(shader_text);
     
-    const int32 index = Int32(viewport->m_width) * Int32(y)*viewport->m_scale.m_y + Int32(x)*viewport->m_scale.m_x;
+    const int32 index = Int32(viewport->m_width) * Int32(y)*Int32(viewport->m_scale.m_y) + Int32(x)*Int32(viewport->m_scale.m_x);
     
     for( int32 i=0; str[i] != NULL; i++ )
     {
