@@ -57,7 +57,7 @@ static void Scene_Create0(void)
 
     Scene * scene = SceneManager_Scene_Create(&local_name, NULL, NULL, NULL);
 
-    Actor * actor = Scene_Actor_Create(&local_name, scene, Actor_Create0, NULL);
+    Actor * actor = Scene_Actor_Create(&local_name, scene, Actor_Create0, NULL, NULL);
 
     InputManager_Input_ControlEvent_Add(InputManager_GetInstance(), KeyId_Escape, KeyState_Down, Event_Control_Cancel);
     InputManager_Input_ControlEvent_Add(InputManager_GetInstance(), KeyId_Up, KeyState_Down, Event_Control_MoveUp);

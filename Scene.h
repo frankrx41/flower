@@ -10,9 +10,12 @@ typedef enum Event Event;
 typedef struct Viewport Viewport;
 
 typedef bool (*CB_FindData_Bool_tPtr_tPtr)      (const void* data, const void* ptr);
+
 typedef void (*CB_ActorCreate_Void_Actor_tPtr)  (Actor* actor, const void* ptr);
-typedef void (*CB_SceneDestroy_Void_Scene)      (Scene* scene);
+typedef void (*CB_ActorDestroy_Void_Actor)      (Actor* actor);
+
 typedef void (*CB_SceneCreate_Void_Scene_Ptr)   (Scene* scene, const void* ptr);
+typedef void (*CB_SceneDestroy_Void_Scene)      (Scene* scene);
 
 Scene*  Scene_Create                (const strcrc* local_name, SceneManager* scene_manager, CB_SceneCreate_Void_Scene_Ptr cb_scene_create_void_scene_ptr, CB_SceneDestroy_Void_Scene cb_scene_destroy_void_scene, void* ptr);
 void    Scene_Viewport_Create       (Scene* scene, float width, float height, const vec2* scale, const vec2* offset);
@@ -28,7 +31,7 @@ void    Scene_Pause                 (Scene* scene, bool is_pause);
 Viewport*       Scene_Viewport_Get  (const Scene* scene);
 const strcrc*   Scene_LocalName_Get (const Scene* scene);
 
-Actor*  Scene_Actor_Create          (const strcrc* local_name, Scene* scene, CB_ActorCreate_Void_Actor_tPtr cb_actor_create_void_actor_tptr, const void* ptr);
+Actor*  Scene_Actor_Create          (const strcrc* local_name, Scene* scene, CB_ActorCreate_Void_Actor_tPtr cb_actor_create_void_actor_tptr, CB_ActorDestroy_Void_Actor cb_actor_destroy_void_actor, const void* ptr);
 void    Scene_Actor_Destroy         (Scene* scene, CB_FindData_Bool_tPtr_tPtr cb_find_actor_bool_tptr_tptr, void* ptr);
 void    Scene_Actor_Destroy_All     (Scene* scene);
 

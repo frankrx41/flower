@@ -219,7 +219,7 @@ void Actor_Test2()
     strcrc local_name = StrCrc(__FUNCTION__, 0);
     vec3 location;
     Scene* scene = SceneManager_Scene_Create(&local_name, NULL, NULL, NULL);
-    Actor* actor = Scene_Actor_Create(&local_name, scene, NULL, NULL);
+    Actor* actor = Scene_Actor_Create(&local_name, scene, NULL, NULL, NULL);
 
     Actor_Component_New(actor, Component_Render);
     location = Vec3(1, 1, 0);
@@ -240,7 +240,7 @@ void Actor_Test1()
     strcrc local_name = StrCrc(__FUNCTION__, 0);
 
     Scene* scene = SceneManager_Scene_Create(&local_name, NULL, NULL, NULL);
-    Actor* actor = Scene_Actor_Create(&local_name, scene, NULL, NULL);
+    Actor* actor = Scene_Actor_Create(&local_name, scene, NULL, NULL, NULL);
 
     Actor_Component_New(actor, Component_Physics);
     Actor_Component_New(actor, Component_Render);
@@ -263,7 +263,7 @@ void Actor_Test0()
     strcrc local_name = StrCrc(__FUNCTION__, 0);
 
     Scene* scene = SceneManager_Scene_Create(&local_name, NULL, NULL, NULL);
-    Actor* actor = Scene_Actor_Create(&local_name, scene, NULL, NULL);
+    Actor* actor = Scene_Actor_Create(&local_name, scene, NULL, NULL, NULL);
 
     Actor_Component_New(actor, Component_Render);
     vec3 location = Vec3(0, 10, 0);

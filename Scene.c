@@ -38,7 +38,7 @@ struct Scene
     Queue(Actor*)*              m_actor_queue_physics;
 };
 
-Actor* Actor_Create(const strcrc* local_name, Scene* scene, uint32 id, CB_ActorCreate_Void_Actor_tPtr cb_actor_create_void_actor_tptr, const void* ptr);
+Actor* Actor_Create(const strcrc* local_name, Scene* scene, uint32 id, CB_ActorCreate_Void_Actor_tPtr cb_actor_create_void_actor_tptr, CB_ActorDestroy_Void_Actor cb_actor_destroy_void_actor, const void* ptr);
 
 Scene* Scene_Create(const strcrc* local_name, SceneManager* scene_manager, CB_SceneCreate_Void_Scene_Ptr cb_scene_create_void_scene_ptr, CB_SceneDestroy_Void_Scene cb_scene_destroy_void_scene, void* ptr)
 {
@@ -147,9 +147,9 @@ const strcrc* Scene_LocalName_Get(const Scene* scene)
     return &scene->m_local_name;
 }
 
-Actor* Scene_Actor_Create(const strcrc* local_name, Scene* scene, CB_ActorCreate_Void_Actor_tPtr cb_actor_create_void_actor_tptr, const void* ptr)
+Actor* Scene_Actor_Create(const strcrc* local_name, Scene* scene, CB_ActorCreate_Void_Actor_tPtr cb_actor_create_void_actor_tptr, CB_ActorDestroy_Void_Actor cb_actor_destroy_void_actor, const void* ptr)
 {
-    Actor* actor = Actor_Create(local_name, scene, scene->m_alloc_actor_id++, cb_actor_create_void_actor_tptr, ptr);
+    Actor* actor = Actor_Create(local_name, scene, scene->m_alloc_actor_id++, cb_actor_create_void_actor_tptr, cb_actor_destroy_void_actor, ptr);
     Queue_Push(Actor*, local_name, scene->m_child_actor_queue, actor);
     return actor;
 }

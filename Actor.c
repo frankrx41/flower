@@ -24,7 +24,7 @@ struct Actor
     CB_ActorDestroy_Void_Actor  m_cb_actor_destroy_void_actor;
 };
 
-Actor* Actor_Create(const strcrc* local_name, Scene* scene, uint32 id, CB_ActorCreate_Void_Actor_tPtr cb_actor_create_void_actor_tptr, void* ptr)
+Actor* Actor_Create(const strcrc* local_name, Scene* scene, uint32 id, CB_ActorCreate_Void_Actor_tPtr cb_actor_create_void_actor_tptr, CB_ActorDestroy_Void_Actor cb_actor_destroy_void_actor, void* ptr)
 {
     Actor* actor = MemNew(local_name, Actor);
     actor->m_id                             = id;
@@ -38,7 +38,7 @@ Actor* Actor_Create(const strcrc* local_name, Scene* scene, uint32 id, CB_ActorC
     actor->m_scene                          = scene;
     actor->m_is_pause                       = false;
     actor->m_is_hide                        = false;
-    actor->m_cb_actor_destroy_void_actor    = NULL;
+    actor->m_cb_actor_destroy_void_actor    = cb_actor_destroy_void_actor;
 
     if( cb_actor_create_void_actor_tptr )
     {
@@ -46,11 +46,6 @@ Actor* Actor_Create(const strcrc* local_name, Scene* scene, uint32 id, CB_ActorC
     }
 
     return actor;
-}
-
-void Actor_Destroy_CB_Set(Actor* actor, CB_ActorDestroy_Void_Actor cb_actor_destroy_void_actor)
-{
-    actor->m_cb_actor_destroy_void_actor = cb_actor_destroy_void_actor;
 }
 
 void Actor_Destroy(Actor* actor)
