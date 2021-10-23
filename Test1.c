@@ -130,6 +130,7 @@ void Engine_Test4()
     strcrc local_name = StrCrc(__FUNCTION__, 0);
 
     Scene* scene = SceneManager_Scene_Create(&local_name, NULL);
+    Scene_Viewport_Create(scene, 80, 25, NULL, NULL);
     Actor* actor = Scene_Actor_Create(&local_name, scene, CallBack_Actor_Create4, __FUNCTION__);
 
     SceneManager_Scene_Foreground_Queue_Add(scene);
@@ -205,6 +206,7 @@ void Engine_Test3()
     strcrc local_name = StrCrc(__FUNCTION__, 0);
 
     Scene* scene = SceneManager_Scene_Create(&local_name, NULL);
+    Scene_Viewport_Create(scene, 80, 25, NULL, NULL);
     Actor* actor = Scene_Actor_Create(&local_name, scene, CallBack_Actor_Create3, __FUNCTION__);
 
     SceneManager_Scene_Foreground_Queue_Add(scene);
@@ -266,6 +268,7 @@ void Engine_Test2()
     strcrc local_name = StrCrc(__FUNCTION__, 0);
 
     Scene* scene = SceneManager_Scene_Create(&local_name, NULL);
+    Scene_Viewport_Create(scene, 80, 25, NULL, NULL);
     Actor* actor = Scene_Actor_Create(&local_name, scene, CallBack_Actor_Create2, __FUNCTION__);
 
     SceneManager_Scene_Foreground_Queue_Add(scene);
@@ -300,6 +303,7 @@ void Engine_Test1()
     vec3 location;
 
     Scene* scene1 = SceneManager_Scene_Create(&local_name, NULL);
+    Scene_Viewport_Create(scene1, 80, 25, NULL, NULL);
     Actor* actor1 = Scene_Actor_Create(&local_name, scene1, NULL, NULL);
 
     Actor_Component_New(actor1, Component_Render);
@@ -313,6 +317,7 @@ void Engine_Test1()
     Actor_Component_Storage_Data_Store(actor1, Str_CalcCrc("seconds", 0), tData(float, 0));
 
     Scene* scene2 = SceneManager_Scene_Create(&local_name, NULL);
+    Scene_Viewport_Create(scene2, 80, 25, NULL, NULL);
     Actor* actor2 = Scene_Actor_Create(&local_name, scene2, NULL, NULL);
     Actor_Component_Storage_Data_Store(actor1, Str_CalcCrc("scene", 0), tData(void*, scene2));
 
@@ -350,6 +355,7 @@ void Engine_Test0()
     strcrc local_name = StrCrc(__FUNCTION__, 0);
 
     Scene* scene = SceneManager_Scene_Create(&local_name, NULL);
+    Scene_Viewport_Create(scene, 80, 25, NULL, NULL);
     Actor* actor = Scene_Actor_Create(&local_name, scene, NULL, NULL);
 
     Actor_Component_New(actor, Component_Render);
@@ -381,7 +387,7 @@ void Engine_Debug_UnitTesting1()
 {
     CB_Test_Void cb_test_void_array[] =
     {
-        // Engine_Test5,
+        Engine_Test5,
         Engine_Test4,
         Engine_Test3,
         Engine_Test2,

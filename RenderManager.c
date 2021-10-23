@@ -15,7 +15,7 @@
 void*   RenderManager_PlatformData_Create_Plat  (RenderManager* render_manager, const strcrc* local_name);
 void    RenderManager_PlatformData_Destroy_Plat (RenderManager* render_manager, void* platform_data);
 
-void    CallBack_Actor_RenderEachActor          (Actor* actor, const RenderManager* render_manager);
+void    CallBack_Actor_RenderTo_Scene_Viewport  (Actor* actor, const Scene* scene);
 
 struct RenderManager
 {
@@ -81,11 +81,13 @@ void RenderManager_Render_ToBackBuffer(RenderManager* render_manager, ShaderText
 
 static void CallBack_Render_Scene(Scene* scene, const RenderManager* render_manager)
 {
-    if( Scene_Is_Hide(scene) )
+    if( Scene_Is_Hide(scene) || Scene_Viewport_Get(scene) == NULL)
     {
         return;
     }
-    Queue_ForEach(Scene_ActorQueue_Renderable_Get(scene), CallBack_Actor_RenderEachActor, render_manager);
+    Queue_ForEach(Scene_ActorQueue_Renderable_Get(scene), CallBack_Actor_RenderTo_Scene_Viewport, scene);
+
+    Viewport_RenderTo_Viewport(render_manager->m_back_buffer, Scene_Viewport_Get(scene));
 }
 
 static void CallBack_RenderManager_Render_ToScreen_Task(Task* task, RenderManager* render_manager)

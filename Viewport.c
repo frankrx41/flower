@@ -78,7 +78,22 @@ void Viewport_RenderTo_Screen(RenderManager* render_manager, void* platform_data
 
 void Viewport_RenderTo_Viewport(const Viewport* viewport, Viewport* out_viewport)
 {
-    Assert(false, "");
+    Assert(out_viewport != NULL, "");
+    for( int32 y=out_viewport->m_offset.m_y; y<viewport->m_height; y++ )
+    {
+        for( int32 x=out_viewport->m_offset.m_x; x<viewport->m_width; x++ )
+        {
+            int32 i1 = x + y*Int32(out_viewport->m_width);
+            int32 i2 = (out_viewport->m_offset.m_y-y) * (Int32(viewport->m_width)+out_viewport->m_offset.m_x) + x;
+            if( out_viewport->m_data[i2].m_tchar != 0 )
+            {
+                if( viewport->m_data[i1].m_tchar != out_viewport->m_data[i2].m_tchar )
+                {
+                    viewport->m_data[i1] = out_viewport->m_data[i2];
+                }
+            }
+        }
+    }
 }
 
 void Viewport_Render_ShaderText(Viewport* viewport, ShaderText* shader_text)

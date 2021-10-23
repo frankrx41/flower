@@ -252,11 +252,11 @@ void Actor_Component_Storage_Variable_Delete(Actor* actor, crc32 variable)
 
 // CallBack
 ////////////////////////////////////////////////////////////////////////////////
-typedef struct RenderManager RenderManager;
-static void CallBack_RenderManager_Render_ToBackBuffer_Task(Task* task, ShaderText* shader_text)
-{
-    RenderManager_Render_ToBackBuffer(RenderManager_GetInstance(), shader_text);
-}
+// typedef struct RenderManager RenderManager;
+// static void CallBack_RenderManager_Render_ToBackBuffer_Task(Task* task, ShaderText* shader_text)
+// {
+//     RenderManager_Render_ToBackBuffer(RenderManager_GetInstance(), shader_text);
+// }
 
 static void CallBack_Render_ActorShaderText(ShaderText* shader_text, const Actor* actor)
 {
@@ -279,15 +279,14 @@ static void CallBack_Render_ActorShaderText(ShaderText* shader_text, const Actor
     local_name = StrCrc("RenderManager_ShaderText", 0);
     ShaderText* shader_text_copy = ShaderText_Create(&local_name, true, &location, ShaderText_Offset_Get(shader_text), ShaderText_Str_Get(shader_text));
     
-    // TODO: render to viewport first
-    // Viewport* viewport = Scene_Viewport_Get(Actor_OwnerScene_Get(actor));
-    // Viewport_Render_ShaderText(viewport, shader_text_copy);
+    Viewport* viewport = Scene_Viewport_Get(Actor_OwnerScene_Get(actor));
+    Viewport_Render_ShaderText(viewport, shader_text_copy);
 
-    local_name = StrCrc("RenderManager_ShaderText_Task", 0);
-    TaskManager_Task_Render_Add(&local_name, CallBack_RenderManager_Render_ToBackBuffer_Task, ShaderText_Destory, shader_text_copy);
+    // local_name = StrCrc("RenderManager_ShaderText_Task", 0);
+    // TaskManager_Task_Render_Add(&local_name, CallBack_RenderManager_Render_ToBackBuffer_Task, ShaderText_Destory, shader_text_copy);
 }
 
-void CallBack_Actor_RenderEachActor(Actor* actor, const RenderManager* render_manager)
+void CallBack_Actor_RenderTo_Scene_Viewport(Actor* actor, const Scene* scene)
 {
     if( Actor_Is_Hide(actor) )
     {
