@@ -27,16 +27,16 @@ struct StoreContent
 
 struct Storage
 {
-    String*                 m_local_name;
+    strcrc                  m_local_name;
     Queue(StoreContent*)*   m_store_queue;
     StoreContent*           m_cache_store_content;
 };
 
-Storage* Storage_Create(const tchar* local_name)
+Storage* Storage_Create(const strcrc* local_name)
 {
     Storage* storage = MemNew(local_name, Storage);
     storage->m_store_queue  = Queue_Create(local_name, StoreContent*);
-    storage->m_local_name   = String_New(local_name, local_name, true);
+    StrCrc_Copy(local_name, &storage->m_local_name);
     storage->m_cache_store_content = NULL;
     return storage;
 }
@@ -48,7 +48,6 @@ static void CallBack_Storage_StoreContent_Delete(StoreContent* store_content)
 
 void Storage_Destroy(Storage* storage)
 {
-    String_Del(storage->m_local_name);
     Queue_Destroy(storage->m_store_queue, CallBack_Storage_StoreContent_Delete);
     MemDel(storage);
 }
@@ -82,7 +81,7 @@ void Storage_Data_Store(Storage* storage, crc32 variable, tdata data)
     }
     else
     {
-        StoreContent* store_content = MemNew(String_CStr(storage->m_local_name), StoreContent);
+        StoreContent* store_content = MemNew(&storage->m_local_name, StoreContent);
         store_content->m_crc        = variable;
         store_content->m_data       = data;
         Queue_Push(StoreContent*, NULL, storage->m_store_queue, store_content);

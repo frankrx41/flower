@@ -14,7 +14,7 @@
 struct Actor
 {
     uint32  m_id;
-    String* m_local_name;
+    strcrc  m_local_name;
 
     tptr    m_components[Component_Max - Component_Min];
 
@@ -24,11 +24,11 @@ struct Actor
     CB_ActorDestroy_Void_Actor  m_cb_actor_destroy_void_actor;
 };
 
-Actor* Actor_Create(const tchar* local_name, Scene* scene, uint32 id, CB_ActorCreate_Void_Actor_tPtr cb_actor_create_void_actor_tptr, tptr ptr)
+Actor* Actor_Create(const strcrc* local_name, Scene* scene, uint32 id, CB_ActorCreate_Void_Actor_tPtr cb_actor_create_void_actor_tptr, tptr ptr)
 {
     Actor* actor = MemNew(local_name, Actor);
     actor->m_id                             = id;
-    actor->m_local_name                     = String_New(local_name, local_name, true);
+    StrCrc_Copy(local_name, &actor->m_local_name);
 
     for( uint32 i=0, max_i = ARRAY_SIZE(actor->m_components); i<max_i; i++ )
     {
@@ -70,7 +70,6 @@ void Actor_Destroy(Actor* actor)
         }
     }
     
-    String_Del(actor->m_local_name);
     MemDel(actor);
 }
 
@@ -95,7 +94,7 @@ void Actor_Hide(Actor* actor, bool is_hide)
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-typedef tptr (*CB_ComponentCreate_tPtr_tChar_Actor) (const tchar* local_name, Actor* actor);
+typedef tptr (*CB_ComponentCreate_tPtr_tChar_Actor) (const strcrc* local_name, Actor* actor);
 typedef void (*CB_ComponentDestroy_Void_tPtr)       (tptr component);
 
 static CB_ComponentCreate_tPtr_tChar_Actor Actor_Component_Create_CB_Get(Component component_enum)
@@ -157,9 +156,9 @@ tptr Actor_Component_Cast(Actor* actor, Component component_enum)
     return actor->m_components[component_enum - Component_Min];
 }
 
-const tchar* Actor_LocalName_Str_Get(Actor* actor)
+const strcrc* Actor_LocalName_Str_Get(Actor* actor)
 {
-    return String_CStr(actor->m_local_name);
+    return &actor->m_local_name;
 }
 
 Scene* Actor_OwnerScene_Get(Actor* actor)

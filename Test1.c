@@ -65,8 +65,11 @@ void CallBack_Actor_Create5(Actor* actor, tptr ptr)
 
 void Engine_Test5()
 {
-    Scene* scene = SceneManager_Scene_Create(__FUNCTION__, NULL);
-    Actor* actor = Scene_Actor_Create(__FUNCTION__, scene, CallBack_Actor_Create5, __FUNCTION__);
+    strcrc local_name;
+    StrCrc(__FUNCTION__, 0, &local_name);
+
+    Scene* scene = SceneManager_Scene_Create(&local_name, NULL);
+    Actor* actor = Scene_Actor_Create(&local_name, scene, CallBack_Actor_Create5, __FUNCTION__);
 
     InputManager_Input_ControlEvent_Add(InputManager_GetInstance(), KeyId_Escape, KeyState_Down, Event_Control_Cancel);
     InputManager_Input_ControlEvent_Add(InputManager_GetInstance(), KeyId_Up, KeyState_Down, Event_Control_MoveUp);
@@ -112,8 +115,11 @@ void CallBack_Actor_Create4(Actor* actor, tptr ptr)
 };
 void Engine_Test4()
 {
-    Scene* scene = SceneManager_Scene_Create(__FUNCTION__, NULL);
-    Actor* actor = Scene_Actor_Create(__FUNCTION__, scene, CallBack_Actor_Create4, __FUNCTION__);
+    strcrc local_name;
+    StrCrc(__FUNCTION__, 0, &local_name);
+
+    Scene* scene = SceneManager_Scene_Create(&local_name, NULL);
+    Actor* actor = Scene_Actor_Create(&local_name, scene, CallBack_Actor_Create4, __FUNCTION__);
 
     SceneManager_Scene_Foreground_Queue_Add(scene);
 }
@@ -182,8 +188,11 @@ void CallBack_Actor_Create3(Actor* actor, tptr ptr)
 };
 void Engine_Test3()
 {
-    Scene* scene = SceneManager_Scene_Create(__FUNCTION__, NULL);
-    Actor* actor = Scene_Actor_Create(__FUNCTION__, scene, CallBack_Actor_Create3, __FUNCTION__);
+    strcrc local_name;
+    StrCrc(__FUNCTION__, 0, &local_name);
+
+    Scene* scene = SceneManager_Scene_Create(&local_name, NULL);
+    Actor* actor = Scene_Actor_Create(&local_name, scene, CallBack_Actor_Create3, __FUNCTION__);
 
     SceneManager_Scene_Foreground_Queue_Add(scene);
 }
@@ -238,8 +247,11 @@ void CallBack_Actor_Create2(Actor* actor, tptr ptr)
 
 void Engine_Test2()
 {
-    Scene* scene = SceneManager_Scene_Create(__FUNCTION__, NULL);
-    Actor* actor = Scene_Actor_Create(__FUNCTION__, scene, CallBack_Actor_Create2, __FUNCTION__);
+    strcrc local_name;
+    StrCrc(__FUNCTION__, 0, &local_name);
+
+    Scene* scene = SceneManager_Scene_Create(&local_name, NULL);
+    Actor* actor = Scene_Actor_Create(&local_name, scene, CallBack_Actor_Create2, __FUNCTION__);
 
     SceneManager_Scene_Foreground_Queue_Add(scene);
 }
@@ -269,8 +281,11 @@ void CallBack_ActorOnEvent1(Actor* actor, const EventInfo* event_info)
 
 void Engine_Test1()
 {
-    Scene* scene1 = SceneManager_Scene_Create(__FUNCTION__, NULL);
-    Actor* actor1 = Scene_Actor_Create(__FUNCTION__, scene1, NULL, NULL);
+    strcrc local_name;
+    StrCrc(__FUNCTION__, 0, &local_name);
+
+    Scene* scene1 = SceneManager_Scene_Create(&local_name, NULL);
+    Actor* actor1 = Scene_Actor_Create(&local_name, scene1, NULL, NULL);
 
     Actor_Component_New(actor1, Component_Render);
     Actor_Component_Render_ShaderText_Add(actor1, Vec3(1, 1, 0), "hello world");
@@ -281,8 +296,8 @@ void Engine_Test1()
     Actor_Component_New(actor1, Component_Storage);
     Actor_Component_Storage_Data_Store(actor1, Str_CalcCrc("seconds", 0), tData(float, 0));
 
-    Scene* scene2 = SceneManager_Scene_Create(__FUNCTION__, NULL);
-    Actor* actor2 = Scene_Actor_Create(__FUNCTION__, scene2, NULL, NULL);
+    Scene* scene2 = SceneManager_Scene_Create(&local_name, NULL);
+    Actor* actor2 = Scene_Actor_Create(&local_name, scene2, NULL, NULL);
     Actor_Component_Storage_Data_Store(actor1, Str_CalcCrc("scene", 0), tData(tptr, scene2));
 
     Actor_Component_New(actor2, Component_Render);
@@ -314,8 +329,11 @@ void CallBack_ActorOnEvent0(Actor* actor, const EventInfo* event_info)
 
 void Engine_Test0()
 {
-    Scene* scene = SceneManager_Scene_Create(__FUNCTION__, NULL);
-    Actor* actor = Scene_Actor_Create(__FUNCTION__, scene, NULL, NULL);
+    strcrc local_name;
+    StrCrc(__FUNCTION__, 0, &local_name);
+
+    Scene* scene = SceneManager_Scene_Create(&local_name, NULL);
+    Actor* actor = Scene_Actor_Create(&local_name, scene, NULL, NULL);
 
     Actor_Component_New(actor, Component_Render);
     Actor_Component_Render_ShaderText_Add(actor, Vec3(1, 1, 0), "hello world");

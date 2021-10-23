@@ -12,7 +12,7 @@ typedef bool (*CB_FindData_Bool_tPtr_tPtr)      (const tptr data, const tptr ptr
 typedef void (*CB_ActorCreate_Void_Actor_tPtr)  (Actor* actor, const tptr ptr);
 typedef void (*CB_SceneDestroy_Void_Scene)      (Scene* scene);
 
-Scene*  Scene_Create                (const tchar* local_name, SceneManager* scene_manager, CB_SceneDestroy_Void_Scene cb_scene_destroy_void_scene);
+Scene*  Scene_Create                (const strcrc* local_name, SceneManager* scene_manager, CB_SceneDestroy_Void_Scene cb_scene_destroy_void_scene);
 void    Scene_Destroy               (Scene* scene);
 void    Scene_Render_Offset_Set     (Scene* scene, vec2 vec);
 vec2    Scene_Render_Offset_Get     (Scene* scene);
@@ -22,9 +22,9 @@ void    Scene_Hide                  (Scene* scene, bool is_pause);
 bool    Scene_Is_Pause              (Scene* scene);
 void    Scene_Pause                 (Scene* scene, bool is_pause);
 
-const tchar*    Scene_LocalName_Str_Get (Scene* scene);
+const strcrc*    Scene_LocalName_Str_Get (Scene* scene);
 
-Actor*  Scene_Actor_Create          (const tchar* local_name, Scene* scene, CB_ActorCreate_Void_Actor_tPtr cb_actor_create_void_actor_tptr, tptr ptr);
+Actor*  Scene_Actor_Create          (const strcrc* local_name, Scene* scene, CB_ActorCreate_Void_Actor_tPtr cb_actor_create_void_actor_tptr, tptr ptr);
 void    Scene_Actor_Destroy         (Scene* scene, CB_FindData_Bool_tPtr_tPtr cb_find_actor_bool_tptr_tptr, tptr ptr);
 void    Scene_Actor_Destroy_All     (Scene* scene);
 

@@ -1,13 +1,14 @@
 #pragma once
 
 #define Queue struct Queue
+typedef struct strcrc strcrc;
 
 typedef bool (*CB_FindData_Bool_tPtr_tPtr)      (const tptr data, const tptr ptr);
 typedef void (*CB_ProcessData_Void_tPtr_tPtr)   (tptr data, const tptr ptr);
 typedef bool (*CB_CompareData_Bool_tPtr_tPtr)   (const tptr dat1, const tptr dat2);
 typedef void (*CB_DestroyData_Void_tPtr)        (tptr data);
 
-Queue*  Queue_Create        (const tchar* local_name, const tchar* type_str);
+Queue*  Queue_Create        (const strcrc* local_name, const tchar* type_str);
 void    Queue_Destroy       (Queue* queue, CB_DestroyData_Void_tPtr cb_destroy_data_void_tptr);
 
 bool    Queue_IsEmpty       (const Queue* queue);
@@ -15,7 +16,7 @@ tptr    Queue_Find          (const Queue* queue, CB_FindData_Bool_tPtr_tPtr cb_f
 uint32  Queue_GetLength     (const Queue* queue);
 void    Queue_ForEach       (const Queue* queue, CB_ProcessData_Void_tPtr_tPtr cb_process_data_void_tptr_tptr, tptr ptr);
 
-void    Queue_Push          (const tchar* local_name, Queue* queue, tptr reference_data, const tchar* type_str);
+void    Queue_Push          (const strcrc* local_name, Queue* queue, tptr reference_data, const tchar* type_str);
 
 tptr    Queue_Pop           (Queue* queue);
 tptr    Queue_Dequeue       (Queue* queue);

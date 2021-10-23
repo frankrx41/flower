@@ -13,7 +13,7 @@ struct StorageComponent
 };
 
 
-StorageComponent* Component_Storage_Create(const tchar* local_name, Actor* actor)
+StorageComponent* Component_Storage_Create(const strcrc* local_name, Actor* actor)
 {
     StorageComponent* storage_component = MemNew(local_name, StorageComponent);
     storage_component->m_storage        = Storage_Create(local_name);

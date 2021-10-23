@@ -4,7 +4,7 @@ typedef struct ShaderText ShaderText;
 typedef struct vec3 vec3;
 typedef struct vec2 vec2;
 
-ShaderText* ShaderText_Create       (const tchar* local_name, bool is_absolute, vec3 vec, const tchar* str);
+ShaderText* ShaderText_Create       (const strcrc* local_name, bool is_absolute, vec3 vec, const tchar* str);
 void        ShaderText_Destory      (ShaderText* shader_text);
 void        ShaderText_Disable      (ShaderText* shader_text, bool is_disable);
 void        ShaderText_Move         (ShaderText* shader_text, int32 offset_x, int32 offset_y);

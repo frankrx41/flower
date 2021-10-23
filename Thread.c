@@ -6,13 +6,11 @@
 #include "Thread.h"
 
 
-typedef struct Thread Thread;
-
 struct Thread
 {
     CB_ThreadRun_Void_Thread_tPtr   m_cb_thread_run_void_thread_tptr;
     tptr                            m_thread_input_data;
-    String*                         m_local_name;
+    strcrc                          m_local_name;
     bool                            m_is_suspend;
 
     TODO("Implement any thread sleep")
@@ -21,18 +19,18 @@ struct Thread
     tptr                            m_thread_platform_data;
 };
 
-tptr    Thread_Create_Plat          (Thread* thread, const tchar* local_name);
+tptr    Thread_Create_Plat          (Thread* thread, const strcrc* local_name);
 void    Thread_Suspend_Plat         (Thread* thread, tptr platform_data, bool is_suspend);
 void    Thread_Destroy_Plat         (Thread* thread, tptr platform_data);
 void    Thread_This_Sleep_Plat      (float seconds);
 void    Thread_This_Sleep_Tick_Plat ();
 
-Thread* Thread_Create(const tchar* local_name, CB_ThreadRun_Void_Thread_tPtr cb_thread_run_void_thread_tptr, tptr ptr)
+Thread* Thread_Create(const strcrc* local_name, CB_ThreadRun_Void_Thread_tPtr cb_thread_run_void_thread_tptr, tptr ptr)
 {
     Thread* thread = MemNew(local_name, Thread);
     thread->m_cb_thread_run_void_thread_tptr    = cb_thread_run_void_thread_tptr;
     thread->m_thread_input_data                 = ptr;
-    thread->m_local_name                        = String_New(local_name, local_name, true);
+    StrCrc_Copy(local_name, &thread->m_local_name);
     thread->m_is_suspend                        = false;
     thread->m_thread_platform_data              = Thread_Create_Plat(thread, local_name);
     return thread;
@@ -40,7 +38,6 @@ Thread* Thread_Create(const tchar* local_name, CB_ThreadRun_Void_Thread_tPtr cb_
 
 void Thread_Destroy(Thread* thread)
 {
-    String_Del(thread->m_local_name);
     Thread_Destroy_Plat(thread, thread->m_thread_platform_data);
     MemDel(thread);
 }
@@ -91,7 +88,7 @@ void Thread_Sleep(Thread* thread, float seconds)
     }
 }
 
-const tchar* Thread_LocalName_Get(Thread* thread)
+const strcrc* Thread_LocalName_Get(Thread* thread)
 {
-    return String_CStr(thread->m_local_name);
+    return &thread->m_local_name;
 }

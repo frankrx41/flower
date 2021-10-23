@@ -18,7 +18,7 @@ struct ShaderText
 };
 
 
-ShaderText* ShaderText_Create(const tchar* local_name, bool is_absolute, vec3 vec, const tchar* str)
+ShaderText* ShaderText_Create(const strcrc* local_name, bool is_absolute, vec3 vec, const tchar* str)
 {
     ShaderText* shader_text = MemNew(local_name, ShaderText);
     shader_text->m_is_absolute  = is_absolute;

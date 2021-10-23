@@ -22,7 +22,7 @@ struct Scene
 {
     uint32                      m_alloc_actor_id;
     CB_SceneDestroy_Void_Scene  m_cb_scene_destroy_void_scene;
-    String*                     m_local_name;
+    strcrc                      m_local_name;
     Storage*                    m_storage;
     
     bool                        m_is_pause_event;
@@ -36,14 +36,14 @@ struct Scene
     Queue(Actor*)*              m_actor_queue_physics;
 };
 
-Actor* Actor_Create(const tchar* local_name, Scene* scene, uint32 id, CB_ActorCreate_Void_Actor_tPtr cb_actor_create_void_actor_tptr, tptr ptr);
+Actor* Actor_Create(const strcrc* local_name, Scene* scene, uint32 id, CB_ActorCreate_Void_Actor_tPtr cb_actor_create_void_actor_tptr, tptr ptr);
 
-Scene* Scene_Create(const tchar* local_name, SceneManager* scene_manager, CB_SceneDestroy_Void_Scene cb_scene_destroy_void_scene)
+Scene* Scene_Create(const strcrc* local_name, SceneManager* scene_manager, CB_SceneDestroy_Void_Scene cb_scene_destroy_void_scene)
 {
     Scene* scene = MemNew(local_name, Scene);
     scene->m_child_actor_queue          = Queue_Create(local_name, Actor*);
     scene->m_alloc_actor_id             = 0;
-    scene->m_local_name                 = String_New(local_name, local_name, true);
+    StrCrc_Copy(local_name, &scene->m_local_name);
     scene->m_storage                    = Storage_Create(local_name);
     scene->m_is_pause_event             = false;
     scene->m_is_pause_render            = false;
@@ -82,7 +82,6 @@ void Scene_Destroy(Scene* scene)
     Queue_Destroy(Scene_ActorQueue_Renderable_Get(scene), NULL);
 
 
-    String_Del(scene->m_local_name);
     Storage_Destroy(scene->m_storage);
     MemDel(scene);
 }
@@ -138,12 +137,12 @@ void Scene_Pause(Scene* scene, bool is_pause)
     scene->m_is_pause_event = is_pause;
 }
 
-const tchar* Scene_LocalName_Str_Get(Scene* scene)
+const strcrc* Scene_LocalName_Str_Get(Scene* scene)
 {
-    return String_CStr(scene->m_local_name);
+    return &scene->m_local_name;
 }
 
-Actor* Scene_Actor_Create(const tchar* local_name, Scene* scene, CB_ActorCreate_Void_Actor_tPtr cb_actor_create_void_actor_tptr, tptr ptr)
+Actor* Scene_Actor_Create(const strcrc* local_name, Scene* scene, CB_ActorCreate_Void_Actor_tPtr cb_actor_create_void_actor_tptr, tptr ptr)
 {
     Actor* actor = Actor_Create(local_name, scene, scene->m_alloc_actor_id++, cb_actor_create_void_actor_tptr, ptr);
     Queue_Push(Actor*, local_name, scene->m_child_actor_queue, actor);

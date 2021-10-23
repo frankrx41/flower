@@ -4,7 +4,7 @@ typedef struct PhysicsComponent PhysicsComponent;
 typedef struct vec3 vec3;
 
 
-PhysicsComponent*   Component_Physics_Create    (const tchar* local_name, Actor* actor);
+PhysicsComponent*   Component_Physics_Create    (const strcrc* local_name, Actor* actor);
 void                Component_Physics_Destroy   (PhysicsComponent* physics_component);
 
 vec3    Component_Physics_GetLocation       (PhysicsComponent* physics_component);

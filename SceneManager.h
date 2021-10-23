@@ -12,7 +12,7 @@ typedef void (*CB_SceneDestroy_Void_Scene)      (Scene* scene);
 SceneManager_Scene_Destroy will call Scene_Actor_Destroy, and then call Actor_Destroy, you no need call Scene_Actor_Destroy
 */
 
-Scene*  SceneManager_Scene_Create           (SceneManager* scene_manager, const tchar* local_name, CB_SceneDestroy_Void_Scene cb_scene_destroy_void_scene);
+Scene*  SceneManager_Scene_Create           (SceneManager* scene_manager, strcrc* local_name, CB_SceneDestroy_Void_Scene cb_scene_destroy_void_scene);
 void    SceneManager_Scene_Destroy          (SceneManager* scene_manager, Scene* scene);
 void    SceneManager_Scene_Foreground_Queue_Add     (SceneManager* scene_manager, Scene* scene);
 void    SceneManager_Scene_Foreground_Queue_Remove  (SceneManager* scene_manager, Scene* scene);

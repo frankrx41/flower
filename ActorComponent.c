@@ -21,6 +21,7 @@
 #include "Queue.h"
 #include "Vec.h"
 #include "Scene.h"
+#include "String.h"
 
 // Location
 vec3 Actor_Component_Physics_Location_Get(Actor* actor)
@@ -272,10 +273,14 @@ void CallBack_Render_ActorShaderText_Plat(ShaderText* shader_text, Actor* actor)
         }
     }
 
+    strcrc local_name;
+    StrCrc("RenderManager_ShaderText", 0, &local_name);
 
-    ShaderText* shader_text_copy = ShaderText_Create("RenderManager_ShaderText", true,vec, ShaderText_GetStr(shader_text));
+    ShaderText* shader_text_copy = ShaderText_Create(&local_name, true,vec, ShaderText_GetStr(shader_text));
     ShaderText_Offset_Set(shader_text_copy, Scene_Render_Offset_Get(Actor_OwnerScene_Get(actor)));
-    TaskManager_Task_Render_Add("RenderManager_ShaderText_Task", CallBack_RenderManager_Render_ToBackBuffer_Task, ShaderText_Destory, shader_text_copy);
+
+    StrCrc("RenderManager_ShaderText_Task", 0, &local_name);
+    TaskManager_Task_Render_Add(&local_name, CallBack_RenderManager_Render_ToBackBuffer_Task, ShaderText_Destory, shader_text_copy);
 }
 
 void CallBack_Actor_RenderEachActor(Actor* actor, RenderManager* render_manager)

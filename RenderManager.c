@@ -7,10 +7,11 @@
 
 #include "Queue.h"
 #include "Scene.h"
+#include "String.h"
 #include "Vec.h"
 
 
-tptr    RenderManager_PlatformData_Create_Plat  (RenderManager* render_manager, const tchar* local_name);
+tptr    RenderManager_PlatformData_Create_Plat  (RenderManager* render_manager, const strcrc* local_name);
 void    RenderManager_PlatformData_Destroy_Plat (RenderManager* render_manager, tptr platform_data);
 void    RenderManager_ToScreen_Plat             (RenderManager* render_manager, tptr platform_data);
 void    RenderManager_SwapBuffer_Plat           (RenderManager* render_manager, tptr platform_data);
@@ -25,7 +26,7 @@ struct RenderManager
     tptr        m_platform_data;
 };
 
-RenderManager* RenderManager_Create(const tchar* local_name)
+RenderManager* RenderManager_Create(const strcrc* local_name)
 {
     RenderManager* render_manager = MemNew(local_name, RenderManager);
     render_manager->m_platform_data = RenderManager_PlatformData_Create_Plat(render_manager, local_name);
@@ -68,7 +69,10 @@ static void CallBack_RenderManager_Render_ToScreen_Task(Task* task, RenderManage
 void RenderManager_RenderAllScene(RenderManager* render_manager, SceneManager* scene_manager)
 {
     Queue_ForEach(SceneManager_SceneQueue_Foreground_Get(scene_manager), CallBack_Render_Scene, render_manager);
-
-    TaskManager_Task_Render_Add("RenderManager_Render_All_Task", CallBack_RenderManager_Render_ToScreen_Task, NULL, RenderManager_GetInstance());
+    
+    strcrc local_name;
+    StrCrc("RenderManager_Render_All_Task", 0, &local_name);
+    
+    TaskManager_Task_Render_Add(&local_name, CallBack_RenderManager_Render_ToScreen_Task, NULL, RenderManager_GetInstance());
 }
 

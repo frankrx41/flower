@@ -19,7 +19,7 @@ struct TaskQueueThread
 
 static void TaskManager_TaskQueueThread_RunTask(Thread* thread, TaskQueueThread* task_queue_thread);
 
-static TaskQueueThread* TaskQueueThread_Create(const tchar* local_name)
+static TaskQueueThread* TaskQueueThread_Create(const strcrc* local_name)
 {
     TaskQueueThread* task_queue_thread  = MemNew(local_name, TaskQueueThread);
     task_queue_thread->m_task_queue     = Queue_Create(local_name, Task*);
@@ -50,7 +50,7 @@ static Queue(Task*)* TaskQueueThread_TaskQueue_Get(Thread* thread)
 ////////////////////////////////////////////////////////////////////////////////
 struct TaskManager
 {
-    String*             m_local_name;
+    strcrc              m_local_name;
     uint32              m_task_queue_thread_job_max;
     TaskQueueThread**   m_task_queue_thread_work;       // max is render
 };
@@ -63,22 +63,23 @@ static uint32 TaskManager_TaskQueueThread_Render_Index_Get(TaskManager* task_man
     return task_manager->m_task_queue_thread_job_max-1;
 }
 
-TaskManager* TaskManager_Create(const tchar* local_name)
+TaskManager* TaskManager_Create(const strcrc* local_name)
 {
     TaskManager* task_manager = MemNew(local_name, TaskManager);
-
-    task_manager->m_local_name      = String_New(local_name, local_name, true);
+    StrCrc_Copy(local_name, &task_manager->m_local_name);
     task_manager->m_task_queue_thread_job_max = 3;
     task_manager->m_task_queue_thread_work    = MemNewSize(local_name, sizeof(TaskQueueThread*)*task_manager->m_task_queue_thread_job_max);
 
     for(uint32 i=0; i<task_manager->m_task_queue_thread_job_max; i++)
     {
-        const tchar* str = local_name;
+        strcrc render_local_name;
+        StrCrc("Render_TaskQueueThread", 0, &render_local_name);
+
         if( i == TaskManager_TaskQueueThread_Render_Index_Get(task_manager) )
         {
-            str = "Render_TaskQueueThread";
+            local_name = &render_local_name;
         }
-        task_manager->m_task_queue_thread_work[i] = TaskQueueThread_Create(str);
+        task_manager->m_task_queue_thread_work[i] = TaskQueueThread_Create(local_name);
     }
 
     return task_manager;
@@ -86,7 +87,6 @@ TaskManager* TaskManager_Create(const tchar* local_name)
 
 void TaskManager_Destroy(TaskManager* task_manager)
 {
-    String_Del(task_manager->m_local_name);
     for(uint32 i=0; i<task_manager->m_task_queue_thread_job_max; i++)
     {
         TaskQueueThread_Destroy(task_manager->m_task_queue_thread_work[i]);
@@ -117,7 +117,7 @@ static Thread* TaskManager_TaskQueueThread_Render_Get(TaskManager* task_manager)
     return task_manager->m_task_queue_thread_work[index]->m_thread;
 }
 
-Task* TaskManager_Task_Work_Add(TaskManager* task_manager, const tchar* local_name, Thread* thread, uint32 priority, bool is_auto_destroy, CB_TaskRun_Condition_Bool_Task_tPtr cb_task_run_condition_bool_task_tptr, CB_TaskRun_Void_Task_tPtr cb_task_run_void_task_tptr, CB_TaskEnd_ClearData_Void_tPtr cb_task_end_clear_data_void_tptr, tptr task_data)
+Task* TaskManager_Task_Work_Add(TaskManager* task_manager, const strcrc* local_name, Thread* thread, uint32 priority, bool is_auto_destroy, CB_TaskRun_Condition_Bool_Task_tPtr cb_task_run_condition_bool_task_tptr, CB_TaskRun_Void_Task_tPtr cb_task_run_void_task_tptr, CB_TaskEnd_ClearData_Void_tPtr cb_task_end_clear_data_void_tptr, tptr task_data)
 {
     Assert( cb_task_run_void_task_tptr != NULL, "" );
     if( thread == NULL )
@@ -154,7 +154,7 @@ Task* TaskManager_Task_Work_Add(TaskManager* task_manager, const tchar* local_na
     }
 }
 
-void TaskManager_Task_Render_Add(TaskManager* task_manager, const tchar* local_name, CB_TaskRun_Void_Task_tPtr cb_task_run_void_task_tptr, CB_TaskEnd_ClearData_Void_tPtr cb_task_end_clear_data_void_tptr, tptr task_data)
+void TaskManager_Task_Render_Add(TaskManager* task_manager, const strcrc* local_name, CB_TaskRun_Void_Task_tPtr cb_task_run_void_task_tptr, CB_TaskEnd_ClearData_Void_tPtr cb_task_end_clear_data_void_tptr, tptr task_data)
 {
     Thread* thread = TaskManager_TaskQueueThread_Render_Get(task_manager);
     TaskManager_Task_Work_Add(task_manager, local_name, thread, 0, true, NULL, cb_task_run_void_task_tptr, cb_task_end_clear_data_void_tptr, task_data);

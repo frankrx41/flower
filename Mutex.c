@@ -11,14 +11,14 @@ struct Mutex
 {
     uint8   m_lock_count;
     uint8   m_lock_count_max;
-    String* m_local_name;
+    strcrc  m_local_name;
     uint32  m_statistics_lock_time_out_count;
     uint32  m_statistics_lock_wait_and_lock_count;
     uint32  m_statistics_immediate_lock_count;
 };
 
 
-Mutex* Mutex_Create(const tchar* local_name, uint8 max_lock_count)
+Mutex* Mutex_Create(const strcrc* local_name, uint8 max_lock_count)
 {
     Mutex* mutex = MemNew(local_name, Mutex);
     MemZero(mutex);
@@ -27,7 +27,7 @@ Mutex* Mutex_Create(const tchar* local_name, uint8 max_lock_count)
 
     mutex->m_lock_count     = 0;
     mutex->m_lock_count_max = max_lock_count;
-    mutex->m_local_name     = String_New(local_name, local_name, true);
+    StrCrc_Copy(local_name, &mutex->m_local_name);
 
     return mutex;
 }
@@ -35,7 +35,6 @@ Mutex* Mutex_Create(const tchar* local_name, uint8 max_lock_count)
 void Mutex_Destroy(Mutex* mutex)
 {
     Assert(mutex->m_lock_count == 0, "You can not delete a locked mutex!");
-    String_Del(mutex->m_local_name);
     MemDel(mutex);
 }
 
@@ -55,7 +54,7 @@ bool Mutex_TryLock(Mutex* mutex, float time_out_seconds)
     }
     else if( time_out_seconds > 0 )
     {
-        Timer* timer = Timer_Create(String_CStr(mutex->m_local_name));
+        Timer* timer = Timer_Create(&mutex->m_local_name);
         for(;;)
         {
             if( Timer_Elapsed_Time_Get(timer) > time_out_seconds )
@@ -119,7 +118,7 @@ bool Mutex_TryWaitUnLock(Mutex* mutex, float time_out_seconds)
     }
     else if( time_out_seconds > 0 )
     {
-        Timer* timer = Timer_Create(String_CStr(mutex->m_local_name));
+        Timer* timer = Timer_Create(&mutex->m_local_name);
         for(;;)
         {
             if( Timer_Elapsed_Time_Get(timer) > time_out_seconds )

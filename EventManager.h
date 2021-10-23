@@ -6,6 +6,7 @@ typedef enum Event Event;
 typedef struct EventInfo EventInfo;
 typedef struct Actor Actor;
 typedef enum KeyId KeyId;
+typedef struct strcrc strcrc;
 
 
 struct EventInfo
@@ -17,7 +18,7 @@ struct EventInfo
     float   m_delta_seconds;
 };
 
-EventInfo*  EventInfo_Create    (const tchar* local_name, Event event, Scene* scene, Actor* actor, KeyId key_id, float delta_second);
+EventInfo*  EventInfo_Create    (const strcrc* local_name, Event event, Scene* scene, Actor* actor, KeyId key_id, float delta_second);
 void        EventInfo_Destroy   (EventInfo* event_info);
 
 

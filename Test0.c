@@ -33,7 +33,10 @@
 
 static void Storage_Test0()
 {
-    Storage* storage = Storage_Create(__FUNCTION__);
+    strcrc local_name;
+    StrCrc(__FUNCTION__, 0, &local_name);
+
+    Storage* storage = Storage_Create(&local_name);
 
     Storage_Data_Store(storage, Str_CalcCrc("a",0), tData(int32, 123));
 
@@ -86,15 +89,18 @@ static bool CallBack_Queue_Test_Find(Data* a, int32 v)
 
 static void Queue_Test0()
 {
-    Queue(Data*)* queue = Queue_Create(__FUNCTION__, Data*);
+    strcrc local_name;
+    StrCrc(__FUNCTION__, 0, &local_name);
+
+    Queue(Data*)* queue = Queue_Create(&local_name, Data*);
 
     Data x = {1};
     Data y = {2};
     Data z = {3};
 
-    Queue_Push(Data*, __FUNCTION__, queue, &x);
-    Queue_Push(Data*, __FUNCTION__, queue, &y);
-    Queue_Push(Data*, __FUNCTION__, queue, &z);
+    Queue_Push(Data*, &local_name, queue, &x);
+    Queue_Push(Data*, &local_name, queue, &y);
+    Queue_Push(Data*, &local_name, queue, &z);
 
     Queue_ForEach(queue, CallBack_Queue_Test_Print_Data1, (tptr)2);
 
@@ -118,7 +124,10 @@ static void Log_Test0()
 ////////////////////////////////////////////////////////////////////////////////
 static void Memory_Test1()
 {
-    tchar* ptr = MemNewSize(__FUNCTION__, 256);
+    strcrc local_name;
+    StrCrc(__FUNCTION__, 0, &local_name);
+
+    tchar* ptr = MemNewSize(&local_name, 256);
     tptr ptr2 = ptr + 1;
     tptr ptr3 = ptr - 1;
     tptr ptr4 = ptr + 255;
@@ -134,7 +143,10 @@ static void Memory_Test1()
 
 static void Memory_Test0()
 {
-    tptr ptr = MemNewSize(__FUNCTION__, 256);
+    strcrc local_name;
+    StrCrc(__FUNCTION__, 0, &local_name);
+
+    tptr ptr = MemNewSize(&local_name, 256);
     MemDel(ptr);
 };
 
@@ -159,7 +171,10 @@ static void String_Test2()
 
 static void String_Test1()
 {
-    String* a = String_New(__FUNCTION__, NULL, false);
+    strcrc local_name;
+    StrCrc(__FUNCTION__, 0, &local_name);
+
+    String* a = String_New(&local_name, NULL, false);
 
     String_Copy(a, "say hi\n", 0);
 
@@ -174,9 +189,11 @@ static void String_Test1()
 
 static void String_Test0()
 {
+    strcrc local_name;
+    StrCrc(__FUNCTION__, 0, &local_name);
 
-    String* string1 = String_New(__FUNCTION__, "hello world", true);
-    String* string2 = String_New(__FUNCTION__, "goodbye world", true);
+    String* string1 = String_New(&local_name, "hello world", true);
+    String* string2 = String_New(&local_name, "goodbye world", true);
     
     Assert(Str_IsSame(String_CStr(string1), "hello world"), "");
     Assert(!Str_IsSame(String_CStr(string1), "goodbye world"), "");
@@ -204,8 +221,11 @@ static void String_Test0()
 ////////////////////////////////////////////////////////////////////////////////
 void Actor_Test2()
 {
-    Scene* scene = SceneManager_Scene_Create(__FUNCTION__, NULL);
-    Actor* actor = Scene_Actor_Create(__FUNCTION__, scene, NULL, NULL);
+    strcrc local_name;
+    StrCrc(__FUNCTION__, 0, &local_name);
+
+    Scene* scene = SceneManager_Scene_Create(&local_name, NULL);
+    Actor* actor = Scene_Actor_Create(&local_name, scene, NULL, NULL);
 
     Actor_Component_New(actor, Component_Render);
     Actor_Component_Render_ShaderText_Add(actor, Vec3(1, 1, 0), "* hello world" );
@@ -221,8 +241,11 @@ void Actor_Test2()
 
 void Actor_Test1()
 {
-    Scene* scene = SceneManager_Scene_Create(__FUNCTION__, NULL);
-    Actor* actor = Scene_Actor_Create(__FUNCTION__, scene, NULL, NULL);
+    strcrc local_name;
+    StrCrc(__FUNCTION__, 0, &local_name);
+
+    Scene* scene = SceneManager_Scene_Create(&local_name, NULL);
+    Actor* actor = Scene_Actor_Create(&local_name, scene, NULL, NULL);
 
     Actor_Component_New(actor, Component_Physics);
     Actor_Component_New(actor, Component_Render);
@@ -240,8 +263,11 @@ void Actor_Test1()
 
 void Actor_Test0()
 {
-    Scene* scene = SceneManager_Scene_Create(__FUNCTION__, NULL);
-    Actor* actor = Scene_Actor_Create(__FUNCTION__, scene, NULL, NULL);
+    strcrc local_name;
+    StrCrc(__FUNCTION__, 0, &local_name);
+
+    Scene* scene = SceneManager_Scene_Create(&local_name, NULL);
+    Actor* actor = Scene_Actor_Create(&local_name, scene, NULL, NULL);
 
     Actor_Component_New(actor, Component_Render);
     Actor_Component_Render_ShaderText_Add(actor, Vec3(0, 10, 0), "hello world" );
@@ -264,7 +290,10 @@ void CallBack_TaskRun0(Task* task, tptr ptr)
 
 void Task_Test0()
 {
-    Task* task = TaskManager_Task_Work_Add(__FUNCTION__,0, 4, false, NULL, CallBack_TaskRun0, NULL, NULL);
+    strcrc local_name;
+    StrCrc(__FUNCTION__, 0, &local_name);
+
+    Task* task = TaskManager_Task_Work_Add(&local_name,0, 4, false, NULL, CallBack_TaskRun0, NULL, NULL);
 
     while(!Task_IsFinish(task))
     {
@@ -301,7 +330,10 @@ void CallBack_SceneDesrtoy(Scene* scene)
 
 void Scene_Test0()
 {
-    Scene* scene = SceneManager_Scene_Create(__FUNCTION__, CallBack_SceneDesrtoy);
+    strcrc local_name;
+    StrCrc(__FUNCTION__, 0, &local_name);
+
+    Scene* scene = SceneManager_Scene_Create(&local_name, CallBack_SceneDesrtoy);
 
     SceneManager_Scene_Destroy(scene);
     Assert(is_scene_destroy_callback == true, "");
@@ -310,9 +342,12 @@ void Scene_Test0()
 ////////////////////////////////////////////////////////////////////////////////
 void Mutex_Test0()
 {
+    strcrc local_name;
+    StrCrc(__FUNCTION__, 0, &local_name);
+
     bool success;
-    Mutex* mutex1 = Mutex_Create(__FUNCTION__, 1);
-    Mutex* mutex2 = Mutex_Create(__FUNCTION__, 2);
+    Mutex* mutex1 = Mutex_Create(&local_name, 1);
+    Mutex* mutex2 = Mutex_Create(&local_name, 2);
     // Mutex* mutex0 = Mutex_Create(__FUNCTION__, 0);
 
     Mutex_Lock(mutex1, 0);

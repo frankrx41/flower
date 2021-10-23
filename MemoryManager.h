@@ -1,13 +1,14 @@
 #pragma once
 
 typedef struct MemoryManager MemoryManager;
+typedef struct strcrc strcrc;
 
 
-tptr    MemoryManager_Alloc         (MemoryManager* memory_manager, const tchar* local_name, tsize size);
+tptr    MemoryManager_Alloc         (MemoryManager* memory_manager, const strcrc* local_name, tsize size);
 void    MemoryManager_Free          (MemoryManager* memory_manager, tptr ptr);
-tptr    MemoryManager_AllocPtrSize  (MemoryManager* memory_manager, const tchar* local_name, const tptr ptr);
-tptr    MemoryManager_Clone         (MemoryManager* memory_manager, const tchar* local_name, const tptr ptr);
-tptr    MemoryManager_SafeClone     (MemoryManager* memory_manager, const tchar* local_name, const tptr ptr);
+tptr    MemoryManager_AllocPtrSize  (MemoryManager* memory_manager, const strcrc* local_name, const tptr ptr);
+tptr    MemoryManager_Clone         (MemoryManager* memory_manager, const strcrc* local_name, const tptr ptr);
+tptr    MemoryManager_SafeClone     (MemoryManager* memory_manager, const strcrc* local_name, const tptr ptr);
 
 tptr    Memory_Copy         (tptr dst_ptr, const tptr src_ptr, tsize size);
 tptr    Memory_Set          (tptr ptr, int32 val, tsize size);

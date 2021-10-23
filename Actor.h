@@ -3,6 +3,7 @@
 typedef struct Actor Actor;
 typedef struct Scene Scene;
 typedef enum Component Component;
+typedef struct strcrc strcrc;
 
 typedef void (*CB_ActorCreate_Void_Actor_tPtr)  (Actor* actor, tptr ptr);
 typedef void (*CB_ActorDestroy_Void_Actor)      (Actor* actor);
@@ -22,6 +23,6 @@ void    Actor_Component_New     (Actor* actor, Component component_enum);
 void    Actor_Component_Del     (Actor* actor, Component component_enum);
 tptr    Actor_Component_Cast    (Actor* actor, Component component_enum);
 
-const tchar*    Actor_LocalName_Str_Get     (Actor* actor);
-Scene*          Actor_OwnerScene_Get       (Actor* actor);
+const strcrc*   Actor_LocalName_Str_Get     (Actor* actor);
+Scene*          Actor_OwnerScene_Get        (Actor* actor);
 

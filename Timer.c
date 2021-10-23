@@ -10,7 +10,7 @@ struct Timer
     float m_start_tick;
 };
 
-Timer* Timer_Create(const tchar* local_name)
+Timer* Timer_Create(const strcrc* local_name)
 {
     Timer* timer = MemNew(local_name, Timer);
     timer->m_start_tick = TimingManager_Cpu_Seconds_Get(TimingManager_GetInstance());

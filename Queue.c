@@ -18,7 +18,7 @@ struct Node
 
 struct Queue
 {
-    String* m_local_name;
+    strcrc  m_local_name;
     crc32   m_type_crc32;
     uint32  m_length;
     Node*   m_head;     // head node reference data pointer to queue
@@ -40,7 +40,7 @@ static bool Queue_IsHead(const Queue* queue, Node* node)
     return node->m_reference_data == queue;
 }
 
-Queue*  Queue_Create(const tchar* local_name, const tchar* type_str)
+Queue*  Queue_Create(const strcrc* local_name, const tchar* type_str)
 {
     Queue* queue    = MemNew(local_name, Queue);
     queue->m_type_crc32  = Str_CalcCrc(type_str, 0);
@@ -49,14 +49,16 @@ Queue*  Queue_Create(const tchar* local_name, const tchar* type_str)
     queue->m_head->m_node_next      = queue->m_head;
     queue->m_head->m_node_prev      = queue->m_head;
     queue->m_head->m_reference_data = queue;
-    queue->m_local_name             = String_New(local_name, local_name, true);
+
+    StrCrc_Copy(local_name, &queue->m_local_name);
+
     return queue;
 }
 
 void Queue_Destroy(Queue* queue, CB_DestroyData_Void_tPtr cb_destroy_data_void_tptr)
 {
     Queue_Clear(queue, cb_destroy_data_void_tptr);
-    String_Del(queue->m_local_name);
+
     MemDel(queue->m_head);
     MemDel(queue);
 }
@@ -100,14 +102,14 @@ uint32 Queue_GetLength(const Queue* queue)
     return queue->m_length;
 }
 
-void Queue_Push(const tchar* local_name, Queue* queue, tptr reference_data, const tchar* type_str)
+void Queue_Push(const strcrc* local_name, Queue* queue, tptr reference_data, const tchar* type_str)
 {
     Assert(Str_CalcCrc(type_str, 0) == queue->m_type_crc32, "Push type is different from create type, do you forget the star(*) ?");
     Assert(reference_data != NULL, "Why are you push a null data?");
 
     if( local_name == NULL )
     {
-        local_name = String_CStr(queue->m_local_name);
+        local_name = &queue->m_local_name;
     }
     Node* new_node = MemNew(local_name, Node);
     new_node->m_reference_data = reference_data;
@@ -282,7 +284,7 @@ void Queue_Sort(Queue* queue, CB_CompareData_Bool_tPtr_tPtr cb_compare_data_bool
     Assert(false, "");
 }
 
-static const tchar* Queue_GetLocalName(struct Queue* queue)
+static const strcrc* Queue_GetLocalName(struct Queue* queue)
 {
-    return String_CStr(queue->m_local_name);
+    return &queue->m_local_name;
 }

@@ -12,14 +12,16 @@ tchar   - str
 
 */
 
+#define HELP_CALC_CRC 1
+
 struct String
 {
     bool    m_is_const;
     bool    m_is_calc_crc;
     crc32   m_crc;
     tsize   m_length;
+    strcrc  m_local_name;
     tchar*  m_char;
-    tchar*  m_str_local_name;
 };
 
 static void String_ReAllocSize(String* string, const tsize length, bool keep_data)
@@ -36,7 +38,7 @@ static void String_ReAllocSize(String* string, const tsize length, bool keep_dat
 
     tsize origin_length = String_GetLength(string);
     tchar* origin_str   = string->m_char;
-    string->m_char = MemNewSize(string->m_str_local_name, size);
+    string->m_char = MemNewSize(&string->m_local_name, size);
 
     if( keep_data )
     {
@@ -166,6 +168,37 @@ tsize Str_Copy(tchar* dest, const tchar* from, tsize length)
 }
 
 ////////////////////////////////////////////////////////////////////////////////
+strcrc* StrCrc(const tchar* str, crc32 crc, strcrc* out_strcrc)
+{
+#if HELP_CALC_CRC
+    if( crc == 0 )
+    {
+        crc = Str_CalcCrc(str, Str_CalcLength(str));
+    }
+#endif
+    Assert(crc == Str_CalcCrc(str, Str_CalcLength(str)), "");
+
+    out_strcrc->m_str = str;
+    out_strcrc->m_crc32 = crc;
+
+    return out_strcrc;
+}
+
+strcrc* StrCrc_Copy(const strcrc* source_strcrc, strcrc* out_strcrc)
+{
+    Assert(source_strcrc->m_crc32 != 0, "");
+    out_strcrc->m_crc32 = source_strcrc->m_crc32;
+    out_strcrc->m_str   = source_strcrc->m_str;
+
+    return out_strcrc;
+}
+
+bool StrCrc_IsSame(const strcrc* strcrc1, const strcrc* strcrc2)
+{
+    return strcrc1->m_crc32 == strcrc2->m_crc32;
+}
+
+////////////////////////////////////////////////////////////////////////////////
 tsize String_GetLength(const String* string)
 {
     return string->m_length;
@@ -249,24 +282,18 @@ void String_Copy(String* string, const tchar* str, const tsize length)
     }
 }
 
-String* String_New(const tchar* local_name, const tchar* str, bool is_const)
+String* String_New(const strcrc* local_name, const tchar* str, bool is_const)
 {
     Assert(local_name != NULL, "");
 
     String* string = MemNew(local_name, String);
 
-    string->m_str_local_name = NULL;
+    StrCrc_Copy(local_name, &string->m_local_name);
     string->m_char          = NULL;
     string->m_length        = 0;
     string->m_crc           = 0;
     string->m_is_calc_crc   = is_const; //is_calc_crc;
     string->m_is_const      = is_const;
-
-    {
-        const tsize local_name_length = Str_CalcLength(local_name);
-        string->m_str_local_name = MemNewSize(local_name, local_name_length+1);
-        Str_Copy(string->m_str_local_name, local_name, local_name_length);
-    }
 
     if( !Str_IsEmpty(str) )
     {
@@ -295,7 +322,6 @@ String* String_New(const tchar* local_name, const tchar* str, bool is_const)
 
 void String_Del(String* string)
 {
-    MemDel(string->m_str_local_name);
     if( !string->m_is_const )
     {
         MemSafeDel(string->m_char);

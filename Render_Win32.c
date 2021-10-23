@@ -35,7 +35,7 @@ struct RenderManagerPlatformData
 };
 
 
-RenderManagerPlatformData* RenderManager_PlatformData_Create_Plat(RenderManager* render_manager, const tchar* local_name)
+RenderManagerPlatformData* RenderManager_PlatformData_Create_Plat(RenderManager* render_manager, const strcrc* local_name)
 {
     RenderManagerPlatformData* render_manager_platform_data = MemNew(local_name, RenderManagerPlatformData);
     render_manager_platform_data->m_width       = 80;

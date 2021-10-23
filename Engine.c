@@ -13,6 +13,8 @@
 #include "SceneManager.h"
 #include "TaskManager.h"
 
+#include "String.h"
+
 
 typedef struct Engine   Engine;
 
@@ -33,19 +35,19 @@ struct Engine
 
 static Engine global_engine;
 
-RenderManager*      RenderManager_Create    (const tchar* local_name);
+RenderManager*      RenderManager_Create    (const strcrc* local_name);
 void                RenderManager_Destroy   (RenderManager* render_manager);
-MemoryManager*      MemoryManager_Create    (const tchar* local_name);
+MemoryManager*      MemoryManager_Create    (const strcrc* local_name);
 void                MemoryManager_Destroy   (MemoryManager* memory_manager);
-TimingManager*      TimingManager_Create    (const tchar* local_name);
+TimingManager*      TimingManager_Create    (const strcrc* local_name);
 void                TimingManager_Destroy   (TimingManager* timing_manager);
-EventManager*       EventManager_Create     (const tchar* local_name);
+EventManager*       EventManager_Create     (const strcrc* local_name);
 void                EventManager_Destroy    (EventManager* event_manager);
-SceneManager*       SceneManager_Create     (const tchar* local_name);
+SceneManager*       SceneManager_Create     (const strcrc* local_name);
 void                SceneManager_Destroy    (SceneManager* scene_manager);
-InputManager*       InputManager_Create     (const tchar* local_name);
+InputManager*       InputManager_Create     (const strcrc* local_name);
 void                InputManager_Destroy    (InputManager* input_manager);
-TaskManager*        TaskManager_Create      (const tchar* local_name);
+TaskManager*        TaskManager_Create      (const strcrc* local_name);
 void                TaskManager_Destroy     (TaskManager* task_manager);
 
 void                Engine_Debug_Memory_Check_Leak          ();
@@ -68,14 +70,28 @@ void Engine_Initialize()
 {
     Engine* engine = Engine_GetInstance();
 
-    engine->m_memory_manager    = MemoryManager_Create("MemoryManager");
+    strcrc manager_strcrc;
 
-    engine->m_render_manager    = RenderManager_Create("RenderManager");
-    engine->m_timing_manager    = TimingManager_Create("TimingManager");
-    engine->m_event_manager     = EventManager_Create("EventManager");
-    engine->m_scene_manager     = SceneManager_Create("SceneManager");
-    engine->m_input_manager     = InputManager_Create("InputManager");
-    engine->m_task_manager      = TaskManager_Create("TaskManager");
+    StrCrc("MemoryManager", 0, &manager_strcrc);
+    engine->m_memory_manager    = MemoryManager_Create(&manager_strcrc);
+
+    StrCrc("RenderManager", 0, &manager_strcrc);
+    engine->m_render_manager    = RenderManager_Create(&manager_strcrc);
+    
+    StrCrc("TimingManager", 0, &manager_strcrc);
+    engine->m_timing_manager    = TimingManager_Create(&manager_strcrc);
+    
+    StrCrc("EventManager", 0, &manager_strcrc);
+    engine->m_event_manager     = EventManager_Create(&manager_strcrc);
+    
+    StrCrc("SceneManager", 0, &manager_strcrc);
+    engine->m_scene_manager     = SceneManager_Create(&manager_strcrc);
+    
+    StrCrc("InputManager", 0, &manager_strcrc);
+    engine->m_input_manager     = InputManager_Create(&manager_strcrc);
+    
+    StrCrc("TaskManager", 0, &manager_strcrc);
+    engine->m_task_manager      = TaskManager_Create(&manager_strcrc);
 
     engine->m_is_initialized    = true;
     engine->m_is_exit           = false;

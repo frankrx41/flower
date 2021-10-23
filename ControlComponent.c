@@ -26,16 +26,16 @@ struct ControlEventRespond
 
 struct ControlComponent
 {
-    String*                         m_local_name;
+    strcrc                          m_local_name;
     Queue(ControlEventRespond*)*    m_control_event_respond_queue;
 };
 
 
-ControlComponent* Component_Control_Create(const tchar* local_name, Actor* actor)
+ControlComponent* Component_Control_Create(const strcrc* local_name, Actor* actor)
 {
     ControlComponent* event_respond_component  = MemNew(local_name, ControlComponent);
     event_respond_component->m_control_event_respond_queue  = Queue_Create(local_name, ControlEventRespond*);
-    event_respond_component->m_local_name           = String_New(local_name, local_name, true);
+    StrCrc_Copy(local_name, &event_respond_component->m_local_name);
 
     Scene_ControlEventGroup_Actor_Add(Actor_OwnerScene_Get(actor), actor, Event_Control_Min);
 
@@ -52,14 +52,14 @@ void Component_Control_Destroy(ControlComponent* control_component)
     Assert(control_component != NULL, "");
     Component_Control_EventRespond_Clear(control_component);
     Queue_Destroy(control_component->m_control_event_respond_queue, CallBack_EventRespond_Destroy);
-    String_Del(control_component->m_local_name);
+
     MemDel(control_component);
 }
 
 void Component_Control_EventRespond_Add(ControlComponent* control_component, Event event, CB_RespondCondition_Bool_Actor_EventInfo cb_respond_condition_bool_actor_eventinfo, CB_RespondAction_Void_Actor_EventInfo cb_respond_action_void_actor_eventinfo)
 {
     Assert(control_component != NULL, "");
-    ControlEventRespond* control_event_respond = MemNew(String_CStr(control_component->m_local_name), ControlEventRespond);
+    ControlEventRespond* control_event_respond = MemNew(&control_component->m_local_name, ControlEventRespond);
     control_event_respond->m_event              = event;
     control_event_respond->m_cb_respond_action_void_actor_eventinfo     = cb_respond_action_void_actor_eventinfo;
     control_event_respond->m_cb_respond_condition_bool_actor_eventinfo  = cb_respond_condition_bool_actor_eventinfo;

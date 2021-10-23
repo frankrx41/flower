@@ -16,7 +16,7 @@ struct TimingManager
     bool    m_is_initialized;
     bool    m_is_limit_frame_rate;
     tptr    m_platform_data;
-    String* m_local_name;
+    strcrc  m_local_name;
 
     int64   m_last_cpu_tick;
     int64   m_next_cpu_tick;
@@ -28,20 +28,20 @@ struct TimingManager
 };
 
 
-tptr    TimingManager_PlatformData_Create  (TimingManager* timing_manager, const tchar* local_name);
+tptr    TimingManager_PlatformData_Create  (TimingManager* timing_manager, const strcrc* local_name);
 void    TimingManager_PlatformData_Destroy (TimingManager* timing_manager, tptr platform_data);
 
 uint64  TimingManager_Cpu_Tick_Get_Plat     (TimingManager* timing_manager, tptr platform_data);
 uint64  TimingManager_Cpu_Frequency_Get_Plat(TimingManager* timing_manager, tptr platform_data);
 
-TimingManager* TimingManager_Create(const tchar* local_name)
+TimingManager* TimingManager_Create(const strcrc* local_name)
 {
     TimingManager* timing_manager           = MemNew(local_name, TimingManager);
     timing_manager->m_frame_rate            = 60;
     timing_manager->m_is_limit_frame_rate   = false;
     timing_manager->m_platform_data         = TimingManager_PlatformData_Create(timing_manager, local_name);
     timing_manager->m_is_initialized        = true;
-    timing_manager->m_local_name            = String_New(local_name, local_name, true);
+    StrCrc_Copy(local_name, &timing_manager->m_local_name);
     timing_manager->m_idle_seconds          = 0;
 
     TimingManager_SetFrameRate(timing_manager, 60);
@@ -53,7 +53,6 @@ void TimingManager_Destroy(TimingManager* timing_manager)
 {
     TimingManager_PlatformData_Destroy(timing_manager, timing_manager->m_platform_data);
 
-    String_Del(timing_manager->m_local_name);
     MemDel(timing_manager);
 }
 

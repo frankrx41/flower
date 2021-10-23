@@ -16,7 +16,7 @@ struct RenderComponent
 };
 
 ////////////////////////////////////////////////////////////////////////////////
-RenderComponent* Component_Render_Create(const tchar* local_name, Actor* actor)
+RenderComponent* Component_Render_Create(const strcrc* local_name, Actor* actor)
 {
     RenderComponent* render_component = MemNew(local_name, RenderComponent);
     render_component->m_shader_text_queue = Queue_Create(local_name, ShaderText*);
