@@ -10,6 +10,6 @@ void        Viewport_Destroy    (Viewport* viewport);
 
 void        Viewport_Clean      (Viewport* viewport);
 
-void        Viewport_RenderTo_Screen    (const Viewport* back_viewport, const Viewport* front_viewport);
+void        Viewport_RenderTo_Screen    (RenderManager* render_manager, void* platform_data, const Viewport* back_viewport, const Viewport* front_viewport);
 void        Viewport_RenderTo_Viewport  (const Viewport* viewport, Viewport* out_viewport);
 void        Viewport_Render_ShaderText  (Viewport* viewport, ShaderText* shader_text);

@@ -58,7 +58,7 @@ void RenderManager_PlatformData_Destroy_Plat(RenderManager* render_manager, Rend
     MemDel(render_manager_platform_data);
 }
 
-static void Render_PrintCharAtXY_Win32(RenderManagerPlatformData* render_manager_platform_data, uint32 x, uint32 y, tchar ch)
+void Render_PrintCharAtXY_Platform(RenderManager* render_manager, RenderManagerPlatformData* render_manager_platform_data, uint32 x, uint32 y, tchar ch)
 {
     const COORD coord_screen = { x, y };
     SetConsoleCursorPosition(render_manager_platform_data->m_std_output, coord_screen);
@@ -67,8 +67,7 @@ static void Render_PrintCharAtXY_Win32(RenderManagerPlatformData* render_manager
 
 void RenderManager_ToScreen_Plat(RenderManager* render_manager, RenderManagerPlatformData* render_manager_platform_data)
 {
-
-    Viewport_RenderTo_Screen(render_manager_platform_data->m_back_buffer, render_manager_platform_data->m_front_buffer);
+    Viewport_RenderTo_Screen(render_manager, render_manager_platform_data, render_manager_platform_data->m_back_buffer, render_manager_platform_data->m_front_buffer);
 }
 
 void RenderManager_SwapBuffer_Plat(RenderManager* render_manager, RenderManagerPlatformData* render_manager_platform_data)
