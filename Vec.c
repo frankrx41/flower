@@ -22,7 +22,7 @@ vec3 Vec3(float x, float y, float z)
     return vec;
 }
 
-vec3* Vec3_Add(vec3* v1, vec3* v2, vec3* out)
+vec3* Vec3_Add(const vec3* v1, const vec3* v2, vec3* out)
 {
     Assert(out != NULL, "");
 
@@ -33,7 +33,7 @@ vec3* Vec3_Add(vec3* v1, vec3* v2, vec3* out)
     return out;
 }
 
-vec3* Vec3_Multiply(vec3* v, float k, vec3* out)
+vec3* Vec3_Multiply(const vec3* v, float k, vec3* out)
 {
     Assert(out != NULL, "");
 
@@ -44,7 +44,7 @@ vec3* Vec3_Multiply(vec3* v, float k, vec3* out)
     return out;
 }
 
-bool Vec3_IsZero(vec3* v)
+bool Vec3_IsZero(const vec3* v)
 {
     return v->m_x == 0 && v->m_y == 0 && v->m_z == 0;
 }
@@ -59,7 +59,7 @@ vec2 Vec2(float x, float y)
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-aabb AABB(vec3* v1, vec3* v2)
+aabb AABB(const vec3* v1, const vec3* v2)
 {
     aabb aabb;
     aabb.m_v1 = *v1;

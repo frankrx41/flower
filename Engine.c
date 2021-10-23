@@ -52,6 +52,7 @@ void                Memory_Check_Leak          ();
 
 void    Engine_Debug_UnitTesting0   ();
 void    Engine_Debug_UnitTesting1   ();
+void    Engine_Debug_UnitTesting2   ();
 
 void    Engine_Initialize   (void);
 void    Engine_MainLoop     (void);
@@ -95,7 +96,8 @@ void Engine_Main(const tchar* command_line)
     Engine_Initialize();
 
     Engine_Debug_UnitTesting0();
-    Engine_Debug_UnitTesting1();
+    // Engine_Debug_UnitTesting1();
+    Engine_Debug_UnitTesting2();
 
     TimingManager_SetFrameRate(TimingManager_GetInstance(), 30);
     Engine_MainLoop();

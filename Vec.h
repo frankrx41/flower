@@ -29,12 +29,12 @@ struct aabb
 };
 
 extern vec3     Vec3            (float x, float y, float z);
-extern vec3*    Vec3_Add        (vec3* v1, vec3* v2, vec3* out);
-extern vec3*    Vec3_Multiply   (vec3* v, float k, vec3* out);
-extern vec3*    Vec3_Cross      (vec3* v1, vec3* v2, vec3* out);
-extern float    Vec3_Dot        (vec3* v1, vec3* v2);
-extern bool     Vec3_IsZero     (vec3* v);
+extern vec3*    Vec3_Add        (const vec3* v1, const vec3* v2, vec3* out);
+extern vec3*    Vec3_Multiply   (const vec3* v, float k, vec3* out);
+extern vec3*    Vec3_Cross      (const vec3* v1, const vec3* v2, vec3* out);
+extern float    Vec3_Dot        (const vec3* v1, const vec3* v2);
+extern bool     Vec3_IsZero     (const vec3* v);
 
 extern vec2     Vec2            (float x, float y);
 
-extern aabb     AABB            (vec3* v1, vec3* v2);
+extern aabb     AABB            (const vec3* v1, const vec3* v2);

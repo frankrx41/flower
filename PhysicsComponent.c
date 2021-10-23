@@ -35,13 +35,13 @@ vec3* Component_Physics_GetLocation(PhysicsComponent* physics_component)
     return &physics_component->m_displacement;
 }
 
-void Component_Physics_SetLocation(PhysicsComponent* physics_component, vec3* vec)
+void Component_Physics_SetLocation(PhysicsComponent* physics_component, const vec3* vec)
 {
     Assert(physics_component != NULL, "");
     physics_component->m_displacement = *vec;
 }
 
-void Component_Physics_MoveLocation(PhysicsComponent* physics_component, vec3* offset_vec)
+void Component_Physics_MoveLocation(PhysicsComponent* physics_component, const vec3* offset_vec)
 {
     Assert(physics_component != NULL, "");
 
@@ -54,7 +54,7 @@ vec3* Component_Physics_GetVelocity(PhysicsComponent* physics_component)
     return &physics_component->m_velocity;
 }
 
-void Component_Physics_SetVelocity(PhysicsComponent* physics_component, vec3* velocity)
+void Component_Physics_SetVelocity(PhysicsComponent* physics_component, const vec3* velocity)
 {
     Assert(physics_component != NULL, "");
     physics_component->m_velocity = *velocity;
@@ -66,7 +66,7 @@ vec3* Component_Physics_GetAcceleration(PhysicsComponent* physics_component)
     return &physics_component->m_acceleration;
 }
 
-void Component_Physics_SetAcceleration(PhysicsComponent* physics_component, vec3* acceleration)
+void Component_Physics_SetAcceleration(PhysicsComponent* physics_component, const vec3* acceleration)
 {
     Assert(physics_component != NULL, "");
     physics_component->m_acceleration = *acceleration;

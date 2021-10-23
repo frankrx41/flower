@@ -39,6 +39,8 @@ enum Event
     Event_Control_OpenBackpack,
     Event_Control_Fire,
     Event_Control_Cover,
+    Event_Control_Pause,
+    Event_Control_Start,
 
     Event_Control_Max,
 

@@ -35,7 +35,7 @@ vec3* Actor_Component_Physics_Location_Get(const Actor* actor)
     Component_Physics_GetLocation(physics_component);
 }
 
-void Actor_Component_Physics_Location_Set(Actor* actor, vec3* vec)
+void Actor_Component_Physics_Location_Set(Actor* actor, const vec3* vec)
 {
     Assert(actor != NULL, "");
     PhysicsComponent* physics_component = Actor_Component_Cast(actor, Component_Physics);
@@ -43,7 +43,7 @@ void Actor_Component_Physics_Location_Set(Actor* actor, vec3* vec)
     Component_Physics_SetLocation(physics_component, vec);
 }
 
-void Actor_Component_Physics_Location_Move(Actor* actor, vec3* offset_vec)
+void Actor_Component_Physics_Location_Move(Actor* actor, const vec3* offset_vec)
 {
     Assert(actor != NULL, "");
     PhysicsComponent* physics_component = Actor_Component_Cast(actor, Component_Physics);
@@ -61,7 +61,7 @@ vec3* Actor_Component_Physics_Velocity_Get(const Actor* actor)
     Component_Physics_GetVelocity(physics_component);
 }
 
-void Actor_Component_Physics_Velocity_Set(Actor* actor, vec3* velocity)
+void Actor_Component_Physics_Velocity_Set(Actor* actor, const vec3* velocity)
 {
     Assert(actor != NULL, "");
     PhysicsComponent* physics_component = Actor_Component_Cast(actor, Component_Physics);
@@ -79,7 +79,7 @@ vec3* Actor_Component_Physics_Acceleration_Get(const Actor* actor)
     Component_Physics_GetAcceleration(physics_component);
 }
 
-void Actor_Component_Physics_Acceleration_Set(Actor* actor, vec3* acceleration)
+void Actor_Component_Physics_Acceleration_Set(Actor* actor, const vec3* acceleration)
 {
     Assert(actor != NULL, "");
     PhysicsComponent* physics_component = Actor_Component_Cast(actor, Component_Physics);
@@ -114,7 +114,7 @@ void Actor_Component_Physics_SetEnableSimulate(Actor* actor, bool is_enable_simu
 
 
 // Component_Render
-ShaderText* Actor_Component_Render_ShaderText_Add(Actor* actor, vec3* location, vec2* offset, const tchar* str)
+ShaderText* Actor_Component_Render_ShaderText_Add(Actor* actor, const vec3* location, const vec2* offset, const tchar* str)
 {
     Assert(actor != NULL, "");
     RenderComponent* render_component = Actor_Component_Cast(actor, Component_Render);

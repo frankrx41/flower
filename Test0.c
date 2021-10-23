@@ -221,6 +221,8 @@ void Actor_Test2()
     Scene* scene = SceneManager_Scene_Create(&local_name, NULL, NULL, NULL);
     Actor* actor = Scene_Actor_Create(&local_name, scene, NULL, NULL, NULL);
 
+    Scene_Viewport_Create(scene, 0, 0, NULL, NULL);
+
     Actor_Component_New(actor, Component_Render);
     location = Vec3(1, 1, 0);
     Actor_Component_Render_ShaderText_Add(actor, &location, NULL, "* hello world" );
@@ -241,6 +243,7 @@ void Actor_Test1()
 
     Scene* scene = SceneManager_Scene_Create(&local_name, NULL, NULL, NULL);
     Actor* actor = Scene_Actor_Create(&local_name, scene, NULL, NULL, NULL);
+    Scene_Viewport_Create(scene, 0, 0, NULL, NULL);
 
     Actor_Component_New(actor, Component_Physics);
     Actor_Component_New(actor, Component_Render);
@@ -264,6 +267,7 @@ void Actor_Test0()
 
     Scene* scene = SceneManager_Scene_Create(&local_name, NULL, NULL, NULL);
     Actor* actor = Scene_Actor_Create(&local_name, scene, NULL, NULL, NULL);
+    Scene_Viewport_Create(scene, 0, 0, NULL, NULL);
 
     Actor_Component_New(actor, Component_Render);
     vec3 location = Vec3(0, 10, 0);

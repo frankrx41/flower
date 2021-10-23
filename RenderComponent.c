@@ -23,6 +23,8 @@ RenderComponent* Component_Render_Create(const strcrc* local_name, Actor* actor)
 
     Scene_ActorQueue_Renderable_Add(Actor_OwnerScene_Get(actor), actor);
 
+    Assert(Scene_Viewport_Get(Actor_OwnerScene_Get(actor)) != NULL, "");
+
     return render_component;
 }
 
