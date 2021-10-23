@@ -5,6 +5,7 @@
 #include "SceneManager.h"
 #include "TaskManager.h"
 
+#include "Viewport.h"
 #include "Queue.h"
 #include "Scene.h"
 #include "String.h"
@@ -13,43 +14,69 @@
 
 void*   RenderManager_PlatformData_Create_Plat  (RenderManager* render_manager, const strcrc* local_name);
 void    RenderManager_PlatformData_Destroy_Plat (RenderManager* render_manager, void* platform_data);
-void    RenderManager_ToScreen_Plat             (RenderManager* render_manager, void* platform_data);
-void    RenderManager_SwapBuffer_Plat           (RenderManager* render_manager, void* platform_data);
-void    RenderManager_Render_ToBackBuffer_Plat  (RenderManager* render_manager, void* platform_data, vec2 offset_vec, ShaderText* shader_text);
 
 void    CallBack_Actor_RenderEachActor          (Actor* actor, const RenderManager* render_manager);
 
 struct RenderManager
 {
     bool        m_is_initialized;
-    RenderMode  m_render_mode;
+
+    Viewport*   m_buffer[2];
+    Viewport*   m_back_buffer;
+    Viewport*   m_front_buffer;
+
     void*       m_platform_data;
 };
 
 RenderManager* RenderManager_Create(const strcrc* local_name)
 {
-    RenderManager* render_manager = MemNew(local_name, RenderManager);
+    RenderManager* render_manager   = MemNew(local_name, RenderManager);
+    render_manager->m_buffer[0]     = Viewport_Create(local_name, 80, 25, &vec2_null, &vec2_null);
+    render_manager->m_buffer[1]     = Viewport_Create(local_name, 80, 25, &vec2_null, &vec2_null);
+
+    render_manager->m_front_buffer  = render_manager->m_buffer[0];
+    render_manager->m_back_buffer   = render_manager->m_buffer[1];
+
     render_manager->m_platform_data = RenderManager_PlatformData_Create_Plat(render_manager, local_name);
+
     render_manager->m_is_initialized = true;
+
     return render_manager;
 }
 
 void RenderManager_Destroy(RenderManager* render_manager)
 {
     RenderManager_PlatformData_Destroy_Plat(render_manager, render_manager->m_platform_data);
-    render_manager->m_platform_data = NULL;
+    Viewport_Destroy(render_manager->m_buffer[0]);
+    Viewport_Destroy(render_manager->m_buffer[1]);
     MemDel(render_manager);
+}
+
+static void RenderManager_SwapBuffer(RenderManager* render_manager)
+{
+    Viewport* back_buffer = render_manager->m_back_buffer;
+    render_manager->m_back_buffer = render_manager->m_front_buffer;
+    render_manager->m_front_buffer = back_buffer;
+
+    if( render_manager->m_back_buffer == render_manager->m_buffer[0] )
+    {
+        Viewport_Clean(render_manager->m_buffer[0]);
+    }
+    else
+    {
+        Viewport_Clean(render_manager->m_buffer[1]);
+    }
 }
 
 void RenderManager_Render_ToScreen(RenderManager* render_manager)
 {
-    RenderManager_ToScreen_Plat(render_manager, render_manager->m_platform_data);
-    RenderManager_SwapBuffer_Plat(render_manager, render_manager->m_platform_data);
+    Viewport_RenderTo_Screen(render_manager, render_manager->m_platform_data, render_manager->m_back_buffer, render_manager->m_front_buffer);
+    RenderManager_SwapBuffer(render_manager);
 }
 
 void RenderManager_Render_ToBackBuffer(RenderManager* render_manager, vec2 offset_vec, ShaderText* shader_text)
 {
-    RenderManager_Render_ToBackBuffer_Plat(render_manager, render_manager->m_platform_data, offset_vec, shader_text);
+    Viewport_Render_ShaderText(render_manager->m_back_buffer, shader_text);
 }
 
 static void CallBack_Render_Scene(Scene* scene, const RenderManager* render_manager)
