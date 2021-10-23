@@ -25,7 +25,6 @@ struct Engine
     bool    m_is_exit;
 
     TimingManager*  m_timing_manager;
-    MemoryManager*  m_memory_manager;
     RenderManager*  m_render_manager;
     EventManager*   m_event_manager;
     SceneManager*   m_scene_manager;
@@ -37,8 +36,6 @@ static Engine global_engine;
 
 RenderManager*      RenderManager_Create    (const strcrc* local_name);
 void                RenderManager_Destroy   (RenderManager* render_manager);
-MemoryManager*      MemoryManager_Create    (const strcrc* local_name);
-void                MemoryManager_Destroy   (MemoryManager* memory_manager);
 TimingManager*      TimingManager_Create    (const strcrc* local_name);
 void                TimingManager_Destroy   (TimingManager* timing_manager);
 EventManager*       EventManager_Create     (const strcrc* local_name);
@@ -71,9 +68,6 @@ void Engine_Initialize()
     Engine* engine = Engine_GetInstance();
 
     strcrc manager_strcrc;
-
-    StrCrc("MemoryManager", 0, &manager_strcrc);
-    engine->m_memory_manager    = MemoryManager_Create(&manager_strcrc);
 
     StrCrc("RenderManager", 0, &manager_strcrc);
     engine->m_render_manager    = RenderManager_Create(&manager_strcrc);
@@ -148,8 +142,6 @@ void Engine_UnInitialize()
 
     Engine_Profile_Memory();
     Engine_Debug_Memory_Check_Leak();
-
-    MemoryManager_Destroy(engine->m_memory_manager);
     Engine_Debug_Memory_Static_Check_Leak();
 }
 
@@ -168,12 +160,6 @@ bool Engine_IsExit()
 TimingManager* TimingManager_GetInstance()
 {
     return Engine_GetInstance()->m_timing_manager;
-}
-
-// MemoryManager
-MemoryManager* MemoryManager_GetInstance()
-{
-    return Engine_GetInstance()->m_memory_manager;
 }
 
 // RenderManager

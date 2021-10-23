@@ -24,42 +24,26 @@ static void MemoryProfileData_Destroy(MemoryProfileData* memory_profile_data)
     MemDel(memory_profile_data);
 }
 
-struct MemoryManager
-{
-    uint32                      m_alloc_id;
-    strcrc                      m_local_name;
-    MemoryProfileData           m_static_memory;
-    Queue(MemoryProfileData*)*  m_memory_profile_data_queue;
-};
-
-
-tptr   Memory_Alloc_Plat   (tsize size);
+tptr    Memory_Alloc_Plat   (tsize size);
 void    Memory_Free_Plat    (void* ptr);
-tptr   Memory_Copy_Plat    (tptr dst_ptr, const tptr src_ptr, tsize size);
-tptr   Memory_Set_Plat     (tptr address, int32 val, tsize size);
+tptr    Memory_Copy_Plat    (tptr dst_ptr, const tptr src_ptr, tsize size);
+tptr    Memory_Set_Plat     (tptr address, int32 val, tsize size);
 
 static tsize static_alloc_memory_size = 0;
 
 
-//  +----+---------------+-------------------
-//  |tptr|size| id | crc |  Memory Data ...
-//  +----+----+----+-----+-------------------
-//  |block               |ptr
+//  +----+---------+-------------------
+//  |tptr|size| crc|  Memory Data ...
+//  +----+----+----+-------------------
+//  |block         |ptr
 
 struct MemoryBlock
 {
     tptr    m_pointer;
     tsize   m_alloc_size;
-    uint32  m_id;
     crc32   m_crc;
     byte    m_byte[1];
 };
-
-static uint32 MemoryManager_IncreaseAllocID(MemoryManager* memory_manager)
-{
-    Assert(memory_manager != NULL, "You need to create MemoryManager first!");
-    return ++memory_manager->m_alloc_id;
-}
 
 static MemoryBlock* CastToMemoryBlock(tptr ptr)
 {
@@ -69,133 +53,53 @@ static MemoryBlock* CastToMemoryBlock(tptr ptr)
 };
 
 ////////////////////////////////////////////////////////////////////////////////
-MemoryManager* MemoryManager_Create(const strcrc* local_name)
-{
-    MemoryManager* memory_manager = MemNew(local_name, MemoryManager);
-    memory_manager->m_alloc_id = 0;
-    memory_manager->m_static_memory.m_crc = 0;
-    memory_manager->m_static_memory.m_alloc_size = 0;
-    memory_manager->m_static_memory.m_alloc_size_max = 0;
-    StrCrc("", 0, &memory_manager->m_static_memory.m_local_name);
-    
-    StrCrc_Copy(local_name, &memory_manager->m_local_name);
-
-    memory_manager->m_memory_profile_data_queue = Queue_Create(local_name, MemoryProfileData*);
-    return memory_manager;
-}
-
-void MemoryManager_Destroy(MemoryManager* memory_manager)
-{
-    Queue_Destroy(memory_manager->m_memory_profile_data_queue, MemoryProfileData_Destroy);
-
-    Log(4, "%-30s: %d\n", "memory alloc count", memory_manager->m_alloc_id);
-
-    MemDel(memory_manager);
-}
-
 static bool CallBack_Memory_Profile_FindData(MemoryProfileData* memory_profile_data, crc32 crc)
 {
     return memory_profile_data->m_crc == crc;
 }
 
-tptr MemoryManager_Alloc(MemoryManager* memory_manager, const strcrc* local_name, tsize size)
+tptr Memory_Alloc(const strcrc* local_name, tsize size)
 {
-    strcrc str_memory;
-
-    const bool is_dynamic = !StrCrc_IsSame(local_name, StrCrc("MemoryManager", 0, &str_memory));
     MemoryBlock * memory_block  = Memory_Alloc_Plat(sizeof(MemoryBlock) + size);
     Assert(memory_block != NULL, "");
     memory_block->m_pointer     = memory_block->m_byte;
-    memory_block->m_id          = is_dynamic ? MemoryManager_IncreaseAllocID(memory_manager) : 0;
     memory_block->m_crc         = local_name->m_crc32;
     memory_block->m_alloc_size  = size;
-
-    if( is_dynamic )
-    {
-        Queue(MemoryProfileData*)* memory_profile_data_queue = memory_manager->m_memory_profile_data_queue;
-        MemoryProfileData* memory_profile_data = Queue_Find(MemoryProfileData*)( memory_profile_data_queue, (CB_FindData_Bool_tPtr_tPtr)CallBack_Memory_Profile_FindData, (tptr)memory_block->m_crc );
-        if( memory_profile_data )
-        {
-            memory_profile_data->m_alloc_size += size;
-            if( memory_profile_data->m_alloc_size > memory_profile_data->m_alloc_size_max )
-            {
-                memory_profile_data->m_alloc_size_max = memory_profile_data->m_alloc_size;
-            }
-        }
-        else
-        {
-            strcrc memory_manager_local_name;
-            StrCrc_Copy(&memory_manager->m_local_name, &memory_manager_local_name);
-
-            memory_profile_data = MemNew(&memory_manager_local_name, MemoryProfileData);
-            memory_profile_data->m_crc = memory_block->m_crc;
-            StrCrc_Copy(local_name, &memory_profile_data->m_local_name);
-            memory_profile_data->m_alloc_size = size;
-            memory_profile_data->m_alloc_size_max = size;
-            Queue_Push(MemoryProfileData*, NULL, memory_profile_data_queue, memory_profile_data);
-        }
-    }
-    else
-    {
-        static_alloc_memory_size += size;
-    }
 
     return memory_block->m_byte;
 }
 
-void MemoryManager_Free(MemoryManager* memory_manager, tptr ptr)
+void Memory_Free(tptr ptr)
 {
     Assert(ptr != NULL, "");
 
     MemoryBlock * memory_block = CastToMemoryBlock(ptr);
 
-    if( !Engine_IsExit() )
-    {
-        Assert( memory_block->m_id != 0, "You try to free a static memory!");
-    }
-    const bool is_dynamic = memory_block->m_id != 0 ? true : false;
-    
-    if( is_dynamic )
-    {
-        Queue(MemoryProfileData*)* memory_profile_data_queue = memory_manager->m_memory_profile_data_queue;
-        MemoryProfileData* memory_profile_data = Queue_Find(MemoryProfileData*)( memory_profile_data_queue, (CB_FindData_Bool_tPtr_tPtr)CallBack_Memory_Profile_FindData, (tptr)memory_block->m_crc );
-        if( memory_profile_data )
-        {
-            memory_profile_data->m_alloc_size -= memory_block->m_alloc_size;
-            Assert(memory_profile_data->m_alloc_size >= 0, "");
-        }
-    }
-    else
-    {
-        static_alloc_memory_size -= memory_block->m_alloc_size;
-        Assert(static_alloc_memory_size >= 0, "");
-    }
-
     Memory_Free_Plat(memory_block);
 }
 
-tptr MemoryManager_AllocPtrSize(MemoryManager* memory_manager, const strcrc* local_name, const tptr ptr)
+tptr Memory_AllocPtrSize(const strcrc* local_name, const tptr ptr)
 {
     Assert(ptr != NULL, "");
 
     MemoryBlock* src_block = CastToMemoryBlock(ptr);
 
-    const tptr new_ptr = MemoryManager_Alloc(memory_manager, local_name, src_block->m_alloc_size);
+    const tptr new_ptr = Memory_Alloc(local_name, src_block->m_alloc_size);
     return new_ptr;
 }
 
-tptr MemoryManager_Clone(MemoryManager* memory_manager, const strcrc* local_name, const tptr ptr)
+tptr Memory_Clone(const strcrc* local_name, const tptr ptr)
 {
     Assert(ptr != NULL, "");
     MemoryBlock* src_block = CastToMemoryBlock(ptr);
 
-    const tptr new_ptr = MemoryManager_AllocPtrSize(memory_manager, local_name, ptr);
+    const tptr new_ptr = Memory_AllocPtrSize(local_name, ptr);
     Memory_Copy(new_ptr, ptr, src_block->m_alloc_size);
 
     return new_ptr;
 }
 
-tptr MemoryManager_SafeClone(MemoryManager* memory_manager, const strcrc* local_name, const tptr ptr)
+tptr Memory_SafeClone(const strcrc* local_name, const tptr ptr)
 {
     if( !ptr )
     {
@@ -203,7 +107,7 @@ tptr MemoryManager_SafeClone(MemoryManager* memory_manager, const strcrc* local_
     }
 
     return
-    MemoryManager_Clone(memory_manager, local_name, ptr);
+    Memory_Clone(local_name, ptr);
 }
 
 tptr Memory_Copy(tptr dst_ptr, const tptr src_ptr, tsize size)
@@ -281,17 +185,17 @@ static void CallBack_Memory_ProfileLog(MemoryProfileData* memory_profile_data, u
 
 void Engine_Profile_Memory()
 {
-    uint32 total_alloc_size = 0;
-    MemoryManager* memory_manager = MemoryManager_GetInstance();
-    Queue(MemoryProfileData*)* memory_profile_data_queue = memory_manager->m_memory_profile_data_queue;
-    Log(4, "Memory Profile\n");
-    Log(4, "=====================================================\n");
-    Queue_ForEach( memory_profile_data_queue, CallBack_Memory_ProfileLog, &total_alloc_size );
-    Log(4, "%-30s: %d\n", "Static", static_alloc_memory_size);
-    total_alloc_size += static_alloc_memory_size;
-    Log(4, "%-30s: %d\n", "Total", total_alloc_size);
-    Log(4, "%-30s: %d\n", "memory alloc count", memory_manager->m_alloc_id);
-    Log(4, "=====================================================\n");
+    // uint32 total_alloc_size = 0;
+    // MemoryManager* memory_manager = MemoryManager_GetInstance();
+    // Queue(MemoryProfileData*)* memory_profile_data_queue = memory_manager->m_memory_profile_data_queue;
+    // Log(4, "Memory Profile\n");
+    // Log(4, "=====================================================\n");
+    // Queue_ForEach( memory_profile_data_queue, CallBack_Memory_ProfileLog, &total_alloc_size );
+    // Log(4, "%-30s: %d\n", "Static", static_alloc_memory_size);
+    // total_alloc_size += static_alloc_memory_size;
+    // Log(4, "%-30s: %d\n", "Total", total_alloc_size);
+    // Log(4, "%-30s: %d\n", "memory alloc count", memory_manager->m_alloc_id);
+    // Log(4, "=====================================================\n");
 }
 
 static void CallBack_Memory_Check_Memory_Leak(MemoryProfileData* memory_profile_data, tptr ptr)
@@ -301,10 +205,10 @@ static void CallBack_Memory_Check_Memory_Leak(MemoryProfileData* memory_profile_
 
 void Engine_Debug_Memory_Check_Leak()
 {
-    MemoryManager* memory_manager = MemoryManager_GetInstance();
-    Assert(memory_manager != NULL, "You had free MemoryManager? If you want to check static memory, use Engine_Debug_Memory_Static_Check_Leak.");
-    Queue(MemoryProfileData*)* memory_profile_data_queue = memory_manager->m_memory_profile_data_queue;
-    Queue_ForEach( memory_profile_data_queue, CallBack_Memory_Check_Memory_Leak, NULL );
+    // MemoryManager* memory_manager = MemoryManager_GetInstance();
+    // Assert(memory_manager != NULL, "You had free MemoryManager? If you want to check static memory, use Engine_Debug_Memory_Static_Check_Leak.");
+    // Queue(MemoryProfileData*)* memory_profile_data_queue = memory_manager->m_memory_profile_data_queue;
+    // Queue_ForEach( memory_profile_data_queue, CallBack_Memory_Check_Memory_Leak, NULL );
 }
 
 void Engine_Debug_Memory_Static_Check_Leak()
