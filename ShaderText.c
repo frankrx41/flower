@@ -25,7 +25,7 @@ ShaderText* ShaderText_Create(const strcrc* local_name, bool is_absolute, vec3 v
     shader_text->m_is_disable   = false;
     shader_text->m_vec3         = vec;
     shader_text->m_screen_offset = vec2_null;
-    shader_text->m_string       = String_New(local_name, str, false);
+    shader_text->m_string       = String_New(local_name, str, 0, false);
     shader_text->m_info         = 0;
 
     return shader_text;

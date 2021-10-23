@@ -17,7 +17,6 @@ tchar   - str
 struct String
 {
     bool    m_is_const;
-    bool    m_is_calc_crc;
     crc32   m_crc;
     tsize   m_length;
     strcrc  m_local_name;
@@ -206,7 +205,6 @@ tsize String_GetLength(const String* string)
 
 crc32 String_GetCrc(const String* string)
 {
-    Assert(string->m_is_calc_crc == true, "This string has not crc! Please use Str_CalcCrc instead.");
     Assert(string->m_crc != 0, "");
     return string->m_crc;
 }
@@ -275,14 +273,14 @@ void String_Copy(String* string, const tchar* str, const tsize length)
         string->m_length = string_length;
     }
 
-    if( string->m_is_calc_crc )
+    if( true )
     {
         Assert(str != NULL, "You can not create a const NULL string!");
         string->m_crc = Str_CalcCrc(string->m_char, string->m_length);
     }
 }
 
-String* String_New(const strcrc* local_name, const tchar* str, bool is_const)
+String* String_New(const strcrc* local_name, const tchar* str, crc32 crc, bool is_const)
 {
     Assert(local_name != NULL, "");
 
@@ -291,8 +289,7 @@ String* String_New(const strcrc* local_name, const tchar* str, bool is_const)
     StrCrc_Copy(local_name, &string->m_local_name);
     string->m_char          = NULL;
     string->m_length        = 0;
-    string->m_crc           = 0;
-    string->m_is_calc_crc   = is_const; //is_calc_crc;
+    string->m_crc           = crc;
     string->m_is_const      = is_const;
 
     if( !Str_IsEmpty(str) )
@@ -304,10 +301,13 @@ String* String_New(const strcrc* local_name, const tchar* str, bool is_const)
             string->m_char = (tchar*)str;
             string->m_length = str_length;
 
-            if( string->m_is_calc_crc )
+#if HELP_CALC_CRC
+            if( crc == 0 )
             {
                 string->m_crc = Str_CalcCrc(string->m_char, string->m_length);
             }
+#endif
+            Assert(string->m_crc == Str_CalcCrc(string->m_char, string->m_length), "");
         }
         else
         {

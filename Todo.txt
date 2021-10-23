@@ -17,6 +17,7 @@ Add CB_ProcessSence in Sence_Destroy
 Add InputBank or named it controller ?
 Add InputBank in Actor_Create
 Add TaskManager in SendEvent
+Rename _Plat _Platform
 
 Update Timing, use less plat function (done)
 Rename Scene_SetIsPause (done)

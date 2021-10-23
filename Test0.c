@@ -174,7 +174,7 @@ static void String_Test1()
     strcrc local_name;
     StrCrc(__FUNCTION__, 0, &local_name);
 
-    String* a = String_New(&local_name, NULL, false);
+    String* a = String_New(&local_name, NULL, 0, false);
 
     String_Copy(a, "say hi\n", 0);
 
@@ -192,8 +192,8 @@ static void String_Test0()
     strcrc local_name;
     StrCrc(__FUNCTION__, 0, &local_name);
 
-    String* string1 = String_New(&local_name, "hello world", true);
-    String* string2 = String_New(&local_name, "goodbye world", true);
+    String* string1 = String_New(&local_name, "hello world", 0, true);
+    String* string2 = String_New(&local_name, "goodbye world", 0, true);
     
     Assert(Str_IsSame(String_CStr(string1), "hello world"), "");
     Assert(!Str_IsSame(String_CStr(string1), "goodbye world"), "");
