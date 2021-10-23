@@ -7,12 +7,13 @@ typedef struct EventInfo EventInfo;
 typedef void (*CB_DestroyData_Void_tPtr)        (void* data);
 typedef void (*CB_Command_Void)                 (void);
 typedef void (*CB_SceneDestroy_Void_Scene)      (Scene* scene);
+typedef void (*CB_SceneCreate_Void_Scene_Ptr)   (Scene* scene, const void* ptr);
 
 /*
 SceneManager_Scene_Destroy will call Scene_Actor_Destroy, and then call Actor_Destroy, you no need call Scene_Actor_Destroy
 */
 
-Scene*  SceneManager_Scene_Create           (SceneManager* scene_manager, strcrc* local_name, CB_SceneDestroy_Void_Scene cb_scene_destroy_void_scene);
+Scene*  SceneManager_Scene_Create           (SceneManager* scene_manager, strcrc* local_name, CB_SceneCreate_Void_Scene_Ptr cb_scene_create_void_scene_ptr, CB_SceneDestroy_Void_Scene cb_scene_destroy_void_scene, void* ptr);
 void    SceneManager_Scene_Destroy          (SceneManager* scene_manager, Scene* scene);
 void    SceneManager_Scene_Foreground_Queue_Add     (SceneManager* scene_manager, Scene* scene);
 void    SceneManager_Scene_Foreground_Queue_Remove  (SceneManager* scene_manager, Scene* scene);
@@ -34,7 +35,7 @@ void    SceneManager_SceneEvent_SendTo_Scene           (SceneManager* scene_mana
 
 SceneManager* SceneManager_GetInstance  ();
 
-#define SceneManager_Scene_Create(local_name, cb_scene_destroy_void_scene)       SceneManager_Scene_Create(SceneManager_GetInstance(), local_name, cb_scene_destroy_void_scene)
+#define SceneManager_Scene_Create(local_name, cb_scene_create_void_scene_ptr, cb_scene_destroy_void_scene, ptr)       SceneManager_Scene_Create(SceneManager_GetInstance(), local_name, cb_scene_create_void_scene_ptr, cb_scene_destroy_void_scene, ptr)
 #define SceneManager_Scene_Destroy(scene)           SceneManager_Scene_Destroy(SceneManager_GetInstance(), scene)
 
 #define SceneManager_Scene_Foreground_Queue_Add(scene)      SceneManager_Scene_Foreground_Queue_Add(SceneManager_GetInstance(), scene)

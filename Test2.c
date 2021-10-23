@@ -55,26 +55,18 @@ static void Scene_Create0(void)
 {
     strcrc local_name = StrCrc(__FUNCTION__, 0);
 
-    Scene * scene = SceneManager_Scene_Create(&local_name, NULL);
+    Scene * scene = SceneManager_Scene_Create(&local_name, NULL, NULL, NULL);
 
     Actor * actor = Scene_Actor_Create(&local_name, scene, Actor_Create0, NULL);
-}
-
-
-static void Scene_Create_Task(Task* task, void* ptr)
-{
-    Scene_Create0();
-}
-
-void Engine_Debug_UnitTesting2()
-{
-    // TaskManager_Task_Work_Add(TaskManager_GetInstance(), __FUNCTION__, 0, true, Scene_Create_Task, NULL);
-    SceneManager_Command_Add(Scene_Create0);
 
     InputManager_Input_ControlEvent_Add(InputManager_GetInstance(), KeyId_Escape, KeyState_Down, Event_Control_Cancel);
     InputManager_Input_ControlEvent_Add(InputManager_GetInstance(), KeyId_Up, KeyState_Down, Event_Control_MoveUp);
     InputManager_Input_ControlEvent_Add(InputManager_GetInstance(), KeyId_Down, KeyState_Down, Event_Control_MoveDown);
+    InputManager_Input_ControlEvent_Add(InputManager_GetInstance(), KeyId_Left, KeyState_Down, Event_Control_MoveLeft);
+    InputManager_Input_ControlEvent_Add(InputManager_GetInstance(), KeyId_Right, KeyState_Down, Event_Control_MoveRight);
+}
 
-
-    // Engine_MainLoop();
+void Engine_Debug_UnitTesting2()
+{
+    SceneManager_Command_Add(Scene_Create0);
 }

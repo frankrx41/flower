@@ -218,7 +218,7 @@ void Actor_Test2()
 {
     strcrc local_name = StrCrc(__FUNCTION__, 0);
     vec3 location;
-    Scene* scene = SceneManager_Scene_Create(&local_name, NULL);
+    Scene* scene = SceneManager_Scene_Create(&local_name, NULL, NULL, NULL);
     Actor* actor = Scene_Actor_Create(&local_name, scene, NULL, NULL);
 
     Actor_Component_New(actor, Component_Render);
@@ -239,7 +239,7 @@ void Actor_Test1()
 {
     strcrc local_name = StrCrc(__FUNCTION__, 0);
 
-    Scene* scene = SceneManager_Scene_Create(&local_name, NULL);
+    Scene* scene = SceneManager_Scene_Create(&local_name, NULL, NULL, NULL);
     Actor* actor = Scene_Actor_Create(&local_name, scene, NULL, NULL);
 
     Actor_Component_New(actor, Component_Physics);
@@ -262,7 +262,7 @@ void Actor_Test0()
 {
     strcrc local_name = StrCrc(__FUNCTION__, 0);
 
-    Scene* scene = SceneManager_Scene_Create(&local_name, NULL);
+    Scene* scene = SceneManager_Scene_Create(&local_name, NULL, NULL, NULL);
     Actor* actor = Scene_Actor_Create(&local_name, scene, NULL, NULL);
 
     Actor_Component_New(actor, Component_Render);
@@ -328,7 +328,7 @@ void Scene_Test0()
 {
     strcrc local_name = StrCrc(__FUNCTION__, 0);
 
-    Scene* scene = SceneManager_Scene_Create(&local_name, CallBack_SceneDesrtoy);
+    Scene* scene = SceneManager_Scene_Create(&local_name, NULL, CallBack_SceneDesrtoy, NULL);
 
     SceneManager_Scene_Destroy(scene);
     Assert(is_scene_destroy_callback == true, "");

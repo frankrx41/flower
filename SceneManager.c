@@ -63,9 +63,10 @@ void SceneManager_Destroy(SceneManager* scene_manager)
     MemDel(scene_manager);
 }
 
-Scene* SceneManager_Scene_Create(SceneManager* scene_manager, strcrc* local_name, CB_SceneDestroy_Void_Scene cb_scene_destroy_void_scene)
+Scene* SceneManager_Scene_Create(SceneManager* scene_manager, strcrc* local_name, CB_SceneCreate_Void_Scene_Ptr cb_scene_create_void_scene_ptr, CB_SceneDestroy_Void_Scene cb_scene_destroy_void_scene, void* ptr)
 {
-    Scene* scene = Scene_Create(local_name, scene_manager, cb_scene_destroy_void_scene);
+    Scene* scene = Scene_Create(local_name, scene_manager, cb_scene_create_void_scene_ptr, cb_scene_destroy_void_scene, ptr);
+
     Queue_Push(Scene*, local_name, scene_manager->m_scene_queue_all, scene);
 
     return scene;

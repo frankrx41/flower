@@ -40,7 +40,7 @@ struct Scene
 
 Actor* Actor_Create(const strcrc* local_name, Scene* scene, uint32 id, CB_ActorCreate_Void_Actor_tPtr cb_actor_create_void_actor_tptr, const void* ptr);
 
-Scene* Scene_Create(const strcrc* local_name, SceneManager* scene_manager, CB_SceneDestroy_Void_Scene cb_scene_destroy_void_scene)
+Scene* Scene_Create(const strcrc* local_name, SceneManager* scene_manager, CB_SceneCreate_Void_Scene_Ptr cb_scene_create_void_scene_ptr, CB_SceneDestroy_Void_Scene cb_scene_destroy_void_scene, void* ptr)
 {
     Scene* scene = MemNew(local_name, Scene);
     scene->m_child_actor_queue          = Queue_Create(local_name, Actor*);
@@ -59,6 +59,11 @@ Scene* Scene_Create(const strcrc* local_name, SceneManager* scene_manager, CB_Sc
     for(uint32 i=0, max_i = ARRAY_SIZE(scene->m_actor_queue_scene_event_list); i<max_i; i++)
     {
         scene->m_actor_queue_scene_event_list[i] = Queue_Create(local_name, Actor*);
+    }
+
+    if( cb_scene_create_void_scene_ptr )
+    {
+        cb_scene_create_void_scene_ptr(scene, ptr);
     }
 
     return scene;

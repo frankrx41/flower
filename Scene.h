@@ -12,8 +12,9 @@ typedef struct Viewport Viewport;
 typedef bool (*CB_FindData_Bool_tPtr_tPtr)      (const void* data, const void* ptr);
 typedef void (*CB_ActorCreate_Void_Actor_tPtr)  (Actor* actor, const void* ptr);
 typedef void (*CB_SceneDestroy_Void_Scene)      (Scene* scene);
+typedef void (*CB_SceneCreate_Void_Scene_Ptr)   (Scene* scene, const void* ptr);
 
-Scene*  Scene_Create                (const strcrc* local_name, SceneManager* scene_manager, CB_SceneDestroy_Void_Scene cb_scene_destroy_void_scene);
+Scene*  Scene_Create                (const strcrc* local_name, SceneManager* scene_manager, CB_SceneCreate_Void_Scene_Ptr cb_scene_create_void_scene_ptr, CB_SceneDestroy_Void_Scene cb_scene_destroy_void_scene, void* ptr);
 void    Scene_Viewport_Create       (Scene* scene, float width, float height, const vec2* scale, const vec2* offset);
 void    Scene_Destroy               (Scene* scene);
 
