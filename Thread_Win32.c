@@ -18,13 +18,13 @@ static DWORD WINAPI Thread_Run_Function(LPVOID lpParam)
     return 0;
 }
 
-void* Thread__PlatformData_Create(Thread* thread, const strcrc* local_name)
+void* Thread_PlatformData_Create(Thread* thread, const strcrc* local_name)
 {
     const HANDLE thread_handle = CreateThread(NULL, 0, Thread_Run_Function, (void*)thread, 0, 0);
     return thread_handle;
 }
 
-void Thread_Destroy_Platform(Thread* thread, void* platform_data)
+void Thread_PlatformData_Destroy(Thread* thread, void* platform_data)
 {
     TerminateThread(platform_data, 0);
 }
