@@ -129,7 +129,7 @@ tptr MemoryManager_Alloc(MemoryManager* memory_manager, const strcrc* local_name
 
             memory_profile_data = MemNew(&memory_manager_local_name, MemoryProfileData);
             memory_profile_data->m_crc = memory_block->m_crc;
-            StrCrc_Copy(&memory_manager_local_name, &memory_profile_data->m_local_name);
+            StrCrc_Copy(local_name, &memory_profile_data->m_local_name);
             memory_profile_data->m_alloc_size = size;
             memory_profile_data->m_alloc_size_max = size;
             Queue_Push(MemoryProfileData*, NULL, memory_profile_data_queue, memory_profile_data);
