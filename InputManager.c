@@ -53,7 +53,7 @@ struct InputManager
 {
     KeyInfo     m_key_info[KeyId_Max - KeyId_Min];
     float       m_hold_need_seconds;
-    tptr        m_platform_data;
+    void*       m_platform_data;
     strcrc      m_local_name;
     Queue(InputActionEvent*)*   m_input_state_event_queue;
 };
@@ -107,7 +107,7 @@ static bool CallBack_Find_InputActionEvent(InputStateEvent* input_state_event, E
 void InputManager_Input_ControlEvent_Del(InputManager* input_manager, Event event)
 {
     Assert(IS_IN_RANGE(event, Event_Control_Min, Event_Control_Max), "");
-    Queue_RemoveFindFirst(InputStateEvent*)(input_manager->m_input_state_event_queue, (CB_FindData_Bool_tPtr_tPtr)CallBack_Find_InputActionEvent, (const tptr)event, InputActionEvent_Destroy);
+    Queue_RemoveFindFirst(InputStateEvent*)(input_manager->m_input_state_event_queue, (CB_FindData_Bool_tPtr_tPtr)CallBack_Find_InputActionEvent, (const void*)event, InputActionEvent_Destroy);
 }
 
 void InputManager_Input_ControlEvent_Clear(InputManager* input_manager)
@@ -115,9 +115,9 @@ void InputManager_Input_ControlEvent_Clear(InputManager* input_manager)
     Queue_Clear(input_manager->m_input_state_event_queue, InputActionEvent_Destroy);
 }
 
-void CallBack_ProcessInputStateEvent(InputStateEvent* input_state_event, InputManager* input_manager)
+void CallBack_ProcessInputStateEvent(InputStateEvent* input_state_event, const InputManager* input_manager)
 {
-    KeyInfo* key_info = &input_manager->m_key_info[input_state_event->m_key_id];
+    const KeyInfo* key_info = &input_manager->m_key_info[input_state_event->m_key_id];
     bool is_active = false;
     Assert( input_state_event->m_key_state != KeyState_Up, "" );
     switch(input_state_event->m_key_state)

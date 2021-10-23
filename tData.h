@@ -9,7 +9,7 @@ union tdata
     int32   m_int32;
     float   m_float;
     uint32  m_uint32;
-    tptr    m_tptr; 
+    void*   m_tptr; 
     tsize   m_tsize; 
 };
 

@@ -16,7 +16,7 @@ struct Actor
     uint32  m_id;
     strcrc  m_local_name;
 
-    tptr    m_components[Component_Max - Component_Min];
+    void*   m_components[Component_Max - Component_Min];
 
     Scene*  m_scene;
     bool    m_is_pause;
@@ -24,7 +24,7 @@ struct Actor
     CB_ActorDestroy_Void_Actor  m_cb_actor_destroy_void_actor;
 };
 
-Actor* Actor_Create(const strcrc* local_name, Scene* scene, uint32 id, CB_ActorCreate_Void_Actor_tPtr cb_actor_create_void_actor_tptr, tptr ptr)
+Actor* Actor_Create(const strcrc* local_name, Scene* scene, uint32 id, CB_ActorCreate_Void_Actor_tPtr cb_actor_create_void_actor_tptr, void* ptr)
 {
     Actor* actor = MemNew(local_name, Actor);
     actor->m_id                             = id;
@@ -94,8 +94,8 @@ void Actor_Hide(Actor* actor, bool is_hide)
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-typedef tptr (*CB_ComponentCreate_tPtr_tChar_Actor) (const strcrc* local_name, Actor* actor);
-typedef void (*CB_ComponentDestroy_Void_tPtr)       (tptr component);
+typedef void* (*CB_ComponentCreate_tPtr_tChar_Actor)    (const strcrc* local_name, Actor* actor);
+typedef void (*CB_ComponentDestroy_Void_tPtr)           (void* component);
 
 static CB_ComponentCreate_tPtr_tChar_Actor Actor_Component_Create_CB_Get(Component component_enum)
 {
@@ -123,7 +123,7 @@ static CB_ComponentDestroy_Void_tPtr Actor_Component_Destroy_CB_Get(Component co
     return NULL;
 }
 
-static void Actor_Component_Set(Actor* actor, Component component_enum, tptr component)
+static void Actor_Component_Set(Actor* actor, Component component_enum, void* component)
 {
     Assert(IS_IN_RANGE(component_enum, Component_Min, Component_Max), "");
     actor->m_components[component_enum - Component_Min] = component;
@@ -134,7 +134,7 @@ void Actor_Component_New(Actor* actor, Component component_enum)
     Assert(actor != NULL, "");
     Assert(IS_IN_RANGE(component_enum, Component_Min, Component_Max), "");
 
-    const tptr component = Actor_Component_Create_CB_Get(component_enum)(Actor_LocalName_Str_Get(actor), actor);
+    void* component = Actor_Component_Create_CB_Get(component_enum)(Actor_LocalName_Str_Get(actor), actor);
     Actor_Component_Set(actor, component_enum, component);
 }
 
@@ -143,14 +143,14 @@ void Actor_Component_Del(Actor* actor, Component component_enum)
     Assert(actor != NULL, "");
     Assert(IS_IN_RANGE(component_enum, Component_Min, Component_Max), "");
 
-    const tptr component = Actor_Component_Cast(actor, component_enum);
+    void* component = Actor_Component_Cast(actor, component_enum);
     Assert(component != NULL, "You try to delete a not exist component!");
     
     Actor_Component_Destroy_CB_Get(component_enum)(component);
     Actor_Component_Set(actor, component_enum, NULL);
 }
 
-tptr Actor_Component_Cast(Actor* actor, Component component_enum)
+void* Actor_Component_Cast(const Actor* actor, Component component_enum)
 {
     Assert(IS_IN_RANGE(component_enum, Component_Min, Component_Max), "");
     return actor->m_components[component_enum - Component_Min];
@@ -161,7 +161,7 @@ const strcrc* Actor_LocalName_Str_Get(Actor* actor)
     return &actor->m_local_name;
 }
 
-Scene* Actor_OwnerScene_Get(Actor* actor)
+Scene* Actor_OwnerScene_Get(const Actor* actor)
 {
     return actor->m_scene;
 }

@@ -104,7 +104,7 @@ void SceneManager_Scene_ExitCurrent(SceneManager* scene_manager)
     Log(4, "Scene End\n");
 }
 
-tptr SceneManager_SceneQueue_Foreground_Get(SceneManager* scene_manager)
+void* SceneManager_SceneQueue_Foreground_Get(SceneManager* scene_manager)
 {
     return scene_manager->m_scene_queue_foreground;
 }
@@ -159,7 +159,7 @@ void SceneManager_TryRunNextCommand(SceneManager* scene_manager)
     }
 }
 
-static void CallBack_Scene_Receive_SceneEvent(Scene* scene, EventInfo* event_info)
+static void CallBack_Scene_Receive_SceneEvent(Scene* scene, const EventInfo* event_info)
 {
     EventInfo* scene_event_info = EventInfo_Create(Scene_LocalName_Str_Get(scene), event_info->m_event, scene, NULL, KeyId_Null, event_info->m_delta_seconds);
     Scene_SceneEvent_SendTo_Actor(scene, scene_event_info);

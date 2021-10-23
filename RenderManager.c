@@ -11,19 +11,19 @@
 #include "Vec.h"
 
 
-tptr    RenderManager_PlatformData_Create_Plat  (RenderManager* render_manager, const strcrc* local_name);
-void    RenderManager_PlatformData_Destroy_Plat (RenderManager* render_manager, tptr platform_data);
-void    RenderManager_ToScreen_Plat             (RenderManager* render_manager, tptr platform_data);
-void    RenderManager_SwapBuffer_Plat           (RenderManager* render_manager, tptr platform_data);
-void    RenderManager_Render_ToBackBuffer_Plat  (RenderManager* render_manager, tptr platform_data, vec2 offset_vec, ShaderText* shader_text);
+void*   RenderManager_PlatformData_Create_Plat  (RenderManager* render_manager, const strcrc* local_name);
+void    RenderManager_PlatformData_Destroy_Plat (RenderManager* render_manager, void* platform_data);
+void    RenderManager_ToScreen_Plat             (RenderManager* render_manager, void* platform_data);
+void    RenderManager_SwapBuffer_Plat           (RenderManager* render_manager, void* platform_data);
+void    RenderManager_Render_ToBackBuffer_Plat  (RenderManager* render_manager, void* platform_data, vec2 offset_vec, ShaderText* shader_text);
 
-void    CallBack_Actor_RenderEachActor          (Actor* actor, RenderManager* render_manager);
+void    CallBack_Actor_RenderEachActor          (Actor* actor, const RenderManager* render_manager);
 
 struct RenderManager
 {
     bool        m_is_initialized;
     RenderMode  m_render_mode;
-    tptr        m_platform_data;
+    void*       m_platform_data;
 };
 
 RenderManager* RenderManager_Create(const strcrc* local_name)
@@ -52,7 +52,7 @@ void RenderManager_Render_ToBackBuffer(RenderManager* render_manager, vec2 offse
     RenderManager_Render_ToBackBuffer_Plat(render_manager, render_manager->m_platform_data, offset_vec, shader_text);
 }
 
-static void CallBack_Render_Scene(Scene* scene, RenderManager* render_manager)
+static void CallBack_Render_Scene(Scene* scene, const RenderManager* render_manager)
 {
     if( Scene_Is_Hide(scene) )
     {

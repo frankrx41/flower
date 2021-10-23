@@ -10,5 +10,5 @@ void                Component_Render_Destroy                (RenderComponent* re
 
 void    Component_Render_ShaderText_Add         (RenderComponent* render_component, ShaderText* shader_text);
 void    Component_Render_ShaderText_Del         (RenderComponent* render_component, ShaderText* shader_text);
-tptr    Component_Render_ShaderText_GetQueue    (RenderComponent* render_component);
+void*   Component_Render_ShaderText_GetQueue    (RenderComponent* render_component);
 void    Component_Render_ShaderText_ClearAll    (RenderComponent* render_component);

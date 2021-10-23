@@ -36,7 +36,7 @@ struct Scene
     Queue(Actor*)*              m_actor_queue_physics;
 };
 
-Actor* Actor_Create(const strcrc* local_name, Scene* scene, uint32 id, CB_ActorCreate_Void_Actor_tPtr cb_actor_create_void_actor_tptr, tptr ptr);
+Actor* Actor_Create(const strcrc* local_name, Scene* scene, uint32 id, CB_ActorCreate_Void_Actor_tPtr cb_actor_create_void_actor_tptr, const void* ptr);
 
 Scene* Scene_Create(const strcrc* local_name, SceneManager* scene_manager, CB_SceneDestroy_Void_Scene cb_scene_destroy_void_scene)
 {
@@ -105,12 +105,6 @@ static Queue(Actor*)* Scene_EventQueue_Get(Scene* scene, Event event)
     return scene->m_actor_queue_scene_event_list[event-Event_Scene_Min];
 }
 
-static void Scene_Destroy_CB_Set(Scene* scene, CB_SceneDestroy_Void_Scene cb_scene_destroy_void_scene)
-{
-    ABANDONED("Please set cb_scene_destroy_void_scene in create function.");
-    scene->m_cb_scene_destroy_void_scene = cb_scene_destroy_void_scene;
-}
-
 void Scene_Pause_All(Scene* scene)
 {
     scene->m_is_pause_render    = true;
@@ -142,14 +136,14 @@ const strcrc* Scene_LocalName_Str_Get(Scene* scene)
     return &scene->m_local_name;
 }
 
-Actor* Scene_Actor_Create(const strcrc* local_name, Scene* scene, CB_ActorCreate_Void_Actor_tPtr cb_actor_create_void_actor_tptr, tptr ptr)
+Actor* Scene_Actor_Create(const strcrc* local_name, Scene* scene, CB_ActorCreate_Void_Actor_tPtr cb_actor_create_void_actor_tptr, const void* ptr)
 {
     Actor* actor = Actor_Create(local_name, scene, scene->m_alloc_actor_id++, cb_actor_create_void_actor_tptr, ptr);
     Queue_Push(Actor*, local_name, scene->m_child_actor_queue, actor);
     return actor;
 }
 
-void Scene_Actor_Destroy(Scene* scene, CB_FindData_Bool_tPtr_tPtr cb_find_actor_bool_tptr_tptr, tptr ptr)
+void Scene_Actor_Destroy(Scene* scene, CB_FindData_Bool_tPtr_tPtr cb_find_actor_bool_tptr_tptr, void* ptr)
 {
     Queue_RemoveFindFirst(Actor*)(scene->m_child_actor_queue, cb_find_actor_bool_tptr_tptr, ptr, Actor_Destroy);
 }
@@ -241,12 +235,12 @@ void Scene_Storage_DeleteVariable(Scene* scene, crc32 variable)
     Storage_Variable_Delete(scene->m_storage, variable);
 }
 
-tptr Scene_ActorQueue_Child_Get(Scene* scene)
+void* Scene_ActorQueue_Child_Get(Scene* scene)
 {
     return scene->m_child_actor_queue;
 }
 
-tptr Scene_ActorQueue_Renderable_Get(Scene* scene)
+void* Scene_ActorQueue_Renderable_Get(Scene* scene)
 {
     return scene->m_actor_queue_renderable;
 }

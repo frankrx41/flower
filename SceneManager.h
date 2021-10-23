@@ -4,7 +4,7 @@ typedef struct Scene Scene;
 typedef struct SceneManager SceneManager;
 typedef struct EventInfo EventInfo;
 
-typedef void (*CB_DestroyData_Void_tPtr)        (tptr data);
+typedef void (*CB_DestroyData_Void_tPtr)        (void* data);
 typedef void (*CB_Command_Void)                 (void);
 typedef void (*CB_SceneDestroy_Void_Scene)      (Scene* scene);
 
@@ -20,7 +20,7 @@ void    SceneManager_Scene_Foreground_Queue_Clear   (SceneManager* scene_manager
 
 void    SceneManager_Scene_ExitCurrent      (SceneManager* scene_manager);
 
-tptr    SceneManager_SceneQueue_Foreground_Get         (SceneManager* scene_manager);
+void*   SceneManager_SceneQueue_Foreground_Get         (SceneManager* scene_manager);
 
 void    SceneManager_Command_Add            (SceneManager* scene_manager, CB_Command_Void cb_command_void);
 void    SceneManager_Command_Clear          (SceneManager* scene_manager);

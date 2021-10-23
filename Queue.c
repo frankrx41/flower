@@ -13,7 +13,7 @@ struct Node
 {
     Node*   m_node_prev;
     Node*   m_node_next;
-    tptr    m_reference_data;
+    void*   m_reference_data;
 };
 
 struct Queue
@@ -68,7 +68,7 @@ bool Queue_IsEmpty(const Queue* queue)
     return Queue_GetLength(queue) == 0;
 }
 
-void Queue_ForEach(const Queue* queue, CB_ProcessData_Void_tPtr_tPtr cb_process_data_void_tptr_tptr, tptr ptr)
+void Queue_ForEach(const Queue* queue, CB_ProcessData_Void_tPtr_tPtr cb_process_data_void_tptr_tptr, const void* ptr)
 {
     Node* node = queue->m_head->m_node_next;
     uint32 for_count = 0;
@@ -84,7 +84,7 @@ void Queue_ForEach(const Queue* queue, CB_ProcessData_Void_tPtr_tPtr cb_process_
     }
 }
 
-tptr Queue_Find(const Queue* queue, CB_FindData_Bool_tPtr_tPtr cb_find_data_bool_tptr_tptr, tptr ptr)
+void* Queue_Find(const Queue* queue, CB_FindData_Bool_tPtr_tPtr cb_find_data_bool_tptr_tptr, void* ptr)
 {
     Assert(queue != NULL, "");
     Node* node = queue->m_head->m_node_next;
@@ -102,7 +102,7 @@ uint32 Queue_GetLength(const Queue* queue)
     return queue->m_length;
 }
 
-void Queue_Push(const strcrc* local_name, Queue* queue, tptr reference_data, const tchar* type_str)
+void Queue_Push(const strcrc* local_name, Queue* queue, void* reference_data, const tchar* type_str)
 {
     Assert(Str_CalcCrc(type_str, 0) == queue->m_type_crc32, "Push type is different from create type, do you forget the star(*) ?");
     Assert(reference_data != NULL, "Why are you push a null data?");
@@ -126,7 +126,7 @@ void Queue_Push(const strcrc* local_name, Queue* queue, tptr reference_data, con
     queue->m_length++;
 }
 
-static tptr Queue_RemoveNode(Queue* queue, Node* node, CB_DestroyData_Void_tPtr cb_destroy_data_void_tptr)
+static void* Queue_RemoveNode(Queue* queue, Node* node, CB_DestroyData_Void_tPtr cb_destroy_data_void_tptr)
 {
     Assert(!Queue_IsHead(queue, node), "");
 
@@ -136,7 +136,7 @@ static tptr Queue_RemoveNode(Queue* queue, Node* node, CB_DestroyData_Void_tPtr 
     next_node->m_node_prev = prev_node;
     prev_node->m_node_next = next_node;
 
-    const tptr reference_data = node->m_reference_data;
+    void* reference_data = node->m_reference_data;
     Assert(reference_data != NULL, "The data has been zero?");
 
     MemDel(node);
@@ -154,7 +154,7 @@ static tptr Queue_RemoveNode(Queue* queue, Node* node, CB_DestroyData_Void_tPtr 
     }
 }
 
-tptr Queue_Pop(Queue* queue)
+void* Queue_Pop(Queue* queue)
 {
     Assert(!Queue_IsEmpty(queue), "");
     if( Queue_IsEmpty(queue) )
@@ -163,14 +163,14 @@ tptr Queue_Pop(Queue* queue)
     }
 
     Node* last_node = queue->m_head->m_node_prev;
-    const tptr reference_data = last_node->m_reference_data;
+    void* reference_data = last_node->m_reference_data;
 
     Queue_RemoveNode(queue, last_node, NULL);
 
     return reference_data;
 }
 
-tptr Queue_Dequeue(Queue* queue)
+void* Queue_Dequeue(Queue* queue)
 {
     Assert(!Queue_IsEmpty(queue), "");
     if( Queue_IsEmpty(queue) )
@@ -179,14 +179,14 @@ tptr Queue_Dequeue(Queue* queue)
     }
 
     Node* first_node = queue->m_head->m_node_next;
-    const tptr reference_data = first_node->m_reference_data;
+    void* reference_data = first_node->m_reference_data;
 
     Queue_RemoveNode(queue, first_node, NULL);
 
     return reference_data;
 }
 
-tptr Queue_PeekFirst(const Queue* queue)
+void* Queue_PeekFirst(const Queue* queue)
 {
     Assert(!Queue_IsEmpty(queue), "");
     if( Queue_IsEmpty(queue) )
@@ -197,7 +197,7 @@ tptr Queue_PeekFirst(const Queue* queue)
     return queue->m_head->m_node_next->m_reference_data;
 }
 
-tptr Queue_PeekTail(const Queue* queue)
+void* Queue_PeekTail(const Queue* queue)
 {
     Assert(!Queue_IsEmpty(queue), "");
     if( Queue_IsEmpty(queue) )
@@ -208,7 +208,7 @@ tptr Queue_PeekTail(const Queue* queue)
     return queue->m_head->m_node_prev->m_reference_data;
 }
 
-static tptr Queue_RemoveByPointer(struct Queue* queue, tptr ptr, CB_DestroyData_Void_tPtr cb_destroy_data_void_tptr)
+static void* Queue_RemoveByPointer(struct Queue* queue, const void* ptr, CB_DestroyData_Void_tPtr cb_destroy_data_void_tptr)
 {
     Assert(ptr != NULL, "");
 
@@ -224,7 +224,7 @@ static tptr Queue_RemoveByPointer(struct Queue* queue, tptr ptr, CB_DestroyData_
     return NULL;
 }
 
-tptr Queue_RemoveFindFirst(Queue* queue, CB_FindData_Bool_tPtr_tPtr cb_find_data_bool_tptr_tptr, tptr ptr, CB_DestroyData_Void_tPtr cb_destroy_data_void_tptr)
+void* Queue_RemoveFindFirst(Queue* queue, CB_FindData_Bool_tPtr_tPtr cb_find_data_bool_tptr_tptr, const void* ptr, CB_DestroyData_Void_tPtr cb_destroy_data_void_tptr)
 {
     if( cb_find_data_bool_tptr_tptr == NULL )
     {
@@ -246,7 +246,7 @@ tptr Queue_RemoveFindFirst(Queue* queue, CB_FindData_Bool_tPtr_tPtr cb_find_data
     return NULL;
 }
 
-int32 Queue_RemoveFindAll(Queue* queue, CB_FindData_Bool_tPtr_tPtr cb_find_data_bool_tptr_tptr, tptr ptr, CB_DestroyData_Void_tPtr cb_destroy_data_void_tptr)
+int32 Queue_RemoveFindAll(Queue* queue, CB_FindData_Bool_tPtr_tPtr cb_find_data_bool_tptr_tptr, const void* ptr, CB_DestroyData_Void_tPtr cb_destroy_data_void_tptr)
 {
     Assert(cb_find_data_bool_tptr_tptr != NULL, "");
     int32 remove_cnt = 0;

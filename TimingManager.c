@@ -30,7 +30,7 @@ struct TimingManager
 {
     bool    m_is_initialized;
     bool    m_is_limit_frame_rate;
-    tptr    m_platform_data;
+    void*   m_platform_data;
     strcrc  m_local_name;
 
     int64   m_last_cpu_tick;
@@ -43,11 +43,11 @@ struct TimingManager
 };
 
 
-tptr    TimingManager_PlatformData_Create  (TimingManager* timing_manager, const strcrc* local_name);
-void    TimingManager_PlatformData_Destroy (TimingManager* timing_manager, tptr platform_data);
+void*    TimingManager_PlatformData_Create  (TimingManager* timing_manager, const strcrc* local_name);
+void    TimingManager_PlatformData_Destroy (TimingManager* timing_manager, void* platform_data);
 
-uint64  TimingManager_Cpu_Tick_Get_Plat     (TimingManager* timing_manager, tptr platform_data);
-uint64  TimingManager_Cpu_Frequency_Get_Plat(TimingManager* timing_manager, tptr platform_data);
+uint64  TimingManager_Cpu_Tick_Get_Plat     (TimingManager* timing_manager, void* platform_data);
+uint64  TimingManager_Cpu_Frequency_Get_Plat(TimingManager* timing_manager, void* platform_data);
 
 TimingManager* TimingManager_Create(const strcrc* local_name)
 {

@@ -64,7 +64,7 @@ struct Data
     int32 m_a;
 };
 
-static void CallBack_Queue_Test_Print_Data1(Data* a, tptr ptr)
+static void CallBack_Queue_Test_Print_Data1(Data* a, const void* ptr)
 {
     Assert((int32)ptr == 2, "");
     static int32 call_count = 0;
@@ -73,7 +73,7 @@ static void CallBack_Queue_Test_Print_Data1(Data* a, tptr ptr)
     call_count++;
 }
 
-static void Queue_Test_Print_Data2(Data* a, tptr ptr)
+static void Queue_Test_Print_Data2(Data* a, const void* ptr)
 {
     Assert((int32)ptr == 7, "");
     static int32 call_count = 0;
@@ -101,13 +101,13 @@ static void Queue_Test0()
     Queue_Push(Data*, &local_name, queue, &y);
     Queue_Push(Data*, &local_name, queue, &z);
 
-    Queue_ForEach(queue, CallBack_Queue_Test_Print_Data1, (tptr)2);
+    Queue_ForEach(queue, CallBack_Queue_Test_Print_Data1, (void*)2);
 
-    Queue_RemoveFindFirst(Data*)(queue, (CB_FindData_Bool_tPtr_tPtr)CallBack_Queue_Test_Find, (tptr)2, NULL);
+    Queue_RemoveFindFirst(Data*)(queue, (CB_FindData_Bool_tPtr_tPtr)CallBack_Queue_Test_Find, (void*)2, NULL);
 
-    Queue_ForEach(queue, Queue_Test_Print_Data2, (tptr)7);
+    Queue_ForEach(queue, Queue_Test_Print_Data2, (void*)7);
 
-    Queue_RemoveFindFirst(Data*)(queue, (CB_FindData_Bool_tPtr_tPtr)CallBack_Queue_Test_Find, (tptr)1, NULL);
+    Queue_RemoveFindFirst(Data*)(queue, (CB_FindData_Bool_tPtr_tPtr)CallBack_Queue_Test_Find, (void*)1, NULL);
 
     Queue_Destroy(queue, NULL);
 }
@@ -126,11 +126,11 @@ static void Memory_Test1()
     strcrc local_name = StrCrc(__FUNCTION__, 0);
 
     tchar* ptr = MemNewSize(&local_name, 256);
-    tptr ptr2 = ptr + 1;
-    tptr ptr3 = ptr - 1;
-    tptr ptr4 = ptr + 255;
-    tptr ptr5 = ptr + 256;
-    tptr ptr6 = ptr + 111;
+    void* ptr2 = ptr + 1;
+    void* ptr3 = ptr - 1;
+    void* ptr4 = ptr + 255;
+    void* ptr5 = ptr + 256;
+    void* ptr6 = ptr + 111;
     Assert(Memory_IsInBounds(ptr, ptr2), "");
     Assert(Memory_IsInBounds(ptr, ptr3) == false, "");
     Assert(Memory_IsInBounds(ptr, ptr4), "");
@@ -143,7 +143,7 @@ static void Memory_Test0()
 {
     strcrc local_name = StrCrc(__FUNCTION__, 0);
 
-    tptr ptr = MemNewSize(&local_name, 256);
+    void* ptr = MemNewSize(&local_name, 256);
     MemDel(ptr);
 };
 
@@ -275,7 +275,7 @@ void Actor_Test0()
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-void CallBack_TaskRun0(Task* task, tptr ptr)
+void CallBack_TaskRun0(Task* task, void* ptr)
 {
     volatile int foo = 1;
 }
@@ -298,12 +298,12 @@ void tData_Test0()
 {
     const tdata d1 = tData(int32, 32);
     const tdata d2 = tData(float, 3.2f);
-    const tdata d3 = tData(tptr, &d1);
+    const tdata d3 = tData(void*, &d1);
     const tdata d4 = tData(uint32, 123);
 
     const int32 i = d1.m_int32;
     const float f = d2.m_float;
-    const tptr p = d3.m_tptr;
+    const void* p = d3.m_tptr;
     const uint32 u = d4.m_uint32;
 
     Assert(i == 32, "");

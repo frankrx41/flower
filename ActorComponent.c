@@ -24,7 +24,7 @@
 #include "String.h"
 
 // Location
-vec3 Actor_Component_Physics_Location_Get(Actor* actor)
+vec3 Actor_Component_Physics_Location_Get(const Actor* actor)
 {
     Assert(actor != NULL, "");
     PhysicsComponent* physics_component = Actor_Component_Cast(actor, Component_Physics);
@@ -50,7 +50,7 @@ void Actor_Component_Physics_Location_Move(Actor* actor, vec3 offset_vec)
     Component_Physics_MoveLocation(physics_component, offset_vec);
 }
 
-vec3 Actor_Component_Physics_Velocity_Get(Actor* actor)
+vec3 Actor_Component_Physics_Velocity_Get(const Actor* actor)
 {
     Assert(actor != NULL, "");
     PhysicsComponent* physics_component = Actor_Component_Cast(actor, Component_Physics);
@@ -68,7 +68,7 @@ void Actor_Component_Physics_Velocity_Set(Actor* actor, vec3 velocity)
     Component_Physics_SetVelocity(physics_component, velocity);
 }
 
-vec3 Actor_Component_Physics_Acceleration_Get(Actor* actor)
+vec3 Actor_Component_Physics_Acceleration_Get(const Actor* actor)
 {
     Assert(actor != NULL, "");
     PhysicsComponent* physics_component = Actor_Component_Cast(actor, Component_Physics);
@@ -86,7 +86,7 @@ void Actor_Component_Physics_Acceleration_Set(Actor* actor, vec3 acceleration)
     Component_Physics_SetAcceleration(physics_component, acceleration);
 }
 
-void CallBack_Actor_Component_Physics_Simulate(Actor* actor, float* delta_seconds)
+void CallBack_Actor_Component_Physics_Simulate(Actor* actor, const float* delta_seconds)
 {
     PhysicsComponent* physics_component = Actor_Component_Cast(actor, Component_Physics);
     Assert(physics_component != NULL, "");
@@ -257,7 +257,7 @@ void CallBack_RenderManager_Render_ToBackBuffer_Task(Task* task, ShaderText* sha
     RenderManager_Render_ToBackBuffer(RenderManager_GetInstance(), ShaderText_Offset_Get(shader_text), shader_text);
 }
 
-void CallBack_Render_ActorShaderText_Plat(ShaderText* shader_text, Actor* actor)
+void CallBack_Render_ActorShaderText_Plat(ShaderText* shader_text, const Actor* actor)
 {
     if( ShaderText_IsDisable(shader_text) )
     {
@@ -283,7 +283,7 @@ void CallBack_Render_ActorShaderText_Plat(ShaderText* shader_text, Actor* actor)
     TaskManager_Task_Render_Add(&local_name, CallBack_RenderManager_Render_ToBackBuffer_Task, ShaderText_Destory, shader_text_copy);
 }
 
-void CallBack_Actor_RenderEachActor(Actor* actor, RenderManager* render_manager)
+void CallBack_Actor_RenderEachActor(Actor* actor, const RenderManager* render_manager)
 {
     if( Actor_Is_Hide(actor) )
     {

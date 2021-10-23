@@ -4,19 +4,19 @@
 #include "Platform.h"
 
 
-tptr Memory_Alloc_Plat(tsize size)
+void* Memory_Alloc_Plat(tsize size)
 {
     return
     malloc(size);
 }
 
-tptr Memory_Copy_Plat(tptr dst, const tptr src, tsize size)
+void* Memory_Copy_Plat(void* out, const void* src, tsize size)
 {
     return
-    memcpy(dst, src, size);
+    memcpy(out, src, size);
 }
 
-tptr Memory_Set_Plat(tptr dst, int32 val, tsize size)
+void* Memory_Set_Plat(void* dst, int32 val, tsize size)
 {
     return
     memset(dst, val, size);

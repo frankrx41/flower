@@ -2,22 +2,22 @@
 
 typedef struct strcrc strcrc;
 
-void    Memory_Stat         ();
+extern void     Memory_Stat         ();
 
-tptr    Memory_Alloc        (const strcrc* local_name, tsize size);
-void    Memory_Free         (tptr ptr);
-tptr    Memory_AllocPtrSize (const strcrc* local_name, const tptr ptr);
-tptr    Memory_Clone        (const strcrc* local_name, const tptr ptr);
-tptr    Memory_SafeClone    (const strcrc* local_name, const tptr ptr);
+extern void*    Memory_Alloc        (const strcrc* local_name, tsize size);
+extern void     Memory_Free         (void* ptr);
+extern void*    Memory_AllocPtrSize (const strcrc* local_name, const void* ptr);
+extern void*    Memory_Clone        (const strcrc* local_name, const void* ptr);
+extern void*    Memory_SafeClone    (const strcrc* local_name, const void* ptr);
 
-tptr    Memory_Copy         (tptr dst_ptr, const tptr src_ptr, tsize size);
-tptr    Memory_Set          (tptr ptr, int32 val, tsize size);
-tptr    Memory_FullFill     (tptr ptr, int32 val);
-tptr    Memory_Zero         (tptr ptr);
-tptr    Memory_ZeroSize     (tptr ptr, tsize size);
-tsize   Memory_GetSize      (const tptr ptr);
+extern void*    Memory_Copy         (void* out_ptr, const void* src_ptr, tsize size);
+extern void*    Memory_Set          (void* ptr, int32 val, tsize size);
+extern void*    Memory_FullFill     (void* ptr, int32 val);
+extern void*    Memory_Zero         (void* ptr);
+extern void*    Memory_ZeroSize     (void* ptr, tsize size);
+extern tsize    Memory_GetSize      (const void* ptr);
 
-bool    Memory_IsInBounds   (tptr head_ptr, tptr check_ptr);
+extern bool     Memory_IsInBounds   (void* head_ptr, void* check_ptr);
 
 
 #define MemNew(local_name, type)            (type*)Memory_Alloc(local_name, sizeof(type))

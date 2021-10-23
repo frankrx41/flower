@@ -49,7 +49,6 @@ typedef unsigned long long  uint64;
 typedef unsigned char   byte;
 typedef char*           va_list;
 typedef uint16          wchar;
-typedef void*           tptr;
 typedef uint32          crc32;
 
 #if ASCII || UTF8

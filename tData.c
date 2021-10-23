@@ -17,15 +17,15 @@ tdata tData(const tchar* type, ...)
 
     switch( type[0] )
     {
-    case 'i':   data.m_int32  = va_arg(ap, int32);          break;
-    case 'f':   data.m_float  = (float)va_arg(ap, double);  break;  // float is promoted to double
-    case 'u':   data.m_uint32 = va_arg(ap, uint32);         break;
+    case 'i':   data.m_int32    = va_arg(ap, int32);            break;
+    case 'f':   data.m_float    = (float)va_arg(ap, double);    break;  // float is promoted to double
+    case 'u':   data.m_uint32   = va_arg(ap, uint32);           break;
+    case 'v':   data.m_tptr     = va_arg(ap, void*);            break;
     default:
     {
         Assert(type[0] == 't', "");
         switch( type[1] )
         {
-        case 'p':   data.m_tptr     = va_arg(ap, tptr);     break;
         case 's':   data.m_tsize    = va_arg(ap, tsize);    break;
         default:    Assert(false, "Unknow type!");
         }

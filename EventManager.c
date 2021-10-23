@@ -57,7 +57,7 @@ void EventManager_SendEvent_Update(EventManager* event_manager, Event event, flo
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-static void CallBack_SendEvent_Actor_Action(Scene* scene, EventInfo* event_info)
+static void CallBack_SendEvent_Actor_Action(Scene* scene, const EventInfo* event_info)
 {
     strcrc local_name = StrCrc("EventManager_Control", 0);
 

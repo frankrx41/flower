@@ -11,6 +11,7 @@ Add Queue_Sort
 Add Fps profile
 Add Shader2D
 Update TaskManager_Thread_RunTask
+Add extern
 
 Add Event_Actor_Destroy
 Add CB_ProcessSence in Sence_Destroy

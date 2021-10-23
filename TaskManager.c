@@ -116,7 +116,7 @@ static Thread* TaskManager_TaskQueueThread_Render_Get(TaskManager* task_manager)
     return task_manager->m_task_queue_thread_work[index]->m_thread;
 }
 
-Task* TaskManager_Task_Work_Add(TaskManager* task_manager, const strcrc* local_name, Thread* thread, uint32 priority, bool is_auto_destroy, CB_TaskRun_Condition_Bool_Task_tPtr cb_task_run_condition_bool_task_tptr, CB_TaskRun_Void_Task_tPtr cb_task_run_void_task_tptr, CB_TaskEnd_ClearData_Void_tPtr cb_task_end_clear_data_void_tptr, tptr task_data)
+Task* TaskManager_Task_Work_Add(TaskManager* task_manager, const strcrc* local_name, Thread* thread, uint32 priority, bool is_auto_destroy, CB_TaskRun_Condition_Bool_Task_tPtr cb_task_run_condition_bool_task_tptr, CB_TaskRun_Void_Task_tPtr cb_task_run_void_task_tptr, CB_TaskEnd_ClearData_Void_tPtr cb_task_end_clear_data_void_tptr, void* task_data)
 {
     Assert( cb_task_run_void_task_tptr != NULL, "" );
     if( thread == NULL )
@@ -153,18 +153,18 @@ Task* TaskManager_Task_Work_Add(TaskManager* task_manager, const strcrc* local_n
     }
 }
 
-void TaskManager_Task_Render_Add(TaskManager* task_manager, const strcrc* local_name, CB_TaskRun_Void_Task_tPtr cb_task_run_void_task_tptr, CB_TaskEnd_ClearData_Void_tPtr cb_task_end_clear_data_void_tptr, tptr task_data)
+void TaskManager_Task_Render_Add(TaskManager* task_manager, const strcrc* local_name, CB_TaskRun_Void_Task_tPtr cb_task_run_void_task_tptr, CB_TaskEnd_ClearData_Void_tPtr cb_task_end_clear_data_void_tptr, void* task_data)
 {
     Thread* thread = TaskManager_TaskQueueThread_Render_Get(task_manager);
     TaskManager_Task_Work_Add(task_manager, local_name, thread, 0, true, NULL, cb_task_run_void_task_tptr, cb_task_end_clear_data_void_tptr, task_data);
 }
 
-static bool TaskQueueThread_Task_Is_Finish(Task* task, tptr reserve)
+static bool TaskQueueThread_Task_Is_Finish(const Task* task, const void* reserve)
 {
     return Task_IsFinish(task);
 }
 
-static void TaskQueueThread_RunTask(Task* task, tptr reserve)
+static void TaskQueueThread_RunTask(Task* task, const void* reserve)
 {
     Task_TryExecute(task);
 }

@@ -29,7 +29,7 @@
 #include "tData.h"
 #include "Vec.h"
 
-static void Scene_Create1(Task* task, tptr ptr)
+static void Scene_Create1(Task* task, void* ptr)
 {
 
 }
@@ -42,7 +42,7 @@ static void Actor_OnAction0(Actor* actor, const EventInfo* event_info)
     }
 }
 
-static void Actor_Create0(Actor* actor, tptr ptr)
+static void Actor_Create0(Actor* actor, const void* ptr)
 {
     Actor_Component_New(actor, Component_Control);
     Actor_Component_Control_ControlEventRespond_Add(actor, Event_Control_MoveUp, NULL, Actor_OnAction0 );
@@ -61,7 +61,7 @@ static void Scene_Create0(void)
 }
 
 
-static void Scene_Create_Task(Task* task, tptr ptr)
+static void Scene_Create_Task(Task* task, void* ptr)
 {
     Scene_Create0();
 }

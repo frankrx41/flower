@@ -65,7 +65,7 @@ static StoreContent* Storage_FindStoreContent(const Storage* storage, crc32 vari
         return storage->m_cache_store_content;
     }
 
-    StoreContent* store_content = Queue_Find(StoreContent*)(storage->m_store_queue, (CB_FindData_Bool_tPtr_tPtr)CallBack_Storage_FindVariable, (tptr)variable);
+    StoreContent* store_content = Queue_Find(StoreContent*)(storage->m_store_queue, (CB_FindData_Bool_tPtr_tPtr)CallBack_Storage_FindVariable, (void*)variable);
     // Assert(store_content != NULL, "You try to read a not exist var");
 
     return store_content;
@@ -90,7 +90,7 @@ void Storage_Data_Store(Storage* storage, crc32 variable, tdata data)
 
 bool Storage_Is_ExistVariable(Storage* storage, crc32 variable)
 {
-    StoreContent* store_content = Queue_Find(StoreContent*)(storage->m_store_queue, (CB_FindData_Bool_tPtr_tPtr)CallBack_Storage_FindVariable, (tptr)variable);
+    StoreContent* store_content = Queue_Find(StoreContent*)(storage->m_store_queue, (CB_FindData_Bool_tPtr_tPtr)CallBack_Storage_FindVariable, (void*)variable);
     if( store_content )
     {
         storage->m_cache_store_content = store_content;

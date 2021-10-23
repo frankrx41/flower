@@ -50,7 +50,7 @@ void CallBack_ActorOnEvent5(Actor* actor, const EventInfo* event_info)
     String_Del(string);
 }
 
-void CallBack_Actor_Create5(Actor* actor, tptr ptr)
+void CallBack_Actor_Create5(Actor* actor, const void* ptr)
 {
     Actor_Component_New(actor, Component_Render);
     Actor_Component_New(actor, Component_Control);
@@ -99,7 +99,7 @@ void CallBack_ActorOnEvent4(Actor* actor, const EventInfo* event_info)
     String_Del(string);
 }
 
-void CallBack_Actor_Create4(Actor* actor, tptr ptr)
+void CallBack_Actor_Create4(Actor* actor, const void* ptr)
 {
     Actor_Component_New(actor, Component_Render);
     Actor_Component_New(actor, Component_Control);
@@ -174,7 +174,7 @@ bool CallBack_ActorOnEventCondition3(Actor* actor, const EventInfo* event_info)
     return need_update;
 }
 
-void CallBack_Actor_Create3(Actor* actor, tptr ptr)
+void CallBack_Actor_Create3(Actor* actor, const void* ptr)
 {
     Actor_Component_New(actor, Component_Render);
     Actor_Component_New(actor, Component_Control);
@@ -231,7 +231,7 @@ void CallBack_ActorOnEvent2(Actor* actor, const EventInfo* event_info)
     Actor_Component_Storage_Data_Store(actor, crc_delta_second, tData(float, delta_second));
 }
 
-void CallBack_Actor_Create2(Actor* actor, tptr ptr)
+void CallBack_Actor_Create2(Actor* actor, const void* ptr)
 {
     Actor_Component_New(actor, Component_Render);
     Actor_Component_New(actor, Component_Control);
@@ -293,7 +293,7 @@ void Engine_Test1()
 
     Scene* scene2 = SceneManager_Scene_Create(&local_name, NULL);
     Actor* actor2 = Scene_Actor_Create(&local_name, scene2, NULL, NULL);
-    Actor_Component_Storage_Data_Store(actor1, Str_CalcCrc("scene", 0), tData(tptr, scene2));
+    Actor_Component_Storage_Data_Store(actor1, Str_CalcCrc("scene", 0), tData(void*, scene2));
 
     Actor_Component_New(actor2, Component_Render);
     Actor_Component_Render_ShaderText_Add(actor2, Vec3(1, 1, 0), "goodbye world");
@@ -303,7 +303,7 @@ void Engine_Test1()
 
     Actor_Component_New(actor2, Component_Storage);
     Actor_Component_Storage_Data_Store(actor2, Str_CalcCrc("seconds", 0), tData(float, 0));
-    Actor_Component_Storage_Data_Store(actor2, Str_CalcCrc("scene", 0), tData(tptr, NULL));
+    Actor_Component_Storage_Data_Store(actor2, Str_CalcCrc("scene", 0), tData(void*, NULL));
 
 
 

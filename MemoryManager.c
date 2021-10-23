@@ -1,10 +1,7 @@
 #include "CoreMini.h"
 
-#include "Engine.h"
-
 #include "MemoryManager.h"
 
-#include "Queue.h"
 #include "String.h"
 #include "tData.h"
 #include "Stat.h"
@@ -66,7 +63,7 @@ void Memory_Stat()
     Log(4, "=====================================================\n");
 }
 
-void Engine_Debug_Memory_Check_Leak()
+void Memory_Check_Leak()
 {
     for(int i=0; i<MEMORY_STAT_MAX; i++)
     {
@@ -85,12 +82,12 @@ typedef struct MemoryBlock MemoryBlock;
 struct MemoryBlock
 {
     strcrc  m_local_name;
-    tptr    m_pointer;
+    void*   m_pointer;
     tsize   m_alloc_size;
     byte    m_byte[1];
 };
 
-static MemoryBlock* CastToMemoryBlock(tptr ptr)
+static MemoryBlock* CastToMemoryBlock(const void* ptr)
 {
     MemoryBlock* memory_block = (MemoryBlock*)((tchar*)ptr - OFFSET_OF(MemoryBlock, m_byte));
     Assert(memory_block->m_pointer == ptr, "");
@@ -103,13 +100,13 @@ static MemoryBlock* CastToMemoryBlock(tptr ptr)
 //     return memory_profile_data->m_crc == crc;
 // }
 
-tptr    Memory_Alloc_Plat   (tsize size);
+void*   Memory_Alloc_Plat   (tsize size);
 void    Memory_Free_Plat    (void* ptr);
-tptr    Memory_Copy_Plat    (tptr dst_ptr, const tptr src_ptr, tsize size);
-tptr    Memory_Set_Plat     (tptr address, int32 val, tsize size);
+void*   Memory_Copy_Plat    (void* dst_ptr, const void* src_ptr, tsize size);
+void*   Memory_Set_Plat     (void* address, int32 val, tsize size);
 
 
-tptr Memory_Alloc(const strcrc* local_name, tsize size)
+void* Memory_Alloc(const strcrc* local_name, tsize size)
 {
     MemoryBlock * memory_block  = Memory_Alloc_Plat(sizeof(MemoryBlock) + size);
     Assert(memory_block != NULL, "");
@@ -130,7 +127,7 @@ tptr Memory_Alloc(const strcrc* local_name, tsize size)
     return memory_block->m_byte;
 }
 
-void Memory_Free(tptr ptr)
+void Memory_Free(void* ptr)
 {
     Assert(ptr != NULL, "");
 
@@ -141,28 +138,28 @@ void Memory_Free(tptr ptr)
     Memory_Free_Plat(memory_block);
 }
 
-tptr Memory_AllocPtrSize(const strcrc* local_name, const tptr ptr)
+void* Memory_AllocPtrSize(const strcrc* local_name, const void* ptr)
 {
     Assert(ptr != NULL, "");
 
     MemoryBlock* src_block = CastToMemoryBlock(ptr);
 
-    const tptr new_ptr = Memory_Alloc(local_name, src_block->m_alloc_size);
+    void* new_ptr = Memory_Alloc(local_name, src_block->m_alloc_size);
     return new_ptr;
 }
 
-tptr Memory_Clone(const strcrc* local_name, const tptr ptr)
+void* Memory_Clone(const strcrc* local_name, const void* ptr)
 {
     Assert(ptr != NULL, "");
     MemoryBlock* src_block = CastToMemoryBlock(ptr);
 
-    const tptr new_ptr = Memory_AllocPtrSize(local_name, ptr);
+    void* new_ptr = Memory_AllocPtrSize(local_name, ptr);
     Memory_Copy(new_ptr, ptr, src_block->m_alloc_size);
 
     return new_ptr;
 }
 
-tptr Memory_SafeClone(const strcrc* local_name, const tptr ptr)
+void* Memory_SafeClone(const strcrc* local_name, const void* ptr)
 {
     if( !ptr )
     {
@@ -173,22 +170,22 @@ tptr Memory_SafeClone(const strcrc* local_name, const tptr ptr)
     Memory_Clone(local_name, ptr);
 }
 
-tptr Memory_Copy(tptr dst_ptr, const tptr src_ptr, tsize size)
+void* Memory_Copy(void* out_ptr, const void* src_ptr, tsize size)
 {
-    Assert(dst_ptr != NULL, "");
+    Assert(out_ptr != NULL, "");
     Assert(src_ptr != NULL, "");
 
-    MemoryBlock* dst_block = CastToMemoryBlock(dst_ptr);
+    MemoryBlock* dst_block = CastToMemoryBlock(out_ptr);
     MemoryBlock* src_block = CastToMemoryBlock(src_ptr);
 
     Assert( dst_block->m_alloc_size >= size, "");
     Assert( src_block->m_alloc_size >= size, "");
 
     return
-    Memory_Copy_Plat(dst_ptr, src_ptr, size);
+    Memory_Copy_Plat(out_ptr, src_ptr, size);
 }
 
-tptr Memory_Set(tptr ptr, int32 val, tsize size)
+void* Memory_Set(void* ptr, int32 val, tsize size)
 {
     Assert(ptr != NULL, "");
 
@@ -199,7 +196,7 @@ tptr Memory_Set(tptr ptr, int32 val, tsize size)
     Memory_Set_Plat(ptr, val, size);
 }
 
-tptr Memory_FullFill(tptr ptr, int32 val)
+void* Memory_FullFill(void* ptr, int32 val)
 {
     Assert(ptr != NULL, "");
 
@@ -209,7 +206,7 @@ tptr Memory_FullFill(tptr ptr, int32 val)
     Memory_Set_Plat(ptr, val, memory_block->m_alloc_size);
 }
 
-tptr Memory_Zero(tptr ptr)
+void* Memory_Zero(void* ptr)
 {
     Assert(ptr != NULL, "");
 
@@ -219,7 +216,7 @@ tptr Memory_Zero(tptr ptr)
     Memory_Set_Plat(ptr, 0, memory_block->m_alloc_size);
 }
 
-tptr Memory_ZeroSize(tptr ptr, tsize size)
+void* Memory_ZeroSize(void* ptr, tsize size)
 {
     MemoryBlock* memory_block = CastToMemoryBlock(ptr);
     if( memory_block )
@@ -231,7 +228,7 @@ tptr Memory_ZeroSize(tptr ptr, tsize size)
     Memory_Set_Plat(ptr, 0, size);
 }
 
-tsize Memory_GetSize(const tptr ptr)
+tsize Memory_GetSize(const void* ptr)
 {
     Assert(ptr != NULL, "");
 
@@ -239,7 +236,7 @@ tsize Memory_GetSize(const tptr ptr)
     return memory_block->m_alloc_size;
 }
 
-bool Memory_IsInBounds(tptr head_ptr, tptr check_ptr)
+bool Memory_IsInBounds(void* head_ptr, void* check_ptr)
 {
     MemoryBlock* memory_block = CastToMemoryBlock(head_ptr);
     const tsize size_offset = tSize(check_ptr) - tSize(head_ptr);

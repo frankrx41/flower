@@ -47,7 +47,7 @@ void                InputManager_Destroy    (InputManager* input_manager);
 TaskManager*        TaskManager_Create      (const strcrc* local_name);
 void                TaskManager_Destroy     (TaskManager* task_manager);
 
-void                Engine_Debug_Memory_Check_Leak          ();
+void                Memory_Check_Leak          ();
 
 
 void    Engine_Debug_UnitTesting0   ();
@@ -142,7 +142,7 @@ void Engine_UnInitialize()
 
     Memory_Stat();
     TimingManager_Stat();
-    Engine_Debug_Memory_Check_Leak();
+    Memory_Check_Leak();
 }
 
 void Engine_NotifyExit()

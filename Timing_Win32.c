@@ -8,16 +8,16 @@
 #include "Platform.h"
 
 
-tptr TimingManager_PlatformData_Create(TimingManager* timing_manager, const tchar* local_name)
+void* TimingManager_PlatformData_Create(TimingManager* timing_manager, const tchar* local_name)
 {
     return NULL;
 }
 
-void TimingManager_PlatformData_Destroy(TimingManager* timing_manager, tptr platform_data)
+void TimingManager_PlatformData_Destroy(TimingManager* timing_manager, void* platform_data)
 {
 }
 
-uint64 TimingManager_Cpu_Frequency_Get_Plat(TimingManager* timing_manager, tptr platform_data)
+uint64 TimingManager_Cpu_Frequency_Get_Plat(TimingManager* timing_manager, void* platform_data)
 {
     bool success = false;
 
@@ -27,7 +27,7 @@ uint64 TimingManager_Cpu_Frequency_Get_Plat(TimingManager* timing_manager, tptr 
     return cpu_frequency_large_int.QuadPart;
 }
 
-uint64 TimingManager_Cpu_Tick_Get_Plat(TimingManager* timing_manager, tptr platform_data)
+uint64 TimingManager_Cpu_Tick_Get_Plat(TimingManager* timing_manager, void* platform_data)
 {
     bool success = false;
     LARGE_INTEGER current_cpu_count_large_int;
