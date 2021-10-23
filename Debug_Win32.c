@@ -21,10 +21,10 @@ void Debug_Log(int32 type, const tchar* format, ...)
 
     switch(type)
     {
-    case 0: OutputDebugStringA("[Info]    ");   break;
-    case 1: OutputDebugStringA("[Warn]    ");   break;
-    case 2: OutputDebugStringA("[Error]   ");   break;
-    case 4: OutputDebugStringA("[Profile] ");   break;
+    case 0: OutputDebugStringA("[Info] ");   break;
+    case 1: OutputDebugStringA("[Warn] ");   break;
+    case 2: OutputDebugStringA("[Errr] ");   break;
+    case 4: OutputDebugStringA("[Prof] ");   break;
     default: Assert(false, "");
     }
     OutputDebugStringA(buffer);

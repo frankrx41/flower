@@ -19,11 +19,12 @@ struct Thread
     void*                           m_thread_platform_data;
 };
 
-void*   Thread_Create_Plat          (Thread* thread, const strcrc* local_name);
-void    Thread_Suspend_Plat         (Thread* thread, void* platform_data, bool is_suspend);
-void    Thread_Destroy_Plat         (Thread* thread, void* platform_data);
-void    Thread_This_Sleep_Plat      (float seconds);
-void    Thread_This_Sleep_Tick_Plat ();
+void*   Thread_PlatformData_Create      (Thread* thread, const strcrc* local_name);
+void    Thread_PlatformData_Destroy     (Thread* thread, void* platform_data);
+
+void    Thread_Suspend_Platform         (Thread* thread, void* platform_data, bool is_suspend);
+void    Thread_This_Sleep_Platform      (float seconds);
+void    Thread_This_Sleep_Tick_Platform ();
 
 Thread* Thread_Create(const strcrc* local_name, CB_ThreadRun_Void_Thread_tPtr cb_thread_run_void_thread_tptr, void* ptr)
 {
@@ -32,13 +33,13 @@ Thread* Thread_Create(const strcrc* local_name, CB_ThreadRun_Void_Thread_tPtr cb
     thread->m_thread_input_data                 = ptr;
     StrCrc_Copy(local_name, &thread->m_local_name);
     thread->m_is_suspend                        = false;
-    thread->m_thread_platform_data              = Thread_Create_Plat(thread, local_name);
+    thread->m_thread_platform_data              = Thread_PlatformData_Create(thread, local_name);
     return thread;
 }
 
 void Thread_Destroy(Thread* thread)
 {
-    Thread_Destroy_Plat(thread, thread->m_thread_platform_data);
+    Thread_PlatformData_Destroy(thread, thread->m_thread_platform_data);
     MemDel(thread);
 }
 
@@ -56,7 +57,7 @@ void* Thread_Run_Data_Get(const Thread* thread)
 void Thread_Suspend(Thread* thread, bool is_suspend)
 {
     thread->m_is_suspend = is_suspend;
-    Thread_Suspend_Plat(thread, thread->m_thread_platform_data, is_suspend);
+    Thread_Suspend_Platform(thread, thread->m_thread_platform_data, is_suspend);
 }
 
 bool Thread_IsSuspend(Thread* thread)
@@ -66,12 +67,12 @@ bool Thread_IsSuspend(Thread* thread)
 
 void Thread_Sleep_This(float seconds)
 {
-    Thread_This_Sleep_Plat(seconds);
+    Thread_This_Sleep_Platform(seconds);
 }
 
 void Thread_Sleep_This_Tick()
 {
-    Thread_This_Sleep_Tick_Plat();
+    Thread_This_Sleep_Tick_Platform();
 }
 
 void Thread_Sleep(Thread* thread, float seconds)

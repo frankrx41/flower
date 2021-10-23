@@ -58,7 +58,7 @@ struct InputManager
     Queue(InputActionEvent*)*   m_input_state_event_queue;
 };
 
-bool InputManager_Key_IsPhysicsDown_Plat(KeyId key_id);
+bool InputManager_Key_IsPhysicsDown_Platform(KeyId key_id);
 
 
 InputManager* InputManager_Create(strcrc* local_name)
@@ -149,7 +149,7 @@ void InputManager_KeysState_Update(InputManager* input_manager, float delta_seco
 
         key_info->m_is_down_before = key_info->m_is_down;
 
-        if( InputManager_Key_IsPhysicsDown_Plat(key_id) )
+        if( InputManager_Key_IsPhysicsDown_Platform(key_id) )
         {
             key_info->m_is_up_once = false;
 

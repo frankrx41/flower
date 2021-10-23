@@ -100,15 +100,15 @@ static MemoryBlock* CastToMemoryBlock(const void* ptr)
 //     return memory_profile_data->m_crc == crc;
 // }
 
-void*   Memory_Alloc_Plat   (tsize size);
-void    Memory_Free_Plat    (void* ptr);
-void*   Memory_Copy_Plat    (void* dst_ptr, const void* src_ptr, tsize size);
-void*   Memory_Set_Plat     (void* address, int32 val, tsize size);
+void*   Memory_Alloc_Platform   (tsize size);
+void    Memory_Free_Platform    (void* ptr);
+void*   Memory_Copy_Platform    (void* dst_ptr, const void* src_ptr, tsize size);
+void*   Memory_Set_Platform     (void* address, int32 val, tsize size);
 
 
 void* Memory_Alloc(const strcrc* local_name, tsize size)
 {
-    MemoryBlock * memory_block  = Memory_Alloc_Plat(sizeof(MemoryBlock) + size);
+    MemoryBlock * memory_block  = Memory_Alloc_Platform(sizeof(MemoryBlock) + size);
     Assert(memory_block != NULL, "");
     memory_block->m_pointer     = memory_block->m_byte;
     if( local_name != NULL )
@@ -135,7 +135,7 @@ void Memory_Free(void* ptr)
 
     StatCount_Int32_Inc(Memory_FindStatData(&memory_block->m_local_name), -1*memory_block->m_alloc_size);
 
-    Memory_Free_Plat(memory_block);
+    Memory_Free_Platform(memory_block);
 }
 
 void* Memory_AllocPtrSize(const strcrc* local_name, const void* ptr)
@@ -182,7 +182,7 @@ void* Memory_Copy(void* out_ptr, const void* src_ptr, tsize size)
     Assert( src_block->m_alloc_size >= size, "");
 
     return
-    Memory_Copy_Plat(out_ptr, src_ptr, size);
+    Memory_Copy_Platform(out_ptr, src_ptr, size);
 }
 
 void* Memory_Set(void* ptr, int32 val, tsize size)
@@ -193,7 +193,7 @@ void* Memory_Set(void* ptr, int32 val, tsize size)
     Assert( memory_block->m_alloc_size >= size, "");
 
     return
-    Memory_Set_Plat(ptr, val, size);
+    Memory_Set_Platform(ptr, val, size);
 }
 
 void* Memory_FullFill(void* ptr, int32 val)
@@ -203,7 +203,7 @@ void* Memory_FullFill(void* ptr, int32 val)
     MemoryBlock* memory_block = CastToMemoryBlock(ptr);
 
     return
-    Memory_Set_Plat(ptr, val, memory_block->m_alloc_size);
+    Memory_Set_Platform(ptr, val, memory_block->m_alloc_size);
 }
 
 void* Memory_Zero(void* ptr)
@@ -213,7 +213,7 @@ void* Memory_Zero(void* ptr)
     MemoryBlock* memory_block = CastToMemoryBlock(ptr);
 
     return
-    Memory_Set_Plat(ptr, 0, memory_block->m_alloc_size);
+    Memory_Set_Platform(ptr, 0, memory_block->m_alloc_size);
 }
 
 void* Memory_ZeroSize(void* ptr, tsize size)
@@ -225,7 +225,7 @@ void* Memory_ZeroSize(void* ptr, tsize size)
     }
 
     return
-    Memory_Set_Plat(ptr, 0, size);
+    Memory_Set_Platform(ptr, 0, size);
 }
 
 tsize Memory_GetSize(const void* ptr)

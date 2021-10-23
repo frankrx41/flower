@@ -12,8 +12,8 @@
 #include "Vec.h"
 
 
-void*   RenderManager_PlatformData_Create_Plat  (RenderManager* render_manager, const strcrc* local_name);
-void    RenderManager_PlatformData_Destroy_Plat (RenderManager* render_manager, void* platform_data);
+void*   RenderManager_PlatformData_Create  (RenderManager* render_manager, const strcrc* local_name);
+void    RenderManager_PlatformData_Destroy (RenderManager* render_manager, void* platform_data);
 
 void    CallBack_Actor_RenderTo_Scene_Viewport  (Actor* actor, const Scene* scene);
 
@@ -37,7 +37,7 @@ RenderManager* RenderManager_Create(const strcrc* local_name)
     render_manager->m_front_buffer  = render_manager->m_buffer[0];
     render_manager->m_back_buffer   = render_manager->m_buffer[1];
 
-    render_manager->m_platform_data = RenderManager_PlatformData_Create_Plat(render_manager, local_name);
+    render_manager->m_platform_data = RenderManager_PlatformData_Create(render_manager, local_name);
 
     render_manager->m_is_initialized = true;
 
@@ -46,7 +46,7 @@ RenderManager* RenderManager_Create(const strcrc* local_name)
 
 void RenderManager_Destroy(RenderManager* render_manager)
 {
-    RenderManager_PlatformData_Destroy_Plat(render_manager, render_manager->m_platform_data);
+    RenderManager_PlatformData_Destroy(render_manager, render_manager->m_platform_data);
     Viewport_Destroy(render_manager->m_buffer[0]);
     Viewport_Destroy(render_manager->m_buffer[1]);
     MemDel(render_manager);

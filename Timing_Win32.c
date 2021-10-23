@@ -17,7 +17,7 @@ void TimingManager_PlatformData_Destroy(TimingManager* timing_manager, void* pla
 {
 }
 
-uint64 TimingManager_Cpu_Frequency_Get_Plat(TimingManager* timing_manager, void* platform_data)
+uint64 TimingManager_Cpu_Frequency_Get_Platform(TimingManager* timing_manager, void* platform_data)
 {
     bool success = false;
 
@@ -27,7 +27,7 @@ uint64 TimingManager_Cpu_Frequency_Get_Plat(TimingManager* timing_manager, void*
     return cpu_frequency_large_int.QuadPart;
 }
 
-uint64 TimingManager_Cpu_Tick_Get_Plat(TimingManager* timing_manager, void* platform_data)
+uint64 TimingManager_Cpu_Tick_Get_Platform(TimingManager* timing_manager, void* platform_data)
 {
     bool success = false;
     LARGE_INTEGER current_cpu_count_large_int;

@@ -22,7 +22,7 @@ struct RenderManagerPlatformData
 };
 
 
-RenderManagerPlatformData* RenderManager_PlatformData_Create_Plat(RenderManager* render_manager, const strcrc* local_name)
+RenderManagerPlatformData* RenderManager_PlatformData_Create(RenderManager* render_manager, const strcrc* local_name)
 {
     RenderManagerPlatformData* render_manager_platform_data = MemNew(local_name, RenderManagerPlatformData);
     render_manager_platform_data->m_std_output  = GetStdHandle(STD_OUTPUT_HANDLE);
@@ -35,7 +35,7 @@ RenderManagerPlatformData* RenderManager_PlatformData_Create_Plat(RenderManager*
     return render_manager_platform_data;
 }
 
-void RenderManager_PlatformData_Destroy_Plat(RenderManager* render_manager, RenderManagerPlatformData* render_manager_platform_data)
+void RenderManager_PlatformData_Destroy(RenderManager* render_manager, RenderManagerPlatformData* render_manager_platform_data)
 {
     MemDel(render_manager_platform_data);
 }

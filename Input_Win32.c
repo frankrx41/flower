@@ -91,7 +91,7 @@ static int32 KeyId_To_WinVK(KeyId key_id)
     }
 }
 
-bool InputManager_Key_IsPhysicsDown_Plat(KeyId key_id)
+bool InputManager_Key_IsPhysicsDown_Platform(KeyId key_id)
 {
     if( key_id == KeyId_Null )
     {
