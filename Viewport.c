@@ -106,9 +106,9 @@ void Viewport_Render_ShaderText(Viewport* viewport, ShaderText* shader_text)
     const float y = location->m_y;
     const tchar* str = ShaderText_Str_Get(shader_text);
     
-    const uint32 index = uInt32(viewport->m_width) * uInt32(y)*viewport->m_scale.m_y + uInt32(x)*viewport->m_scale.m_x;
+    const int32 index = Int32(viewport->m_width) * Int32(y)*viewport->m_scale.m_y + Int32(x)*viewport->m_scale.m_x;
     
-    for( uint32 i=0; str[i] != NULL; i++ )
+    for( int32 i=0; str[i] != NULL; i++ )
     {
         PixData* pix_data = &viewport->m_data[index+i];
         if(Memory_IsInBounds(viewport->m_data, pix_data))
