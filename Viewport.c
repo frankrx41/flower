@@ -102,11 +102,16 @@ void Viewport_RenderTo_Viewport(const Viewport* viewport, Viewport* out_viewport
 void Viewport_Render_ShaderText(Viewport* viewport, ShaderText* shader_text)
 {
     const vec3* location = ShaderText_Location_Get(shader_text);
-    const float x = location->m_x;
-    const float y = location->m_y;
+    const float x = location->m_x * viewport->m_scale.m_x;
+    const float y = location->m_y * viewport->m_scale.m_y;
     const tchar* str = ShaderText_Str_Get(shader_text);
     
-    const int32 index = Int32(viewport->m_width) * Int32(y)*Int32(viewport->m_scale.m_y) + Int32(x)*Int32(viewport->m_scale.m_x);
+    if( !IS_IN_RANGE(x, 0, viewport->m_width) )
+    {
+        return;
+    }
+
+    const int32 index = Int32(viewport->m_width) * Int32(y) + Int32(x);
     
     for( int32 i=0; str[i] != NULL; i++ )
     {

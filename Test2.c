@@ -33,12 +33,13 @@ static void Actor_OnAction0(Actor* actor, const EventInfo* event_info)
 {
     if( event_info->m_event == Event_Control_Cancel )
     {
-        SceneManager_Scene_Destroy(Actor_OwnerScene_Get(actor));
+        SceneManager_Scene_ExitCurrent();
+        return;
     }
 
     if( event_info->m_event == Event_Control_Pause )
     {
-
+        return;
     }
 
     vec3 vec3_temp;
@@ -80,9 +81,9 @@ static void Scene_Create0(void)
 
     Scene * scene = SceneManager_Scene_Create(&local_name, NULL, NULL, NULL);
     vec2 vec2_scale = Vec2( 2.f, 1.f );
-    vec2 vec2_offset = Vec2( 2.f, 2.f );
+    vec2 vec2_offset = Vec2( 4.f, 2.f );
 
-    Scene_Viewport_Create(scene, 50, 50, &vec2_scale, &vec2_offset);
+    Scene_Viewport_Create(scene, 20, 10, &vec2_scale, &vec2_offset);
     SceneManager_Scene_Foreground_Queue_Add(scene);
 
     Actor * actor = Scene_Actor_Create(&local_name, scene, CallBack_Actor_Create0, NULL, NULL);
