@@ -40,10 +40,15 @@ void RenderManager_PlatformData_Destroy(RenderManager* render_manager, RenderMan
     MemDel(render_manager_platform_data);
 }
 
-void Render_PrintCharAtXY_Platform(RenderManager* render_manager, RenderManagerPlatformData* render_manager_platform_data, uint32 x, uint32 y, tchar ch)
+void Render_PrintCharAtXY_Platform(RenderManager* render_manager, RenderManagerPlatformData* render_manager_platform_data, uint32 x, uint32 y, uint32 info, tchar ch)
 {
     const COORD coord_screen = { x, y };
     SetConsoleCursorPosition(render_manager_platform_data->m_std_output, coord_screen);
+    if( info == 0 )
+    {
+        info = 0x07;
+    }
+    SetConsoleTextAttribute(render_manager_platform_data->m_std_output, info);
     printf("%c", ch == 0 ? ' ' : ch);
 }
 

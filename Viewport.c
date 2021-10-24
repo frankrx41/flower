@@ -70,10 +70,11 @@ void Viewport_RenderTo_Screen(RenderManager* render_manager, void* platform_data
         for( uint32 x=0; x<front_viewport->m_width; x++ )
         {
             uint32 i = x + y*uInt32(front_viewport->m_width);
-            if( front_viewport->m_data[i].m_tchar != back_viewport->m_data[i].m_tchar )
+            if( front_viewport->m_data[i].m_tchar != back_viewport->m_data[i].m_tchar ||
+                front_viewport->m_data[i].m_info != back_viewport->m_data[i].m_info )
             {
-                extern void Render_PrintCharAtXY_Platform(RenderManager*, void*, uint32, uint32, tchar);
-                Render_PrintCharAtXY_Platform(render_manager, platform_data, x, y, back_viewport->m_data[i].m_tchar);
+                extern void Render_PrintCharAtXY_Platform(RenderManager*, void*, uint32, uint32, uint32, tchar);
+                Render_PrintCharAtXY_Platform(render_manager, platform_data, x, y, back_viewport->m_data[i].m_info, back_viewport->m_data[i].m_tchar);
             }
         }
     }
@@ -90,7 +91,8 @@ void Viewport_RenderTo_Viewport(const Viewport* viewport, Viewport* out_viewport
             int32 i1 = Int32(out_viewport->m_offset.m_y) * Int32(viewport->m_width) + Int32(out_viewport->m_offset.m_x)+x + y*Int32(viewport->m_width);
             if( out_viewport->m_data[i2].m_tchar != 0 && i1 < viewport->m_width * viewport->m_height)
             {
-                if( viewport->m_data[i1].m_tchar != out_viewport->m_data[i2].m_tchar )
+                if( viewport->m_data[i1].m_tchar != out_viewport->m_data[i2].m_tchar || 
+                    viewport->m_data[i1].m_info != out_viewport->m_data[i2].m_info )
                 {
                     viewport->m_data[i1] = out_viewport->m_data[i2];
                 }
@@ -101,7 +103,7 @@ void Viewport_RenderTo_Viewport(const Viewport* viewport, Viewport* out_viewport
 
 void Viewport_Render_ShaderText(Viewport* viewport, ShaderText* shader_text)
 {
-    const vec3* location = ShaderText_Location_Get(shader_text);
+    const vec3* location = ShaderText_Position_Get(shader_text);
     const float x = location->m_x * viewport->m_scale.m_x;
     const float y = location->m_y * viewport->m_scale.m_y;
     const tchar* str = ShaderText_Str_Get(shader_text);
@@ -112,13 +114,15 @@ void Viewport_Render_ShaderText(Viewport* viewport, ShaderText* shader_text)
     }
 
     const int32 index = Int32(viewport->m_width) * Int32(y) + Int32(x);
-    
+    const void* info = ShaderText_Info_Get(shader_text);
+
     for( int32 i=0; str[i] != NULL; i++ )
     {
         PixData* pix_data = &viewport->m_data[index+i];
         if(Memory_IsInBounds(viewport->m_data, pix_data))
         {
-            pix_data->m_tchar = str[i];
+            pix_data->m_tchar   = str[i];
+            pix_data->m_info    = uInt32(info);
         }
         else
         {

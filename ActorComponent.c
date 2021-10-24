@@ -104,24 +104,24 @@ void Actor_Component_Physics_SetEnableSimulate(Actor* actor, bool is_enable_simu
 
     if( is_enable_simulate )
     {
-        Scene_PhysicsGroup_Actor_Add(Actor_OwnerScene_Get(actor), actor);
+        Scene_PhysicsGroup_Actor_Add(Actor_ExistScene_Get(actor), actor);
     }
     else
     {
-        Scene_PhysicsGroup_Actor_Remove(Actor_OwnerScene_Get(actor), actor);
+        Scene_PhysicsGroup_Actor_Remove(Actor_ExistScene_Get(actor), actor);
     }
 }
 
 
 // Component_Render
-ShaderText* Actor_Component_Render_ShaderText_Add(Actor* actor, const vec3* location, const vec2* offset, const tchar* str)
+ShaderText* Actor_Component_Render_ShaderText_Add(Actor* actor, bool is_absolute, const vec3* position, const void* info, const tchar* str)
 {
     Assert(actor != NULL, "");
     RenderComponent* render_component = Actor_Component_Cast(actor, Component_Render);
     Assert(render_component != NULL, "");
     if( render_component )
     {
-        ShaderText* shader_text = ShaderText_Create(Actor_LocalName_Str_Get(actor), false, location, offset, str);
+        ShaderText* shader_text = ShaderText_Create(Actor_LocalName_Get(actor), is_absolute, position, info, str);
         Component_Render_ShaderText_Add(render_component, shader_text);
         return shader_text;
     }
@@ -157,7 +157,7 @@ void Actor_Component_Control_SceneEventRespond_Add(Actor* actor, Event event, CB
     if( control_component )
     {
         Component_Control_EventRespond_Add(control_component, event, cb_respond_condition_void_actor_eventinfo, cb_respond_action_void_actor_eventinfo);
-        Scene_SceneEventGroup_Actor_Add(Actor_OwnerScene_Get(actor), actor, event);
+        Scene_SceneEventGroup_Actor_Add(Actor_ExistScene_Get(actor), actor, event);
     }
 }
 
@@ -173,7 +173,7 @@ void Actor_Component_Control_ControlEventRespond_Add(Actor* actor, Event event, 
         Component_Control_EventRespond_Add(control_component, event, cb_respond_condition_void_actor_eventinfo, cb_respond_action_void_actor_eventinfo);
         if(IS_IN_RANGE(event, Event_Scene_Min, Event_Scene_Max))
         {
-            Scene_SceneEventGroup_Actor_Add(Actor_OwnerScene_Get(actor), actor, event);
+            Scene_SceneEventGroup_Actor_Add(Actor_ExistScene_Get(actor), actor, event);
         }
     }
 }
@@ -254,26 +254,26 @@ void Actor_Component_Storage_Variable_Delete(Actor* actor, crc32 variable)
 ////////////////////////////////////////////////////////////////////////////////
 static void CallBack_Render_ActorShaderText(ShaderText* shader_text, const Actor* actor)
 {
-    if( ShaderText_IsDisable(shader_text) )
+    if( ShaderText_Is_Disable(shader_text) )
     {
         return;
     }
 
-    vec3 location = *ShaderText_Location_Get(shader_text);
+    vec3 position = *ShaderText_Position_Get(shader_text);
     if( !ShaderText_Is_Absolute(shader_text) )
     {
         if (Actor_Component_Cast(actor, Component_Physics))
         {
-            Vec3_Add(&location, Actor_Component_Physics_Location_Get(actor), &location);
+            Vec3_Add(&position, Actor_Component_Physics_Location_Get(actor), &position);
         }
     }
 
     strcrc local_name;
 
     local_name = StrCrc("RenderManager_ShaderText", 0);
-    ShaderText* shader_text_copy = ShaderText_Create(&local_name, true, &location, ShaderText_Offset_Get(shader_text), ShaderText_Str_Get(shader_text));
+    ShaderText* shader_text_copy = ShaderText_Create(&local_name, true, &position, ShaderText_Info_Get(shader_text), ShaderText_Str_Get(shader_text));
     
-    Viewport* viewport = Scene_Viewport_Get(Actor_OwnerScene_Get(actor));
+    Viewport* viewport = Scene_Viewport_Get(Actor_ExistScene_Get(actor));
     Viewport_Render_ShaderText(viewport, shader_text_copy);
 
     ShaderText_Destory(shader_text_copy);

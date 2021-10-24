@@ -45,11 +45,11 @@ void CallBack_ActorOnEvent5(Actor* actor, const EventInfo* event_info)
 
     vec3 location = *Actor_Component_Physics_Location_Get(actor);
     Actor_Component_Render_ShaderText_Clear(actor);
-    String* string = String_New(Actor_LocalName_Str_Get(actor), NULL, 0, false);
+    String* string = String_New(Actor_LocalName_Get(actor), NULL, 0, false);
     String_Format(string, "(%.2f) %s", location.m_y, event_info->m_event == Event_Control_MoveUp ? "Up" : "Down");
 
     location = Vec3(2, 2, 0);
-    Actor_Component_Render_ShaderText_Add(actor, &location, NULL, String_CStr(string));
+    Actor_Component_Render_ShaderText_Add(actor, false, &location, NULL, String_CStr(string));
     String_Del(string);
 }
 
@@ -61,7 +61,7 @@ void CallBack_Actor_Create5(Actor* actor, const void* ptr)
 
     vec3 vec3_temp;
     vec3_temp = Vec3(2, 2, 0);
-    Actor_Component_Render_ShaderText_Add(actor, &vec3_temp, NULL, "Press Esc to exit");
+    Actor_Component_Render_ShaderText_Add(actor, false, &vec3_temp, NULL, "Press Esc to exit");
     vec3_temp = Vec3(6, 0, 0);
     Actor_Component_Physics_Location_Set(actor, &vec3_temp);
     Actor_Component_Control_ControlEventRespond_Add(actor, Event_Control_Cancel, NULL, CallBack_ActorOnEvent5);
@@ -101,11 +101,11 @@ void CallBack_ActorOnEvent4(Actor* actor, const EventInfo* event_info)
     Actor_Component_Render_ShaderText_Clear(actor);
 
     const vec3 displacement = *Actor_Component_Physics_Location_Get(actor);
-    String* string = String_New(Actor_LocalName_Str_Get(actor), NULL, 0, false);
+    String* string = String_New(Actor_LocalName_Get(actor), NULL, 0, false);
     String_Format(string, "(%.2f, %.2f, %.2f) %.2f", displacement.m_x, displacement.m_y, displacement.m_z, 0.f);
 
     vec3 location = Vec3(0, 0, 0);
-    Actor_Component_Render_ShaderText_Add(actor, &location, NULL, String_CStr(string));
+    Actor_Component_Render_ShaderText_Add(actor, false, &location, NULL, String_CStr(string));
     String_Del(string);
 }
 
@@ -151,11 +151,11 @@ void CallBack_ActorOnEvent3(Actor* actor, const EventInfo* event_info)
 
     Actor_Component_Render_ShaderText_Clear(actor);
 
-    String* string = String_New(Actor_LocalName_Str_Get(actor), NULL, 0, false);
+    String* string = String_New(Actor_LocalName_Get(actor), NULL, 0, false);
     String_Format(string, "%d %.2f", tick_count, 1.f / event_info->m_delta_seconds);
 
     vec3 location = Vec3(0, 0, 0);
-    Actor_Component_Render_ShaderText_Add(actor, &location, NULL, String_CStr(string));
+    Actor_Component_Render_ShaderText_Add(actor, false, &location, NULL, String_CStr(string));
     String_Del(string);
 
     tick_count = 0;
@@ -197,7 +197,7 @@ void CallBack_Actor_Create3(Actor* actor, const void* ptr)
     Actor_Component_New(actor, Component_Storage);
 
     vec3 location = Vec3(1, 1, 0);
-    Actor_Component_Render_ShaderText_Add(actor, &location, NULL, ptr);
+    Actor_Component_Render_ShaderText_Add(actor, false, &location, NULL, ptr);
     Actor_Component_Control_SceneEventRespond_Add(actor, Event_Scene_Tick, CallBack_ActorOnEventCondition3, CallBack_ActorOnEvent3);
 
 };
@@ -238,11 +238,11 @@ void CallBack_ActorOnEvent2(Actor* actor, const EventInfo* event_info)
             SceneManager_Scene_ExitCurrent();
         }
 
-        String* string = String_New(Actor_LocalName_Str_Get(actor), NULL, 0, false);
+        String* string = String_New(Actor_LocalName_Get(actor), NULL, 0, false);
         String_Format(string, "%d", update_tick);
 
         vec3 location = Vec3(0, 0, 0);
-        Actor_Component_Render_ShaderText_Add(actor, &location, NULL, String_CStr(string));
+        Actor_Component_Render_ShaderText_Add(actor, false, &location, NULL, String_CStr(string));
         String_Del(string);
 
         Actor_Component_Storage_Data_Store(actor, crc_update_tick, tData(int32, update_tick));
@@ -258,7 +258,7 @@ void CallBack_Actor_Create2(Actor* actor, const void* ptr)
     Actor_Component_New(actor, Component_Storage);
 
     vec3 location = Vec3(1, 1, 0);
-    Actor_Component_Render_ShaderText_Add(actor, &location, NULL, ptr);
+    Actor_Component_Render_ShaderText_Add(actor, false, &location, NULL, ptr);
     Actor_Component_Control_SceneEventRespond_Add(actor, Event_Scene_Tick, NULL, CallBack_ActorOnEvent2);
 
 };
@@ -308,7 +308,7 @@ void Engine_Test1()
 
     Actor_Component_New(actor1, Component_Render);
     location = Vec3(1, 1, 0);
-    Actor_Component_Render_ShaderText_Add(actor1, &location, NULL, "hello world");
+    Actor_Component_Render_ShaderText_Add(actor1, false, &location, NULL, "hello world");
 
     Actor_Component_New(actor1, Component_Control);
     Actor_Component_Control_SceneEventRespond_Add(actor1, Event_Scene_Tick, NULL, CallBack_ActorOnEvent1);
@@ -323,7 +323,7 @@ void Engine_Test1()
 
     Actor_Component_New(actor2, Component_Render);
     location = Vec3(1, 1, 0);
-    Actor_Component_Render_ShaderText_Add(actor2, &location, NULL, "goodbye world");
+    Actor_Component_Render_ShaderText_Add(actor2, false, &location, NULL, "goodbye world");
 
     Actor_Component_New(actor2, Component_Control);
     Actor_Component_Control_SceneEventRespond_Add(actor2, Event_Scene_Tick, NULL, CallBack_ActorOnEvent1);
@@ -360,7 +360,7 @@ void Engine_Test0()
 
     Actor_Component_New(actor, Component_Render);
     vec3 location = Vec3(1, 1, 0);
-    Actor_Component_Render_ShaderText_Add(actor, &location, NULL, "hello world");
+    Actor_Component_Render_ShaderText_Add(actor, false, &location, NULL, "hello world");
 
     Actor_Component_New(actor, Component_Control);
     Actor_Component_New(actor, Component_Physics);

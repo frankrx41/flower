@@ -1,14 +1,10 @@
 #pragma once
 
 #define NO_COMPILE_TIME_CHECK   0
-#define KEEP_LEGACY_TYPE        0
 #define PLATFORM_32BITS         0
 #define PLATFORM_64BITS         0
 
 #if PLATFORM_WIN32
-
-#undef  KEEP_LEGACY_TYPE
-#define KEEP_LEGACY_TYPE        1
 
 #undef  PLATFORM_32BITS
 #define PLATFORM_32BITS         1
@@ -79,15 +75,12 @@ typedef byte bool;
 #define true    ( 1 )
 #define false   ( 0 )
 
-#if KEEP_LEGACY_TYPE
-#undef int
-#undef char
-#else
+
 // Do not use those key word
 // For multi-platform
-#define int
-#define char
-#endif
+#define int     unknow
+#define char    unknow
+
 
 
 #if CONFIG_DEBUG || CONFIG_RELEASE

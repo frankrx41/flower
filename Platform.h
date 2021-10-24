@@ -2,6 +2,9 @@
 
 #if PLATFORM_WIN32
 
+#undef int
+#undef char
+
 #include <Windows.h>
 #include <stdio.h>
 #include <stdlib.h>

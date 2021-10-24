@@ -13,7 +13,7 @@ static statcount stat_alloc_count;
 
 static statcount* Memory_FindStatData(const strcrc* local_name)
 {
-    for(int i=0; i<MEMORY_STAT_MAX; i++)
+    for(int32 i=0; i<MEMORY_STAT_MAX; i++)
     {
         if( StrCrc_IsSame(&stat_alloc_size[i].m_local_name, local_name) )
         {
@@ -40,7 +40,7 @@ void Memory_Stat()
     Log(4, "Memory Profile:\n");
     Log(4, "=====================================================\n");
 
-    for(int i=0; i<MEMORY_STAT_MAX; i++)
+    for(int32 i=0; i<MEMORY_STAT_MAX; i++)
     {
         statcount* stat_data_count = &stat_alloc_size[i];
         tsize size = stat_data_count->m_data_value.m_int32;
@@ -65,7 +65,7 @@ void Memory_Stat()
 
 void Memory_Check_Leak()
 {
-    for(int i=0; i<MEMORY_STAT_MAX; i++)
+    for(int32 i=0; i<MEMORY_STAT_MAX; i++)
     {
         statcount* stat_data_count = &stat_alloc_size[i];
         Assert(stat_data_count->m_data_value.m_int32 == 0, "");

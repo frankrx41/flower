@@ -225,9 +225,9 @@ void Actor_Test2()
 
     Actor_Component_New(actor, Component_Render);
     location = Vec3(1, 1, 0);
-    Actor_Component_Render_ShaderText_Add(actor, &location, NULL, "* hello world" );
+    Actor_Component_Render_ShaderText_Add(actor, false, &location, NULL, "* hello world" );
     location = Vec3(1, 2, 0);
-    Actor_Component_Render_ShaderText_Add(actor, &location, NULL, "* goodbye world" );
+    Actor_Component_Render_ShaderText_Add(actor, false, &location, NULL, "* goodbye world" );
 
     RenderManager_RenderAllScene(RenderManager_GetInstance(), SceneManager_GetInstance());
 
@@ -249,7 +249,7 @@ void Actor_Test1()
     Actor_Component_New(actor, Component_Render);
 
     vec3 location = Vec3(2, 2, 0);
-    Actor_Component_Render_ShaderText_Add(actor, &location, NULL, "hello world" );
+    Actor_Component_Render_ShaderText_Add(actor, false, &location, NULL, "hello world" );
 
     RenderManager_RenderAllScene(RenderManager_GetInstance(), SceneManager_GetInstance());
 
@@ -271,7 +271,7 @@ void Actor_Test0()
 
     Actor_Component_New(actor, Component_Render);
     vec3 location = Vec3(0, 10, 0);
-    Actor_Component_Render_ShaderText_Add(actor, &location, NULL, "hello world" );
+    Actor_Component_Render_ShaderText_Add(actor, false, &location, NULL, "hello world" );
 
     RenderManager_RenderAllScene(RenderManager_GetInstance(), SceneManager_GetInstance());
 
@@ -286,7 +286,7 @@ void Actor_Test0()
 ////////////////////////////////////////////////////////////////////////////////
 void CallBack_TaskRun0(Task* task, void* ptr)
 {
-    volatile int foo = 1;
+    volatile int32 foo = 1;
 }
 
 void Task_Test0()

@@ -129,7 +129,7 @@ void Actor_Component_New(Actor* actor, Component component_enum)
     Assert(actor != NULL, "");
     Assert(IS_IN_RANGE(component_enum, Component_Min, Component_Max), "");
 
-    void* component = Actor_Component_Create_CB_Get(component_enum)(Actor_LocalName_Str_Get(actor), actor);
+    void* component = Actor_Component_Create_CB_Get(component_enum)(Actor_LocalName_Get(actor), actor);
     Actor_Component_Set(actor, component_enum, component);
 }
 
@@ -151,12 +151,12 @@ void* Actor_Component_Cast(const Actor* actor, Component component_enum)
     return actor->m_components[component_enum - Component_Min];
 }
 
-const strcrc* Actor_LocalName_Str_Get(Actor* actor)
+const strcrc* Actor_LocalName_Get(Actor* actor)
 {
     return &actor->m_local_name;
 }
 
-Scene* Actor_OwnerScene_Get(const Actor* actor)
+Scene* Actor_ExistScene_Get(const Actor* actor)
 {
     return actor->m_scene;
 }

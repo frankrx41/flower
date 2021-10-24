@@ -23,6 +23,6 @@ void    Actor_Component_New     (Actor* actor, Component component_enum);
 void    Actor_Component_Del     (Actor* actor, Component component_enum);
 void*   Actor_Component_Cast    (const Actor* actor, Component component_enum);
 
-const strcrc*   Actor_LocalName_Str_Get     (Actor* actor);
-Scene*          Actor_OwnerScene_Get        (const Actor* actor);
+const strcrc*   Actor_LocalName_Get     (Actor* actor);
+Scene*          Actor_ExistScene_Get    (const Actor* actor);
 

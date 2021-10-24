@@ -22,7 +22,7 @@ void    CallBack_Actor_Component_Physics_Simulate   (Actor* actor, const float* 
 void    Actor_Component_Physics_SetEnableSimulate   (Actor* actor, bool is_enable_simulate);
 
 
-ShaderText* Actor_Component_Render_ShaderText_Add   (Actor* actor, const vec3* location, const vec2* offset, const tchar* str);
+ShaderText* Actor_Component_Render_ShaderText_Add   (Actor* actor, bool is_absolute, const vec3* position, const void* info, const tchar* str);
 void        Actor_Component_Render_ShaderText_Del   (Actor* actor, ShaderText* shader_text);
 void        Actor_Component_Render_ShaderText_Clear (Actor* actor);
 
