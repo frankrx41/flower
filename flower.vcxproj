@@ -80,6 +80,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Argument.c" />
     <ClCompile Include="ControlComponent.c" />
     <ClCompile Include="Actor.c" />
     <ClCompile Include="ActorComponent.c" />
@@ -120,6 +121,7 @@
     <ClCompile Include="Viewport.c" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Argument.h" />
     <ClInclude Include="ControlComponent.h" />
     <ClInclude Include="Actor.h" />
     <ClInclude Include="ActorComponent.h" />

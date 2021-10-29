@@ -107,6 +107,9 @@
     <ClCompile Include="Viewport.c">
       <Filter>Render\Viewport</Filter>
     </ClCompile>
+    <ClCompile Include="Argument.c">
+      <Filter>Library\Argument</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CoreMini.h" />
@@ -203,6 +206,9 @@
     <ClInclude Include="Viewport.h">
       <Filter>Render\Viewport</Filter>
     </ClInclude>
+    <ClInclude Include="Argument.h">
+      <Filter>Library\Argument</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Platform">
@@ -276,6 +282,9 @@
     </Filter>
     <Filter Include="Render\Viewport">
       <UniqueIdentifier>{5684c7c4-5526-441d-b68e-e79d9156e34e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Library\Argument">
+      <UniqueIdentifier>{23013f11-0268-419f-be29-46b3dce7ee72}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
