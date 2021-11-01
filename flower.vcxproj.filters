@@ -110,6 +110,9 @@
     <ClCompile Include="Argument.c">
       <Filter>Library\Argument</Filter>
     </ClCompile>
+    <ClCompile Include="Component.c">
+      <Filter>Scene\Actor\Component</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CoreMini.h" />
@@ -133,9 +136,6 @@
     </ClInclude>
     <ClInclude Include="Vec.h">
       <Filter>Library\Vectors</Filter>
-    </ClInclude>
-    <ClInclude Include="Component.h">
-      <Filter>Scene\Actor</Filter>
     </ClInclude>
     <ClInclude Include="RenderComponent.h">
       <Filter>Scene\Actor\Component</Filter>
@@ -208,6 +208,9 @@
     </ClInclude>
     <ClInclude Include="Argument.h">
       <Filter>Library\Argument</Filter>
+    </ClInclude>
+    <ClInclude Include="Component.h">
+      <Filter>Scene\Actor\Component</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

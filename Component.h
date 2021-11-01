@@ -1,7 +1,8 @@
 #pragma once
 
-
-typedef enum ComponentEnum Component;
+typedef struct Actor Actor;
+typedef struct Component Component;
+typedef enum ComponentEnum ComponentEnum;
 
 enum ComponentEnum
 {
@@ -13,3 +14,7 @@ enum ComponentEnum
     Component_Max,
 };
 
+ComponentEnum Component_GetEnum     (const Component* component);
+
+Component*  Component_Create        (const strcrc* local_name, Actor* actor, ComponentEnum component_enum);
+void        Component_Destroy       (Component* component);

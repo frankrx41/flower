@@ -5,10 +5,12 @@ typedef struct vec2 vec2;
 typedef struct Actor Actor;
 typedef struct ShaderText ShaderText;
 typedef struct EventInfo EventInfo;
-typedef void (*CB_RespondAction_Void_Actor_EventInfo)(Actor*, const EventInfo*);
-typedef bool (*CB_RespondCondition_Bool_Actor_EventInfo)(Actor*, const EventInfo*);
+
 typedef enum Event Event;
 typedef union tdata tdata;
+
+typedef void (*CB_RespondAction_Void_Actor_EventInfo)       (Actor*, const EventInfo*);
+typedef bool (*CB_RespondCondition_Bool_Actor_EventInfo)    (Actor*, const EventInfo*);
 
 
 vec3*   Actor_Component_Physics_Location_Get        (const Actor* actor);

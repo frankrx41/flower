@@ -3,11 +3,8 @@
 #include "MemoryManager.h"
 #include "Actor.h"
 #include "Component.h"
-#include "PhysicsComponent.h"
-#include "RenderComponent.h"
-#include "ControlComponent.h"
-#include "StorageComponent.h"
 
+#include "Queue.h"
 #include "String.h"
 
 
@@ -16,7 +13,7 @@ struct Actor
     uint32  m_id;
     strcrc  m_local_name;
 
-    void*   m_components[Component_Max - Component_Min];
+    Queue(Component*)*  m_components_queue;
 
     Scene*  m_scene;
     bool    m_is_pause;
@@ -30,10 +27,7 @@ Actor* Actor_Create(const strcrc* local_name, Scene* scene, uint32 id, CB_ActorC
     actor->m_id                             = id;
     StrCrc_Copy(local_name, &actor->m_local_name);
 
-    for( uint32 i=0, max_i = ARRAY_SIZE(actor->m_components); i<max_i; i++ )
-    {
-        actor->m_components[i]              = NULL;
-    }
+    actor->m_components_queue = Queue_Create(local_name, Component*);
 
     actor->m_scene                          = scene;
     actor->m_is_pause                       = false;
@@ -57,14 +51,7 @@ void Actor_Destroy(Actor* actor)
         actor->m_cb_actor_destroy_void_actor(actor);
     }
 
-    for(Component component_enum = Component_Min; component_enum<Component_Max; component_enum++)
-    {
-        if( Actor_Component_Cast(actor, component_enum) )
-        {
-            Actor_Component_Del(actor, component_enum);
-        }
-    }
-    
+    Queue_Destroy(actor->m_components_queue, Component_Destroy);
     MemDel(actor);
 }
 
@@ -89,68 +76,38 @@ void Actor_Hide(Actor* actor, bool is_hide)
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-typedef void* (*CB_ComponentCreate_tPtr_tChar_Actor)    (const strcrc* local_name, Actor* actor);
-typedef void (*CB_ComponentDestroy_Void_tPtr)           (void* component);
-
-static CB_ComponentCreate_tPtr_tChar_Actor Actor_Component_Create_CB_Get(Component component_enum)
+void Actor_Component_New(Actor* actor, ComponentEnum component_enum)
 {
-    switch(component_enum)
-    {
-    case Component_Control: return Component_Control_Create;
-    case Component_Physics: return Component_Physics_Create;
-    case Component_Render:  return Component_Render_Create;
-    case Component_Storage: return Component_Storage_Create;
-    default: Assert(false, "");
-    }
-    return NULL;
-}
-
-static CB_ComponentDestroy_Void_tPtr Actor_Component_Destroy_CB_Get(Component component_enum)
-{
-    switch (component_enum)
-    {
-    case Component_Control:  return Component_Control_Destroy;
-    case Component_Physics: return Component_Physics_Destroy;
-    case Component_Render:  return Component_Render_Destroy;
-    case Component_Storage: return Component_Storage_Destroy;
-    default: Assert(false, "");
-    }
-    return NULL;
-}
-
-static void Actor_Component_Set(Actor* actor, Component component_enum, void* component)
-{
+    Assert(actor != NULL, "");
     Assert(IS_IN_RANGE(component_enum, Component_Min, Component_Max), "");
-    actor->m_components[component_enum - Component_Min] = component;
+    Assert(Actor_Component_Cast(actor, component_enum) == NULL, "");
+
+    Component* component = Component_Create(Actor_GetLocalName(actor), actor, component_enum);
+    Queue_Push(Component*, Actor_GetLocalName(actor), actor->m_components_queue, component);
 }
 
-void Actor_Component_New(Actor* actor, Component component_enum)
+void Actor_Component_Del(Actor* actor, ComponentEnum component_enum)
 {
     Assert(actor != NULL, "");
     Assert(IS_IN_RANGE(component_enum, Component_Min, Component_Max), "");
 
-    void* component = Actor_Component_Create_CB_Get(component_enum)(Actor_GetLocalName(actor), actor);
-    Actor_Component_Set(actor, component_enum, component);
-}
-
-void Actor_Component_Del(Actor* actor, Component component_enum)
-{
-    Assert(actor != NULL, "");
-    Assert(IS_IN_RANGE(component_enum, Component_Min, Component_Max), "");
-
-    void* component = Actor_Component_Cast(actor, component_enum);
+    Component* component = Actor_Component_Cast(actor, component_enum);
     Assert(component != NULL, "You try to delete a not exist component!");
-    
-    Actor_Component_Destroy_CB_Get(component_enum)(component);
-    Actor_Component_Set(actor, component_enum, NULL);
+
+    Queue_RemoveFindFirst(Component*)(actor->m_components_queue, NULL, component, Component_Destroy);
 }
 
-void* Actor_Component_Cast(const Actor* actor, Component component_enum)
+static bool CallBack_Actor_FindComponent(const Component* component, const ComponentEnum component_enum)
 {
-    Assert(IS_IN_RANGE(component_enum, Component_Min, Component_Max), "");
-    return actor->m_components[component_enum - Component_Min];
+    return Component_GetEnum(component) == component_enum;
 }
 
+Component* Actor_Component_Cast(const Actor* actor, ComponentEnum component_enum)
+{
+    return Queue_Find(Component*)(actor->m_components_queue, CallBack_Actor_FindComponent, (void*)component_enum);
+}
+
+////////////////////////////////////////////////////////////////////////////////
 const strcrc* Actor_GetLocalName(Actor* actor)
 {
     return &actor->m_local_name;

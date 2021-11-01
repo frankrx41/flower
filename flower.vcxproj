@@ -81,6 +81,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Argument.c" />
+    <ClCompile Include="Component.c" />
     <ClCompile Include="ControlComponent.c" />
     <ClCompile Include="Actor.c" />
     <ClCompile Include="ActorComponent.c" />
