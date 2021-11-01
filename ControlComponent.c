@@ -19,27 +19,28 @@ typedef struct ControlEventRespond ControlEventRespond;
 
 struct ControlEventRespond
 {
-    Event                                       m_event;
+    EventId                                     m_event;
     CB_RespondCondition_Bool_Actor_EventInfo    m_cb_respond_condition_bool_actor_eventinfo;
     CB_RespondAction_Void_Actor_EventInfo       m_cb_respond_action_void_actor_eventinfo;
 };
 
-struct ControlComponent
+typedef struct ControlComponentData ControlComponentData;
+struct ControlComponentData
 {
     strcrc                          m_local_name;
     Queue(ControlEventRespond*)*    m_control_event_respond_queue;
 };
 
 
-ControlComponent* Component_Control_Create(const strcrc* local_name, Actor* actor)
+void* ComponentData_Control_Create(const strcrc* local_name, Actor* actor)
 {
-    ControlComponent* event_respond_component  = MemNew(local_name, ControlComponent);
-    event_respond_component->m_control_event_respond_queue  = Queue_Create(local_name, ControlEventRespond*);
-    StrCrc_Copy(local_name, &event_respond_component->m_local_name);
+    ControlComponentData* control_component_data  = MemNew(local_name, ControlComponentData);
+    control_component_data->m_control_event_respond_queue  = Queue_Create(local_name, ControlEventRespond*);
+    StrCrc_Copy(local_name, &control_component_data->m_local_name);
 
-    Scene_ControlEventGroup_Actor_Add(Actor_GetExistScene(actor), actor, Event_Control_Min);
+    Scene_EventGroup_Actor_Add(Actor_GetExistScene(actor), actor, Event_Control_Any);
 
-    return event_respond_component;
+    return control_component_data;
 }
 
 static void CallBack_EventRespond_Destroy(ControlEventRespond* event_respond)
@@ -47,50 +48,68 @@ static void CallBack_EventRespond_Destroy(ControlEventRespond* event_respond)
     MemDel(event_respond);
 }
 
-void Component_Control_Destroy(ControlComponent* control_component)
+void ComponentData_Control_Destroy(Component* component)
 {
-    Assert(control_component != NULL, "");
-    Component_Control_EventRespond_Clear(control_component);
-    Queue_Destroy(control_component->m_control_event_respond_queue, CallBack_EventRespond_Destroy);
+    Assert(component != NULL, "");
+    Assert(Component_GetEnum(component) == Component_Control, "");
 
-    MemDel(control_component);
+    ControlComponentData* control_component_data = Component_GetData(component);
+    Component_Control_EventRespond_Clear(component);
+    Queue_Destroy(control_component_data->m_control_event_respond_queue, CallBack_EventRespond_Destroy);
+
+    MemDel(control_component_data);
 }
 
-void Component_Control_EventRespond_Add(ControlComponent* control_component, Event event, CB_RespondCondition_Bool_Actor_EventInfo cb_respond_condition_bool_actor_eventinfo, CB_RespondAction_Void_Actor_EventInfo cb_respond_action_void_actor_eventinfo)
+void Component_Control_EventRespond_Add(Component* component, EventId event_id, CB_RespondCondition_Bool_Actor_EventInfo cb_respond_condition_bool_actor_eventinfo, CB_RespondAction_Void_Actor_EventInfo cb_respond_action_void_actor_eventinfo)
 {
-    Assert(control_component != NULL, "");
-    ControlEventRespond* control_event_respond = MemNew(&control_component->m_local_name, ControlEventRespond);
-    control_event_respond->m_event              = event;
+    Assert(event_id != Event_Scene_Update_Physics, "Update_Physics is handle by engine");
+    Assert(Component_GetEnum(component) == Component_Control, "");
+
+    Actor* actor = Component_GetActor(component);
+
+    Scene_EventGroup_Actor_Add(Actor_GetExistScene(actor), actor, event_id);
+
+    Assert(component != NULL, "");
+    ControlComponentData* control_component_data = Component_GetData(component);
+    ControlEventRespond* control_event_respond  = MemNew(&control_component_data->m_local_name, ControlEventRespond);
+    control_event_respond->m_event              = event_id;
     control_event_respond->m_cb_respond_action_void_actor_eventinfo     = cb_respond_action_void_actor_eventinfo;
     control_event_respond->m_cb_respond_condition_bool_actor_eventinfo  = cb_respond_condition_bool_actor_eventinfo;
-    Queue_Push(ControlEventRespond*, NULL, control_component->m_control_event_respond_queue, control_event_respond);
+    Queue_Push(ControlEventRespond*, NULL, control_component_data->m_control_event_respond_queue, control_event_respond);
 }
 
-static bool CallBack_EventRespond_FindEvent(ControlEventRespond* event_respond, Event event)
+static bool CallBack_EventRespond_FindEvent(ControlEventRespond* event_respond, EventId event)
 {
     return event_respond->m_event == event;
 }
 
-void Component_Control_EventRespond_Del(ControlComponent* control_component, Event event)
+void Component_Control_EventRespond_Del(Component* component, EventId event_id)
 {
-    Assert(control_component != NULL, "");
-    ControlEventRespond* control_event_respond = Queue_RemoveFindFirst(ControlEventRespond*)(control_component->m_control_event_respond_queue, (CB_FindData_Bool_tPtr_tPtr)CallBack_EventRespond_FindEvent, (void*)event, NULL);
+    Assert(component != NULL, "");
+    Assert(Component_GetEnum(component) == Component_Control, "");
+
+    ControlComponentData* control_component_data = Component_GetData(component);
+    ControlEventRespond* control_event_respond = Queue_RemoveFindFirst(ControlEventRespond*)(control_component_data->m_control_event_respond_queue, (CB_FindData_Bool_tPtr_tPtr)CallBack_EventRespond_FindEvent, (void*)event_id, NULL);
     MemSafeDel(control_event_respond);
 }
 
-void Component_Control_EventRespond_Clear(ControlComponent* control_component)
+void Component_Control_EventRespond_Clear(Component* component)
 {
-    Assert(control_component != NULL, "");
-    Queue_Clear(control_component->m_control_event_respond_queue, CallBack_EventRespond_Destroy);
+    Assert(component != NULL, "");
+    Assert(Component_GetEnum(component) == Component_Control, "");
+
+    ControlComponentData* control_component_data = Component_GetData(component);
+    Queue_Clear(control_component_data->m_control_event_respond_queue, CallBack_EventRespond_Destroy);
 }
 
 
 void CallBack_Actor_Receive_SceneEvent(Actor* actor, const EventInfo* event_info)
 {
-    ControlComponent* control_component = Actor_Component_Cast(actor, Component_Control);
-    Assert(control_component != NULL, "");
+    Component* component = Actor_Component_Cast(actor, Component_Control);
+    Assert(component != NULL, "");
 
-    ControlEventRespond* control_event_respond = Queue_Find(ControlEventRespond*)(control_component->m_control_event_respond_queue, (CB_FindData_Bool_tPtr_tPtr)CallBack_EventRespond_FindEvent, (void*)event_info->m_event);
+    ControlComponentData* control_component_data = Component_GetData(component);
+    ControlEventRespond* control_event_respond = Queue_Find(ControlEventRespond*)(control_component_data->m_control_event_respond_queue, (CB_FindData_Bool_tPtr_tPtr)CallBack_EventRespond_FindEvent, (void*)event_info->m_event);
     
     Assert(control_event_respond != NULL, "");
     Assert(control_event_respond->m_cb_respond_action_void_actor_eventinfo != NULL, "");
@@ -110,10 +129,11 @@ void CallBack_Actor_Receive_SceneEvent(Actor* actor, const EventInfo* event_info
 
 void CallBack_Actor_Receive_ControlEvent(Actor* actor, const EventInfo* event_info)
 {
-    ControlComponent* control_component = Actor_Component_Cast(actor, Component_Control);
-    Assert(control_component != NULL, "");
+    Component* component = Actor_Component_Cast(actor, Component_Control);
+    Assert(component != NULL, "");
 
-    ControlEventRespond* control_event_respond = Queue_Find(ControlEventRespond*)(control_component->m_control_event_respond_queue, (CB_FindData_Bool_tPtr_tPtr)CallBack_EventRespond_FindEvent, (void*)event_info->m_event);
+    ControlComponentData* control_component_data = Component_GetData(component);
+    ControlEventRespond* control_event_respond = Queue_Find(ControlEventRespond*)(control_component_data->m_control_event_respond_queue, (CB_FindData_Bool_tPtr_tPtr)CallBack_EventRespond_FindEvent, (void*)event_info->m_event);
 
     // We storage all event in same queue, so we need to check if the event has a respond or not
     if( control_event_respond == NULL )

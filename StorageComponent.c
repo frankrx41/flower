@@ -5,50 +5,67 @@
 #include "StorageComponent.h"
 
 #include "MemoryManager.h"
+#include "Component.h"
 #include "Storage.h"
 
-struct StorageComponent
+typedef struct StorageComponentData StorageComponentData;
+struct StorageComponentData
 {
     Storage* m_storage;
 };
 
 
-StorageComponent* Component_Storage_Create(const strcrc* local_name, Actor* actor)
+void* Component_Storage_Create(const strcrc* local_name, Actor* actor)
 {
-    StorageComponent* storage_component = MemNew(local_name, StorageComponent);
-    storage_component->m_storage        = Storage_Create(local_name);
-    return storage_component;
+    StorageComponentData* storage_component_data = MemNew(local_name, StorageComponentData);
+    storage_component_data->m_storage   = Storage_Create(local_name);
+    return storage_component_data;
 }
 
-void Component_Storage_Destroy(StorageComponent* storage_component)
+void Component_Storage_Destroy(Component* component)
 {
-    Assert(storage_component, "");
-    Storage_Destroy(storage_component->m_storage);
-    MemDel(storage_component);
+    Assert(component, "");
+    Assert(Component_GetEnum(component) == Component_Storage, "");
+
+    StorageComponentData* storage_component_data = Component_GetData(component);
+    Storage_Destroy(storage_component_data->m_storage);
+    MemDel(storage_component_data);
 }
 
-bool Component_Storage_Is_ExistVariable(StorageComponent* storage_component, crc32 variable)
+bool Component_Storage_Is_ExistVariable(Component* component, crc32 variable)
 {
-    Assert(storage_component, "");
+    Assert(component, "");
+    Assert(Component_GetEnum(component) == Component_Storage, "");
+
+    StorageComponentData* storage_component_data = Component_GetData(component);
     return
-    Storage_Is_ExistVariable(storage_component->m_storage, variable);
+    Storage_Is_ExistVariable(storage_component_data->m_storage, variable);
 }
 
-void Component_Storage_Data_Store(StorageComponent* storage_component, crc32 variable, tdata data)
+void Component_Storage_Data_Store(Component* component, crc32 variable, tdata data)
 {
-    Assert(storage_component, "");
-    Storage_Data_Store(storage_component->m_storage, variable, data);
+    Assert(component, "");
+    Assert(Component_GetEnum(component) == Component_Storage, "");
+
+    StorageComponentData* storage_component_data = Component_GetData(component);
+    Storage_Data_Store(storage_component_data->m_storage, variable, data);
 }
 
-tdata Component_Storage_Data_Read(StorageComponent* storage_component, crc32 variable)
+tdata Component_Storage_Data_Read(Component* component, crc32 variable)
 {
-    Assert(storage_component, "");
+    Assert(component, "");
+    Assert(Component_GetEnum(component) == Component_Storage, "");
+
+    StorageComponentData* storage_component_data = Component_GetData(component);
     return
-    Storage_Data_Read(storage_component->m_storage, variable);
+    Storage_Data_Read(storage_component_data->m_storage, variable);
 }
 
-void Component_Storage_Variable_Delete(StorageComponent* storage_component, crc32 variable)
+void Component_Storage_Variable_Delete(Component* component, crc32 variable)
 {
-    Assert(storage_component, "");
-    Storage_Variable_Delete(storage_component->m_storage, variable);
+    Assert(component, "");
+    Assert(Component_GetEnum(component) == Component_Storage, "");
+
+    StorageComponentData* storage_component_data = Component_GetData(component);
+    Storage_Variable_Delete(storage_component_data->m_storage, variable);
 }

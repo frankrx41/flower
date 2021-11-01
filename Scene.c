@@ -103,13 +103,6 @@ void Scene_Destroy(Scene* scene)
     MemDel(scene);
 }
 
-static Queue(Actor*)* Scene_EventQueue_Get(Scene* scene, Event event)
-{
-    Assert(IS_IN_RANGE(event, Event_Scene_Min, Event_Scene_Max), "" );
-
-    return scene->m_actor_queue_scene_event_list[event-Event_Scene_Min];
-}
-
 void Scene_PauseAndHide(Scene* scene)
 {
     scene->m_is_pause_render    = true;
@@ -164,11 +157,34 @@ void Scene_Actor_DestroyAll(Scene* scene)
     Queue_Destroy(scene->m_child_actor_queue, Actor_Destroy);
 }
 
+////////////////////////////////////////////////////////////////////////////////
 void CallBack_Actor_Receive_SceneEvent(Actor* actor, const EventInfo* event_info);
 void CallBack_Actor_Receive_ControlEvent(Actor* actor, const EventInfo* event_info);
 
-void Scene_SceneEvent_SendTo_Actor(Scene* scene, EventInfo* event_info)
+static Queue(Actor*)* Scene_EventQueue_Get(Scene* scene, EventId event_id)
 {
+    if( EventId_IsPhysicEventId(event_id) )
+    {
+        return scene->m_actor_queue_physics;
+    }
+    else
+    if( EventId_IsSceneEventId(event_id) )
+    {
+        return scene->m_actor_queue_scene_event_list[event_id-Event_Scene_Min];
+    }
+    else
+    if( EventId_IsControlEventId(event_id) )
+    {
+        return scene->m_actor_queue_control;
+    }
+    Assert(false, "");
+    return NULL;
+}
+
+void Scene_Event_SendTo_Actor(Scene* scene, EventInfo* event_info)
+{
+    const EventId event_id = event_info->m_event;
+
     if( event_info->m_event == Event_Scene_Update_Physics )
     {
         Scene_PhysicsGroup_Actor_Update(scene, event_info->m_delta_seconds);
@@ -179,33 +195,30 @@ void Scene_SceneEvent_SendTo_Actor(Scene* scene, EventInfo* event_info)
         TODO("Update Anime");
     }
     else
+    if( EventId_IsSceneEventId(event_info->m_event) )
     {
-        Event event = event_info->m_event;
-
-        // Scene event
-        Assert(IS_IN_RANGE(event, Event_Scene_Min, Event_Scene_Max), "");
-        Queue_ForEach(Scene_EventQueue_Get(scene, event), CallBack_Actor_Receive_SceneEvent, event_info);
+        Queue_ForEach(Scene_EventQueue_Get(scene, event_id), CallBack_Actor_Receive_SceneEvent, event_info);
+    }
+    else
+    if( EventId_IsControlEventId(event_info->m_event) )
+    {
+        Queue_ForEach(Scene_EventQueue_Get(scene, event_id), CallBack_Actor_Receive_ControlEvent, event_info);
+    }
+    else
+    {
+        Assert(false, "");
     }
 }
 
-void Scene_ControlEvent_SendTo_Actor(Scene* scene, EventInfo* event_info)
+void Scene_EventGroup_Actor_Add(Scene* scene, Actor* actor, EventId event_id)
 {
-    Event event = event_info->m_event;
-
-    Assert(IS_IN_RANGE(event, Event_Control_Min, Event_Control_Max), "");
-    Queue_ForEach(scene->m_actor_queue_control, CallBack_Actor_Receive_ControlEvent, event_info);
+    Queue_Push(Actor*, NULL, Scene_EventQueue_Get(scene, event_id), actor);
 }
 
-void Scene_SceneEventGroup_Actor_Add(Scene* scene, Actor* actor, Event event)
+void Scene_EventGroup_Actor_Remove(Scene* scene, Actor* actor, EventId event_id)
 {
-    Assert(IS_IN_RANGE(event, Event_Scene_Min, Event_Scene_Max), "Invalid event!");
-    Queue_Push(Actor*, NULL, Scene_EventQueue_Get(scene, event), actor);
-}
-
-void Scene_ControlEventGroup_Actor_Add(Scene* scene, Actor* actor, Event event)
-{
-    Assert(IS_IN_RANGE(event, Event_Control_Min, Event_Control_Max), "Invalid event!");
-    Queue_Push(Actor*, NULL, scene->m_actor_queue_control, actor);
+    Assert(false, "Not impl yet!");
+    Queue_RemoveFindFirst(Actor*)(Scene_EventQueue_Get(scene, event_id), NULL, actor, NULL);
 }
 
 void Scene_PhysicsGroup_Actor_Add(Scene* scene, Actor* actor)
@@ -220,10 +233,12 @@ void Scene_PhysicsGroup_Actor_Remove(Scene* scene, Actor* actor)
 
 void Scene_PhysicsGroup_Actor_Update(Scene* scene, float delta_seconds)
 {
+    TODO("Refactor this!");
     float delta_second_copy = delta_seconds;
     Queue_ForEach(scene->m_actor_queue_physics, CallBack_Actor_Component_Physics_Simulate, &delta_second_copy);
 }
 
+////////////////////////////////////////////////////////////////////////////////
 void Scene_Storage_StoreData(Scene* scene, crc32 variable, tdata data)
 {
     Storage_Data_Store(scene->m_storage, variable, data);

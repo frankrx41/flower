@@ -17,8 +17,8 @@ enum KeyState
 void    InputManager_KeysState_Update           (InputManager* input_manager, float delta_second);
 void    InputManager_ControlEvent_Distribute    (InputManager* input_manager);
 
-void    InputManager_Input_ControlEvent_Add     (InputManager* input_manager, KeyId key_id, KeyState key_state, Event event);
-void    InputManager_Input_ControlEvent_Del     (InputManager* input_manager, Event event);
+void    InputManager_Input_ControlEvent_Add     (InputManager* input_manager, KeyId key_id, KeyState key_state, EventId event);
+void    InputManager_Input_ControlEvent_Del     (InputManager* input_manager, EventId event);
 void    InputManager_Input_ControlEvent_Clear   (InputManager* input_manager);
 
 

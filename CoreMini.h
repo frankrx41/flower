@@ -28,7 +28,7 @@ Code Style
 Start with '_' means not want be call
 
 Variable list:
-XXXManager* local_name Event/Scene/Actor/String... others
+XXXManager* local_name EventId/Scene/Actor/String... others
 
 */
 

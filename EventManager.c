@@ -28,7 +28,7 @@ void EventManager_Destroy(EventManager* event_manager)
     MemDel(event_manager);
 }
 
-EventInfo* EventInfo_Create(const strcrc* local_name, Event event, Scene* scene, Actor* actor, KeyId key_id, float delta_second)
+EventInfo* EventInfo_Create(const strcrc* local_name, EventId event, Scene* scene, Actor* actor, KeyId key_id, float delta_second)
 {
     Assert(local_name != NULL, "");
 
@@ -47,7 +47,22 @@ void EventInfo_Destroy(EventInfo* event_info)
     MemDel(event_info);
 }
 
-void EventManager_SendEvent_Update(EventManager* event_manager, Event event, float delta_seconds)
+bool EventId_IsSceneEventId(EventId event_id)
+{
+    return event_id >= Event_Scene_Min && event_id < Event_Scene_Max;
+}
+
+bool EventId_IsControlEventId(EventId event_id)
+{
+    return event_id >= Event_Control_Min && event_id < Event_Control_Max;
+}
+
+bool EventId_IsPhysicEventId(EventId event_id)
+{
+    return event_id == Event_Scene_Update_Physics;
+}
+
+void EventManager_SendEvent_Update(EventManager* event_manager, EventId event, float delta_seconds)
 {
     strcrc local_name = StrCrc("EventManager_Tick", 0);
 
@@ -63,11 +78,11 @@ static void CallBack_SendEvent_Actor_Action(Scene* scene, const EventInfo* event
 
     Assert(scene != NULL, "");
     EventInfo* event_info_actor_action = EventInfo_Create(&local_name, event_info->m_event, scene, NULL, KeyId_Null, event_info->m_delta_seconds);
-    Scene_ControlEvent_SendTo_Actor(scene, event_info_actor_action);
+    Scene_Event_SendTo_Actor(scene, event_info_actor_action);
     EventInfo_Destroy(event_info_actor_action);
 }
 
-void EventManager_SendEvent_Control(EventManager* event_manager, Event event)
+void EventManager_SendEvent_Control(EventManager* event_manager, EventId event)
 {
     strcrc local_name = StrCrc("EventManager_Action", 0);
 

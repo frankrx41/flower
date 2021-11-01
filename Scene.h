@@ -6,7 +6,7 @@ typedef struct Scene Scene;
 typedef struct Actor Actor;
 typedef struct vec2 vec2;
 typedef union tdata tdata;
-typedef enum Event Event;
+typedef enum Event EventId;
 typedef struct Viewport Viewport;
 
 typedef bool (*CB_FindData_Bool_tPtr_tPtr)      (const void* data, const void* ptr);
@@ -35,14 +35,14 @@ Actor*  Scene_Actor_Create          (const strcrc* local_name, Scene* scene, CB_
 void    Scene_Actor_Destroy         (Scene* scene, CB_FindData_Bool_tPtr_tPtr cb_find_actor_bool_tptr_tptr, void* ptr);
 void    Scene_Actor_DestroyAll      (Scene* scene);
 
-void    Scene_SceneEvent_SendTo_Actor   (Scene* scene, EventInfo* event_info);
-void    Scene_ControlEvent_SendTo_Actor (Scene* scene, EventInfo* event_info);
+void    Scene_Event_SendTo_Actor   (Scene* scene, EventInfo* event_info);
 
-void    Scene_SceneEventGroup_Actor_Add     (Scene* scene, Actor* actor, Event event);
-void    Scene_ControlEventGroup_Actor_Add   (Scene* scene, Actor* actor, Event event);
-void    Scene_PhysicsGroup_Actor_Add        (Scene* scene, Actor* actor);
-void    Scene_PhysicsGroup_Actor_Remove     (Scene* scene, Actor* actor);
-void    Scene_PhysicsGroup_Actor_Update     (Scene* scene, float delta_seconds);
+void    Scene_EventGroup_Actor_Add      (Scene* scene, Actor* actor, EventId event_id);
+void    Scene_EventGroup_Actor_Remove   (Scene* scene, Actor* actor, EventId event_id);
+
+void    Scene_PhysicsGroup_Actor_Add    (Scene* scene, Actor* actor);
+void    Scene_PhysicsGroup_Actor_Remove (Scene* scene, Actor* actor);
+void    Scene_PhysicsGroup_Actor_Update (Scene* scene, float delta_seconds);
 
 
 void    Scene_Storage_StoreData         (Scene* scene, crc32 variable, tdata data);

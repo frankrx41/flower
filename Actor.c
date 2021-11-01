@@ -97,14 +97,14 @@ void Actor_Component_Del(Actor* actor, ComponentEnum component_enum)
     Queue_RemoveFindFirst(Component*)(actor->m_components_queue, NULL, component, Component_Destroy);
 }
 
-static bool CallBack_Actor_FindComponent(const Component* component, const ComponentEnum component_enum)
+static bool CallBack_Actor_FindComponent(const Component* component, const ComponentEnum* component_enum)
 {
-    return Component_GetEnum(component) == component_enum;
+    return Component_GetEnum(component) == *component_enum;
 }
 
 Component* Actor_Component_Cast(const Actor* actor, ComponentEnum component_enum)
 {
-    return Queue_Find(Component*)(actor->m_components_queue, CallBack_Actor_FindComponent, (void*)component_enum);
+    return Queue_Find(Component*)(actor->m_components_queue, CallBack_Actor_FindComponent, &component_enum);
 }
 
 ////////////////////////////////////////////////////////////////////////////////

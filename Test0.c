@@ -29,6 +29,7 @@
 #include "Scene.h"
 #include "tData.h"
 #include "Argument.h"
+#include "ShaderText.h"
 #include "Vec.h"
 #include "Stat.h"
 
@@ -219,16 +220,24 @@ void Actor_Test2()
 {
     strcrc local_name = StrCrc(__FUNCTION__, 0);
     vec3 location;
+    ShaderText* shader_text;
     Scene* scene = SceneManager_Scene_Create(&local_name, NULL, NULL, NULL);
     Actor* actor = Scene_Actor_Create(&local_name, scene, NULL, NULL, NULL);
 
     Scene_Viewport_Create(scene, 0, 0, NULL, NULL);
 
     Actor_Component_New(actor, Component_Render);
-    location = Vec3(1, 1, 0);
-    Actor_Component_Render_ShaderText_Add(actor, false, &location, NULL, "* hello world" );
-    location = Vec3(1, 2, 0);
-    Actor_Component_Render_ShaderText_Add(actor, false, &location, NULL, "* goodbye world" );
+    Component* render_component = Actor_Component_Cast(actor, Component_Render);
+    {
+        location = Vec3(1, 1, 0);
+        shader_text = ShaderText_Create(Actor_GetLocalName(actor), false, &location, NULL, "* hello world");
+        Component_Render_ShaderText_Add(render_component, shader_text);
+    }
+    {
+        location = Vec3(1, 2, 0);
+        shader_text = ShaderText_Create(Actor_GetLocalName(actor), false, &location, NULL, "* hello world");
+        Component_Render_ShaderText_Add(render_component, shader_text);
+    }
 
     RenderManager_RenderAllScene(RenderManager_GetInstance(), SceneManager_GetInstance());
 
@@ -250,7 +259,8 @@ void Actor_Test1()
     Actor_Component_New(actor, Component_Render);
 
     vec3 location = Vec3(2, 2, 0);
-    Actor_Component_Render_ShaderText_Add(actor, false, &location, NULL, "hello world" );
+    ShaderText* shader_text = ShaderText_Create(Actor_GetLocalName(actor), false, & location, NULL, "hello world");
+    Component_Render_ShaderText_Add(Actor_Component_Cast(actor, Component_Render), shader_text);
 
     RenderManager_RenderAllScene(RenderManager_GetInstance(), SceneManager_GetInstance());
 
@@ -272,7 +282,8 @@ void Actor_Test0()
 
     Actor_Component_New(actor, Component_Render);
     vec3 location = Vec3(0, 10, 0);
-    Actor_Component_Render_ShaderText_Add(actor, false, &location, NULL, "hello world" );
+    ShaderText* shader_text = ShaderText_Create(Actor_GetLocalName(actor), false, &location, NULL, "hello world");
+    Component_Render_ShaderText_Add(Actor_Component_Cast(actor, Component_Render), shader_text);
 
     RenderManager_RenderAllScene(RenderManager_GetInstance(), SceneManager_GetInstance());
 

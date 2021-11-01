@@ -14,7 +14,9 @@ enum ComponentEnum
     Component_Max,
 };
 
-ComponentEnum Component_GetEnum     (const Component* component);
+ComponentEnum   Component_GetEnum   (const Component* component);
+void*           Component_GetData   (const Component* component);
+Actor*          Component_GetActor  (const Component* component);
 
 Component*  Component_Create        (const strcrc* local_name, Actor* actor, ComponentEnum component_enum);
 void        Component_Destroy       (Component* component);
