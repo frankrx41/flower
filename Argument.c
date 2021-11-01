@@ -1,37 +1,37 @@
 #include "CoreMini.h"
 
+#include "MemoryManager.h"
+
+#include "tData.h"
 #include "Argument.h"
 
-argv Arg_Make1(void* arg0)
+struct Argument
 {
-    argv argument;
-    argument.argument[0] = arg0;
+    tdata   m_data[];
+};
+
+Argument* Argument_New(const strcrc* local_name, uint32 count, ...)
+{
+    Argument* argument = MemNewSize(local_name, sizeof(tdata)*count);
+
+    va_list ap;
+    va_start(ap, count);
+    for( uint32 i=0; i<count; i++ )
+    {
+        const tdata data = va_arg(ap, tdata);
+        argument->m_data[i] = data;
+    }
+
     return argument;
 }
 
-argv Arg_Make2(void* arg0, void* arg1)
+void Argument_Del(Argument* argument)
 {
-    argv argument;
-    argument.argument[0] = arg0;
-    argument.argument[1] = arg1;
-    return argument;
+    MemDel(argument);
 }
 
-argv Arg_Make3(void* arg0, void* arg1, void* arg2)
+tdata Argument_Get(const Argument* argument, uint32 index)
 {
-    argv argument;
-    argument.argument[0] = arg0;
-    argument.argument[1] = arg1;
-    argument.argument[2] = arg2;
-    return argument;
-}
-
-argv Arg_Make4(void* arg0, void* arg1, void* arg2, void* arg3)
-{
-    argv argument;
-    argument.argument[0] = arg0;
-    argument.argument[1] = arg1;
-    argument.argument[2] = arg2;
-    argument.argument[3] = arg3;
-    return argument;
+    Assert(Memory_IsInBounds(argument, &argument->m_data[index]), "");
+    return argument->m_data[index];
 }

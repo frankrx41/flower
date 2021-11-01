@@ -28,6 +28,7 @@
 #include "Mutex.h"
 #include "Scene.h"
 #include "tData.h"
+#include "Argument.h"
 #include "Vec.h"
 #include "Stat.h"
 
@@ -387,6 +388,18 @@ void Stat_Test0()
 }
 
 ////////////////////////////////////////////////////////////////////////////////
+void Argument_Test0()
+{
+    strcrc local_name = StrCrc(__FUNCTION__, 0);
+    Argument* argument = ARG_New2(&local_name, float, 1.1f, int32, 111);
+
+    Assert(Argument_Get(argument, 0).m_float == 1.1f, "");
+    Assert(Argument_Get(argument, 1).m_int32 == 111, "");
+
+    Argument_Del(argument);
+}
+
+////////////////////////////////////////////////////////////////////////////////
 typedef void (*CB_Test_Void)();
 static void Test(uint32 index, CB_Test_Void cb_test_void)
 {
@@ -421,6 +434,8 @@ void Engine_Debug_UnitTesting0()
         Mutex_Test0,
 
         Stat_Test0,
+
+        Argument_Test0,
     };
 
     Log(0, "%s Start\n", __FUNCTION__);

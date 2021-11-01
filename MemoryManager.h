@@ -17,7 +17,7 @@ extern void*    Memory_Zero         (void* ptr);
 extern void*    Memory_ZeroSize     (void* ptr, tsize size);
 extern tsize    Memory_GetSize      (const void* ptr);
 
-extern bool     Memory_IsInBounds   (void* head_ptr, void* check_ptr);
+extern bool     Memory_IsInBounds   (const void* head_ptr, const void* check_ptr);
 
 
 #define MemNew(local_name, type)            (type*)Memory_Alloc(local_name, sizeof(type))

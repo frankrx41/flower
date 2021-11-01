@@ -41,7 +41,7 @@ static void TaskQueueThread_Destroy(TaskQueueThread* task_queue_thread)
 static Queue(Task*)* TaskQueueThread_TaskQueue_Get(Thread* thread)
 {
     Assert(thread != NULL, "");
-    TaskQueueThread* task_queue_thread = (TaskQueueThread*)Thread_Run_Data_Get(thread);
+    TaskQueueThread* task_queue_thread = (TaskQueueThread*)Thread_GetInputData(thread);
 
     Assert(task_queue_thread != NULL, "");
     return task_queue_thread->m_task_queue;
@@ -181,7 +181,7 @@ static void TaskManager_TaskQueueThread_RunTask(Thread* thread, TaskQueueThread*
         }
         else
         {
-            Thread_Sleep_This_Tick();
+            Thread_This_SleepTick();
         }
     }
 

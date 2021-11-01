@@ -45,7 +45,7 @@ void CallBack_ActorOnEvent5(Actor* actor, const EventInfo* event_info)
 
     vec3 location = *Actor_Component_Physics_Location_Get(actor);
     Actor_Component_Render_ShaderText_Clear(actor);
-    String* string = String_New(Actor_LocalName_Get(actor), NULL, 0, false);
+    String* string = String_New(Actor_GetLocalName(actor), NULL, 0, false);
     String_Format(string, "(%.2f) %s", location.m_y, event_info->m_event == Event_Control_MoveUp ? "Up" : "Down");
 
     location = Vec3(2, 2, 0);
@@ -101,7 +101,7 @@ void CallBack_ActorOnEvent4(Actor* actor, const EventInfo* event_info)
     Actor_Component_Render_ShaderText_Clear(actor);
 
     const vec3 displacement = *Actor_Component_Physics_Location_Get(actor);
-    String* string = String_New(Actor_LocalName_Get(actor), NULL, 0, false);
+    String* string = String_New(Actor_GetLocalName(actor), NULL, 0, false);
     String_Format(string, "(%.2f, %.2f, %.2f) %.2f", displacement.m_x, displacement.m_y, displacement.m_z, 0.f);
 
     vec3 location = Vec3(0, 0, 0);
@@ -151,7 +151,7 @@ void CallBack_ActorOnEvent3(Actor* actor, const EventInfo* event_info)
 
     Actor_Component_Render_ShaderText_Clear(actor);
 
-    String* string = String_New(Actor_LocalName_Get(actor), NULL, 0, false);
+    String* string = String_New(Actor_GetLocalName(actor), NULL, 0, false);
     String_Format(string, "%d %.2f", tick_count, 1.f / event_info->m_delta_seconds);
 
     vec3 location = Vec3(0, 0, 0);
@@ -238,7 +238,7 @@ void CallBack_ActorOnEvent2(Actor* actor, const EventInfo* event_info)
             SceneManager_Scene_ExitCurrent();
         }
 
-        String* string = String_New(Actor_LocalName_Get(actor), NULL, 0, false);
+        String* string = String_New(Actor_GetLocalName(actor), NULL, 0, false);
         String_Format(string, "%d", update_tick);
 
         vec3 location = Vec3(0, 0, 0);
@@ -287,7 +287,7 @@ void CallBack_ActorOnEvent1(Actor* actor, const EventInfo* event_info)
         if (scene)
         {
             SceneManager_Scene_Foreground_Queue_Add(scene);
-            Scene_Pause_All(event_info->m_scene);
+            Scene_PauseAndHide(event_info->m_scene);
         }
         else
         {

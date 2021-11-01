@@ -104,11 +104,11 @@ void Actor_Component_Physics_SetEnableSimulate(Actor* actor, bool is_enable_simu
 
     if( is_enable_simulate )
     {
-        Scene_PhysicsGroup_Actor_Add(Actor_ExistScene_Get(actor), actor);
+        Scene_PhysicsGroup_Actor_Add(Actor_GetExistScene(actor), actor);
     }
     else
     {
-        Scene_PhysicsGroup_Actor_Remove(Actor_ExistScene_Get(actor), actor);
+        Scene_PhysicsGroup_Actor_Remove(Actor_GetExistScene(actor), actor);
     }
 }
 
@@ -121,7 +121,7 @@ ShaderText* Actor_Component_Render_ShaderText_Add(Actor* actor, bool is_absolute
     Assert(render_component != NULL, "");
     if( render_component )
     {
-        ShaderText* shader_text = ShaderText_Create(Actor_LocalName_Get(actor), is_absolute, position, info, str);
+        ShaderText* shader_text = ShaderText_Create(Actor_GetLocalName(actor), is_absolute, position, info, str);
         Component_Render_ShaderText_Add(render_component, shader_text);
         return shader_text;
     }
@@ -157,7 +157,7 @@ void Actor_Component_Control_SceneEventRespond_Add(Actor* actor, Event event, CB
     if( control_component )
     {
         Component_Control_EventRespond_Add(control_component, event, cb_respond_condition_void_actor_eventinfo, cb_respond_action_void_actor_eventinfo);
-        Scene_SceneEventGroup_Actor_Add(Actor_ExistScene_Get(actor), actor, event);
+        Scene_SceneEventGroup_Actor_Add(Actor_GetExistScene(actor), actor, event);
     }
 }
 
@@ -173,7 +173,7 @@ void Actor_Component_Control_ControlEventRespond_Add(Actor* actor, Event event, 
         Component_Control_EventRespond_Add(control_component, event, cb_respond_condition_void_actor_eventinfo, cb_respond_action_void_actor_eventinfo);
         if(IS_IN_RANGE(event, Event_Scene_Min, Event_Scene_Max))
         {
-            Scene_SceneEventGroup_Actor_Add(Actor_ExistScene_Get(actor), actor, event);
+            Scene_SceneEventGroup_Actor_Add(Actor_GetExistScene(actor), actor, event);
         }
     }
 }
@@ -273,7 +273,7 @@ static void CallBack_Render_ActorShaderText(ShaderText* shader_text, const Actor
     local_name = StrCrc("RenderManager_ShaderText", 0);
     ShaderText* shader_text_copy = ShaderText_Create(&local_name, true, &position, ShaderText_Info_Get(shader_text), ShaderText_Str_Get(shader_text));
     
-    Viewport* viewport = Scene_Viewport_Get(Actor_ExistScene_Get(actor));
+    Viewport* viewport = Scene_GetViewport(Actor_GetExistScene(actor));
     Viewport_Render_ShaderText(viewport, shader_text_copy);
 
     ShaderText_Destory(shader_text_copy);
@@ -281,7 +281,7 @@ static void CallBack_Render_ActorShaderText(ShaderText* shader_text, const Actor
 
 void CallBack_Actor_RenderTo_Scene_Viewport(Actor* actor, const Scene* scene)
 {
-    if( Actor_Is_Hide(actor) )
+    if( Actor_IsHide(actor) )
     {
         return;
     }

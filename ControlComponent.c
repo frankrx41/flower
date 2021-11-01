@@ -37,7 +37,7 @@ ControlComponent* Component_Control_Create(const strcrc* local_name, Actor* acto
     event_respond_component->m_control_event_respond_queue  = Queue_Create(local_name, ControlEventRespond*);
     StrCrc_Copy(local_name, &event_respond_component->m_local_name);
 
-    Scene_ControlEventGroup_Actor_Add(Actor_ExistScene_Get(actor), actor, Event_Control_Min);
+    Scene_ControlEventGroup_Actor_Add(Actor_GetExistScene(actor), actor, Event_Control_Min);
 
     return event_respond_component;
 }

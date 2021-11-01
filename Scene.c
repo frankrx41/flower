@@ -110,13 +110,13 @@ static Queue(Actor*)* Scene_EventQueue_Get(Scene* scene, Event event)
     return scene->m_actor_queue_scene_event_list[event-Event_Scene_Min];
 }
 
-void Scene_Pause_All(Scene* scene)
+void Scene_PauseAndHide(Scene* scene)
 {
     scene->m_is_pause_render    = true;
     scene->m_is_pause_event     = true;
 }
 
-bool Scene_Is_Hide(Scene* scene)
+bool Scene_IsHide(Scene* scene)
 {
     return scene->m_is_pause_render;
 }
@@ -126,7 +126,7 @@ void Scene_Hide(Scene* scene, bool is_pause)
     scene->m_is_pause_render = is_pause;
 }
 
-bool Scene_Is_Pause(Scene* scene)
+bool Scene_IsPause(Scene* scene)
 {
     return scene->m_is_pause_event;
 }
@@ -137,12 +137,12 @@ void Scene_Pause(Scene* scene, bool is_pause)
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-Viewport* Scene_Viewport_Get(const Scene* scene)
+Viewport* Scene_GetViewport(const Scene* scene)
 {
     return scene->m_viewport;
 }
 
-const strcrc* Scene_LocalName_Get(const Scene* scene)
+const strcrc* Scene_GetLocalName(const Scene* scene)
 {
     return &scene->m_local_name;
 }
@@ -159,7 +159,7 @@ void Scene_Actor_Destroy(Scene* scene, CB_FindData_Bool_tPtr_tPtr cb_find_actor_
     Queue_RemoveFindFirst(Actor*)(scene->m_child_actor_queue, cb_find_actor_bool_tptr_tptr, ptr, Actor_Destroy);
 }
 
-void Scene_Actor_Destroy_All(Scene* scene)
+void Scene_Actor_DestroyAll(Scene* scene)
 {
     Queue_Destroy(scene->m_child_actor_queue, Actor_Destroy);
 }

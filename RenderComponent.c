@@ -21,9 +21,9 @@ RenderComponent* Component_Render_Create(const strcrc* local_name, Actor* actor)
     RenderComponent* render_component = MemNew(local_name, RenderComponent);
     render_component->m_shader_text_queue = Queue_Create(local_name, ShaderText*);
 
-    Scene_ActorQueue_Renderable_Add(Actor_ExistScene_Get(actor), actor);
+    Scene_ActorQueue_Renderable_Add(Actor_GetExistScene(actor), actor);
 
-    Assert(Scene_Viewport_Get(Actor_ExistScene_Get(actor)) != NULL, "");
+    Assert(Scene_GetViewport(Actor_GetExistScene(actor)) != NULL, "");
 
     return render_component;
 }

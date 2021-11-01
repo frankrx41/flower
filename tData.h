@@ -17,7 +17,7 @@ tdata  tData(const tchar* type, ...);
 
 #define Float(x)    ((float)(x))
 #define Int32(x)    ((int32)(x))
-#define tPtr(x)     ((tptr)(x))
+#define tPtr(x)     ((void*)(x))
 #define tChar(x)    ((tchar)(x))
 #define uInt32(x)   ((uint32)(x))
 #define tSize(x)    ((tsize)(x))

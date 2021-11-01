@@ -22,18 +22,18 @@ void    Scene_Viewport_Create       (Scene* scene, float width, float height, co
 void    Scene_Destroy               (Scene* scene);
 
 
-void    Scene_Pause_All             (Scene* scene);
-bool    Scene_Is_Hide               (Scene* scene);
+void    Scene_PauseAndHide          (Scene* scene);
+bool    Scene_IsHide                (Scene* scene);
 void    Scene_Hide                  (Scene* scene, bool is_pause);
-bool    Scene_Is_Pause              (Scene* scene);
+bool    Scene_IsPause               (Scene* scene);
 void    Scene_Pause                 (Scene* scene, bool is_pause);
 
-Viewport*       Scene_Viewport_Get  (const Scene* scene);
-const strcrc*   Scene_LocalName_Get (const Scene* scene);
+Viewport*       Scene_GetViewport   (const Scene* scene);
+const strcrc*   Scene_GetLocalName  (const Scene* scene);
 
 Actor*  Scene_Actor_Create          (const strcrc* local_name, Scene* scene, CB_ActorCreate_Void_Actor_tPtr cb_actor_create_void_actor_tptr, CB_ActorDestroy_Void_Actor cb_actor_destroy_void_actor, const void* ptr);
 void    Scene_Actor_Destroy         (Scene* scene, CB_FindData_Bool_tPtr_tPtr cb_find_actor_bool_tptr_tptr, void* ptr);
-void    Scene_Actor_Destroy_All     (Scene* scene);
+void    Scene_Actor_DestroyAll      (Scene* scene);
 
 void    Scene_SceneEvent_SendTo_Actor   (Scene* scene, EventInfo* event_info);
 void    Scene_ControlEvent_SendTo_Actor (Scene* scene, EventInfo* event_info);

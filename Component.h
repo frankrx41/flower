@@ -1,9 +1,9 @@
 #pragma once
 
 
-typedef enum Component Component;
+typedef enum ComponentEnum Component;
 
-enum Component
+enum ComponentEnum
 {
     Component_Min,
     Component_Render = Component_Min,

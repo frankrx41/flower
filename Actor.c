@@ -68,7 +68,7 @@ void Actor_Destroy(Actor* actor)
     MemDel(actor);
 }
 
-bool Actor_Is_Pause(Actor* actor)
+bool Actor_IsPause(Actor* actor)
 {
     return actor->m_is_pause;
 }
@@ -78,7 +78,7 @@ void Actor_Pause(Actor* actor, bool is_pause)
     actor->m_is_pause = is_pause;
 }
 
-bool Actor_Is_Hide(Actor* actor)
+bool Actor_IsHide(Actor* actor)
 {
     return actor->m_is_hide;
 }
@@ -129,7 +129,7 @@ void Actor_Component_New(Actor* actor, Component component_enum)
     Assert(actor != NULL, "");
     Assert(IS_IN_RANGE(component_enum, Component_Min, Component_Max), "");
 
-    void* component = Actor_Component_Create_CB_Get(component_enum)(Actor_LocalName_Get(actor), actor);
+    void* component = Actor_Component_Create_CB_Get(component_enum)(Actor_GetLocalName(actor), actor);
     Actor_Component_Set(actor, component_enum, component);
 }
 
@@ -151,12 +151,12 @@ void* Actor_Component_Cast(const Actor* actor, Component component_enum)
     return actor->m_components[component_enum - Component_Min];
 }
 
-const strcrc* Actor_LocalName_Get(Actor* actor)
+const strcrc* Actor_GetLocalName(Actor* actor)
 {
     return &actor->m_local_name;
 }
 
-Scene* Actor_ExistScene_Get(const Actor* actor)
+Scene* Actor_GetExistScene(const Actor* actor)
 {
     return actor->m_scene;
 }

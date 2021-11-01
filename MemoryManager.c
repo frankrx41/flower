@@ -236,7 +236,7 @@ tsize Memory_GetSize(const void* ptr)
     return memory_block->m_alloc_size;
 }
 
-bool Memory_IsInBounds(void* head_ptr, void* check_ptr)
+bool Memory_IsInBounds(const void* head_ptr, const void* check_ptr)
 {
     MemoryBlock* memory_block = CastToMemoryBlock(head_ptr);
     const tsize size_offset = tSize(check_ptr) - tSize(head_ptr);

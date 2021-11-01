@@ -81,8 +81,8 @@ void RenderManager_Render_ToBackBuffer(RenderManager* render_manager, ShaderText
 
 static void CallBack_Render_Scene(Scene* scene, const RenderManager* render_manager)
 {
-    Viewport* viewport = Scene_Viewport_Get(scene);
-    if( Scene_Is_Hide(scene) || viewport == NULL)
+    Viewport* viewport = Scene_GetViewport(scene);
+    if( Scene_IsHide(scene) || viewport == NULL)
     {
         return;
     }

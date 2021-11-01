@@ -70,7 +70,7 @@ bool Mutex_TryLock(Mutex* mutex, float time_out_seconds)
                 mutex->m_statistics_lock_wait_and_lock_count++;
                 break;
             }
-            Thread_Sleep_This_Tick();
+            Thread_This_SleepTick();
         }
         Timer_Destroy(timer);
     }
@@ -132,7 +132,7 @@ bool Mutex_TryWaitUnLock(Mutex* mutex, float time_out_seconds)
                 is_unlock = true;
                 break;
             }
-            Thread_Sleep_This_Tick();
+            Thread_This_SleepTick();
         }
         Timer_Destroy(timer);
     }

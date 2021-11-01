@@ -13,7 +13,7 @@
 static DWORD WINAPI Thread_Run_Function(LPVOID lpParam)
 {
     Thread* thread = lpParam;
-    Thread_Run_CB_Get(thread)(thread, Thread_Run_Data_Get(thread));
+    Thread_GetRunCB(thread)(thread, Thread_GetInputData(thread));
 
     return 0;
 }
@@ -46,7 +46,7 @@ void Thread_This_Sleep_Platform(float seconds)
     Sleep((DWORD)(seconds*1000.f));
 }
 
-void Thread_This_Sleep_Tick_Platform()
+void Thread_This_SleepTick_Platform()
 {
     Sleep(1);
 }
